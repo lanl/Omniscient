@@ -29,6 +29,19 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("UCVS-1");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("UCVS-2");
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Enrichment Plant", new System.Windows.Forms.TreeNode[] {
+            treeNode1,
+            treeNode2});
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("UCVS-1");
+            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("iPCAS-1");
+            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Reprocessing Plant", new System.Windows.Forms.TreeNode[] {
+            treeNode4,
+            treeNode5});
+            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Proliferation National Lab", new System.Windows.Forms.TreeNode[] {
+            treeNode3,
+            treeNode6});
             this.StripChartControlPanel = new System.Windows.Forms.Panel();
             this.StripChartsPanel = new System.Windows.Forms.Panel();
             this.StripChatsLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
@@ -96,7 +109,6 @@
             this.textBox5 = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.CenterSplitContainer = new System.Windows.Forms.SplitContainer();
             this.BottomPanel = new System.Windows.Forms.Panel();
@@ -107,6 +119,12 @@
             this.Instrument1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Instrument2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Instrument3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.treeView1 = new System.Windows.Forms.TreeView();
+            this.comboBox5 = new System.Windows.Forms.ComboBox();
+            this.textBox7 = new System.Windows.Forms.TextBox();
+            this.button1 = new System.Windows.Forms.Button();
+            this.EventControlPanel = new System.Windows.Forms.Panel();
+            this.button2 = new System.Windows.Forms.Button();
             this.StripChartControlPanel.SuspendLayout();
             this.StripChartsPanel.SuspendLayout();
             this.StripChatsLayoutPanel.SuspendLayout();
@@ -128,6 +146,7 @@
             this.CenterSplitContainer.SuspendLayout();
             this.BottomPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.EventControlPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // StripChartControlPanel
@@ -786,11 +805,14 @@
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.button1);
+            this.panel2.Controls.Add(this.textBox7);
+            this.panel2.Controls.Add(this.comboBox5);
+            this.panel2.Controls.Add(this.treeView1);
             this.panel2.Controls.Add(this.textBox6);
             this.panel2.Controls.Add(this.textBox5);
             this.panel2.Controls.Add(this.label9);
             this.panel2.Controls.Add(this.label8);
-            this.panel2.Controls.Add(this.label6);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Left;
             this.panel2.Location = new System.Drawing.Point(0, 49);
             this.panel2.MinimumSize = new System.Drawing.Size(200, 0);
@@ -801,7 +823,7 @@
             // textBox6
             // 
             this.textBox6.BackColor = System.Drawing.SystemColors.Control;
-            this.textBox6.Location = new System.Drawing.Point(109, 188);
+            this.textBox6.Location = new System.Drawing.Point(101, 361);
             this.textBox6.Name = "textBox6";
             this.textBox6.Size = new System.Drawing.Size(85, 20);
             this.textBox6.TabIndex = 6;
@@ -810,7 +832,7 @@
             // textBox5
             // 
             this.textBox5.BackColor = System.Drawing.SystemColors.Control;
-            this.textBox5.Location = new System.Drawing.Point(109, 161);
+            this.textBox5.Location = new System.Drawing.Point(101, 334);
             this.textBox5.Name = "textBox5";
             this.textBox5.Size = new System.Drawing.Size(85, 20);
             this.textBox5.TabIndex = 5;
@@ -819,7 +841,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(52, 192);
+            this.label9.Location = new System.Drawing.Point(44, 365);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(52, 13);
             this.label9.TabIndex = 4;
@@ -828,20 +850,11 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(49, 165);
+            this.label8.Location = new System.Drawing.Point(41, 338);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(55, 13);
             this.label8.TabIndex = 3;
             this.label8.Text = "Start Date";
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(12, 119);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(170, 26);
-            this.label6.TabIndex = 0;
-            this.label6.Text = "Information about the data opened\r\nwill be here";
             // 
             // CenterSplitContainer
             // 
@@ -866,6 +879,7 @@
             // BottomPanel
             // 
             this.BottomPanel.Controls.Add(this.dataGridView1);
+            this.BottomPanel.Controls.Add(this.EventControlPanel);
             this.BottomPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.BottomPanel.Location = new System.Drawing.Point(0, 0);
             this.BottomPanel.Name = "BottomPanel";
@@ -883,9 +897,9 @@
             this.Instrument2,
             this.Instrument3});
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView1.Location = new System.Drawing.Point(0, 0);
+            this.dataGridView1.Location = new System.Drawing.Point(0, 34);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(755, 218);
+            this.dataGridView1.Size = new System.Drawing.Size(755, 184);
             this.dataGridView1.TabIndex = 2;
             // 
             // EventStart
@@ -917,6 +931,75 @@
             // 
             this.Instrument3.HeaderText = "Video";
             this.Instrument3.Name = "Instrument3";
+            // 
+            // treeView1
+            // 
+            this.treeView1.CheckBoxes = true;
+            this.treeView1.Location = new System.Drawing.Point(15, 83);
+            this.treeView1.Name = "treeView1";
+            treeNode1.Checked = true;
+            treeNode1.Name = "Node2";
+            treeNode1.Text = "UCVS-1";
+            treeNode2.Name = "Node4";
+            treeNode2.Text = "UCVS-2";
+            treeNode3.Name = "Node1";
+            treeNode3.Text = "Enrichment Plant";
+            treeNode4.Name = "Node6";
+            treeNode4.Text = "UCVS-1";
+            treeNode5.Name = "Node7";
+            treeNode5.Text = "iPCAS-1";
+            treeNode6.Name = "Node5";
+            treeNode6.Text = "Reprocessing Plant";
+            treeNode7.Name = "Node0";
+            treeNode7.Text = "Proliferation National Lab";
+            this.treeView1.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
+            treeNode7});
+            this.treeView1.Size = new System.Drawing.Size(179, 238);
+            this.treeView1.TabIndex = 7;
+            // 
+            // comboBox5
+            // 
+            this.comboBox5.FormattingEnabled = true;
+            this.comboBox5.Items.AddRange(new object[] {
+            "UCVS Default View"});
+            this.comboBox5.Location = new System.Drawing.Point(15, 46);
+            this.comboBox5.Name = "comboBox5";
+            this.comboBox5.Size = new System.Drawing.Size(140, 21);
+            this.comboBox5.TabIndex = 8;
+            // 
+            // textBox7
+            // 
+            this.textBox7.Location = new System.Drawing.Point(15, 20);
+            this.textBox7.Name = "textBox7";
+            this.textBox7.Size = new System.Drawing.Size(113, 20);
+            this.textBox7.TabIndex = 9;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(134, 17);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(48, 23);
+            this.button1.TabIndex = 10;
+            this.button1.Text = "Save";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // EventControlPanel
+            // 
+            this.EventControlPanel.Controls.Add(this.button2);
+            this.EventControlPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.EventControlPanel.Location = new System.Drawing.Point(0, 0);
+            this.EventControlPanel.Name = "EventControlPanel";
+            this.EventControlPanel.Size = new System.Drawing.Size(755, 34);
+            this.EventControlPanel.TabIndex = 3;
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(5, 3);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(104, 23);
+            this.button2.TabIndex = 0;
+            this.button2.Text = "Generate Events";
+            this.button2.UseVisualStyleBackColor = true;
             // 
             // MainForm
             // 
@@ -966,6 +1049,7 @@
             this.CenterSplitContainer.ResumeLayout(false);
             this.BottomPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.EventControlPanel.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1013,7 +1097,6 @@
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.Panel RightPanel;
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.TextBox textBox6;
@@ -1050,6 +1133,12 @@
         private LiveCharts.WinForms.CartesianChart StripChart0;
         private LiveCharts.WinForms.CartesianChart StripChart3;
         private LiveCharts.WinForms.CartesianChart StripChart2;
+        private System.Windows.Forms.ComboBox comboBox5;
+        private System.Windows.Forms.TreeView treeView1;
+        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.TextBox textBox7;
+        private System.Windows.Forms.Panel EventControlPanel;
+        private System.Windows.Forms.Button button2;
     }
 }
 
