@@ -184,5 +184,11 @@ namespace Omniscient
             // 0000000000000000000000000000000000000000000000000000000000000000
 
         }
+
+        private void launchInspectrumToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Inspectrum inspectrum = new Inspectrum();
+            inspectrum.Show();
+        }
     }
 }
