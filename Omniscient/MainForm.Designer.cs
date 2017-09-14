@@ -105,6 +105,10 @@
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.button1 = new System.Windows.Forms.Button();
+            this.textBox7 = new System.Windows.Forms.TextBox();
+            this.comboBox5 = new System.Windows.Forms.ComboBox();
+            this.treeView1 = new System.Windows.Forms.TreeView();
             this.textBox6 = new System.Windows.Forms.TextBox();
             this.textBox5 = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
@@ -119,10 +123,6 @@
             this.Instrument1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Instrument2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Instrument3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.treeView1 = new System.Windows.Forms.TreeView();
-            this.comboBox5 = new System.Windows.Forms.ComboBox();
-            this.textBox7 = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
             this.EventControlPanel = new System.Windows.Forms.Panel();
             this.button2 = new System.Windows.Forms.Button();
             this.StripChartControlPanel.SuspendLayout();
@@ -820,6 +820,57 @@
             this.panel2.Size = new System.Drawing.Size(200, 667);
             this.panel2.TabIndex = 5;
             // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(134, 17);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(48, 23);
+            this.button1.TabIndex = 10;
+            this.button1.Text = "Save";
+            this.button1.UseVisualStyleBackColor = true;
+            // 
+            // textBox7
+            // 
+            this.textBox7.Location = new System.Drawing.Point(15, 20);
+            this.textBox7.Name = "textBox7";
+            this.textBox7.Size = new System.Drawing.Size(113, 20);
+            this.textBox7.TabIndex = 9;
+            // 
+            // comboBox5
+            // 
+            this.comboBox5.FormattingEnabled = true;
+            this.comboBox5.Items.AddRange(new object[] {
+            "UCVS Default View"});
+            this.comboBox5.Location = new System.Drawing.Point(15, 46);
+            this.comboBox5.Name = "comboBox5";
+            this.comboBox5.Size = new System.Drawing.Size(140, 21);
+            this.comboBox5.TabIndex = 8;
+            // 
+            // treeView1
+            // 
+            this.treeView1.CheckBoxes = true;
+            this.treeView1.Location = new System.Drawing.Point(15, 83);
+            this.treeView1.Name = "treeView1";
+            treeNode1.Checked = true;
+            treeNode1.Name = "Node2";
+            treeNode1.Text = "UCVS-1";
+            treeNode2.Name = "Node4";
+            treeNode2.Text = "UCVS-2";
+            treeNode3.Name = "Node1";
+            treeNode3.Text = "Enrichment Plant";
+            treeNode4.Name = "Node6";
+            treeNode4.Text = "UCVS-1";
+            treeNode5.Name = "Node7";
+            treeNode5.Text = "iPCAS-1";
+            treeNode6.Name = "Node5";
+            treeNode6.Text = "Reprocessing Plant";
+            treeNode7.Name = "Node0";
+            treeNode7.Text = "Proliferation National Lab";
+            this.treeView1.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
+            treeNode7});
+            this.treeView1.Size = new System.Drawing.Size(179, 238);
+            this.treeView1.TabIndex = 7;
+            // 
             // textBox6
             // 
             this.textBox6.BackColor = System.Drawing.SystemColors.Control;
@@ -931,57 +982,6 @@
             // 
             this.Instrument3.HeaderText = "Video";
             this.Instrument3.Name = "Instrument3";
-            // 
-            // treeView1
-            // 
-            this.treeView1.CheckBoxes = true;
-            this.treeView1.Location = new System.Drawing.Point(15, 83);
-            this.treeView1.Name = "treeView1";
-            treeNode1.Checked = true;
-            treeNode1.Name = "Node2";
-            treeNode1.Text = "UCVS-1";
-            treeNode2.Name = "Node4";
-            treeNode2.Text = "UCVS-2";
-            treeNode3.Name = "Node1";
-            treeNode3.Text = "Enrichment Plant";
-            treeNode4.Name = "Node6";
-            treeNode4.Text = "UCVS-1";
-            treeNode5.Name = "Node7";
-            treeNode5.Text = "iPCAS-1";
-            treeNode6.Name = "Node5";
-            treeNode6.Text = "Reprocessing Plant";
-            treeNode7.Name = "Node0";
-            treeNode7.Text = "Proliferation National Lab";
-            this.treeView1.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode7});
-            this.treeView1.Size = new System.Drawing.Size(179, 238);
-            this.treeView1.TabIndex = 7;
-            // 
-            // comboBox5
-            // 
-            this.comboBox5.FormattingEnabled = true;
-            this.comboBox5.Items.AddRange(new object[] {
-            "UCVS Default View"});
-            this.comboBox5.Location = new System.Drawing.Point(15, 46);
-            this.comboBox5.Name = "comboBox5";
-            this.comboBox5.Size = new System.Drawing.Size(140, 21);
-            this.comboBox5.TabIndex = 8;
-            // 
-            // textBox7
-            // 
-            this.textBox7.Location = new System.Drawing.Point(15, 20);
-            this.textBox7.Name = "textBox7";
-            this.textBox7.Size = new System.Drawing.Size(113, 20);
-            this.textBox7.TabIndex = 9;
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(134, 17);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(48, 23);
-            this.button1.TabIndex = 10;
-            this.button1.Text = "Save";
-            this.button1.UseVisualStyleBackColor = true;
             // 
             // EventControlPanel
             // 
