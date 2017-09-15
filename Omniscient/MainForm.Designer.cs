@@ -29,19 +29,19 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("UCVS-1");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("UCVS-2");
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Enrichment Plant", new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2});
-            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("UCVS-1");
-            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("iPCAS-1");
-            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Reprocessing Plant", new System.Windows.Forms.TreeNode[] {
-            treeNode4,
-            treeNode5});
-            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Proliferation National Lab", new System.Windows.Forms.TreeNode[] {
-            treeNode3,
-            treeNode6});
+            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("UCVS-1");
+            System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("UCVS-2");
+            System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("Enrichment Plant", new System.Windows.Forms.TreeNode[] {
+            treeNode8,
+            treeNode9});
+            System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode("UCVS-1");
+            System.Windows.Forms.TreeNode treeNode12 = new System.Windows.Forms.TreeNode("iPCAS-1");
+            System.Windows.Forms.TreeNode treeNode13 = new System.Windows.Forms.TreeNode("Reprocessing Plant", new System.Windows.Forms.TreeNode[] {
+            treeNode11,
+            treeNode12});
+            System.Windows.Forms.TreeNode treeNode14 = new System.Windows.Forms.TreeNode("Proliferation National Lab", new System.Windows.Forms.TreeNode[] {
+            treeNode10,
+            treeNode13});
             this.StripChartControlPanel = new System.Windows.Forms.Panel();
             this.StripChartsPanel = new System.Windows.Forms.Panel();
             this.StripChatsLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
@@ -670,6 +670,7 @@
             this.toolStripButton1.Name = "toolStripButton1";
             this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
             this.toolStripButton1.Text = "toolStripButton1";
+            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
             // 
             // statusStrip1
             // 
@@ -861,23 +862,23 @@
             this.treeView1.CheckBoxes = true;
             this.treeView1.Location = new System.Drawing.Point(15, 83);
             this.treeView1.Name = "treeView1";
-            treeNode1.Checked = true;
-            treeNode1.Name = "Node2";
-            treeNode1.Text = "UCVS-1";
-            treeNode2.Name = "Node4";
-            treeNode2.Text = "UCVS-2";
-            treeNode3.Name = "Node1";
-            treeNode3.Text = "Enrichment Plant";
-            treeNode4.Name = "Node6";
-            treeNode4.Text = "UCVS-1";
-            treeNode5.Name = "Node7";
-            treeNode5.Text = "iPCAS-1";
-            treeNode6.Name = "Node5";
-            treeNode6.Text = "Reprocessing Plant";
-            treeNode7.Name = "Node0";
-            treeNode7.Text = "Proliferation National Lab";
+            treeNode8.Checked = true;
+            treeNode8.Name = "Node2";
+            treeNode8.Text = "UCVS-1";
+            treeNode9.Name = "Node4";
+            treeNode9.Text = "UCVS-2";
+            treeNode10.Name = "Node1";
+            treeNode10.Text = "Enrichment Plant";
+            treeNode11.Name = "Node6";
+            treeNode11.Text = "UCVS-1";
+            treeNode12.Name = "Node7";
+            treeNode12.Text = "iPCAS-1";
+            treeNode13.Name = "Node5";
+            treeNode13.Text = "Reprocessing Plant";
+            treeNode14.Name = "Node0";
+            treeNode14.Text = "Proliferation National Lab";
             this.treeView1.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode7});
+            treeNode14});
             this.treeView1.Size = new System.Drawing.Size(179, 238);
             this.treeView1.TabIndex = 7;
             // 
@@ -1025,7 +1026,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
             this.Padding = new System.Windows.Forms.Padding(0, 0, 5, 0);
-            this.Text = "Omniscient";
+            this.Text = "Omniscient (v. Demo 3)";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.StripChartControlPanel.ResumeLayout(false);
             this.StripChartsPanel.ResumeLayout(false);

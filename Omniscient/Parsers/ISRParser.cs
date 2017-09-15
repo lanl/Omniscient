@@ -8,7 +8,7 @@ using System.Globalization;
 
 namespace Omniscient.Parsers
 {
-    struct ISRRecord
+    public struct ISRRecord
     {
         public UInt32 time;
         public UInt16 status;
@@ -31,17 +31,75 @@ namespace Omniscient.Parsers
         private ISRRecord[] records;
         private DateTime date;
 
+        private int headerSize;
+
         public ISRParser()
         {
             fileName = "";
             MICVersion = "";
             stationID = "";
             numRecords = 0;
+            headerSize = 0;
         }
 
         public DateTime ISRTimeToDateTime(UInt32 timeIn)
         {
             return new DateTime(1952, 1, 1).AddSeconds((double)timeIn);
+        }
+
+        private void ReadHeader(BinaryReader readBinary)
+        {
+            headerSize = int.Parse(new string(readBinary.ReadChars(4)));
+            readBinary.ReadBytes(5);                                        // Not used
+            MICVersion = new string(readBinary.ReadChars(5));
+            stationID = new string(readBinary.ReadChars(3));
+            int year = 2000 + int.Parse(new string(readBinary.ReadChars(3)));
+            int month = int.Parse(new string(readBinary.ReadChars(3)));
+            int day = int.Parse(new string(readBinary.ReadChars(3)));
+            date = new DateTime(year, month, day);
+        }
+
+        private void ReadDataRecords(BinaryReader readBinary)
+        {
+            readBinary.ReadBytes(headerSize - 22);                            // Spare room in header
+            long numBytes = readBinary.BaseStream.Length;
+            // Read data records
+            numRecords = (int)((numBytes - 74) / 54);
+            records = new ISRRecord[numRecords];
+            for (int r = 0; r < numRecords; ++r)
+            {
+                records[r] = new ISRRecord();
+                records[r].time = readBinary.ReadUInt32();
+                records[r].status = readBinary.ReadUInt16();
+                records[r].totals1 = readBinary.ReadDouble();
+                records[r].totals2 = readBinary.ReadDouble();
+                records[r].totals3 = readBinary.ReadDouble();
+                records[r].realsPlusAccidentals = readBinary.ReadDouble();
+                records[r].accidentals = readBinary.ReadDouble();
+                records[r].elapsedTime = readBinary.ReadDouble();
+            }
+        }
+
+        // ParseHeader is for quickly reading some header data without reading in the whole file
+        public ReturnCode ParseHeader(string newFileName)
+        {
+            fileName = newFileName;
+            FileStream readStream;
+
+            try
+            {
+                readStream = new FileStream(fileName, FileMode.Open);
+                BinaryReader readBinary = new BinaryReader(readStream);
+                ReadHeader(readBinary);
+                readStream.Close();
+                numRecords = 0;
+            }
+            catch (Exception ex)
+            {
+                return ReturnCode.COULD_NOT_OPEN_FILE;
+            }
+
+            return ReturnCode.SUCCESS;
         }
 
         public ReturnCode ParseFile(string newFileName)
@@ -51,35 +109,11 @@ namespace Omniscient.Parsers
 
             try
             {
-                // Read header
                 readStream = new FileStream(fileName, FileMode.Open);
-                long numBytes = readStream.Length;
                 BinaryReader readBinary = new BinaryReader(readStream);
-                int headerSize = int.Parse(new string(readBinary.ReadChars(4)));
-                readBinary.ReadBytes(5);                                        // Not used
-                MICVersion = new string(readBinary.ReadChars(5));
-                stationID = new string(readBinary.ReadChars(3));
-                int year = 2000 + int.Parse(new string(readBinary.ReadChars(3)));
-                int month = int.Parse(new string(readBinary.ReadChars(3)));
-                int day = int.Parse(new string(readBinary.ReadChars(3)));
-                date = new DateTime(year, month, day);
-                readBinary.ReadBytes(headerSize-22);                            // Spare room
-
-                // Read data records
-                numRecords = (int)((numBytes - 74) / 54);
-                records = new ISRRecord[numRecords];
-                for (int r = 0; r < numRecords; ++r)
-                {
-                    records[r] = new ISRRecord();
-                    records[r].time = readBinary.ReadUInt32();
-                    records[r].status = readBinary.ReadUInt16();
-                    records[r].totals1 = readBinary.ReadDouble();
-                    records[r].totals2 = readBinary.ReadDouble();
-                    records[r].totals3 = readBinary.ReadDouble();
-                    records[r].realsPlusAccidentals = readBinary.ReadDouble();
-                    records[r].accidentals = readBinary.ReadDouble();
-                    records[r].elapsedTime = readBinary.ReadDouble();
-                }
+                ReadHeader(readBinary);
+                ReadDataRecords(readBinary);
+                readStream.Close();
             }
             catch (Exception ex)
             {

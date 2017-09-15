@@ -13,8 +13,10 @@ using LiveCharts;
 using LiveCharts.Wpf;
 using LiveCharts.WinForms;
 using LiveCharts.Defaults;
+using LiveCharts.Geared;
 
 using Omniscient.Parsers;
+using Omniscient.Instruments;
 
 namespace Omniscient
 {
@@ -191,6 +193,68 @@ namespace Omniscient
         {
             Inspectrum inspectrum = new Inspectrum();
             inspectrum.Show();
+        }
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            ISRInstrument isr = new ISRInstrument("ISR-1");
+            FolderBrowserDialog folderBrowser = new FolderBrowserDialog();
+
+            if (folderBrowser.ShowDialog() == DialogResult.OK)
+            {
+                isr.SetDataFolder((folderBrowser.SelectedPath));
+            }
+            else
+            {
+                return;
+            }
+
+            isr.LoadData(new DateTime(1900, 1, 1), new DateTime(2100, 1, 1));
+
+            List<DateTime> ch0Dates = isr.GetChannel(0).GetTimeStamps();
+            List<double> ch0Vals = isr.GetChannel(0).GetValues();
+
+
+
+
+            StripChart0.DisableAnimations = true;
+            StripChart0.Hoverable = false;
+            StripChart0.DataTooltip = null;
+
+            StripChart0.AxisX.Clear();
+            StripChart0.AxisY.Clear();
+            StripChart0.AxisX.Add(new Axis
+            {
+                LabelFormatter = val => new System.DateTime((long)val).ToString("MM/dd/yyyy"),
+                MinValue = ch0Dates[0].Ticks,
+                MaxValue = ch0Dates[ch0Dates.Count - 1].Ticks
+            });
+            StripChart0.AxisY.Add(new Axis
+            {
+                MinValue = 0,
+                //MaxValue = 200
+            });
+
+            // Load up the chart values
+            GearedValues<DateTimePoint> chartVals = new GearedValues<DateTimePoint>();
+            List<DateTimePoint> list = new List<DateTimePoint>();
+            for (int i = 0; i < ch0Dates.Count; ++i) //
+            {
+                list.Add(new DateTimePoint(ch0Dates[i], ch0Vals[i]));
+            }
+            chartVals = list.AsGearedValues().WithQuality(Quality.Highest);
+
+            StripChart0.Series = new SeriesCollection()
+            {
+                new GStepLineSeries()
+                {
+                    Title = "Ch-0",
+                    PointGeometry = null,
+                    Values = chartVals
+                }
+            };
+
+
         }
     }
 }
