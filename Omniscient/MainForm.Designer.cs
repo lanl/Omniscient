@@ -29,19 +29,19 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            System.Windows.Forms.TreeNode treeNode15 = new System.Windows.Forms.TreeNode("UCVS-1");
-            System.Windows.Forms.TreeNode treeNode16 = new System.Windows.Forms.TreeNode("UCVS-2");
-            System.Windows.Forms.TreeNode treeNode17 = new System.Windows.Forms.TreeNode("Enrichment Plant", new System.Windows.Forms.TreeNode[] {
-            treeNode15,
-            treeNode16});
-            System.Windows.Forms.TreeNode treeNode18 = new System.Windows.Forms.TreeNode("UCVS-1");
-            System.Windows.Forms.TreeNode treeNode19 = new System.Windows.Forms.TreeNode("iPCAS-1");
-            System.Windows.Forms.TreeNode treeNode20 = new System.Windows.Forms.TreeNode("Reprocessing Plant", new System.Windows.Forms.TreeNode[] {
-            treeNode18,
-            treeNode19});
-            System.Windows.Forms.TreeNode treeNode21 = new System.Windows.Forms.TreeNode("Proliferation National Lab", new System.Windows.Forms.TreeNode[] {
-            treeNode17,
-            treeNode20});
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("UCVS-1");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("UCVS-2");
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Enrichment Plant", new System.Windows.Forms.TreeNode[] {
+            treeNode1,
+            treeNode2});
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("UCVS-1");
+            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("iPCAS-1");
+            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Reprocessing Plant", new System.Windows.Forms.TreeNode[] {
+            treeNode4,
+            treeNode5});
+            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Proliferation National Lab", new System.Windows.Forms.TreeNode[] {
+            treeNode3,
+            treeNode6});
             this.StripChartControlPanel = new System.Windows.Forms.Panel();
             this.StripChartsPanel = new System.Windows.Forms.Panel();
             this.StripChatsLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
@@ -53,6 +53,7 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.launchInspectrumToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.InstrumentPanel3 = new System.Windows.Forms.Panel();
             this.comboBox4 = new System.Windows.Forms.ComboBox();
@@ -125,7 +126,6 @@
             this.Instrument3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.EventControlPanel = new System.Windows.Forms.Panel();
             this.button2 = new System.Windows.Forms.Button();
-            this.launchInspectrumToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.StripChartControlPanel.SuspendLayout();
             this.StripChartsPanel.SuspendLayout();
             this.StripChatsLayoutPanel.SuspendLayout();
@@ -260,6 +260,13 @@
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
+            // 
+            // launchInspectrumToolStripMenuItem
+            // 
+            this.launchInspectrumToolStripMenuItem.Name = "launchInspectrumToolStripMenuItem";
+            this.launchInspectrumToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.launchInspectrumToolStripMenuItem.Text = "Launch Inspectrum";
+            this.launchInspectrumToolStripMenuItem.Click += new System.EventHandler(this.launchInspectrumToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
@@ -854,23 +861,23 @@
             this.treeView1.CheckBoxes = true;
             this.treeView1.Location = new System.Drawing.Point(15, 83);
             this.treeView1.Name = "treeView1";
-            treeNode15.Checked = true;
-            treeNode15.Name = "Node2";
-            treeNode15.Text = "UCVS-1";
-            treeNode16.Name = "Node4";
-            treeNode16.Text = "UCVS-2";
-            treeNode17.Name = "Node1";
-            treeNode17.Text = "Enrichment Plant";
-            treeNode18.Name = "Node6";
-            treeNode18.Text = "UCVS-1";
-            treeNode19.Name = "Node7";
-            treeNode19.Text = "iPCAS-1";
-            treeNode20.Name = "Node5";
-            treeNode20.Text = "Reprocessing Plant";
-            treeNode21.Name = "Node0";
-            treeNode21.Text = "Proliferation National Lab";
+            treeNode1.Checked = true;
+            treeNode1.Name = "Node2";
+            treeNode1.Text = "UCVS-1";
+            treeNode2.Name = "Node4";
+            treeNode2.Text = "UCVS-2";
+            treeNode3.Name = "Node1";
+            treeNode3.Text = "Enrichment Plant";
+            treeNode4.Name = "Node6";
+            treeNode4.Text = "UCVS-1";
+            treeNode5.Name = "Node7";
+            treeNode5.Text = "iPCAS-1";
+            treeNode6.Name = "Node5";
+            treeNode6.Text = "Reprocessing Plant";
+            treeNode7.Name = "Node0";
+            treeNode7.Text = "Proliferation National Lab";
             this.treeView1.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode21});
+            treeNode7});
             this.treeView1.Size = new System.Drawing.Size(179, 238);
             this.treeView1.TabIndex = 7;
             // 
@@ -1003,13 +1010,6 @@
             this.button2.TabIndex = 0;
             this.button2.Text = "Generate Events";
             this.button2.UseVisualStyleBackColor = true;
-            // 
-            // launchInspectrumToolStripMenuItem
-            // 
-            this.launchInspectrumToolStripMenuItem.Name = "launchInspectrumToolStripMenuItem";
-            this.launchInspectrumToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
-            this.launchInspectrumToolStripMenuItem.Text = "Launch Inspectrum";
-            this.launchInspectrumToolStripMenuItem.Click += new System.EventHandler(this.launchInspectrumToolStripMenuItem_Click);
             // 
             // MainForm
             // 

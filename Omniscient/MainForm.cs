@@ -14,6 +14,8 @@ using LiveCharts.Wpf;
 using LiveCharts.WinForms;
 using LiveCharts.Defaults;
 
+using Omniscient.Parsers;
+
 namespace Omniscient
 {
     public partial class MainForm : Form

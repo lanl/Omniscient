@@ -75,6 +75,7 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Parsers\CHNParser.cs" />
+    <Compile Include="Parsers\ISRParser.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Inspectrum.resx">
