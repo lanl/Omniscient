@@ -8,6 +8,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
+using LiveCharts;
+using LiveCharts.Wpf;
+using LiveCharts.WinForms;
+using LiveCharts.Defaults;
+using LiveCharts.Geared;
+
 using Omniscient.Parsers;
 
 namespace Omniscient
@@ -16,6 +22,7 @@ namespace Omniscient
     {
 
         CHNParser chnParser;
+        GearedValues<ObservablePoint> chartVals;
 
         public Inspectrum()
         {
@@ -26,6 +33,7 @@ namespace Omniscient
         {
             if (chnParser.ParseFile(fileName) == CHNParser.ReturnCode.SUCCESS)
             {
+                // Populate text fields
                 FileNameTextBox.Text = fileName;
                 DateTextBox.Text = chnParser.GetStartDateTime().ToString("dd-MMM-yyyy");
                 TimeTextBox.Text = chnParser.GetStartDateTime().ToString("HH:mm:ss");
@@ -36,6 +44,27 @@ namespace Omniscient
                 double deadTimePerc = 100 * (chnParser.GetRealTime() - chnParser.GetLiveTime()) / chnParser.GetRealTime();
                 DeadTimeStripTextBox.Text = string.Format("{0:F2} %", deadTimePerc);
 
+                // Load up the chart values
+                chartVals = new GearedValues<ObservablePoint>();
+                List<ObservablePoint> list = new List<ObservablePoint>();
+                for (int i=0; i< chnParser.GetNumChannels(); ++i) //
+                {
+                    list.Add(new ObservablePoint(chnParser.GetCalibrationZero() + i * chnParser.GetCalibrationSlope(), chnParser.GetCounts()[i]));
+                }
+                chartVals = list.AsGearedValues().WithQuality(Quality.Highest);
+
+                SpecChart.Series = new SeriesCollection()
+                {
+                    new GStepLineSeries()
+                    {
+                        Title = "Spectrum",
+                        PointGeometry = null,
+                        Values = chartVals
+                    }
+                };
+
+                SpecChart.AxisY[0].MinValue = 0;
+                
             }
             else
             {
@@ -65,6 +94,14 @@ namespace Omniscient
         private void Inspectrum_Load(object sender, EventArgs e)
         {
             chnParser = new CHNParser();
+
+            SpecChart.DisableAnimations = true;
+            SpecChart.Hoverable = false;
+            SpecChart.DataTooltip = null;
+
+            SeriesCollection seriesCollection = new SeriesCollection();
+            SpecChart.Series = seriesCollection;
+            SpecChart.Zoom = ZoomingOptions.X;
         }
     }
 }
