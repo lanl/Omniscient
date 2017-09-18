@@ -45,7 +45,7 @@ namespace Omniscient.Instruments
             {
                 if (file.Substring(file.Length - 4).ToLower() == ".isr")
                 {
-                    if (isrParser.ParseHeader(file) == ISRParser.ReturnCode.SUCCESS)
+                    if (isrParser.ParseHeader(file) == ReturnCode.SUCCESS)
                     {
                         isrFileList.Add(file);
                         isrDateList.Add(isrParser.GetDate());
@@ -65,7 +65,7 @@ namespace Omniscient.Instruments
 
         public override void LoadData(DateTime startDate, DateTime endDate)
         {
-            ISRParser.ReturnCode returnCode = ISRParser.ReturnCode.SUCCESS;
+            ReturnCode returnCode = ReturnCode.SUCCESS;
 
             int startIndex = Array.FindIndex(isrDates.ToArray(), x => x >= startDate);
             int endIndex = Array.FindIndex(isrDates.ToArray(), x => x >= endDate);

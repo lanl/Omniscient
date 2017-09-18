@@ -10,9 +10,6 @@ namespace Omniscient.Parsers
 {
     class CHNParser
     {
-        public enum ReturnCode { SUCCESS, FAIL, COULD_NOT_OPEN_FILE }
-
-
         private string fileName;
         private Int16 fileTypeCheck;
         private Int16 MCANumber;

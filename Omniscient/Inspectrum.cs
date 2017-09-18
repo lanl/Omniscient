@@ -31,7 +31,7 @@ namespace Omniscient
 
         private void LoadCHNFile(string fileName)
         {
-            if (chnParser.ParseFile(fileName) == CHNParser.ReturnCode.SUCCESS)
+            if (chnParser.ParseFile(fileName) == ReturnCode.SUCCESS)
             {
                 // Populate text fields
                 FileNameTextBox.Text = fileName;

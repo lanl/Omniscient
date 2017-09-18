@@ -22,8 +22,6 @@ namespace Omniscient.Parsers
 
     class ISRParser
     {
-        public enum ReturnCode { SUCCESS, FAIL, COULD_NOT_OPEN_FILE }
-
         private string fileName;
         string MICVersion;
         string stationID;

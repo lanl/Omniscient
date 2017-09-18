@@ -24,8 +24,6 @@ namespace Omniscient.Parsers
 
     class BIDParser
     {
-        public enum ReturnCode { SUCCESS, FAIL, COULD_NOT_OPEN_FILE }
-
         private string fileName;
         string MICVersion;
         string stationID;
