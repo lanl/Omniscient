@@ -8,19 +8,21 @@ using System.Globalization;
 
 namespace Omniscient.Parsers
 {
-    public struct ISRRecord
+    public struct BIDRecord
     {
         public UInt32 time;
         public UInt16 status;
-        public double totals1;
-        public double totals2;
-        public double totals3;
-        public double realsPlusAccidentals;
-        public double accidentals;
-        public double elapsedTime;
+        public double chlACountRate;
+        public double chBCountRate;
+        public double chCCountRate;
+        public double gamInGamCh1;
+        public double gamCh1Sigma;
+        public double gamInGamCh2;
+        public double gamCh2Sigma;
+        public UInt16 elapsedTime;
     }
 
-    class ISRParser
+    class BIDParser
     {
         public enum ReturnCode { SUCCESS, FAIL, COULD_NOT_OPEN_FILE }
 
@@ -28,23 +30,18 @@ namespace Omniscient.Parsers
         string MICVersion;
         string stationID;
         private int numRecords;
-        private ISRRecord[] records;
+        private BIDRecord[] records;
         private DateTime date;
 
         private int headerSize;
 
-        public ISRParser()
+        public BIDParser()
         {
             fileName = "";
             MICVersion = "";
             stationID = "";
             numRecords = 0;
             headerSize = 0;
-        }
-
-        public DateTime ISRTimeToDateTime(UInt32 timeIn)
-        {
-            return new DateTime(1952, 1, 1).AddSeconds((double)timeIn);
         }
 
         private void ReadHeader(BinaryReader readBinary)
@@ -64,19 +61,21 @@ namespace Omniscient.Parsers
             readBinary.ReadBytes(headerSize - 22);                            // Spare room in header
             long numBytes = readBinary.BaseStream.Length;
             // Read data records
-            numRecords = (int)((numBytes - 73) / 54);
-            records = new ISRRecord[numRecords];
+            numRecords = (int)((numBytes - 73) / 36);
+            records = new BIDRecord[numRecords];
             for (int r = 0; r < numRecords; ++r)
             {
-                records[r] = new ISRRecord();
+                records[r] = new BIDRecord();
                 records[r].time = readBinary.ReadUInt32();
                 records[r].status = readBinary.ReadUInt16();
-                records[r].totals1 = readBinary.ReadDouble();
-                records[r].totals2 = readBinary.ReadDouble();
-                records[r].totals3 = readBinary.ReadDouble();
-                records[r].realsPlusAccidentals = readBinary.ReadDouble();
-                records[r].accidentals = readBinary.ReadDouble();
-                records[r].elapsedTime = readBinary.ReadDouble();
+                records[r].chlACountRate = readBinary.ReadDouble();
+                records[r].chBCountRate = readBinary.ReadDouble();
+                records[r].chCCountRate = readBinary.ReadDouble();
+                records[r].gamInGamCh1 = readBinary.ReadDouble();
+                records[r].gamCh1Sigma = readBinary.ReadDouble();
+                records[r].gamInGamCh2 = readBinary.ReadDouble();
+                records[r].gamCh2Sigma = readBinary.ReadDouble();
+                records[r].elapsedTime = readBinary.ReadUInt16();
             }
         }
 
@@ -128,10 +127,10 @@ namespace Omniscient.Parsers
         public DateTime GetDate() { return date; }
         public int GetNumRecords() { return numRecords; }
 
-        public ISRRecord GetRecord(int index)
+        public BIDRecord GetRecord(int index)
         {
             if (index < numRecords) return records[index];
-            else return new ISRRecord();                    // This should probably be handled better...
+            else return new BIDRecord();                    // This should probably be handled better...
         }
     }
 }

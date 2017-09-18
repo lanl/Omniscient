@@ -29,19 +29,19 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("UCVS-1");
-            System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("UCVS-2");
-            System.Windows.Forms.TreeNode treeNode10 = new System.Windows.Forms.TreeNode("Enrichment Plant", new System.Windows.Forms.TreeNode[] {
-            treeNode8,
-            treeNode9});
-            System.Windows.Forms.TreeNode treeNode11 = new System.Windows.Forms.TreeNode("UCVS-1");
-            System.Windows.Forms.TreeNode treeNode12 = new System.Windows.Forms.TreeNode("iPCAS-1");
-            System.Windows.Forms.TreeNode treeNode13 = new System.Windows.Forms.TreeNode("Reprocessing Plant", new System.Windows.Forms.TreeNode[] {
-            treeNode11,
-            treeNode12});
-            System.Windows.Forms.TreeNode treeNode14 = new System.Windows.Forms.TreeNode("Proliferation National Lab", new System.Windows.Forms.TreeNode[] {
-            treeNode10,
-            treeNode13});
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("UCVS-1");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("UCVS-2");
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Enrichment Plant", new System.Windows.Forms.TreeNode[] {
+            treeNode1,
+            treeNode2});
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("UCVS-1");
+            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("iPCAS-1");
+            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Reprocessing Plant", new System.Windows.Forms.TreeNode[] {
+            treeNode4,
+            treeNode5});
+            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Proliferation National Lab", new System.Windows.Forms.TreeNode[] {
+            treeNode3,
+            treeNode6});
             this.StripChartControlPanel = new System.Windows.Forms.Panel();
             this.StripChartsPanel = new System.Windows.Forms.Panel();
             this.StripChatsLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
@@ -862,23 +862,23 @@
             this.treeView1.CheckBoxes = true;
             this.treeView1.Location = new System.Drawing.Point(15, 83);
             this.treeView1.Name = "treeView1";
-            treeNode8.Checked = true;
-            treeNode8.Name = "Node2";
-            treeNode8.Text = "UCVS-1";
-            treeNode9.Name = "Node4";
-            treeNode9.Text = "UCVS-2";
-            treeNode10.Name = "Node1";
-            treeNode10.Text = "Enrichment Plant";
-            treeNode11.Name = "Node6";
-            treeNode11.Text = "UCVS-1";
-            treeNode12.Name = "Node7";
-            treeNode12.Text = "iPCAS-1";
-            treeNode13.Name = "Node5";
-            treeNode13.Text = "Reprocessing Plant";
-            treeNode14.Name = "Node0";
-            treeNode14.Text = "Proliferation National Lab";
+            treeNode1.Checked = true;
+            treeNode1.Name = "Node2";
+            treeNode1.Text = "UCVS-1";
+            treeNode2.Name = "Node4";
+            treeNode2.Text = "UCVS-2";
+            treeNode3.Name = "Node1";
+            treeNode3.Text = "Enrichment Plant";
+            treeNode4.Name = "Node6";
+            treeNode4.Text = "UCVS-1";
+            treeNode5.Name = "Node7";
+            treeNode5.Text = "iPCAS-1";
+            treeNode6.Name = "Node5";
+            treeNode6.Text = "Reprocessing Plant";
+            treeNode7.Name = "Node0";
+            treeNode7.Text = "Proliferation National Lab";
             this.treeView1.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode14});
+            treeNode7});
             this.treeView1.Size = new System.Drawing.Size(179, 238);
             this.treeView1.TabIndex = 7;
             // 
@@ -929,6 +929,7 @@
             // CenterSplitContainer.Panel1
             // 
             this.CenterSplitContainer.Panel1.Controls.Add(this.StripChartControlPanel);
+            this.CenterSplitContainer.Panel1.Paint += new System.Windows.Forms.PaintEventHandler(this.CenterSplitContainer_Panel1_Paint);
             // 
             // CenterSplitContainer.Panel2
             // 
