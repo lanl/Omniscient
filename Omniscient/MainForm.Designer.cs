@@ -58,6 +58,9 @@ namespace Omniscient
             this.RightPanel = new System.Windows.Forms.Panel();
             this.ChannelsPanel = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.RangeComboBox = new System.Windows.Forms.ComboBox();
+            this.RangeTextBox = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.EndTimePicker = new System.Windows.Forms.DateTimePicker();
             this.StartTimePicker = new System.Windows.Forms.DateTimePicker();
             this.StartDatePicker = new System.Windows.Forms.DateTimePicker();
@@ -84,9 +87,6 @@ namespace Omniscient
             this.Instrument3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.EventControlPanel = new System.Windows.Forms.Panel();
             this.button2 = new System.Windows.Forms.Button();
-            this.label6 = new System.Windows.Forms.Label();
-            this.RangeTextBox = new System.Windows.Forms.TextBox();
-            this.RangeComboBox = new System.Windows.Forms.ComboBox();
             this.SitesTreeView = new Omniscient.Controls.ResponsiveTreeView();
             this.StripChartControlPanel.SuspendLayout();
             this.StripChartsPanel.SuspendLayout();
@@ -374,6 +374,41 @@ namespace Omniscient
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "View";
             // 
+            // RangeComboBox
+            // 
+            this.RangeComboBox.FormattingEnabled = true;
+            this.RangeComboBox.Items.AddRange(new object[] {
+            "Minutes",
+            "Hours",
+            "Days",
+            "Months",
+            "Years"});
+            this.RangeComboBox.Location = new System.Drawing.Point(172, 57);
+            this.RangeComboBox.Name = "RangeComboBox";
+            this.RangeComboBox.Size = new System.Drawing.Size(103, 21);
+            this.RangeComboBox.TabIndex = 14;
+            this.RangeComboBox.SelectedIndexChanged += new System.EventHandler(this.RangeComboBox_SelectedIndexChanged);
+            // 
+            // RangeTextBox
+            // 
+            this.RangeTextBox.Location = new System.Drawing.Point(78, 58);
+            this.RangeTextBox.Name = "RangeTextBox";
+            this.RangeTextBox.Size = new System.Drawing.Size(88, 20);
+            this.RangeTextBox.TabIndex = 13;
+            this.RangeTextBox.Text = "1";
+            this.RangeTextBox.TextChanged += new System.EventHandler(this.RangeTextBox_TextChanged);
+            this.RangeTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.RangeTextBox_KeyDown);
+            this.RangeTextBox.Leave += new System.EventHandler(this.RangeTextBox_Leave);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(30, 61);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(42, 13);
+            this.label6.TabIndex = 12;
+            this.label6.Text = "Range:";
+            // 
             // EndTimePicker
             // 
             this.EndTimePicker.CustomFormat = "MMM dd, yyyy\'";
@@ -396,6 +431,8 @@ namespace Omniscient
             this.StartTimePicker.Size = new System.Drawing.Size(88, 20);
             this.StartTimePicker.TabIndex = 10;
             this.StartTimePicker.ValueChanged += new System.EventHandler(this.StartTimePicker_ValueChanged);
+            this.StartTimePicker.KeyDown += new System.Windows.Forms.KeyEventHandler(this.RangeTextBox_KeyDown);
+            this.StartTimePicker.Leave += new System.EventHandler(this.StartDatePicker_Leave);
             // 
             // StartDatePicker
             // 
@@ -407,6 +444,8 @@ namespace Omniscient
             this.StartDatePicker.TabIndex = 9;
             this.StartDatePicker.Value = new System.DateTime(2016, 11, 1, 11, 15, 0, 0);
             this.StartDatePicker.ValueChanged += new System.EventHandler(this.StartDatePicker_ValueChanged);
+            this.StartDatePicker.KeyDown += new System.Windows.Forms.KeyEventHandler(this.RangeTextBox_KeyDown);
+            this.StartDatePicker.Leave += new System.EventHandler(this.StartDatePicker_Leave);
             // 
             // EndDatePicker
             // 
@@ -610,39 +649,6 @@ namespace Omniscient
             this.button2.TabIndex = 0;
             this.button2.Text = "Generate Events";
             this.button2.UseVisualStyleBackColor = true;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(30, 61);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(42, 13);
-            this.label6.TabIndex = 12;
-            this.label6.Text = "Range:";
-            // 
-            // RangeTextBox
-            // 
-            this.RangeTextBox.Location = new System.Drawing.Point(78, 58);
-            this.RangeTextBox.Name = "RangeTextBox";
-            this.RangeTextBox.Size = new System.Drawing.Size(88, 20);
-            this.RangeTextBox.TabIndex = 13;
-            this.RangeTextBox.Text = "1";
-            this.RangeTextBox.TextChanged += new System.EventHandler(this.RangeTextBox_TextChanged);
-            // 
-            // RangeComboBox
-            // 
-            this.RangeComboBox.FormattingEnabled = true;
-            this.RangeComboBox.Items.AddRange(new object[] {
-            "Minutes",
-            "Hours",
-            "Days",
-            "Months",
-            "Years"});
-            this.RangeComboBox.Location = new System.Drawing.Point(172, 57);
-            this.RangeComboBox.Name = "RangeComboBox";
-            this.RangeComboBox.Size = new System.Drawing.Size(103, 21);
-            this.RangeComboBox.TabIndex = 14;
-            this.RangeComboBox.SelectedIndexChanged += new System.EventHandler(this.RangeComboBox_SelectedIndexChanged);
             // 
             // SitesTreeView
             // 
