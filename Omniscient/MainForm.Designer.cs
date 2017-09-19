@@ -58,7 +58,6 @@ namespace Omniscient
             this.RightPanel = new System.Windows.Forms.Panel();
             this.ChannelsPanel = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.label12 = new System.Windows.Forms.Label();
             this.EndTimePicker = new System.Windows.Forms.DateTimePicker();
             this.StartTimePicker = new System.Windows.Forms.DateTimePicker();
             this.StartDatePicker = new System.Windows.Forms.DateTimePicker();
@@ -66,7 +65,6 @@ namespace Omniscient
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.SitesTreeView = new Omniscient.Controls.ResponsiveTreeView();
             this.button1 = new System.Windows.Forms.Button();
             this.textBox7 = new System.Windows.Forms.TextBox();
             this.comboBox5 = new System.Windows.Forms.ComboBox();
@@ -86,6 +84,10 @@ namespace Omniscient
             this.Instrument3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.EventControlPanel = new System.Windows.Forms.Panel();
             this.button2 = new System.Windows.Forms.Button();
+            this.label6 = new System.Windows.Forms.Label();
+            this.RangeTextBox = new System.Windows.Forms.TextBox();
+            this.RangeComboBox = new System.Windows.Forms.ComboBox();
+            this.SitesTreeView = new Omniscient.Controls.ResponsiveTreeView();
             this.StripChartControlPanel.SuspendLayout();
             this.StripChartsPanel.SuspendLayout();
             this.StripChatsLayoutPanel.SuspendLayout();
@@ -355,7 +357,9 @@ namespace Omniscient
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.label12);
+            this.groupBox1.Controls.Add(this.RangeComboBox);
+            this.groupBox1.Controls.Add(this.RangeTextBox);
+            this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.EndTimePicker);
             this.groupBox1.Controls.Add(this.StartTimePicker);
             this.groupBox1.Controls.Add(this.StartDatePicker);
@@ -370,20 +374,12 @@ namespace Omniscient
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "View";
             // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(63, 59);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(164, 13);
-            this.label12.TabIndex = 12;
-            this.label12.Text = "A subset of data is selected here.";
-            // 
             // EndTimePicker
             // 
             this.EndTimePicker.CustomFormat = "MMM dd, yyyy\'";
+            this.EndTimePicker.Enabled = false;
             this.EndTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.EndTimePicker.Location = new System.Drawing.Point(83, 198);
+            this.EndTimePicker.Location = new System.Drawing.Point(78, 94);
             this.EndTimePicker.Name = "EndTimePicker";
             this.EndTimePicker.ShowUpDown = true;
             this.EndTimePicker.Size = new System.Drawing.Size(88, 20);
@@ -394,7 +390,7 @@ namespace Omniscient
             // 
             this.StartTimePicker.CustomFormat = "MMM dd, yyyy\'";
             this.StartTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.StartTimePicker.Location = new System.Drawing.Point(83, 172);
+            this.StartTimePicker.Location = new System.Drawing.Point(78, 28);
             this.StartTimePicker.Name = "StartTimePicker";
             this.StartTimePicker.ShowUpDown = true;
             this.StartTimePicker.Size = new System.Drawing.Size(88, 20);
@@ -405,7 +401,7 @@ namespace Omniscient
             // 
             this.StartDatePicker.CustomFormat = "MMM dd, yyyy\'";
             this.StartDatePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.StartDatePicker.Location = new System.Drawing.Point(177, 171);
+            this.StartDatePicker.Location = new System.Drawing.Point(172, 27);
             this.StartDatePicker.Name = "StartDatePicker";
             this.StartDatePicker.Size = new System.Drawing.Size(103, 20);
             this.StartDatePicker.TabIndex = 9;
@@ -415,8 +411,9 @@ namespace Omniscient
             // EndDatePicker
             // 
             this.EndDatePicker.CustomFormat = "MMM dd, yyyy\'";
+            this.EndDatePicker.Enabled = false;
             this.EndDatePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.EndDatePicker.Location = new System.Drawing.Point(177, 197);
+            this.EndDatePicker.Location = new System.Drawing.Point(172, 93);
             this.EndDatePicker.Name = "EndDatePicker";
             this.EndDatePicker.Size = new System.Drawing.Size(103, 20);
             this.EndDatePicker.TabIndex = 8;
@@ -426,7 +423,7 @@ namespace Omniscient
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(48, 203);
+            this.label10.Location = new System.Drawing.Point(43, 99);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(26, 13);
             this.label10.TabIndex = 6;
@@ -435,7 +432,7 @@ namespace Omniscient
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(48, 177);
+            this.label11.Location = new System.Drawing.Point(43, 33);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(29, 13);
             this.label11.TabIndex = 5;
@@ -457,15 +454,6 @@ namespace Omniscient
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(200, 667);
             this.panel2.TabIndex = 5;
-            // 
-            // SitesTreeView
-            // 
-            this.SitesTreeView.CheckBoxes = true;
-            this.SitesTreeView.Location = new System.Drawing.Point(15, 73);
-            this.SitesTreeView.Name = "SitesTreeView";
-            this.SitesTreeView.Size = new System.Drawing.Size(167, 215);
-            this.SitesTreeView.TabIndex = 11;
-            this.SitesTreeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.SitesTreeView_AfterCheck);
             // 
             // button1
             // 
@@ -623,6 +611,48 @@ namespace Omniscient
             this.button2.Text = "Generate Events";
             this.button2.UseVisualStyleBackColor = true;
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(30, 61);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(42, 13);
+            this.label6.TabIndex = 12;
+            this.label6.Text = "Range:";
+            // 
+            // RangeTextBox
+            // 
+            this.RangeTextBox.Location = new System.Drawing.Point(78, 58);
+            this.RangeTextBox.Name = "RangeTextBox";
+            this.RangeTextBox.Size = new System.Drawing.Size(88, 20);
+            this.RangeTextBox.TabIndex = 13;
+            this.RangeTextBox.Text = "1";
+            this.RangeTextBox.TextChanged += new System.EventHandler(this.RangeTextBox_TextChanged);
+            // 
+            // RangeComboBox
+            // 
+            this.RangeComboBox.FormattingEnabled = true;
+            this.RangeComboBox.Items.AddRange(new object[] {
+            "Minutes",
+            "Hours",
+            "Days",
+            "Months",
+            "Years"});
+            this.RangeComboBox.Location = new System.Drawing.Point(172, 57);
+            this.RangeComboBox.Name = "RangeComboBox";
+            this.RangeComboBox.Size = new System.Drawing.Size(103, 21);
+            this.RangeComboBox.TabIndex = 14;
+            this.RangeComboBox.SelectedIndexChanged += new System.EventHandler(this.RangeComboBox_SelectedIndexChanged);
+            // 
+            // SitesTreeView
+            // 
+            this.SitesTreeView.CheckBoxes = true;
+            this.SitesTreeView.Location = new System.Drawing.Point(15, 73);
+            this.SitesTreeView.Name = "SitesTreeView";
+            this.SitesTreeView.Size = new System.Drawing.Size(167, 215);
+            this.SitesTreeView.TabIndex = 11;
+            this.SitesTreeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.SitesTreeView_AfterCheck);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -700,7 +730,6 @@ namespace Omniscient
         private System.Windows.Forms.DateTimePicker StartDatePicker;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.ToolStripMenuItem toolsToolStripMenuItem;
-        private System.Windows.Forms.Label label12;
         private System.Windows.Forms.SplitContainer CenterSplitContainer;
         private System.Windows.Forms.Panel BottomPanel;
         private System.Windows.Forms.DataGridView dataGridView1;
@@ -724,6 +753,9 @@ namespace Omniscient
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.ToolStripMenuItem launchInspectrumToolStripMenuItem;
         private Controls.ResponsiveTreeView SitesTreeView;
+        private ComboBox RangeComboBox;
+        private TextBox RangeTextBox;
+        private Label label6;
     }
 }
 

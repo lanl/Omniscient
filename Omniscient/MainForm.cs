@@ -38,6 +38,8 @@ namespace Omniscient
             siteMan = new SiteManager();
             siteMan.LoadFromXML("SiteManager.xml");
             UpdateSiteTree();
+            RangeTextBox.Text = "7";
+            RangeComboBox.Text = "Days";
 
         }
 
@@ -386,21 +388,79 @@ namespace Omniscient
 
         private void StartDatePicker_ValueChanged(object sender, EventArgs e)
         {
+            UpdateEndPickers();
             UpdatesCharts();
         }
 
         private void EndDatePicker_ValueChanged(object sender, EventArgs e)
         {
-            UpdatesCharts();
+            //UpdatesCharts();
         }
 
         private void StartTimePicker_ValueChanged(object sender, EventArgs e)
         {
+            UpdateEndPickers();
             UpdatesCharts();
         }
 
         private void EndTimePicker_ValueChanged(object sender, EventArgs e)
         {
+            //UpdatesCharts();
+        }
+
+        private void UpdateEndPickers()
+        {
+            int range = int.Parse(RangeTextBox.Text);
+            DateTime newEnd;
+            StartDatePicker.Value = StartDatePicker.Value.Date;
+            switch (RangeComboBox.Text)
+            {
+                case "Years":
+                    newEnd = StartDatePicker.Value.AddYears(range);
+                    break;
+                case "Months":
+                    newEnd = StartDatePicker.Value.AddMonths(range);
+                    break;
+                case "Days":
+                    newEnd = StartDatePicker.Value.AddDays(range);
+                    break;
+                case "Hours":
+                    newEnd = StartDatePicker.Value.AddHours(range);
+                    break;
+                case "Minutes":
+                    newEnd = StartDatePicker.Value.AddMinutes(range);
+                    break;
+                default:
+                    newEnd = StartDatePicker.Value.AddMinutes(range);
+                    break;
+            }
+            newEnd = newEnd.AddTicks(StartTimePicker.Value.TimeOfDay.Ticks);
+            EndDatePicker.Value = newEnd.Date;
+            EndTimePicker.Value = newEnd;
+
+        }
+
+        private void RangeTextBox_TextChanged(object sender, EventArgs e)
+        {
+            if (RangeTextBox.Text == "") return;
+
+            int range;
+            try
+            {
+                range = int.Parse(RangeTextBox.Text);
+                UpdateEndPickers();
+            }
+            catch
+            {
+                RangeTextBox.Text = "1";
+                UpdateEndPickers();
+            }
+            UpdatesCharts();
+        }
+
+        private void RangeComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdateEndPickers();
             UpdatesCharts();
         }
     }
