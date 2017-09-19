@@ -8,7 +8,7 @@ using System.Globalization;
 
 namespace Omniscient.Parsers
 {
-    class CHNParser
+    public class CHNParser
     {
         private string fileName;
         private Int16 fileTypeCheck;

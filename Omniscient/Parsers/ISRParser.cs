@@ -20,7 +20,7 @@ namespace Omniscient.Parsers
         public double elapsedTime;
     }
 
-    class ISRParser
+    public class ISRParser
     {
         private string fileName;
         string MICVersion;

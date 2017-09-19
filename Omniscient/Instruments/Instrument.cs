@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Omniscient.Instruments
 {
-    abstract class Instrument
+    public abstract class Instrument
     {
         protected string name;
         protected string instrumentType;
@@ -24,6 +24,7 @@ namespace Omniscient.Instruments
 
         public abstract void ScanDataFolder();
         public abstract void LoadData(DateTime startDate, DateTime endDate);
+        public abstract void ClearData();
 
         public void SetDataFolder(string newDataFolder)
         {
@@ -35,6 +36,7 @@ namespace Omniscient.Instruments
         public string GetInstrumentType() { return instrumentType; }
         public string GetDataFolder() { return dataFolder; }
         public int GetNumChannels() { return numChannels; }
+        public Channel[] GetChannels() { return channels; }
         public Channel GetChannel(int chanNum)
         {
             return channels[chanNum];

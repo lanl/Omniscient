@@ -22,171 +22,50 @@ namespace Omniscient
 {
     public partial class MainForm : Form
     {
+        SiteManager siteMan;
+        List<ChannelPanel> chPanels;
+        List<Instrument> activeInstruments;
+
         public MainForm()
         {
+            activeInstruments = new List<Instrument>();
             InitializeComponent();
         }
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void MainForm_Load(object sender, EventArgs e)
         {
-            Random rand = new Random();
-            // 0000000000000000000000000000000000000000000000000000000000000000
-            // Chart 0
-            StripChart0.AxisX.Add(new Axis
-            {
-                LabelFormatter = x => new DateTime((long)x).ToString("MMM dd, yyyy"),
-                FontSize = 10,
-                MinValue = new System.DateTime(2012, 9, 1).Ticks,
-                MaxValue = new System.DateTime(2012, 9, 10).Ticks
-            });
-            StripChart0.AxisY.Add(new Axis
-            {
-                MinValue = 0,
-                MaxValue = 1
-            });
+            chPanels = new List<ChannelPanel>();
+            siteMan = new SiteManager();
+            siteMan.LoadFromXML("SiteManager.xml");
+            UpdateSiteTree();
 
-            StepLineSeries isrSeries = new StepLineSeries
+        }
+
+        private void UpdateSiteTree()
+        {
+            SitesTreeView.Nodes.Clear();
+            foreach(Site site in siteMan.GetSites())
             {
-                Title = "ISR",
-                //PointGeometry = null,
-                Values = new ChartValues<DateTimePoint>
+                TreeNode siteNode = new TreeNode(site.GetName());
+                foreach(Facility fac in site.GetFacilities())
                 {
-                    new DateTimePoint(new System.DateTime(2012, 9, 1), rand.NextDouble()),
-                    new DateTimePoint(new System.DateTime(2012, 9, 2), rand.NextDouble()),
-                    new DateTimePoint(new System.DateTime(2012, 9, 3), rand.NextDouble()),
-                    new DateTimePoint(new System.DateTime(2012, 9, 4), rand.NextDouble()),
-                    new DateTimePoint(new System.DateTime(2012, 9, 5), rand.NextDouble()),
-                    new DateTimePoint(new System.DateTime(2012, 9, 6), rand.NextDouble()),
-                    new DateTimePoint(new System.DateTime(2012, 9, 7), rand.NextDouble()),
-                    new DateTimePoint(new System.DateTime(2012, 9, 8), rand.NextDouble()),
-                    new DateTimePoint(new System.DateTime(2012, 9, 9), rand.NextDouble()),
-                    new DateTimePoint(new System.DateTime(2012, 9, 10), rand.NextDouble())
+                    TreeNode facNode = new TreeNode(fac.GetName());
+                    foreach (DetectionSystem sys in fac.GetSystems())
+                    {
+                        TreeNode sysNode = new TreeNode(sys.GetName());
+                        foreach (Instrument inst in sys.GetInstruments())
+                        {
+                            TreeNode instNode = new TreeNode(inst.GetName());
+                            sysNode.Nodes.Add(instNode);
+                        }
+                        facNode.Nodes.Add(sysNode);
+                    }
+                    facNode.Expand();
+                    siteNode.Nodes.Add(facNode);
                 }
-            };
-            
-
-            SeriesCollection stripChart0Series = new SeriesCollection();
-            stripChart0Series.Add(isrSeries);
-            StripChart0.Series = stripChart0Series;
-            StripChart0.LegendLocation = LegendLocation.Right;
-            // 0000000000000000000000000000000000000000000000000000000000000000
-            // 0000000000000000000000000000000000000000000000000000000000000000
-            // Chart 1
-            StripChart1.AxisX.Add(new Axis
-            {
-                LabelFormatter = x => new DateTime((long)x).ToString("MMM dd, yyyy"),
-                FontSize = 10,
-                MinValue = new System.DateTime(2012, 9, 1).Ticks,
-                MaxValue = new System.DateTime(2012, 9, 10).Ticks
-            });
-            StripChart1.AxisY.Add(new Axis
-            {
-                MinValue = 0,
-                MaxValue = 1
-            });
-
-            StepLineSeries udcmSeries = new StepLineSeries
-            {
-                Title = "UDCM",
-                //PointGeometry = null,
-                Values = new ChartValues<DateTimePoint>
-                {
-                    new DateTimePoint(new System.DateTime(2012, 9, 1), rand.NextDouble()),
-                    new DateTimePoint(new System.DateTime(2012, 9, 2), rand.NextDouble()),
-                    new DateTimePoint(new System.DateTime(2012, 9, 3), rand.NextDouble()),
-                    new DateTimePoint(new System.DateTime(2012, 9, 4), rand.NextDouble()),
-                    new DateTimePoint(new System.DateTime(2012, 9, 5), rand.NextDouble()),
-                    new DateTimePoint(new System.DateTime(2012, 9, 6), rand.NextDouble()),
-                    new DateTimePoint(new System.DateTime(2012, 9, 7), rand.NextDouble()),
-                    new DateTimePoint(new System.DateTime(2012, 9, 8), rand.NextDouble()),
-                    new DateTimePoint(new System.DateTime(2012, 9, 9), rand.NextDouble()),
-                    new DateTimePoint(new System.DateTime(2012, 9, 10), rand.NextDouble())
-                }
-            };
-
-
-            SeriesCollection stripChart1Series = new SeriesCollection();
-            stripChart1Series.Add(udcmSeries);
-            StripChart1.Series = stripChart1Series;
-            StripChart1.LegendLocation = LegendLocation.Right;
-            // 0000000000000000000000000000000000000000000000000000000000000000
-            // 0000000000000000000000000000000000000000000000000000000000000000
-            // Chart 2
-            StripChart2.AxisX.Add(new Axis
-            {
-                LabelFormatter = x => new DateTime((long)x).ToString("MMM dd, yyyy"),
-                FontSize = 10,
-                MinValue = new System.DateTime(2012, 9, 1).Ticks,
-                MaxValue = new System.DateTime(2012, 9, 10).Ticks
-            });
-            StripChart2.AxisY.Add(new Axis
-            {
-                MinValue = 0,
-                MaxValue = 1
-            });
-
-            StepLineSeries mcaSeries = new StepLineSeries
-            {
-                Title = "MCA",
-                //PointGeometry = null,
-                Values = new ChartValues<DateTimePoint>
-                {
-                    new DateTimePoint(new System.DateTime(2012, 9, 1), rand.NextDouble()),
-                    new DateTimePoint(new System.DateTime(2012, 9, 2), rand.NextDouble()),
-                    new DateTimePoint(new System.DateTime(2012, 9, 3), rand.NextDouble()),
-                    new DateTimePoint(new System.DateTime(2012, 9, 4), rand.NextDouble()),
-                    new DateTimePoint(new System.DateTime(2012, 9, 5), rand.NextDouble()),
-                    new DateTimePoint(new System.DateTime(2012, 9, 6), rand.NextDouble()),
-                    new DateTimePoint(new System.DateTime(2012, 9, 7), rand.NextDouble()),
-                    new DateTimePoint(new System.DateTime(2012, 9, 8), rand.NextDouble()),
-                    new DateTimePoint(new System.DateTime(2012, 9, 9), rand.NextDouble()),
-                    new DateTimePoint(new System.DateTime(2012, 9, 10), rand.NextDouble())
-                }
-            };
-
-
-            SeriesCollection stripChart2Series = new SeriesCollection();
-            stripChart2Series.Add(mcaSeries);
-            StripChart2.Series = stripChart2Series;
-            StripChart2.LegendLocation = LegendLocation.Right;
-            // 0000000000000000000000000000000000000000000000000000000000000000
-            // 0000000000000000000000000000000000000000000000000000000000000000
-            // Chart 3
-            StripChart3.AxisX.Add(new Axis
-            {
-                LabelFormatter = x => new DateTime((long)x).ToString("MMM dd, yyyy"),
-                FontSize = 10,
-                MinValue = new System.DateTime(2012, 9, 1).Ticks,
-                MaxValue = new System.DateTime(2012, 9, 10).Ticks
-            });
-            StripChart3.AxisY.Add(new Axis
-            {
-                MinValue = 0,
-                MaxValue = 2,
-                ShowLabels = false                
-            });
-
-            ChartValues<DateTimePoint> vals = new ChartValues<DateTimePoint>();
-            int r;
-            for (int i = 1; i < 10; i++)
-            {
-                r = (int)Math.Floor(1.999*rand.NextDouble());
-                if (r == 1) vals.Add(new DateTimePoint(new System.DateTime(2012, 9, i), 1));
+                siteNode.Expand();
+                SitesTreeView.Nodes.Add(siteNode);
             }
-
-            ScatterSeries vidSeries = new ScatterSeries
-            {
-                Title = "VID",
-                Values = vals
-            };
-
-
-            SeriesCollection stripChart3Series = new SeriesCollection();
-            stripChart3Series.Add(vidSeries);
-            StripChart3.Series = stripChart3Series;
-            StripChart3.LegendLocation = LegendLocation.Right;
-            // 0000000000000000000000000000000000000000000000000000000000000000
-
         }
 
         private void launchInspectrumToolStripMenuItem_Click(object sender, EventArgs e)
@@ -195,71 +74,334 @@ namespace Omniscient
             inspectrum.Show();
         }
 
-        private void toolStripButton1_Click(object sender, EventArgs e)
+        private void UpdateInstrumentData(Instrument inst)
         {
-            ISRInstrument isr = new ISRInstrument("ISR-1");
-            FolderBrowserDialog folderBrowser = new FolderBrowserDialog();
+            inst.LoadData(new DateTime(1900, 1, 1), new DateTime(2100, 1, 1));
+        }
 
-            if (folderBrowser.ShowDialog() == DialogResult.OK)
+        private void UpdateData()
+        {
+            foreach(Instrument inst in activeInstruments)
             {
-                isr.SetDataFolder((folderBrowser.SelectedPath));
+                UpdateInstrumentData(inst);
+            }
+        }
+
+        private void UpdateChart(int chartNum)
+        {
+            LiveCharts.WinForms.CartesianChart chart;
+            switch (chartNum)
+            {
+                case 0:
+                    chart = StripChart0;
+                    break;
+                case 1:
+                    chart = StripChart1;
+                    break;
+                case 2:
+                    chart = StripChart2;
+                    break;
+                case 3:
+                    chart = StripChart3;
+                    break;
+                default:                    // This should really never be necessary but the compilar gets angry without it
+                    chart = StripChart0;
+                    break;
+            }
+            chart.DisableAnimations = true;
+            chart.Hoverable = false;
+            chart.DataTooltip = null;
+
+            chart.AxisX.Clear();
+            chart.AxisY.Clear();
+            DateTime start = StartDatePicker.Value.Date;
+            start = start.Add(StartTimePicker.Value.TimeOfDay);
+            DateTime end = EndDatePicker.Value.Date;
+            end = end.Add(EndTimePicker.Value.TimeOfDay);
+
+            if (start >= end) return;
+
+            string xLabelFormat;
+            Separator sep = new Separator();
+            double daysInRange = TimeSpan.FromTicks(end.Ticks - start.Ticks).TotalDays;
+            // Choose an appropriate x-axis label format
+            if (daysInRange > 1460)
+            {
+                xLabelFormat = "yyyy";
+                sep.Step = TimeSpan.FromDays(365).Ticks;
+            }
+            else if (daysInRange > 540)
+            {
+                xLabelFormat = "MM/yyyy";
+                sep.Step = TimeSpan.FromDays(90).Ticks;
+            }
+            else if (daysInRange > 180)
+            {
+                xLabelFormat = "MM/yyyy";
+                sep.Step = TimeSpan.FromDays(30).Ticks;
+            }
+            else if (daysInRange > 60)
+            {
+                xLabelFormat = "MMM dd";
+                sep.Step = TimeSpan.FromDays(10).Ticks;
+            }
+            else if (daysInRange > 20)
+            {
+                xLabelFormat = "MMM dd";
+                sep.Step = TimeSpan.FromDays(3).Ticks;
+            }
+            else if (daysInRange > 2)
+            {
+                xLabelFormat = "MMM dd";
+                sep.Step = TimeSpan.FromDays(1).Ticks;
             }
             else
             {
-                return;
+                double hoursInRange = TimeSpan.FromTicks(end.Ticks - start.Ticks).TotalHours;
+                if (hoursInRange > 12)
+                {
+                    xLabelFormat = "HH:mm";
+                    sep.Step = TimeSpan.FromHours(2).Ticks;
+                }
+                else if (hoursInRange > 4)
+                {
+                    xLabelFormat = "HH:mm";
+                    sep.Step = TimeSpan.FromHours(1).Ticks;
+                }
+                else if (hoursInRange > 1)
+                {
+                    xLabelFormat = "HH:mm";
+                    sep.Step = TimeSpan.FromHours(0.25).Ticks;
+                }
+                else
+                {
+                    double minInRange = TimeSpan.FromTicks(end.Ticks - start.Ticks).TotalMinutes;
+                    if (minInRange > 30)
+                    {
+                        xLabelFormat = "HH:mm:ss";
+                        sep.Step = TimeSpan.FromMinutes(5).Ticks;
+                    }
+                    else if (minInRange > 15)
+                    {
+                        xLabelFormat = "HH:mm:ss";
+                        sep.Step = TimeSpan.FromMinutes(2).Ticks;
+                    }
+                    else if (minInRange > 5)
+                    {
+                        xLabelFormat = "HH:mm:ss";
+                        sep.Step = TimeSpan.FromMinutes(1).Ticks;
+                    }
+                    else if (minInRange > 1)
+                    {
+                        xLabelFormat = "HH:mm:ss";
+                        sep.Step = TimeSpan.FromMinutes(0.5).Ticks;
+                    }
+                    else
+                    {
+                        xLabelFormat = "HH:mm:ss";
+                        sep.Step = TimeSpan.FromMilliseconds(5000).Ticks;
+                    }
+                }
             }
 
-            isr.LoadData(new DateTime(1900, 1, 1), new DateTime(2100, 1, 1));
 
-            List<DateTime> ch0Dates = isr.GetChannel(0).GetTimeStamps();
-            List<double> ch0Vals = isr.GetChannel(0).GetValues();
-
-
-
-
-            StripChart0.DisableAnimations = true;
-            StripChart0.Hoverable = false;
-            StripChart0.DataTooltip = null;
-
-            StripChart0.AxisX.Clear();
-            StripChart0.AxisY.Clear();
-            StripChart0.AxisX.Add(new Axis
+            chart.AxisX.Add(new Axis
             {
-                LabelFormatter = val => new System.DateTime((long)val).ToString("MM/dd/yyyy"),
-                MinValue = ch0Dates[0].Ticks,
-                MaxValue = ch0Dates[ch0Dates.Count - 1].Ticks
+                LabelFormatter = val => new System.DateTime((long)val).ToString(xLabelFormat),
+                MinValue = start.Ticks,
+                MaxValue = end.Ticks,
+                Separator = sep
             });
-            StripChart0.AxisY.Add(new Axis
+
+            
+
+            chart.AxisY.Add(new Axis
             {
                 MinValue = 0,
                 //MaxValue = 200
             });
-
-            // Load up the chart values
-            GearedValues<DateTimePoint> chartVals = new GearedValues<DateTimePoint>();
-            List<DateTimePoint> list = new List<DateTimePoint>();
-            for (int i = 0; i < ch0Dates.Count; ++i) //
+            SeriesCollection seriesColl = new SeriesCollection();
+            foreach (ChannelPanel chanPan in chPanels)
             {
-                list.Add(new DateTimePoint(ch0Dates[i], ch0Vals[i]));
-            }
-            chartVals = list.AsGearedValues().WithQuality(Quality.Highest);
-
-            StripChart0.Series = new SeriesCollection()
-            {
-                new GStepLineSeries()
+                bool plotChan = false;
+                switch (chartNum)
                 {
-                    Title = "Ch-0",
-                    PointGeometry = null,
-                    Values = chartVals
+                    case 0:
+                        if (chanPan.Chart1CheckBox.Checked)
+                            plotChan = true;
+                        break;
+                    case 1:
+                        if (chanPan.Chart2CheckBox.Checked)
+                            plotChan = true;
+                        break;
+                    case 2:
+                        if (chanPan.Chart3CheckBox.Checked)
+                            plotChan = true;
+                        break;
+                    case 3:
+                        if (chanPan.Chart4CheckBox.Checked)
+                            plotChan = true;
+                        break;
                 }
-            };
+                if (plotChan)
+                {
+                    Channel chan = chanPan.GetChannel();
 
+                    List<DateTime> dates = chan.GetTimeStamps();
+                    List<double> vals = chan.GetValues();
 
+                    // Load up the chart values
+                    GearedValues<DateTimePoint> chartVals = new GearedValues<DateTimePoint>();
+                    List<DateTimePoint> list = new List<DateTimePoint>();
+                    for (int i = 0; i < dates.Count; ++i) //
+                    {
+                        list.Add(new DateTimePoint(dates[i], vals[i]));
+                    }
+                    if (list.Count < 100)
+                        chartVals = list.AsGearedValues().WithQuality(Quality.Highest);
+                    else if(list.Count < 1000)
+                        chartVals = list.AsGearedValues().WithQuality(Quality.High);
+                    else if (list.Count < 10000)
+                        chartVals = list.AsGearedValues().WithQuality(Quality.Medium);
+                    else
+                        chartVals = list.AsGearedValues().WithQuality(Quality.Low);
+
+                    GStepLineSeries series = new GStepLineSeries()
+                    {
+                        Title = chan.GetName(),
+                        PointGeometry = null,
+                        Values = chartVals
+                    };
+                    seriesColl.Add(series);
+                }
+            }
+
+            chart.Series = seriesColl;
+            chart.LegendLocation = LegendLocation.Right;
         }
 
-        private void CenterSplitContainer_Panel1_Paint(object sender, PaintEventArgs e)
-        {
 
+        private void OnChannelPannelCheckChanged(object sender, EventArgs e)
+        {
+            CheckBox checker = (CheckBox)sender;
+            UpdateChart((int)checker.Tag);
+        }
+
+        private void AddChannelPanels(Instrument inst)
+        {
+            activeInstruments.Add(inst);
+            UpdateInstrumentData(inst);
+
+            ChannelsPanel.SuspendLayout();
+            foreach (Channel ch in inst.GetChannels())
+            {
+                ChannelPanel chanPan = new ChannelPanel(ch);
+                chanPan.Dock = DockStyle.Top;
+                chanPan.CheckChanged += new EventHandler(OnChannelPannelCheckChanged);
+                ChannelsPanel.Controls.Add(chanPan);
+                chPanels.Add(chanPan);
+            }
+
+            for (int i = chPanels.Count - 1; i >= 0; i--)
+                chPanels[i].SendToBack();
+
+            ChannelsLabelPanel.SendToBack();
+            ChannelsPanel.ResumeLayout();
+        }
+
+        private void RemoveChannelPanels(Instrument inst)
+        {
+            activeInstruments.Remove(inst);
+            inst.ClearData();
+
+            List<ChannelPanel> chToGo = new List<ChannelPanel>();
+            foreach (ChannelPanel chanPan in chPanels)
+            {
+                if (Object.ReferenceEquals(chanPan.GetChannel().GetInstrument(), inst))
+                {
+                    chToGo.Add(chanPan);
+                }
+            }
+            foreach(ChannelPanel chanPan in chToGo)
+            {
+                ChannelsPanel.Controls.Remove(chanPan);
+                chPanels.Remove(chanPan);
+            }
+            chToGo.Clear();
+            UpdatesCharts();
+        }
+
+        private void SitesTreeView_AfterCheck(object sender, TreeViewEventArgs e)
+        {
+            const int INST_LEVEL = 3;
+            if ( e.Node.Level == INST_LEVEL)
+            {
+                string instName = e.Node.Text;
+                string sysName = e.Node.Parent.Text;
+                string facName = e.Node.Parent.Parent.Text;
+                string siteName = e.Node.Parent.Parent.Parent.Text;
+                foreach (Site site in siteMan.GetSites())
+                {
+                    if (site.GetName().Equals(siteName))
+                    {
+                        foreach (Facility fac in site.GetFacilities())
+                        {
+                            if (fac.GetName().Equals(facName))
+                            {
+                                foreach (DetectionSystem sys in fac.GetSystems())
+                                {
+                                    if (sys.GetName().Equals(sysName))
+                                    {
+                                        foreach (Instrument inst in sys.GetInstruments())
+                                        {
+                                            if(inst.GetName().Equals(instName))
+                                            {
+                                                if (e.Node.Checked)
+                                                    AddChannelPanels(inst);
+                                                else
+                                                    RemoveChannelPanels(inst);
+                                                break;
+                                            }
+                                        }
+                                        break;
+                                    }
+                                }
+                                break;
+                            }
+                        }
+                        break;
+                    }
+
+                }
+            }
+        }
+
+        private void UpdatesCharts()
+        {
+            StripChartsPanel.SuspendLayout();
+            for (int i = 0; i < 4; ++i)
+                UpdateChart(i);
+            StripChartsPanel.ResumeLayout();
+        }
+
+        private void StartDatePicker_ValueChanged(object sender, EventArgs e)
+        {
+            UpdatesCharts();
+        }
+
+        private void EndDatePicker_ValueChanged(object sender, EventArgs e)
+        {
+            UpdatesCharts();
+        }
+
+        private void StartTimePicker_ValueChanged(object sender, EventArgs e)
+        {
+            UpdatesCharts();
+        }
+
+        private void EndTimePicker_ValueChanged(object sender, EventArgs e)
+        {
+            UpdatesCharts();
         }
     }
 }

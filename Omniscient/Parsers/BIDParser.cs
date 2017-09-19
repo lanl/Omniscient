@@ -22,7 +22,7 @@ namespace Omniscient.Parsers
         public UInt16 elapsedTime;
     }
 
-    class BIDParser
+    public class BIDParser
     {
         private string fileName;
         string MICVersion;
