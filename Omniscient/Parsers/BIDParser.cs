@@ -12,13 +12,13 @@ namespace Omniscient.Parsers
     {
         public UInt32 time;
         public UInt16 status;
-        public double chlACountRate;
-        public double chBCountRate;
-        public double chCCountRate;
-        public double gamInGamCh1;
-        public double gamCh1Sigma;
-        public double gamInGamCh2;
-        public double gamCh2Sigma;
+        public float chACountRate;
+        public float chBCountRate;
+        public float chCCountRate;
+        public float gamInGamCh1;
+        public float gamCh1Sigma;
+        public float gamInGamCh2;
+        public float gamCh2Sigma;
         public UInt16 elapsedTime;
     }
 
@@ -40,6 +40,11 @@ namespace Omniscient.Parsers
             stationID = "";
             numRecords = 0;
             headerSize = 0;
+        }
+
+        public DateTime BIDTimeToDateTime(UInt32 timeIn)
+        {
+            return new DateTime(1952, 1, 1).AddSeconds((double)timeIn);
         }
 
         private void ReadHeader(BinaryReader readBinary)
@@ -66,13 +71,13 @@ namespace Omniscient.Parsers
                 records[r] = new BIDRecord();
                 records[r].time = readBinary.ReadUInt32();
                 records[r].status = readBinary.ReadUInt16();
-                records[r].chlACountRate = readBinary.ReadDouble();
-                records[r].chBCountRate = readBinary.ReadDouble();
-                records[r].chCCountRate = readBinary.ReadDouble();
-                records[r].gamInGamCh1 = readBinary.ReadDouble();
-                records[r].gamCh1Sigma = readBinary.ReadDouble();
-                records[r].gamInGamCh2 = readBinary.ReadDouble();
-                records[r].gamCh2Sigma = readBinary.ReadDouble();
+                records[r].chACountRate = readBinary.ReadSingle();
+                records[r].chBCountRate = readBinary.ReadSingle();
+                records[r].chCCountRate = readBinary.ReadSingle();
+                records[r].gamInGamCh1 = readBinary.ReadSingle();
+                records[r].gamCh1Sigma = readBinary.ReadSingle();
+                records[r].gamInGamCh2 = readBinary.ReadSingle();
+                records[r].gamCh2Sigma = readBinary.ReadSingle();
                 records[r].elapsedTime = readBinary.ReadUInt16();
             }
         }

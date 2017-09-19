@@ -73,6 +73,7 @@
       <DependentUpon>Inspectrum.cs</DependentUpon>
     </Compile>
     <Compile Include="Instruments\Channel.cs" />
+    <Compile Include="Instruments\GRANDInstrument.cs" />
     <Compile Include="Instruments\Instrument.cs" />
     <Compile Include="Instruments\ISRInstrument.cs" />
     <Compile Include="MainForm.cs">

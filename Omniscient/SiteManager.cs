@@ -37,9 +37,14 @@ namespace Omniscient
                             switch(instrumentNode.Attributes["type"]?.InnerText)
                             {
                                 case "ISR":
-                                    ISRInstrument newInstrument = new ISRInstrument(instrumentNode.Attributes["name"]?.InnerText);
-                                    newInstrument.SetDataFolder(instrumentNode.Attributes["directory"]?.InnerText);
-                                    newSystem.AddInstrument(newInstrument);
+                                    ISRInstrument newISRInstrument = new ISRInstrument(instrumentNode.Attributes["name"]?.InnerText);
+                                    newISRInstrument.SetDataFolder(instrumentNode.Attributes["directory"]?.InnerText);
+                                    newSystem.AddInstrument(newISRInstrument);
+                                    break;
+                                case "GRAND":
+                                    GRANDInstrument newGRANDInstrument = new GRANDInstrument(instrumentNode.Attributes["name"]?.InnerText);
+                                    newGRANDInstrument.SetDataFolder(instrumentNode.Attributes["directory"]?.InnerText);
+                                    newSystem.AddInstrument(newGRANDInstrument);
                                     break;
                                 default:
                                     break;
