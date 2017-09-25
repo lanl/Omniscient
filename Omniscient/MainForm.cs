@@ -22,6 +22,7 @@ namespace Omniscient
 {
     public partial class MainForm : Form
     {
+        private const int N_CHARTS = 4;
         SiteManager siteMan;
         List<ChannelPanel> chPanels;
         List<Instrument> activeInstruments;
@@ -32,6 +33,11 @@ namespace Omniscient
         private bool rangeChanged = false;
         private bool bootingUp = false;
 
+        // The following are used to show a time marker when a user clicks a chart
+        double mouseX = 0;
+        private bool showMarker = false;
+        private double markerValue = 0;
+
         public MainForm()
         {
             activeInstruments = new List<Instrument>();
@@ -41,6 +47,15 @@ namespace Omniscient
         private void MainForm_Load(object sender, EventArgs e)
         {
             bootingUp = true;
+            this.StripChart0.Base.MouseDown += new System.Windows.Input.MouseButtonEventHandler(this.StripChart_MouseClick);
+            this.StripChart1.Base.MouseDown += new System.Windows.Input.MouseButtonEventHandler(this.StripChart_MouseClick);
+            this.StripChart2.Base.MouseDown += new System.Windows.Input.MouseButtonEventHandler(this.StripChart_MouseClick);
+            this.StripChart3.Base.MouseDown += new System.Windows.Input.MouseButtonEventHandler(this.StripChart_MouseClick);
+            this.StripChart0.Base.MouseMove += new System.Windows.Input.MouseEventHandler(this.StripChart_MouseMoved);
+            this.StripChart1.Base.MouseMove += new System.Windows.Input.MouseEventHandler(this.StripChart_MouseMoved);
+            this.StripChart2.Base.MouseMove += new System.Windows.Input.MouseEventHandler(this.StripChart_MouseMoved);
+            this.StripChart3.Base.MouseMove += new System.Windows.Input.MouseEventHandler(this.StripChart_MouseMoved);
+
             globalStart = new DateTime(1957, 7, 29);
             globalEnd = DateTime.Today;
             chPanels = new List<ChannelPanel>();
@@ -80,6 +95,25 @@ namespace Omniscient
                 SitesTreeView.Nodes.Add(siteNode);
             }
         }
+        
+        private LiveCharts.WinForms.CartesianChart GetChart(int chartNum)
+        {
+            switch (chartNum)
+            {
+                case 0:
+                    return StripChart0;
+                    break;
+                case 1:
+                    return StripChart1;
+                    break;
+                case 2:
+                    return StripChart2;
+                    break;
+                default:
+                    return StripChart3;
+                    break;
+            }
+        }
 
         private void launchInspectrumToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -104,24 +138,11 @@ namespace Omniscient
 
         private void InitializeCharts()
         {
-            for (int chartNum = 0; chartNum < 4; chartNum++)
+            for (int chartNum = 0; chartNum < N_CHARTS; chartNum++)
             {
                 LiveCharts.WinForms.CartesianChart chart;
-                switch (chartNum)
-                {
-                    case 0:
-                        chart = StripChart0;
-                        break;
-                    case 1:
-                        chart = StripChart1;
-                        break;
-                    case 2:
-                        chart = StripChart2;
-                        break;
-                    default:                    
-                        chart = StripChart3;
-                        break;
-                }
+                chart = GetChart(chartNum);
+
                 chart.DisableAnimations = true;
                 chart.Hoverable = false;
                 chart.DataTooltip = null;
@@ -155,6 +176,9 @@ namespace Omniscient
                     Values = chartVals
                 };
 
+                chart.LegendLocation = LegendLocation.Right;
+                chart.DefaultLegend.Visibility = System.Windows.Visibility.Visible;
+                chart.DefaultLegend.Width = 200;
                 chart.Update(true, true);
             }
         }
@@ -162,21 +186,7 @@ namespace Omniscient
         private void UpdateChart(int chartNum)
         {
             LiveCharts.WinForms.CartesianChart chart;
-            switch (chartNum)
-            {
-                case 0:
-                    chart = StripChart0;
-                    break;
-                case 1:
-                    chart = StripChart1;
-                    break;
-                case 2:
-                    chart = StripChart2;
-                    break;
-                default:                    
-                    chart = StripChart3;
-                    break;
-            }
+            chart = GetChart(chartNum);
 
             SeriesCollection seriesColl = new SeriesCollection();
             foreach (ChannelPanel chanPan in chPanels)
@@ -233,16 +243,39 @@ namespace Omniscient
                     seriesColl.Add(series);
                 }
             }
-
             chart.Series = seriesColl;
-            chart.LegendLocation = LegendLocation.Right;
         }
 
+        private void UpdateChartVisibility()
+        {
+            StripChartsLayoutPanel.SuspendLayout();
+            int numVisible = 0;
+            for (int chartNum=0; chartNum< N_CHARTS; chartNum++)
+            {
+                LiveCharts.WinForms.CartesianChart chart = GetChart(chartNum);
+                if (chart.Series.Count > 0) numVisible++;
+            }
+            for (int chartNum = 0; chartNum < N_CHARTS; chartNum++)
+            {
+                LiveCharts.WinForms.CartesianChart chart = GetChart(chartNum);
+                if (chart.Series.Count > 0)
+                {
+                    StripChartsLayoutPanel.RowStyles[chartNum].SizeType = SizeType.Percent;
+                    StripChartsLayoutPanel.RowStyles[chartNum].Height = (float)100.0 / numVisible;
+                }
+                else
+                {
+                    StripChartsLayoutPanel.RowStyles[chartNum].Height = 0;
+                }
+            }
+            StripChartsLayoutPanel.ResumeLayout();
+        }
 
         private void OnChannelPannelCheckChanged(object sender, EventArgs e)
         {
             CheckBox checker = (CheckBox)sender;
             UpdateChart((int)checker.Tag);
+            UpdateChartVisibility();
         }
 
         private void AddChannelPanels(Instrument inst)
@@ -337,7 +370,7 @@ namespace Omniscient
         private void UpdatesCharts()
         {
             StripChartsPanel.SuspendLayout();
-            for (int i = 0; i < 4; ++i)
+            for (int i = 0; i < N_CHARTS; ++i)
                 UpdateChart(i);
             StripChartsPanel.ResumeLayout();
         }
@@ -501,24 +534,10 @@ namespace Omniscient
                 }
             }
 
-            for (int i = 0; i < 4; ++i)
+            for (int i = 0; i < N_CHARTS; ++i)
             {
                 LiveCharts.WinForms.CartesianChart chart;
-                switch (i)
-                {
-                    case 0:
-                        chart = StripChart0;
-                        break;
-                    case 1:
-                        chart = StripChart1;
-                        break;
-                    case 2:
-                        chart = StripChart2;
-                        break;
-                    default:
-                        chart = StripChart3;
-                        break;
-                }
+                chart = GetChart(i);
 
                 if (chart.AxisX.Count > 0)
                 {
@@ -585,6 +604,64 @@ namespace Omniscient
             StartTimePicker.Value = newStart;
             UpdateEndPickers();
             UpdateRange();
+        }
+
+        private void DrawMarker()
+        {
+            Cursor.Current = Cursors.WaitCursor;
+            for (int i = 0; i < N_CHARTS; ++i)
+            {
+                LiveCharts.WinForms.CartesianChart chart;
+                switch (i)
+                {
+                    case 0:
+                        chart = StripChart0;
+                        break;
+                    case 1:
+                        chart = StripChart1;
+                        break;
+                    case 2:
+                        chart = StripChart2;
+                        break;
+                    default:
+                        chart = StripChart3;
+                        break;
+                }
+
+                //GearedValues<DateTimePoint> chartVals = new GearedValues<DateTimePoint>();
+                //List<DateTimePoint> list = new List<DateTimePoint>();
+                //list.Add(new DateTimePoint(new DateTime((long)markerValue), 0.0));
+                //list.Add(new DateTimePoint(new DateTime((long)markerValue), chart.AxisY[0].ActualMaxValue));
+                //chartVals = list.AsGearedValues().WithQuality(Quality.Highest);
+
+                chart.AxisX[0].Sections.Clear();
+                chart.AxisX[0].Sections = new SectionsCollection()
+                {
+                    new AxisSection()
+                    {
+                        Value = markerValue,
+                        Stroke = new SolidColorBrush(System.Windows.Media.Color.FromRgb(154, 255, 255)),
+                        StrokeThickness = 2,
+                    }
+                };
+                chart.Update(true, true);
+            }
+            Cursor.Current = Cursors.Default;
+        }
+
+        private void StripChart_MouseClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            LiveCharts.Wpf.CartesianChart chartBase = (LiveCharts.Wpf.CartesianChart)sender;
+            DateTime clickTime = new DateTime((long)LiveCharts.ChartFunctions.FromPlotArea(mouseX, AxisOrientation.X, chartBase.Model));
+            markerValue = clickTime.Ticks;
+            showMarker = true;
+
+            DrawMarker();
+        }
+
+        public void StripChart_MouseMoved(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            mouseX = e.GetPosition((LiveCharts.Wpf.CartesianChart) sender).X;
         }
     }
 }

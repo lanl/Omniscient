@@ -33,7 +33,7 @@ namespace Omniscient
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.StripChartControlPanel = new System.Windows.Forms.Panel();
             this.StripChartsPanel = new System.Windows.Forms.Panel();
-            this.StripChatsLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.StripChartsLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.StripChart3 = new LiveCharts.WinForms.CartesianChart();
             this.StripChart2 = new LiveCharts.WinForms.CartesianChart();
             this.StripChart1 = new LiveCharts.WinForms.CartesianChart();
@@ -91,7 +91,7 @@ namespace Omniscient
             this.button2 = new System.Windows.Forms.Button();
             this.StripChartControlPanel.SuspendLayout();
             this.StripChartsPanel.SuspendLayout();
-            this.StripChatsLayoutPanel.SuspendLayout();
+            this.StripChartsLayoutPanel.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.ChannelsLabelPanel.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -121,34 +121,34 @@ namespace Omniscient
             // 
             // StripChartsPanel
             // 
-            this.StripChartsPanel.Controls.Add(this.StripChatsLayoutPanel);
+            this.StripChartsPanel.Controls.Add(this.StripChartsLayoutPanel);
             this.StripChartsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.StripChartsPanel.Location = new System.Drawing.Point(0, 0);
             this.StripChartsPanel.Name = "StripChartsPanel";
             this.StripChartsPanel.Size = new System.Drawing.Size(735, 419);
             this.StripChartsPanel.TabIndex = 2;
             // 
-            // StripChatsLayoutPanel
+            // StripChartsLayoutPanel
             // 
-            this.StripChatsLayoutPanel.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Inset;
-            this.StripChatsLayoutPanel.ColumnCount = 1;
-            this.StripChatsLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.StripChatsLayoutPanel.Controls.Add(this.StripChart3, 0, 2);
-            this.StripChatsLayoutPanel.Controls.Add(this.StripChart2, 0, 1);
-            this.StripChatsLayoutPanel.Controls.Add(this.StripChart1, 0, 1);
-            this.StripChatsLayoutPanel.Controls.Add(this.StripChart0, 0, 0);
-            this.StripChatsLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.StripChatsLayoutPanel.Location = new System.Drawing.Point(0, 0);
-            this.StripChatsLayoutPanel.Name = "StripChatsLayoutPanel";
-            this.StripChatsLayoutPanel.RowCount = 3;
-            this.StripChatsLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.StripChatsLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.StripChatsLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.StripChatsLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.StripChatsLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.StripChatsLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.StripChatsLayoutPanel.Size = new System.Drawing.Size(735, 419);
-            this.StripChatsLayoutPanel.TabIndex = 1;
+            this.StripChartsLayoutPanel.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Inset;
+            this.StripChartsLayoutPanel.ColumnCount = 1;
+            this.StripChartsLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.StripChartsLayoutPanel.Controls.Add(this.StripChart3, 0, 2);
+            this.StripChartsLayoutPanel.Controls.Add(this.StripChart2, 0, 1);
+            this.StripChartsLayoutPanel.Controls.Add(this.StripChart1, 0, 1);
+            this.StripChartsLayoutPanel.Controls.Add(this.StripChart0, 0, 0);
+            this.StripChartsLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.StripChartsLayoutPanel.Location = new System.Drawing.Point(0, 0);
+            this.StripChartsLayoutPanel.Name = "StripChartsLayoutPanel";
+            this.StripChartsLayoutPanel.RowCount = 4;
+            this.StripChartsLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.StripChartsLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.StripChartsLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.StripChartsLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            //this.StripChartsLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            //this.StripChartsLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.StripChartsLayoutPanel.Size = new System.Drawing.Size(735, 419);
+            this.StripChartsLayoutPanel.TabIndex = 1;
             // 
             // StripChart3
             // 
@@ -681,11 +681,11 @@ namespace Omniscient
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
             this.Padding = new System.Windows.Forms.Padding(0, 0, 5, 0);
-            this.Text = "Omniscient (v. Demo 5)";
+            this.Text = "Omniscient (v. Demo 6)";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.StripChartControlPanel.ResumeLayout(false);
             this.StripChartsPanel.ResumeLayout(false);
-            this.StripChatsLayoutPanel.ResumeLayout(false);
+            this.StripChartsLayoutPanel.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ChannelsLabelPanel.ResumeLayout(false);
@@ -755,7 +755,7 @@ namespace Omniscient
         private System.Windows.Forms.DataGridViewTextBoxColumn Instrument3;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripProgressBar ToolStripProgressBar;
-        private System.Windows.Forms.TableLayoutPanel StripChatsLayoutPanel;
+        private System.Windows.Forms.TableLayoutPanel StripChartsLayoutPanel;
         private LiveCharts.WinForms.CartesianChart StripChart1;
         private LiveCharts.WinForms.CartesianChart StripChart0;
         private LiveCharts.WinForms.CartesianChart StripChart3;
