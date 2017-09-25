@@ -29,6 +29,7 @@ namespace Omniscient.Instruments
         {
             name = newName;
             instrumentType = "GRAND";
+            filePrefix = "";
             bidFiles = new string[0];
             bidDates = new DateTime[0];
             bidParser = new BIDParser();
@@ -52,7 +53,8 @@ namespace Omniscient.Instruments
             string[] filesInDirectory = Directory.GetFiles(dataFolder);
             foreach (string file in filesInDirectory)
             {
-                if (file.Substring(file.Length - 4).ToLower() == ".bid")
+                string fileAbrev = file.Substring(file.LastIndexOf('\\')+1);
+                if (fileAbrev.Substring(fileAbrev.Length - 4).ToLower() == ".bid" && fileAbrev.ToLower().StartsWith(filePrefix.ToLower()))
                 {
                     if (bidParser.ParseHeader(file) == ReturnCode.SUCCESS)
                     {
@@ -79,6 +81,7 @@ namespace Omniscient.Instruments
             int startIndex = Array.FindIndex(bidDates.ToArray(), x => x >= startDate);
             int endIndex = Array.FindIndex(bidDates.ToArray(), x => x >= endDate);
 
+            if (startIndex == -1) return;
             if (endIndex == -1) endIndex = (bidDates.Length) - 1;
 
             DateTime time;

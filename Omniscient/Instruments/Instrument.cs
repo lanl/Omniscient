@@ -13,6 +13,7 @@ namespace Omniscient.Instruments
         protected string name;
         protected string instrumentType;
         protected string dataFolder;
+        protected string filePrefix;
 
         protected int numChannels;
         protected Channel[] channels;
@@ -30,6 +31,11 @@ namespace Omniscient.Instruments
         {
             dataFolder = newDataFolder;
             ScanDataFolder();
+        }
+
+        public void SetFilePrefix(string newPrefix)
+        {
+            filePrefix = newPrefix;
         }
 
         public string GetName() { return name; }

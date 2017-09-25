@@ -34,27 +34,31 @@ namespace Omniscient
                         DetectionSystem newSystem = new DetectionSystem(systemNode.Attributes["name"]?.InnerText);
                         foreach (XmlNode instrumentNode in systemNode.ChildNodes)
                         {
-                            switch(instrumentNode.Attributes["type"]?.InnerText)
+                            Instrument newInstrument;
+                            switch (instrumentNode.Attributes["type"]?.InnerText)
                             {
                                 case "ISR":
-                                    ISRInstrument newISRInstrument = new ISRInstrument(instrumentNode.Attributes["name"]?.InnerText);
-                                    newISRInstrument.SetDataFolder(instrumentNode.Attributes["directory"]?.InnerText);
-                                    newSystem.AddInstrument(newISRInstrument);
+                                    newInstrument = new ISRInstrument(instrumentNode.Attributes["name"]?.InnerText);
                                     break;
                                 case "GRAND":
-                                    GRANDInstrument newGRANDInstrument = new GRANDInstrument(instrumentNode.Attributes["name"]?.InnerText);
-                                    newGRANDInstrument.SetDataFolder(instrumentNode.Attributes["directory"]?.InnerText);
-                                    newSystem.AddInstrument(newGRANDInstrument);
+                                    newInstrument = new GRANDInstrument(instrumentNode.Attributes["name"]?.InnerText);
                                     break;
                                 case "MCA":
-                                    MCAInstrument newMCAInstrument = new MCAInstrument(instrumentNode.Attributes["name"]?.InnerText);
-                                    newMCAInstrument.SetDataFolder(instrumentNode.Attributes["directory"]?.InnerText);
-                                    newSystem.AddInstrument(newMCAInstrument);
+                                    newInstrument = new MCAInstrument(instrumentNode.Attributes["name"]?.InnerText);
                                     break;
                                 default:
+                                    newInstrument = null;
                                     break;
                             }
-                            // MessageBox.Show(instrumentNode.Attributes["name"]?.InnerText);
+                            if (!newInstrument.Equals(null))
+                            {
+                                if(instrumentNode.Attributes["file_prefix"] != null)
+                                {
+                                    newInstrument.SetFilePrefix(instrumentNode.Attributes["file_prefix"].InnerText);
+                                }
+                                newInstrument.SetDataFolder(instrumentNode.Attributes["directory"]?.InnerText);
+                                newSystem.AddInstrument(newInstrument);
+                            }
                         }
                         newFacility.AddSystem(newSystem);
                     }

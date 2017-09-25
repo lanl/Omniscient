@@ -22,6 +22,7 @@ namespace Omniscient.Instruments
         {
             name = newName;
             instrumentType = "MCA";
+            filePrefix = "";
             chnFiles = new string[0];
             chnDates = new DateTime[0];
             chnParser = new CHNParser();
@@ -39,7 +40,8 @@ namespace Omniscient.Instruments
             string[] filesInDirectory = Directory.GetFiles(dataFolder);
             foreach (string file in filesInDirectory)
             {
-                if (file.Substring(file.Length - 4).ToLower() == ".isr")
+                string fileAbrev = file.Substring(file.LastIndexOf('\\') + 1);
+                if (fileAbrev.Substring(fileAbrev.Length - 4).ToLower() == ".chn" && fileAbrev.ToLower().StartsWith(filePrefix.ToLower()))
                 {
                     if (chnParser.ParseFile(file) == ReturnCode.SUCCESS)
                     {

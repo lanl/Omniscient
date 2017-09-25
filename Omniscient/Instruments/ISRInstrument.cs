@@ -26,6 +26,7 @@ namespace Omniscient.Instruments
         {
             name = newName;
             instrumentType = "ISR";
+            filePrefix = "";
             isrFiles = new string[0];
             isrDates = new DateTime[0];
             isrParser = new ISRParser();
@@ -47,7 +48,8 @@ namespace Omniscient.Instruments
             string[] filesInDirectory = Directory.GetFiles(dataFolder);
             foreach(string file in filesInDirectory)
             {
-                if (file.Substring(file.Length - 4).ToLower() == ".isr")
+                string fileAbrev = file.Substring(file.LastIndexOf('\\') + 1);
+                if (fileAbrev.Substring(fileAbrev.Length - 4).ToLower() == ".isr" && fileAbrev.ToLower().StartsWith(filePrefix.ToLower()))
                 {
                     if (isrParser.ParseHeader(file) == ReturnCode.SUCCESS)
                     {

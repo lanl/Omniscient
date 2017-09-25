@@ -607,11 +607,6 @@ namespace Omniscient
             rangeChanged = true;
         }
 
-        private void RangeComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            UpdateRange();
-        }
-
         private void RangeTextBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (rangeChanged & e.KeyCode == Keys.Enter)
@@ -719,6 +714,11 @@ namespace Omniscient
         {
             logScale[3] = C4LogScaleCheckBox.Checked;
             UpdateChart(3);
+        }
+
+        private void RangeComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            rangeChanged = true;
         }
     }
 }

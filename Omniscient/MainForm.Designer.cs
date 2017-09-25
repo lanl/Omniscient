@@ -58,6 +58,15 @@ namespace Omniscient
             this.RightPanel = new System.Windows.Forms.Panel();
             this.ChannelsPanel = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.Chart1TabPage = new System.Windows.Forms.TabPage();
+            this.C1LogScaleCheckBox = new System.Windows.Forms.CheckBox();
+            this.Chart2TabPage = new System.Windows.Forms.TabPage();
+            this.C2LogScaleCheckBox = new System.Windows.Forms.CheckBox();
+            this.Chart3TabPage = new System.Windows.Forms.TabPage();
+            this.C3LogScaleCheckBox = new System.Windows.Forms.CheckBox();
+            this.Chart4TabPage = new System.Windows.Forms.TabPage();
+            this.C4LogScaleCheckBox = new System.Windows.Forms.CheckBox();
             this.RangeUpdateButton = new System.Windows.Forms.Button();
             this.RangeComboBox = new System.Windows.Forms.ComboBox();
             this.RangeTextBox = new System.Windows.Forms.TextBox();
@@ -89,15 +98,6 @@ namespace Omniscient
             this.Instrument3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.EventControlPanel = new System.Windows.Forms.Panel();
             this.button2 = new System.Windows.Forms.Button();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.Chart1TabPage = new System.Windows.Forms.TabPage();
-            this.Chart2TabPage = new System.Windows.Forms.TabPage();
-            this.Chart3TabPage = new System.Windows.Forms.TabPage();
-            this.Chart4TabPage = new System.Windows.Forms.TabPage();
-            this.C1LogScaleCheckBox = new System.Windows.Forms.CheckBox();
-            this.C2LogScaleCheckBox = new System.Windows.Forms.CheckBox();
-            this.C3LogScaleCheckBox = new System.Windows.Forms.CheckBox();
-            this.C4LogScaleCheckBox = new System.Windows.Forms.CheckBox();
             this.StripChartControlPanel.SuspendLayout();
             this.StripChartsPanel.SuspendLayout();
             this.StripChartsLayoutPanel.SuspendLayout();
@@ -108,6 +108,11 @@ namespace Omniscient
             this.RightPanel.SuspendLayout();
             this.ChannelsPanel.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.Chart1TabPage.SuspendLayout();
+            this.Chart2TabPage.SuspendLayout();
+            this.Chart3TabPage.SuspendLayout();
+            this.Chart4TabPage.SuspendLayout();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CenterSplitContainer)).BeginInit();
             this.CenterSplitContainer.Panel1.SuspendLayout();
@@ -116,11 +121,6 @@ namespace Omniscient
             this.BottomPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.EventControlPanel.SuspendLayout();
-            this.tabControl1.SuspendLayout();
-            this.Chart1TabPage.SuspendLayout();
-            this.Chart2TabPage.SuspendLayout();
-            this.Chart3TabPage.SuspendLayout();
-            this.Chart4TabPage.SuspendLayout();
             this.SuspendLayout();
             // 
             // StripChartControlPanel
@@ -390,6 +390,105 @@ namespace Omniscient
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "View";
             // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.Chart1TabPage);
+            this.tabControl1.Controls.Add(this.Chart2TabPage);
+            this.tabControl1.Controls.Add(this.Chart3TabPage);
+            this.tabControl1.Controls.Add(this.Chart4TabPage);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.tabControl1.Location = new System.Drawing.Point(3, 133);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(309, 100);
+            this.tabControl1.TabIndex = 16;
+            // 
+            // Chart1TabPage
+            // 
+            this.Chart1TabPage.Controls.Add(this.C1LogScaleCheckBox);
+            this.Chart1TabPage.Location = new System.Drawing.Point(4, 22);
+            this.Chart1TabPage.Name = "Chart1TabPage";
+            this.Chart1TabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.Chart1TabPage.Size = new System.Drawing.Size(301, 74);
+            this.Chart1TabPage.TabIndex = 0;
+            this.Chart1TabPage.Text = "Chart 1";
+            this.Chart1TabPage.UseVisualStyleBackColor = true;
+            // 
+            // C1LogScaleCheckBox
+            // 
+            this.C1LogScaleCheckBox.AutoSize = true;
+            this.C1LogScaleCheckBox.Location = new System.Drawing.Point(10, 10);
+            this.C1LogScaleCheckBox.Name = "C1LogScaleCheckBox";
+            this.C1LogScaleCheckBox.Size = new System.Drawing.Size(74, 17);
+            this.C1LogScaleCheckBox.TabIndex = 0;
+            this.C1LogScaleCheckBox.Text = "Log Scale";
+            this.C1LogScaleCheckBox.UseVisualStyleBackColor = true;
+            this.C1LogScaleCheckBox.CheckedChanged += new System.EventHandler(this.C1LogScaleCheckBox_CheckedChanged);
+            // 
+            // Chart2TabPage
+            // 
+            this.Chart2TabPage.Controls.Add(this.C2LogScaleCheckBox);
+            this.Chart2TabPage.Location = new System.Drawing.Point(4, 22);
+            this.Chart2TabPage.Name = "Chart2TabPage";
+            this.Chart2TabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.Chart2TabPage.Size = new System.Drawing.Size(301, 74);
+            this.Chart2TabPage.TabIndex = 1;
+            this.Chart2TabPage.Text = "Chart 2";
+            this.Chart2TabPage.UseVisualStyleBackColor = true;
+            // 
+            // C2LogScaleCheckBox
+            // 
+            this.C2LogScaleCheckBox.AutoSize = true;
+            this.C2LogScaleCheckBox.Location = new System.Drawing.Point(10, 10);
+            this.C2LogScaleCheckBox.Name = "C2LogScaleCheckBox";
+            this.C2LogScaleCheckBox.Size = new System.Drawing.Size(74, 17);
+            this.C2LogScaleCheckBox.TabIndex = 1;
+            this.C2LogScaleCheckBox.Text = "Log Scale";
+            this.C2LogScaleCheckBox.UseVisualStyleBackColor = true;
+            this.C2LogScaleCheckBox.CheckedChanged += new System.EventHandler(this.C2LogScaleCheckBox_CheckedChanged);
+            // 
+            // Chart3TabPage
+            // 
+            this.Chart3TabPage.Controls.Add(this.C3LogScaleCheckBox);
+            this.Chart3TabPage.Location = new System.Drawing.Point(4, 22);
+            this.Chart3TabPage.Name = "Chart3TabPage";
+            this.Chart3TabPage.Size = new System.Drawing.Size(301, 74);
+            this.Chart3TabPage.TabIndex = 2;
+            this.Chart3TabPage.Text = "Chart 3";
+            this.Chart3TabPage.UseVisualStyleBackColor = true;
+            // 
+            // C3LogScaleCheckBox
+            // 
+            this.C3LogScaleCheckBox.AutoSize = true;
+            this.C3LogScaleCheckBox.Location = new System.Drawing.Point(10, 10);
+            this.C3LogScaleCheckBox.Name = "C3LogScaleCheckBox";
+            this.C3LogScaleCheckBox.Size = new System.Drawing.Size(74, 17);
+            this.C3LogScaleCheckBox.TabIndex = 1;
+            this.C3LogScaleCheckBox.Text = "Log Scale";
+            this.C3LogScaleCheckBox.UseVisualStyleBackColor = true;
+            this.C3LogScaleCheckBox.CheckedChanged += new System.EventHandler(this.C3LogScaleCheckBox_CheckedChanged);
+            // 
+            // Chart4TabPage
+            // 
+            this.Chart4TabPage.Controls.Add(this.C4LogScaleCheckBox);
+            this.Chart4TabPage.Location = new System.Drawing.Point(4, 22);
+            this.Chart4TabPage.Name = "Chart4TabPage";
+            this.Chart4TabPage.Size = new System.Drawing.Size(301, 74);
+            this.Chart4TabPage.TabIndex = 3;
+            this.Chart4TabPage.Text = "Chart 4";
+            this.Chart4TabPage.UseVisualStyleBackColor = true;
+            // 
+            // C4LogScaleCheckBox
+            // 
+            this.C4LogScaleCheckBox.AutoSize = true;
+            this.C4LogScaleCheckBox.Location = new System.Drawing.Point(10, 10);
+            this.C4LogScaleCheckBox.Name = "C4LogScaleCheckBox";
+            this.C4LogScaleCheckBox.Size = new System.Drawing.Size(74, 17);
+            this.C4LogScaleCheckBox.TabIndex = 1;
+            this.C4LogScaleCheckBox.Text = "Log Scale";
+            this.C4LogScaleCheckBox.UseVisualStyleBackColor = true;
+            this.C4LogScaleCheckBox.CheckedChanged += new System.EventHandler(this.C4LogScaleCheckBox_CheckedChanged);
+            // 
             // RangeUpdateButton
             // 
             this.RangeUpdateButton.Location = new System.Drawing.Point(185, 100);
@@ -414,6 +513,7 @@ namespace Omniscient
             this.RangeComboBox.Size = new System.Drawing.Size(103, 21);
             this.RangeComboBox.TabIndex = 14;
             this.RangeComboBox.SelectedIndexChanged += new System.EventHandler(this.RangeComboBox_SelectedIndexChanged);
+            this.RangeComboBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.RangeTextBox_KeyDown);
             // 
             // RangeTextBox
             // 
@@ -680,105 +780,6 @@ namespace Omniscient
             this.button2.Text = "Generate Events";
             this.button2.UseVisualStyleBackColor = true;
             // 
-            // tabControl1
-            // 
-            this.tabControl1.Controls.Add(this.Chart1TabPage);
-            this.tabControl1.Controls.Add(this.Chart2TabPage);
-            this.tabControl1.Controls.Add(this.Chart3TabPage);
-            this.tabControl1.Controls.Add(this.Chart4TabPage);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tabControl1.Location = new System.Drawing.Point(3, 133);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(309, 100);
-            this.tabControl1.TabIndex = 16;
-            // 
-            // Chart1TabPage
-            // 
-            this.Chart1TabPage.Controls.Add(this.C1LogScaleCheckBox);
-            this.Chart1TabPage.Location = new System.Drawing.Point(4, 22);
-            this.Chart1TabPage.Name = "Chart1TabPage";
-            this.Chart1TabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.Chart1TabPage.Size = new System.Drawing.Size(301, 74);
-            this.Chart1TabPage.TabIndex = 0;
-            this.Chart1TabPage.Text = "Chart 1";
-            this.Chart1TabPage.UseVisualStyleBackColor = true;
-            // 
-            // Chart2TabPage
-            // 
-            this.Chart2TabPage.Controls.Add(this.C2LogScaleCheckBox);
-            this.Chart2TabPage.Location = new System.Drawing.Point(4, 22);
-            this.Chart2TabPage.Name = "Chart2TabPage";
-            this.Chart2TabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.Chart2TabPage.Size = new System.Drawing.Size(301, 74);
-            this.Chart2TabPage.TabIndex = 1;
-            this.Chart2TabPage.Text = "Chart 2";
-            this.Chart2TabPage.UseVisualStyleBackColor = true;
-            // 
-            // Chart3TabPage
-            // 
-            this.Chart3TabPage.Controls.Add(this.C3LogScaleCheckBox);
-            this.Chart3TabPage.Location = new System.Drawing.Point(4, 22);
-            this.Chart3TabPage.Name = "Chart3TabPage";
-            this.Chart3TabPage.Size = new System.Drawing.Size(301, 74);
-            this.Chart3TabPage.TabIndex = 2;
-            this.Chart3TabPage.Text = "Chart 3";
-            this.Chart3TabPage.UseVisualStyleBackColor = true;
-            // 
-            // Chart4TabPage
-            // 
-            this.Chart4TabPage.Controls.Add(this.C4LogScaleCheckBox);
-            this.Chart4TabPage.Location = new System.Drawing.Point(4, 22);
-            this.Chart4TabPage.Name = "Chart4TabPage";
-            this.Chart4TabPage.Size = new System.Drawing.Size(301, 74);
-            this.Chart4TabPage.TabIndex = 3;
-            this.Chart4TabPage.Text = "Chart 4";
-            this.Chart4TabPage.UseVisualStyleBackColor = true;
-            // 
-            // C1LogScaleCheckBox
-            // 
-            this.C1LogScaleCheckBox.AutoSize = true;
-            this.C1LogScaleCheckBox.Location = new System.Drawing.Point(10, 10);
-            this.C1LogScaleCheckBox.Name = "C1LogScaleCheckBox";
-            this.C1LogScaleCheckBox.Size = new System.Drawing.Size(74, 17);
-            this.C1LogScaleCheckBox.TabIndex = 0;
-            this.C1LogScaleCheckBox.Text = "Log Scale";
-            this.C1LogScaleCheckBox.UseVisualStyleBackColor = true;
-            this.C1LogScaleCheckBox.CheckedChanged += new System.EventHandler(this.C1LogScaleCheckBox_CheckedChanged);
-            // 
-            // C2LogScaleCheckBox
-            // 
-            this.C2LogScaleCheckBox.AutoSize = true;
-            this.C2LogScaleCheckBox.Location = new System.Drawing.Point(10, 10);
-            this.C2LogScaleCheckBox.Name = "C2LogScaleCheckBox";
-            this.C2LogScaleCheckBox.Size = new System.Drawing.Size(74, 17);
-            this.C2LogScaleCheckBox.TabIndex = 1;
-            this.C2LogScaleCheckBox.Text = "Log Scale";
-            this.C2LogScaleCheckBox.UseVisualStyleBackColor = true;
-            this.C2LogScaleCheckBox.CheckedChanged += new System.EventHandler(this.C2LogScaleCheckBox_CheckedChanged);
-            // 
-            // C3LogScaleCheckBox
-            // 
-            this.C3LogScaleCheckBox.AutoSize = true;
-            this.C3LogScaleCheckBox.Location = new System.Drawing.Point(10, 10);
-            this.C3LogScaleCheckBox.Name = "C3LogScaleCheckBox";
-            this.C3LogScaleCheckBox.Size = new System.Drawing.Size(74, 17);
-            this.C3LogScaleCheckBox.TabIndex = 1;
-            this.C3LogScaleCheckBox.Text = "Log Scale";
-            this.C3LogScaleCheckBox.UseVisualStyleBackColor = true;
-            this.C3LogScaleCheckBox.CheckedChanged += new System.EventHandler(this.C3LogScaleCheckBox_CheckedChanged);
-            // 
-            // C4LogScaleCheckBox
-            // 
-            this.C4LogScaleCheckBox.AutoSize = true;
-            this.C4LogScaleCheckBox.Location = new System.Drawing.Point(10, 10);
-            this.C4LogScaleCheckBox.Name = "C4LogScaleCheckBox";
-            this.C4LogScaleCheckBox.Size = new System.Drawing.Size(74, 17);
-            this.C4LogScaleCheckBox.TabIndex = 1;
-            this.C4LogScaleCheckBox.Text = "Log Scale";
-            this.C4LogScaleCheckBox.UseVisualStyleBackColor = true;
-            this.C4LogScaleCheckBox.CheckedChanged += new System.EventHandler(this.C4LogScaleCheckBox_CheckedChanged);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -810,15 +811,6 @@ namespace Omniscient
             this.ChannelsPanel.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
-            this.CenterSplitContainer.Panel1.ResumeLayout(false);
-            this.CenterSplitContainer.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.CenterSplitContainer)).EndInit();
-            this.CenterSplitContainer.ResumeLayout(false);
-            this.BottomPanel.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            this.EventControlPanel.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
             this.Chart1TabPage.ResumeLayout(false);
             this.Chart1TabPage.PerformLayout();
@@ -828,6 +820,15 @@ namespace Omniscient
             this.Chart3TabPage.PerformLayout();
             this.Chart4TabPage.ResumeLayout(false);
             this.Chart4TabPage.PerformLayout();
+            this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
+            this.CenterSplitContainer.Panel1.ResumeLayout(false);
+            this.CenterSplitContainer.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.CenterSplitContainer)).EndInit();
+            this.CenterSplitContainer.ResumeLayout(false);
+            this.BottomPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.EventControlPanel.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
