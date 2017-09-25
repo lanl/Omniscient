@@ -26,6 +26,9 @@ namespace Omniscient
         List<ChannelPanel> chPanels;
         List<Instrument> activeInstruments;
 
+        private bool rangeChanged = false;
+        private bool bootingUp = false;
+
         public MainForm()
         {
             activeInstruments = new List<Instrument>();
@@ -34,13 +37,16 @@ namespace Omniscient
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            bootingUp = true;
             chPanels = new List<ChannelPanel>();
             siteMan = new SiteManager();
             siteMan.LoadFromXML("SiteManager.xml");
             UpdateSiteTree();
             RangeTextBox.Text = "7";
             RangeComboBox.Text = "Days";
-
+            InitializeCharts();
+            bootingUp = false;
+            UpdateRange();
         }
 
         private void UpdateSiteTree()
@@ -78,7 +84,9 @@ namespace Omniscient
 
         private void UpdateInstrumentData(Instrument inst)
         {
+            Cursor.Current = Cursors.WaitCursor;
             inst.LoadData(new DateTime(1900, 1, 1), new DateTime(2100, 1, 1));
+            Cursor.Current = Cursors.Default;
         }
 
         private void UpdateData()
@@ -86,6 +94,63 @@ namespace Omniscient
             foreach(Instrument inst in activeInstruments)
             {
                 UpdateInstrumentData(inst);
+            }
+        }
+
+        private void InitializeCharts()
+        {
+            for (int chartNum = 0; chartNum < 4; chartNum++)
+            {
+                LiveCharts.WinForms.CartesianChart chart;
+                switch (chartNum)
+                {
+                    case 0:
+                        chart = StripChart0;
+                        break;
+                    case 1:
+                        chart = StripChart1;
+                        break;
+                    case 2:
+                        chart = StripChart2;
+                        break;
+                    default:                    
+                        chart = StripChart3;
+                        break;
+                }
+                chart.DisableAnimations = true;
+                chart.Hoverable = false;
+                chart.DataTooltip = null;
+
+                // Initizialize chart values
+                chart.AxisX.Clear();
+                chart.AxisY.Clear();
+                chart.AxisX.Add(new Axis
+                {
+                    LabelFormatter = val => new System.DateTime((long)val).ToString("MM DD YYY"),
+                    MinValue = DateTime.Today.Ticks,
+                    MaxValue = DateTime.Today.Ticks + TimeSpan.TicksPerDay,
+                    //Separator = sep
+                });
+
+                chart.AxisY.Add(new Axis
+                {
+                    MinValue = 0,
+                    //MaxValue = 200
+                });
+
+                GearedValues<DateTimePoint> chartVals = new GearedValues<DateTimePoint>();
+                List<DateTimePoint> list = new List<DateTimePoint>();
+                list.Add(new DateTimePoint(DateTime.Today, 0.0));
+                chartVals = list.AsGearedValues().WithQuality(Quality.Highest);
+
+                GStepLineSeries series = new GStepLineSeries()
+                {
+                    Title = "",
+                    PointGeometry = null,
+                    Values = chartVals
+                };
+
+                chart.Update(true, true);
             }
         }
 
@@ -103,125 +168,11 @@ namespace Omniscient
                 case 2:
                     chart = StripChart2;
                     break;
-                case 3:
+                default:                    
                     chart = StripChart3;
                     break;
-                default:                    // This should really never be necessary but the compilar gets angry without it
-                    chart = StripChart0;
-                    break;
-            }
-            chart.DisableAnimations = true;
-            chart.Hoverable = false;
-            chart.DataTooltip = null;
-
-            chart.AxisX.Clear();
-            chart.AxisY.Clear();
-            DateTime start = StartDatePicker.Value.Date;
-            start = start.Add(StartTimePicker.Value.TimeOfDay);
-            DateTime end = EndDatePicker.Value.Date;
-            end = end.Add(EndTimePicker.Value.TimeOfDay);
-
-            if (start >= end) return;
-
-            string xLabelFormat;
-            Separator sep = new Separator();
-            double daysInRange = TimeSpan.FromTicks(end.Ticks - start.Ticks).TotalDays;
-            // Choose an appropriate x-axis label format
-            if (daysInRange > 1460)
-            {
-                xLabelFormat = "yyyy";
-                sep.Step = TimeSpan.FromDays(365).Ticks;
-            }
-            else if (daysInRange > 540)
-            {
-                xLabelFormat = "MM/yyyy";
-                sep.Step = TimeSpan.FromDays(90).Ticks;
-            }
-            else if (daysInRange > 180)
-            {
-                xLabelFormat = "MM/yyyy";
-                sep.Step = TimeSpan.FromDays(30).Ticks;
-            }
-            else if (daysInRange > 60)
-            {
-                xLabelFormat = "MMM dd";
-                sep.Step = TimeSpan.FromDays(10).Ticks;
-            }
-            else if (daysInRange > 20)
-            {
-                xLabelFormat = "MMM dd";
-                sep.Step = TimeSpan.FromDays(3).Ticks;
-            }
-            else if (daysInRange > 2)
-            {
-                xLabelFormat = "MMM dd";
-                sep.Step = TimeSpan.FromDays(1).Ticks;
-            }
-            else
-            {
-                double hoursInRange = TimeSpan.FromTicks(end.Ticks - start.Ticks).TotalHours;
-                if (hoursInRange > 12)
-                {
-                    xLabelFormat = "HH:mm";
-                    sep.Step = TimeSpan.FromHours(2).Ticks;
-                }
-                else if (hoursInRange > 4)
-                {
-                    xLabelFormat = "HH:mm";
-                    sep.Step = TimeSpan.FromHours(1).Ticks;
-                }
-                else if (hoursInRange > 1)
-                {
-                    xLabelFormat = "HH:mm";
-                    sep.Step = TimeSpan.FromHours(0.25).Ticks;
-                }
-                else
-                {
-                    double minInRange = TimeSpan.FromTicks(end.Ticks - start.Ticks).TotalMinutes;
-                    if (minInRange > 30)
-                    {
-                        xLabelFormat = "HH:mm:ss";
-                        sep.Step = TimeSpan.FromMinutes(5).Ticks;
-                    }
-                    else if (minInRange > 15)
-                    {
-                        xLabelFormat = "HH:mm:ss";
-                        sep.Step = TimeSpan.FromMinutes(2).Ticks;
-                    }
-                    else if (minInRange > 5)
-                    {
-                        xLabelFormat = "HH:mm:ss";
-                        sep.Step = TimeSpan.FromMinutes(1).Ticks;
-                    }
-                    else if (minInRange > 1)
-                    {
-                        xLabelFormat = "HH:mm:ss";
-                        sep.Step = TimeSpan.FromMinutes(0.5).Ticks;
-                    }
-                    else
-                    {
-                        xLabelFormat = "HH:mm:ss";
-                        sep.Step = TimeSpan.FromMilliseconds(5000).Ticks;
-                    }
-                }
             }
 
-
-            chart.AxisX.Add(new Axis
-            {
-                LabelFormatter = val => new System.DateTime((long)val).ToString(xLabelFormat),
-                MinValue = start.Ticks,
-                MaxValue = end.Ticks,
-                Separator = sep
-            });
-
-            
-
-            chart.AxisY.Add(new Axis
-            {
-                MinValue = 0,
-                //MaxValue = 200
-            });
             SeriesCollection seriesColl = new SeriesCollection();
             foreach (ChannelPanel chanPan in chPanels)
             {
@@ -259,14 +210,14 @@ namespace Omniscient
                     {
                         list.Add(new DateTimePoint(dates[i], vals[i]));
                     }
-                    if (list.Count < 100)
+                    //if (list.Count < 100)
+                    //    chartVals = list.AsGearedValues().WithQuality(Quality.Highest);
+                    //else if(list.Count < 1000)
+                    //    chartVals = list.AsGearedValues().WithQuality(Quality.High);
+                    //else if (list.Count < 10000)
+                    //    chartVals = list.AsGearedValues().WithQuality(Quality.Medium);
+                    //else
                         chartVals = list.AsGearedValues().WithQuality(Quality.Highest);
-                    else if(list.Count < 1000)
-                        chartVals = list.AsGearedValues().WithQuality(Quality.High);
-                    else if (list.Count < 10000)
-                        chartVals = list.AsGearedValues().WithQuality(Quality.Medium);
-                    else
-                        chartVals = list.AsGearedValues().WithQuality(Quality.Low);
 
                     GStepLineSeries series = new GStepLineSeries()
                     {
@@ -438,11 +389,9 @@ namespace Omniscient
 
         }
 
-
-        private bool rangeChanged = false;
-
-        private void updateRange()
+        private void UpdateRange()
         {
+            if (bootingUp) return;
             if (RangeTextBox.Text == "") return;
 
             int range;
@@ -456,7 +405,147 @@ namespace Omniscient
                 RangeTextBox.Text = "1";
                 UpdateEndPickers();
             }
-            UpdatesCharts();
+
+            StripChartsPanel.SuspendLayout();
+
+            // Setup x-axis format
+            DateTime start = StartDatePicker.Value.Date;
+            start = start.Add(StartTimePicker.Value.TimeOfDay);
+            DateTime end = EndDatePicker.Value.Date;
+            end = end.Add(EndTimePicker.Value.TimeOfDay);
+
+            if (start >= end) return;
+
+            string xLabelFormat;
+            Separator sep = new Separator();
+            double daysInRange = TimeSpan.FromTicks(end.Ticks - start.Ticks).TotalDays;
+            // Choose an appropriate x-axis label format
+            if (daysInRange > 1460)
+            {
+                xLabelFormat = "yyyy";
+                sep.Step = TimeSpan.FromDays(365).Ticks;
+            }
+            else if (daysInRange > 540)
+            {
+                xLabelFormat = "MM/yyyy";
+                sep.Step = TimeSpan.FromDays(90).Ticks;
+            }
+            else if (daysInRange > 180)
+            {
+                xLabelFormat = "MM/yyyy";
+                sep.Step = TimeSpan.FromDays(30).Ticks;
+            }
+            else if (daysInRange > 60)
+            {
+                xLabelFormat = "MMM dd";
+                sep.Step = TimeSpan.FromDays(10).Ticks;
+            }
+            else if (daysInRange > 20)
+            {
+                xLabelFormat = "MMM dd";
+                sep.Step = TimeSpan.FromDays(3).Ticks;
+            }
+            else if (daysInRange > 2)
+            {
+                xLabelFormat = "MMM dd";
+                sep.Step = TimeSpan.FromDays(1).Ticks;
+            }
+            else
+            {
+                double hoursInRange = TimeSpan.FromTicks(end.Ticks - start.Ticks).TotalHours;
+                if (hoursInRange > 12)
+                {
+                    xLabelFormat = "HH:mm";
+                    sep.Step = TimeSpan.FromHours(2).Ticks;
+                }
+                else if (hoursInRange > 4)
+                {
+                    xLabelFormat = "HH:mm";
+                    sep.Step = TimeSpan.FromHours(1).Ticks;
+                }
+                else if (hoursInRange > 1)
+                {
+                    xLabelFormat = "HH:mm";
+                    sep.Step = TimeSpan.FromHours(0.25).Ticks;
+                }
+                else
+                {
+                    double minInRange = TimeSpan.FromTicks(end.Ticks - start.Ticks).TotalMinutes;
+                    if (minInRange > 30)
+                    {
+                        xLabelFormat = "HH:mm:ss";
+                        sep.Step = TimeSpan.FromMinutes(5).Ticks;
+                    }
+                    else if (minInRange > 15)
+                    {
+                        xLabelFormat = "HH:mm:ss";
+                        sep.Step = TimeSpan.FromMinutes(2).Ticks;
+                    }
+                    else if (minInRange > 5)
+                    {
+                        xLabelFormat = "HH:mm:ss";
+                        sep.Step = TimeSpan.FromMinutes(1).Ticks;
+                    }
+                    else if (minInRange > 1)
+                    {
+                        xLabelFormat = "HH:mm:ss";
+                        sep.Step = TimeSpan.FromMinutes(0.5).Ticks;
+                    }
+                    else
+                    {
+                        xLabelFormat = "HH:mm:ss";
+                        sep.Step = TimeSpan.FromMilliseconds(5000).Ticks;
+                    }
+                }
+            }
+
+            for (int i = 0; i < 4; ++i)
+            {
+                LiveCharts.WinForms.CartesianChart chart;
+                switch (i)
+                {
+                    case 0:
+                        chart = StripChart0;
+                        break;
+                    case 1:
+                        chart = StripChart1;
+                        break;
+                    case 2:
+                        chart = StripChart2;
+                        break;
+                    default:
+                        chart = StripChart3;
+                        break;
+                }
+
+                if (chart.AxisX.Count > 0)
+                {
+                    chart.AxisX[0].LabelFormatter = val => new System.DateTime((long)val).ToString(xLabelFormat);
+                    chart.AxisX[0].MinValue = start.Ticks;
+                    chart.AxisX[0].MaxValue = end.Ticks;
+                    chart.AxisX[0].Separator = sep;
+                }
+                else
+                {
+                    chart.AxisX.Clear();
+                    chart.AxisX.Add(new Axis
+                    {
+                        LabelFormatter = val => new System.DateTime((long)val).ToString(xLabelFormat),
+                        MinValue = start.Ticks,
+                        MaxValue = end.Ticks,
+                        Separator = sep
+                    });
+                }
+
+                chart.AxisY.Clear();
+                chart.AxisY.Add(new Axis
+                {
+                    MinValue = 0,
+                    //MaxValue = 200
+                });
+                
+            }
+            StripChartsPanel.ResumeLayout();
         }
 
         private void RangeTextBox_TextChanged(object sender, EventArgs e)
@@ -466,15 +555,14 @@ namespace Omniscient
 
         private void RangeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            UpdateEndPickers();
-            UpdatesCharts();
+            UpdateRange();
         }
 
         private void RangeTextBox_Leave(object sender, EventArgs e)
         {
             if (rangeChanged)
             {
-                updateRange();
+                UpdateRange();
             }
             rangeChanged = false;
         }
@@ -483,7 +571,7 @@ namespace Omniscient
         {
             if (rangeChanged & e.KeyCode == Keys.Enter)
             {
-                updateRange();
+                UpdateRange();
             }
             rangeChanged = false;
         }
@@ -492,7 +580,7 @@ namespace Omniscient
         {
             if (rangeChanged)
             {
-                updateRange();
+                UpdateRange();
             }
             rangeChanged = false;
         }

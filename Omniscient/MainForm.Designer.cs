@@ -54,7 +54,7 @@ namespace Omniscient
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
-            this.toolStripProgressBar1 = new System.Windows.Forms.ToolStripProgressBar();
+            this.ToolStripProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.RightPanel = new System.Windows.Forms.Panel();
             this.ChannelsPanel = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -68,6 +68,7 @@ namespace Omniscient
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.SitesTreeView = new Omniscient.Controls.ResponsiveTreeView();
             this.button1 = new System.Windows.Forms.Button();
             this.textBox7 = new System.Windows.Forms.TextBox();
             this.comboBox5 = new System.Windows.Forms.ComboBox();
@@ -87,7 +88,6 @@ namespace Omniscient
             this.Instrument3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.EventControlPanel = new System.Windows.Forms.Panel();
             this.button2 = new System.Windows.Forms.Button();
-            this.SitesTreeView = new Omniscient.Controls.ResponsiveTreeView();
             this.StripChartControlPanel.SuspendLayout();
             this.StripChartsPanel.SuspendLayout();
             this.StripChatsLayoutPanel.SuspendLayout();
@@ -313,7 +313,7 @@ namespace Omniscient
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1,
-            this.toolStripProgressBar1});
+            this.ToolStripProgressBar});
             this.statusStrip1.Location = new System.Drawing.Point(0, 716);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(1254, 22);
@@ -326,11 +326,11 @@ namespace Omniscient
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(39, 17);
             this.toolStripStatusLabel1.Text = "Ready";
             // 
-            // toolStripProgressBar1
+            // ToolStripProgressBar
             // 
-            this.toolStripProgressBar1.Name = "toolStripProgressBar1";
-            this.toolStripProgressBar1.Padding = new System.Windows.Forms.Padding(100, 0, 0, 0);
-            this.toolStripProgressBar1.Size = new System.Drawing.Size(320, 16);
+            this.ToolStripProgressBar.Name = "ToolStripProgressBar";
+            this.ToolStripProgressBar.Padding = new System.Windows.Forms.Padding(100, 0, 0, 0);
+            this.ToolStripProgressBar.Size = new System.Drawing.Size(320, 16);
             // 
             // RightPanel
             // 
@@ -494,6 +494,15 @@ namespace Omniscient
             this.panel2.Size = new System.Drawing.Size(200, 667);
             this.panel2.TabIndex = 5;
             // 
+            // SitesTreeView
+            // 
+            this.SitesTreeView.CheckBoxes = true;
+            this.SitesTreeView.Location = new System.Drawing.Point(15, 73);
+            this.SitesTreeView.Name = "SitesTreeView";
+            this.SitesTreeView.Size = new System.Drawing.Size(167, 215);
+            this.SitesTreeView.TabIndex = 11;
+            this.SitesTreeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.SitesTreeView_AfterCheck);
+            // 
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(134, 17);
@@ -650,15 +659,6 @@ namespace Omniscient
             this.button2.Text = "Generate Events";
             this.button2.UseVisualStyleBackColor = true;
             // 
-            // SitesTreeView
-            // 
-            this.SitesTreeView.CheckBoxes = true;
-            this.SitesTreeView.Location = new System.Drawing.Point(15, 73);
-            this.SitesTreeView.Name = "SitesTreeView";
-            this.SitesTreeView.Size = new System.Drawing.Size(167, 215);
-            this.SitesTreeView.TabIndex = 11;
-            this.SitesTreeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.SitesTreeView_AfterCheck);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -746,7 +746,7 @@ namespace Omniscient
         private System.Windows.Forms.DataGridViewTextBoxColumn Instrument2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Instrument3;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
-        private System.Windows.Forms.ToolStripProgressBar toolStripProgressBar1;
+        private System.Windows.Forms.ToolStripProgressBar ToolStripProgressBar;
         private System.Windows.Forms.TableLayoutPanel StripChatsLayoutPanel;
         private LiveCharts.WinForms.CartesianChart StripChart1;
         private LiveCharts.WinForms.CartesianChart StripChart0;
