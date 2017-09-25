@@ -14,6 +14,7 @@ using LiveCharts.Wpf;
 using LiveCharts.WinForms;
 using LiveCharts.Defaults;
 using LiveCharts.Geared;
+using LiveCharts.Configurations;
 
 using Omniscient.Parsers;
 using Omniscient.Instruments;
@@ -33,6 +34,8 @@ namespace Omniscient
         private bool rangeChanged = false;
         private bool bootingUp = false;
 
+        private bool[] logScale;
+
         // The following are used to show a time marker when a user clicks a chart
         double mouseX = 0;
         private bool showMarker = false;
@@ -40,6 +43,8 @@ namespace Omniscient
 
         public MainForm()
         {
+            logScale = new bool[N_CHARTS];
+            for (int c = 0; c < N_CHARTS; c++) logScale[c] = false;
             activeInstruments = new List<Instrument>();
             InitializeComponent();
         }
@@ -188,7 +193,29 @@ namespace Omniscient
             LiveCharts.WinForms.CartesianChart chart;
             chart = GetChart(chartNum);
 
-            SeriesCollection seriesColl = new SeriesCollection();
+            SeriesCollection seriesColl;
+            if (logScale[chartNum])
+            {
+                seriesColl = new SeriesCollection(Mappers.Xy<DateTimePoint>()
+                    .X(point => point.DateTime.Ticks)
+                    .Y(point => Math.Log10(point.Value)));
+                chart.AxisY.Clear();
+                chart.AxisY.Add(new LogarithmicAxis()
+                {
+                    LabelFormatter = value => Math.Pow(10, value).ToString("N0"),
+                    Base = 10,
+                });
+            }
+            else
+            {
+                seriesColl = new SeriesCollection();
+                chart.AxisY.Clear();
+                chart.AxisY.Add(new Axis()
+                {
+                    MinValue = 0,
+                });
+            }
+
             foreach (ChannelPanel chanPan in chPanels)
             {
                 bool plotChan = false;
@@ -221,20 +248,24 @@ namespace Omniscient
                     // Load up the chart values
                     GearedValues<DateTimePoint> chartVals = new GearedValues<DateTimePoint>();
                     List<DateTimePoint> list = new List<DateTimePoint>();
-                    for (int i = 0; i < dates.Count; ++i) //
+                    if (logScale[chartNum])
                     {
-                        list.Add(new DateTimePoint(dates[i], vals[i]));
+                        for (int i = 0; i < dates.Count; ++i) //
+                        {
+                            if (vals[i] > 0)
+                                list.Add(new DateTimePoint(dates[i], vals[i]));
+                        }
                     }
-                    //if (list.Count < 100)
-                    //    chartVals = list.AsGearedValues().WithQuality(Quality.Highest);
-                    //else if(list.Count < 1000)
-                    //    chartVals = list.AsGearedValues().WithQuality(Quality.High);
-                    //else if (list.Count < 10000)
-                    //    chartVals = list.AsGearedValues().WithQuality(Quality.Medium);
-                    //else
-                        chartVals = list.AsGearedValues().WithQuality(Quality.Highest);
-
-                    GStepLineSeries series = new GStepLineSeries()
+                    else
+                    {
+                        for (int i = 0; i < dates.Count; ++i) //
+                        {
+                            list.Add(new DateTimePoint(dates[i], vals[i]));
+                        }
+                    }
+                    chartVals = list.AsGearedValues().WithQuality(Quality.Highest);
+                    GStepLineSeries series;
+                    series = new GStepLineSeries()
                     {
                         Title = chan.GetName(),
                         PointGeometry = null,
@@ -562,8 +593,10 @@ namespace Omniscient
                 chart.AxisY.Add(new Axis
                 {
                     MinValue = 0,
+
                     //MaxValue = 200
                 });
+                
                 
             }
             StripChartsPanel.ResumeLayout();
@@ -662,6 +695,30 @@ namespace Omniscient
         public void StripChart_MouseMoved(object sender, System.Windows.Input.MouseEventArgs e)
         {
             mouseX = e.GetPosition((LiveCharts.Wpf.CartesianChart) sender).X;
+        }
+
+        private void C1LogScaleCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            logScale[0] = C1LogScaleCheckBox.Checked;
+            UpdateChart(0);
+        }
+
+        private void C2LogScaleCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            logScale[1] = C2LogScaleCheckBox.Checked;
+            UpdateChart(1);
+        }
+
+        private void C3LogScaleCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            logScale[2] = C3LogScaleCheckBox.Checked;
+            UpdateChart(2);
+        }
+
+        private void C4LogScaleCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            logScale[3] = C4LogScaleCheckBox.Checked;
+            UpdateChart(3);
         }
     }
 }

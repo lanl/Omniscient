@@ -89,6 +89,15 @@ namespace Omniscient
             this.Instrument3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.EventControlPanel = new System.Windows.Forms.Panel();
             this.button2 = new System.Windows.Forms.Button();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.Chart1TabPage = new System.Windows.Forms.TabPage();
+            this.Chart2TabPage = new System.Windows.Forms.TabPage();
+            this.Chart3TabPage = new System.Windows.Forms.TabPage();
+            this.Chart4TabPage = new System.Windows.Forms.TabPage();
+            this.C1LogScaleCheckBox = new System.Windows.Forms.CheckBox();
+            this.C2LogScaleCheckBox = new System.Windows.Forms.CheckBox();
+            this.C3LogScaleCheckBox = new System.Windows.Forms.CheckBox();
+            this.C4LogScaleCheckBox = new System.Windows.Forms.CheckBox();
             this.StripChartControlPanel.SuspendLayout();
             this.StripChartsPanel.SuspendLayout();
             this.StripChartsLayoutPanel.SuspendLayout();
@@ -107,6 +116,11 @@ namespace Omniscient
             this.BottomPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.EventControlPanel.SuspendLayout();
+            this.tabControl1.SuspendLayout();
+            this.Chart1TabPage.SuspendLayout();
+            this.Chart2TabPage.SuspendLayout();
+            this.Chart3TabPage.SuspendLayout();
+            this.Chart4TabPage.SuspendLayout();
             this.SuspendLayout();
             // 
             // StripChartControlPanel
@@ -145,8 +159,6 @@ namespace Omniscient
             this.StripChartsLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.StripChartsLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.StripChartsLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            //this.StripChartsLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            //this.StripChartsLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.StripChartsLayoutPanel.Size = new System.Drawing.Size(735, 419);
             this.StripChartsLayoutPanel.TabIndex = 1;
             // 
@@ -359,6 +371,7 @@ namespace Omniscient
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.tabControl1);
             this.groupBox1.Controls.Add(this.RangeUpdateButton);
             this.groupBox1.Controls.Add(this.RangeComboBox);
             this.groupBox1.Controls.Add(this.RangeTextBox);
@@ -379,7 +392,7 @@ namespace Omniscient
             // 
             // RangeUpdateButton
             // 
-            this.RangeUpdateButton.Location = new System.Drawing.Point(216, 119);
+            this.RangeUpdateButton.Location = new System.Drawing.Point(185, 100);
             this.RangeUpdateButton.Name = "RangeUpdateButton";
             this.RangeUpdateButton.Size = new System.Drawing.Size(59, 26);
             this.RangeUpdateButton.TabIndex = 15;
@@ -396,7 +409,7 @@ namespace Omniscient
             "Days",
             "Months",
             "Years"});
-            this.RangeComboBox.Location = new System.Drawing.Point(172, 57);
+            this.RangeComboBox.Location = new System.Drawing.Point(141, 46);
             this.RangeComboBox.Name = "RangeComboBox";
             this.RangeComboBox.Size = new System.Drawing.Size(103, 21);
             this.RangeComboBox.TabIndex = 14;
@@ -404,7 +417,7 @@ namespace Omniscient
             // 
             // RangeTextBox
             // 
-            this.RangeTextBox.Location = new System.Drawing.Point(78, 58);
+            this.RangeTextBox.Location = new System.Drawing.Point(47, 46);
             this.RangeTextBox.Name = "RangeTextBox";
             this.RangeTextBox.Size = new System.Drawing.Size(88, 20);
             this.RangeTextBox.TabIndex = 13;
@@ -415,18 +428,18 @@ namespace Omniscient
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(30, 61);
+            this.label6.Location = new System.Drawing.Point(4, 50);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(42, 13);
+            this.label6.Size = new System.Drawing.Size(39, 13);
             this.label6.TabIndex = 12;
-            this.label6.Text = "Range:";
+            this.label6.Text = "Range";
             // 
             // EndTimePicker
             // 
             this.EndTimePicker.CustomFormat = "MMM dd, yyyy\'";
             this.EndTimePicker.Enabled = false;
             this.EndTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.EndTimePicker.Location = new System.Drawing.Point(78, 94);
+            this.EndTimePicker.Location = new System.Drawing.Point(47, 71);
             this.EndTimePicker.Name = "EndTimePicker";
             this.EndTimePicker.ShowUpDown = true;
             this.EndTimePicker.Size = new System.Drawing.Size(88, 20);
@@ -436,7 +449,7 @@ namespace Omniscient
             // 
             this.StartTimePicker.CustomFormat = "MMM dd, yyyy\'";
             this.StartTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.StartTimePicker.Location = new System.Drawing.Point(78, 28);
+            this.StartTimePicker.Location = new System.Drawing.Point(47, 21);
             this.StartTimePicker.Name = "StartTimePicker";
             this.StartTimePicker.ShowUpDown = true;
             this.StartTimePicker.Size = new System.Drawing.Size(88, 20);
@@ -448,7 +461,7 @@ namespace Omniscient
             // 
             this.StartDatePicker.CustomFormat = "MMM dd, yyyy\'";
             this.StartDatePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.StartDatePicker.Location = new System.Drawing.Point(172, 27);
+            this.StartDatePicker.Location = new System.Drawing.Point(141, 21);
             this.StartDatePicker.Name = "StartDatePicker";
             this.StartDatePicker.Size = new System.Drawing.Size(103, 20);
             this.StartDatePicker.TabIndex = 9;
@@ -461,7 +474,7 @@ namespace Omniscient
             this.EndDatePicker.CustomFormat = "MMM dd, yyyy\'";
             this.EndDatePicker.Enabled = false;
             this.EndDatePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.EndDatePicker.Location = new System.Drawing.Point(172, 93);
+            this.EndDatePicker.Location = new System.Drawing.Point(141, 71);
             this.EndDatePicker.Name = "EndDatePicker";
             this.EndDatePicker.Size = new System.Drawing.Size(103, 20);
             this.EndDatePicker.TabIndex = 8;
@@ -470,7 +483,7 @@ namespace Omniscient
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(43, 99);
+            this.label10.Location = new System.Drawing.Point(17, 75);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(26, 13);
             this.label10.TabIndex = 6;
@@ -479,7 +492,7 @@ namespace Omniscient
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(43, 33);
+            this.label11.Location = new System.Drawing.Point(14, 25);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(29, 13);
             this.label11.TabIndex = 5;
@@ -667,6 +680,105 @@ namespace Omniscient
             this.button2.Text = "Generate Events";
             this.button2.UseVisualStyleBackColor = true;
             // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.Chart1TabPage);
+            this.tabControl1.Controls.Add(this.Chart2TabPage);
+            this.tabControl1.Controls.Add(this.Chart3TabPage);
+            this.tabControl1.Controls.Add(this.Chart4TabPage);
+            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.tabControl1.Location = new System.Drawing.Point(3, 133);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(309, 100);
+            this.tabControl1.TabIndex = 16;
+            // 
+            // Chart1TabPage
+            // 
+            this.Chart1TabPage.Controls.Add(this.C1LogScaleCheckBox);
+            this.Chart1TabPage.Location = new System.Drawing.Point(4, 22);
+            this.Chart1TabPage.Name = "Chart1TabPage";
+            this.Chart1TabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.Chart1TabPage.Size = new System.Drawing.Size(301, 74);
+            this.Chart1TabPage.TabIndex = 0;
+            this.Chart1TabPage.Text = "Chart 1";
+            this.Chart1TabPage.UseVisualStyleBackColor = true;
+            // 
+            // Chart2TabPage
+            // 
+            this.Chart2TabPage.Controls.Add(this.C2LogScaleCheckBox);
+            this.Chart2TabPage.Location = new System.Drawing.Point(4, 22);
+            this.Chart2TabPage.Name = "Chart2TabPage";
+            this.Chart2TabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.Chart2TabPage.Size = new System.Drawing.Size(301, 74);
+            this.Chart2TabPage.TabIndex = 1;
+            this.Chart2TabPage.Text = "Chart 2";
+            this.Chart2TabPage.UseVisualStyleBackColor = true;
+            // 
+            // Chart3TabPage
+            // 
+            this.Chart3TabPage.Controls.Add(this.C3LogScaleCheckBox);
+            this.Chart3TabPage.Location = new System.Drawing.Point(4, 22);
+            this.Chart3TabPage.Name = "Chart3TabPage";
+            this.Chart3TabPage.Size = new System.Drawing.Size(301, 74);
+            this.Chart3TabPage.TabIndex = 2;
+            this.Chart3TabPage.Text = "Chart 3";
+            this.Chart3TabPage.UseVisualStyleBackColor = true;
+            // 
+            // Chart4TabPage
+            // 
+            this.Chart4TabPage.Controls.Add(this.C4LogScaleCheckBox);
+            this.Chart4TabPage.Location = new System.Drawing.Point(4, 22);
+            this.Chart4TabPage.Name = "Chart4TabPage";
+            this.Chart4TabPage.Size = new System.Drawing.Size(301, 74);
+            this.Chart4TabPage.TabIndex = 3;
+            this.Chart4TabPage.Text = "Chart 4";
+            this.Chart4TabPage.UseVisualStyleBackColor = true;
+            // 
+            // C1LogScaleCheckBox
+            // 
+            this.C1LogScaleCheckBox.AutoSize = true;
+            this.C1LogScaleCheckBox.Location = new System.Drawing.Point(10, 10);
+            this.C1LogScaleCheckBox.Name = "C1LogScaleCheckBox";
+            this.C1LogScaleCheckBox.Size = new System.Drawing.Size(74, 17);
+            this.C1LogScaleCheckBox.TabIndex = 0;
+            this.C1LogScaleCheckBox.Text = "Log Scale";
+            this.C1LogScaleCheckBox.UseVisualStyleBackColor = true;
+            this.C1LogScaleCheckBox.CheckedChanged += new System.EventHandler(this.C1LogScaleCheckBox_CheckedChanged);
+            // 
+            // C2LogScaleCheckBox
+            // 
+            this.C2LogScaleCheckBox.AutoSize = true;
+            this.C2LogScaleCheckBox.Location = new System.Drawing.Point(10, 10);
+            this.C2LogScaleCheckBox.Name = "C2LogScaleCheckBox";
+            this.C2LogScaleCheckBox.Size = new System.Drawing.Size(74, 17);
+            this.C2LogScaleCheckBox.TabIndex = 1;
+            this.C2LogScaleCheckBox.Text = "Log Scale";
+            this.C2LogScaleCheckBox.UseVisualStyleBackColor = true;
+            this.C2LogScaleCheckBox.CheckedChanged += new System.EventHandler(this.C2LogScaleCheckBox_CheckedChanged);
+            // 
+            // C3LogScaleCheckBox
+            // 
+            this.C3LogScaleCheckBox.AutoSize = true;
+            this.C3LogScaleCheckBox.Location = new System.Drawing.Point(10, 10);
+            this.C3LogScaleCheckBox.Name = "C3LogScaleCheckBox";
+            this.C3LogScaleCheckBox.Size = new System.Drawing.Size(74, 17);
+            this.C3LogScaleCheckBox.TabIndex = 1;
+            this.C3LogScaleCheckBox.Text = "Log Scale";
+            this.C3LogScaleCheckBox.UseVisualStyleBackColor = true;
+            this.C3LogScaleCheckBox.CheckedChanged += new System.EventHandler(this.C3LogScaleCheckBox_CheckedChanged);
+            // 
+            // C4LogScaleCheckBox
+            // 
+            this.C4LogScaleCheckBox.AutoSize = true;
+            this.C4LogScaleCheckBox.Location = new System.Drawing.Point(10, 10);
+            this.C4LogScaleCheckBox.Name = "C4LogScaleCheckBox";
+            this.C4LogScaleCheckBox.Size = new System.Drawing.Size(74, 17);
+            this.C4LogScaleCheckBox.TabIndex = 1;
+            this.C4LogScaleCheckBox.Text = "Log Scale";
+            this.C4LogScaleCheckBox.UseVisualStyleBackColor = true;
+            this.C4LogScaleCheckBox.CheckedChanged += new System.EventHandler(this.C4LogScaleCheckBox_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -707,6 +819,15 @@ namespace Omniscient
             this.BottomPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.EventControlPanel.ResumeLayout(false);
+            this.tabControl1.ResumeLayout(false);
+            this.Chart1TabPage.ResumeLayout(false);
+            this.Chart1TabPage.PerformLayout();
+            this.Chart2TabPage.ResumeLayout(false);
+            this.Chart2TabPage.PerformLayout();
+            this.Chart3TabPage.ResumeLayout(false);
+            this.Chart3TabPage.PerformLayout();
+            this.Chart4TabPage.ResumeLayout(false);
+            this.Chart4TabPage.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -771,6 +892,15 @@ namespace Omniscient
         private TextBox RangeTextBox;
         private Label label6;
         private Button RangeUpdateButton;
+        private TabControl tabControl1;
+        private TabPage Chart1TabPage;
+        private CheckBox C1LogScaleCheckBox;
+        private TabPage Chart2TabPage;
+        private TabPage Chart3TabPage;
+        private TabPage Chart4TabPage;
+        private CheckBox C2LogScaleCheckBox;
+        private CheckBox C3LogScaleCheckBox;
+        private CheckBox C4LogScaleCheckBox;
     }
 }
 
