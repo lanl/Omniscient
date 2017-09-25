@@ -26,6 +26,9 @@ namespace Omniscient
         List<ChannelPanel> chPanels;
         List<Instrument> activeInstruments;
 
+        private DateTime globalStart;
+        private DateTime globalEnd;
+
         private bool rangeChanged = false;
         private bool bootingUp = false;
 
@@ -38,6 +41,8 @@ namespace Omniscient
         private void MainForm_Load(object sender, EventArgs e)
         {
             bootingUp = true;
+            globalStart = new DateTime(1957, 7, 29);
+            globalEnd = DateTime.Today;
             chPanels = new List<ChannelPanel>();
             siteMan = new SiteManager();
             siteMan.LoadFromXML("SiteManager.xml");
@@ -406,6 +411,13 @@ namespace Omniscient
 
             if (start >= end) return;
 
+            // Update Scrollbar
+            StripChartScroll.Minimum = (int)(globalStart.Ticks/6e8);
+            StripChartScroll.Maximum = (int)(globalEnd.Ticks/6e8);
+            StripChartScroll.Value = (int)(start.Ticks/6e8);
+            StripChartScroll.SmallChange = (int)((end.Ticks - start.Ticks) / 6e8);
+            StripChartScroll.LargeChange = (int)((end.Ticks - start.Ticks) / 6e8);
+
             string xLabelFormat;
             Separator sep = new Separator();
             double daysInRange = TimeSpan.FromTicks(end.Ticks - start.Ticks).TotalDays;
@@ -564,6 +576,15 @@ namespace Omniscient
                 UpdateRange();
             }
             rangeChanged = false;
+        }
+
+        private void StripChartScroll_Scroll(object sender, ScrollEventArgs e)
+        {
+            DateTime newStart = new DateTime((long)(StripChartScroll.Value * 6e8));
+            StartDatePicker.Value = newStart;
+            StartTimePicker.Value = newStart;
+            UpdateEndPickers();
+            UpdateRange();
         }
     }
 }

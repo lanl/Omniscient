@@ -58,6 +58,7 @@ namespace Omniscient
             this.RightPanel = new System.Windows.Forms.Panel();
             this.ChannelsPanel = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.RangeUpdateButton = new System.Windows.Forms.Button();
             this.RangeComboBox = new System.Windows.Forms.ComboBox();
             this.RangeTextBox = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
@@ -68,6 +69,7 @@ namespace Omniscient
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.SitesTreeView = new Omniscient.Controls.ResponsiveTreeView();
             this.button1 = new System.Windows.Forms.Button();
             this.textBox7 = new System.Windows.Forms.TextBox();
             this.comboBox5 = new System.Windows.Forms.ComboBox();
@@ -87,8 +89,6 @@ namespace Omniscient
             this.Instrument3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.EventControlPanel = new System.Windows.Forms.Panel();
             this.button2 = new System.Windows.Forms.Button();
-            this.SitesTreeView = new Omniscient.Controls.ResponsiveTreeView();
-            this.RangeUpdateButton = new System.Windows.Forms.Button();
             this.StripChartControlPanel.SuspendLayout();
             this.StripChartsPanel.SuspendLayout();
             this.StripChatsLayoutPanel.SuspendLayout();
@@ -193,6 +193,7 @@ namespace Omniscient
             this.StripChartScroll.Name = "StripChartScroll";
             this.StripChartScroll.Size = new System.Drawing.Size(735, 17);
             this.StripChartScroll.TabIndex = 1;
+            this.StripChartScroll.Scroll += new System.Windows.Forms.ScrollEventHandler(this.StripChartScroll_Scroll);
             // 
             // menuStrip1
             // 
@@ -376,6 +377,16 @@ namespace Omniscient
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "View";
             // 
+            // RangeUpdateButton
+            // 
+            this.RangeUpdateButton.Location = new System.Drawing.Point(216, 119);
+            this.RangeUpdateButton.Name = "RangeUpdateButton";
+            this.RangeUpdateButton.Size = new System.Drawing.Size(59, 26);
+            this.RangeUpdateButton.TabIndex = 15;
+            this.RangeUpdateButton.Text = "Update";
+            this.RangeUpdateButton.UseVisualStyleBackColor = true;
+            this.RangeUpdateButton.Click += new System.EventHandler(this.RangeUpdateButton_Click);
+            // 
             // RangeComboBox
             // 
             this.RangeComboBox.FormattingEnabled = true;
@@ -490,6 +501,15 @@ namespace Omniscient
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(200, 667);
             this.panel2.TabIndex = 5;
+            // 
+            // SitesTreeView
+            // 
+            this.SitesTreeView.CheckBoxes = true;
+            this.SitesTreeView.Location = new System.Drawing.Point(15, 73);
+            this.SitesTreeView.Name = "SitesTreeView";
+            this.SitesTreeView.Size = new System.Drawing.Size(167, 215);
+            this.SitesTreeView.TabIndex = 11;
+            this.SitesTreeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.SitesTreeView_AfterCheck);
             // 
             // button1
             // 
@@ -646,25 +666,6 @@ namespace Omniscient
             this.button2.TabIndex = 0;
             this.button2.Text = "Generate Events";
             this.button2.UseVisualStyleBackColor = true;
-            // 
-            // SitesTreeView
-            // 
-            this.SitesTreeView.CheckBoxes = true;
-            this.SitesTreeView.Location = new System.Drawing.Point(15, 73);
-            this.SitesTreeView.Name = "SitesTreeView";
-            this.SitesTreeView.Size = new System.Drawing.Size(167, 215);
-            this.SitesTreeView.TabIndex = 11;
-            this.SitesTreeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.SitesTreeView_AfterCheck);
-            // 
-            // RangeUpdateButton
-            // 
-            this.RangeUpdateButton.Location = new System.Drawing.Point(216, 119);
-            this.RangeUpdateButton.Name = "RangeUpdateButton";
-            this.RangeUpdateButton.Size = new System.Drawing.Size(59, 26);
-            this.RangeUpdateButton.TabIndex = 15;
-            this.RangeUpdateButton.Text = "Update";
-            this.RangeUpdateButton.UseVisualStyleBackColor = true;
-            this.RangeUpdateButton.Click += new System.EventHandler(this.RangeUpdateButton_Click);
             // 
             // MainForm
             // 
