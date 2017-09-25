@@ -68,7 +68,6 @@ namespace Omniscient
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.SitesTreeView = new Omniscient.Controls.ResponsiveTreeView();
             this.button1 = new System.Windows.Forms.Button();
             this.textBox7 = new System.Windows.Forms.TextBox();
             this.comboBox5 = new System.Windows.Forms.ComboBox();
@@ -88,6 +87,8 @@ namespace Omniscient
             this.Instrument3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.EventControlPanel = new System.Windows.Forms.Panel();
             this.button2 = new System.Windows.Forms.Button();
+            this.SitesTreeView = new Omniscient.Controls.ResponsiveTreeView();
+            this.RangeUpdateButton = new System.Windows.Forms.Button();
             this.StripChartControlPanel.SuspendLayout();
             this.StripChartsPanel.SuspendLayout();
             this.StripChatsLayoutPanel.SuspendLayout();
@@ -357,6 +358,7 @@ namespace Omniscient
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.RangeUpdateButton);
             this.groupBox1.Controls.Add(this.RangeComboBox);
             this.groupBox1.Controls.Add(this.RangeTextBox);
             this.groupBox1.Controls.Add(this.label6);
@@ -398,7 +400,6 @@ namespace Omniscient
             this.RangeTextBox.Text = "1";
             this.RangeTextBox.TextChanged += new System.EventHandler(this.RangeTextBox_TextChanged);
             this.RangeTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.RangeTextBox_KeyDown);
-            this.RangeTextBox.Leave += new System.EventHandler(this.RangeTextBox_Leave);
             // 
             // label6
             // 
@@ -419,7 +420,6 @@ namespace Omniscient
             this.EndTimePicker.ShowUpDown = true;
             this.EndTimePicker.Size = new System.Drawing.Size(88, 20);
             this.EndTimePicker.TabIndex = 11;
-            this.EndTimePicker.ValueChanged += new System.EventHandler(this.EndTimePicker_ValueChanged);
             // 
             // StartTimePicker
             // 
@@ -432,7 +432,6 @@ namespace Omniscient
             this.StartTimePicker.TabIndex = 10;
             this.StartTimePicker.ValueChanged += new System.EventHandler(this.StartTimePicker_ValueChanged);
             this.StartTimePicker.KeyDown += new System.Windows.Forms.KeyEventHandler(this.RangeTextBox_KeyDown);
-            this.StartTimePicker.Leave += new System.EventHandler(this.StartDatePicker_Leave);
             // 
             // StartDatePicker
             // 
@@ -445,7 +444,6 @@ namespace Omniscient
             this.StartDatePicker.Value = new System.DateTime(2016, 11, 1, 11, 15, 0, 0);
             this.StartDatePicker.ValueChanged += new System.EventHandler(this.StartDatePicker_ValueChanged);
             this.StartDatePicker.KeyDown += new System.Windows.Forms.KeyEventHandler(this.RangeTextBox_KeyDown);
-            this.StartDatePicker.Leave += new System.EventHandler(this.StartDatePicker_Leave);
             // 
             // EndDatePicker
             // 
@@ -457,7 +455,6 @@ namespace Omniscient
             this.EndDatePicker.Size = new System.Drawing.Size(103, 20);
             this.EndDatePicker.TabIndex = 8;
             this.EndDatePicker.Value = new System.DateTime(2016, 12, 1, 11, 15, 0, 0);
-            this.EndDatePicker.ValueChanged += new System.EventHandler(this.EndDatePicker_ValueChanged);
             // 
             // label10
             // 
@@ -493,15 +490,6 @@ namespace Omniscient
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(200, 667);
             this.panel2.TabIndex = 5;
-            // 
-            // SitesTreeView
-            // 
-            this.SitesTreeView.CheckBoxes = true;
-            this.SitesTreeView.Location = new System.Drawing.Point(15, 73);
-            this.SitesTreeView.Name = "SitesTreeView";
-            this.SitesTreeView.Size = new System.Drawing.Size(167, 215);
-            this.SitesTreeView.TabIndex = 11;
-            this.SitesTreeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.SitesTreeView_AfterCheck);
             // 
             // button1
             // 
@@ -659,6 +647,25 @@ namespace Omniscient
             this.button2.Text = "Generate Events";
             this.button2.UseVisualStyleBackColor = true;
             // 
+            // SitesTreeView
+            // 
+            this.SitesTreeView.CheckBoxes = true;
+            this.SitesTreeView.Location = new System.Drawing.Point(15, 73);
+            this.SitesTreeView.Name = "SitesTreeView";
+            this.SitesTreeView.Size = new System.Drawing.Size(167, 215);
+            this.SitesTreeView.TabIndex = 11;
+            this.SitesTreeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.SitesTreeView_AfterCheck);
+            // 
+            // RangeUpdateButton
+            // 
+            this.RangeUpdateButton.Location = new System.Drawing.Point(216, 119);
+            this.RangeUpdateButton.Name = "RangeUpdateButton";
+            this.RangeUpdateButton.Size = new System.Drawing.Size(59, 26);
+            this.RangeUpdateButton.TabIndex = 15;
+            this.RangeUpdateButton.Text = "Update";
+            this.RangeUpdateButton.UseVisualStyleBackColor = true;
+            this.RangeUpdateButton.Click += new System.EventHandler(this.RangeUpdateButton_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -762,6 +769,7 @@ namespace Omniscient
         private ComboBox RangeComboBox;
         private TextBox RangeTextBox;
         private Label label6;
+        private Button RangeUpdateButton;
     }
 }
 

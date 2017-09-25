@@ -342,19 +342,9 @@ namespace Omniscient
             rangeChanged = true;
         }
 
-        private void EndDatePicker_ValueChanged(object sender, EventArgs e)
-        {
-            //UpdatesCharts();
-        }
-
         private void StartTimePicker_ValueChanged(object sender, EventArgs e)
         {
             rangeChanged = true;
-        }
-
-        private void EndTimePicker_ValueChanged(object sender, EventArgs e)
-        {
-            //UpdatesCharts();
         }
 
         private void UpdateEndPickers()
@@ -558,15 +548,6 @@ namespace Omniscient
             UpdateRange();
         }
 
-        private void RangeTextBox_Leave(object sender, EventArgs e)
-        {
-            if (rangeChanged)
-            {
-                UpdateRange();
-            }
-            rangeChanged = false;
-        }
-
         private void RangeTextBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (rangeChanged & e.KeyCode == Keys.Enter)
@@ -576,7 +557,7 @@ namespace Omniscient
             rangeChanged = false;
         }
 
-        private void StartDatePicker_Leave(object sender, EventArgs e)
+        private void RangeUpdateButton_Click(object sender, EventArgs e)
         {
             if (rangeChanged)
             {
