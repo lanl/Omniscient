@@ -28,12 +28,14 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.SymbolComboBox = new System.Windows.Forms.ComboBox();
             this.Chart4CheckBox = new System.Windows.Forms.CheckBox();
             this.Chart3CheckBox = new System.Windows.Forms.CheckBox();
             this.Chart2CheckBox = new System.Windows.Forms.CheckBox();
             this.Chart1CheckBox = new System.Windows.Forms.CheckBox();
             this.NameTextBox = new System.Windows.Forms.TextBox();
+            this.NameToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.SuspendLayout();
             // 
             // SymbolComboBox
@@ -106,6 +108,14 @@
             this.NameTextBox.Size = new System.Drawing.Size(140, 20);
             this.NameTextBox.TabIndex = 7;
             // 
+            // NameToolTip
+            // 
+            this.NameToolTip.AutomaticDelay = 125;
+            this.NameToolTip.AutoPopDelay = 5000;
+            this.NameToolTip.InitialDelay = 125;
+            this.NameToolTip.ReshowDelay = 25;
+            this.NameToolTip.ShowAlways = true;
+            // 
             // ChannelPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -132,5 +142,6 @@
         public System.Windows.Forms.CheckBox Chart2CheckBox;
         public System.Windows.Forms.CheckBox Chart1CheckBox;
         private System.Windows.Forms.TextBox NameTextBox;
+        private System.Windows.Forms.ToolTip NameToolTip;
     }
 }

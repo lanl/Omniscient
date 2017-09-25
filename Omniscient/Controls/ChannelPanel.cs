@@ -32,6 +32,8 @@ namespace Omniscient
             Chart2CheckBox.Tag = 1;
             Chart3CheckBox.Tag = 2;
             Chart4CheckBox.Tag = 3;
+
+            NameToolTip.SetToolTip(NameTextBox, NameTextBox.Text);
         }
 
         public Channel GetChannel() { return channel; }
