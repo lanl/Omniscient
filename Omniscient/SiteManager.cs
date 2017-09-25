@@ -46,6 +46,11 @@ namespace Omniscient
                                     newGRANDInstrument.SetDataFolder(instrumentNode.Attributes["directory"]?.InnerText);
                                     newSystem.AddInstrument(newGRANDInstrument);
                                     break;
+                                case "MCA":
+                                    MCAInstrument newMCAInstrument = new MCAInstrument(instrumentNode.Attributes["name"]?.InnerText);
+                                    newMCAInstrument.SetDataFolder(instrumentNode.Attributes["directory"]?.InnerText);
+                                    newSystem.AddInstrument(newMCAInstrument);
+                                    break;
                                 default:
                                     break;
                             }
