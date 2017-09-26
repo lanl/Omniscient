@@ -21,8 +21,12 @@ using Omniscient.Instruments;
 
 namespace Omniscient
 {
+    /// <summary>
+    /// MainForm is the window that appears when opening Omniscient as is where most of the user-interaction occurs.
+    /// </summary>
     public partial class MainForm : Form
     {
+        ///////////////////////////////////////////////////////////////////////
         private const int N_CHARTS = 4;
         SiteManager siteMan;
         List<ChannelPanel> chPanels;
@@ -40,7 +44,11 @@ namespace Omniscient
         double mouseX = 0;
         private bool showMarker = false;
         private double markerValue = 0;
+        ///////////////////////////////////////////////////////////////////////
 
+        /// <summary>
+        /// MainForm constructor
+        /// </summary>
         public MainForm()
         {
             logScale = new bool[N_CHARTS];
@@ -49,6 +57,10 @@ namespace Omniscient
             InitializeComponent();
         }
 
+        /// <summary>
+        /// MainForm_Load initializes several variables after the form is constructed.</summary>
+        /// <remarks>Event hanlders for mouse events on the charts are handled 
+        /// here because they cause errors when put in the form designer. </remarks>
         private void MainForm_Load(object sender, EventArgs e)
         {
             bootingUp = true;
@@ -74,6 +86,8 @@ namespace Omniscient
             UpdateRange();
         }
 
+        /// <summary>
+        /// UpdateSiteTree() builds the tree view of the SiteManager.</summary>
         private void UpdateSiteTree()
         {
             SitesTreeView.Nodes.Clear();
@@ -100,7 +114,9 @@ namespace Omniscient
                 SitesTreeView.Nodes.Add(siteNode);
             }
         }
-        
+
+        /// <summary>
+        /// GetChart is used to easily loop through the charts in other methods.</summary>
         private LiveCharts.WinForms.CartesianChart GetChart(int chartNum)
         {
             switch (chartNum)
@@ -126,6 +142,8 @@ namespace Omniscient
             inspectrum.Show();
         }
 
+        /// <summary>
+        /// UpdateInstrumentData is called when instruments are added to the channel panels.</summary>
         private void UpdateInstrumentData(Instrument inst)
         {
             Cursor.Current = Cursors.WaitCursor;
@@ -141,6 +159,8 @@ namespace Omniscient
             }
         }
 
+        /// <summary>
+        /// InitializeCharts is called when the form is loaded. </summary>
         private void InitializeCharts()
         {
             for (int chartNum = 0; chartNum < N_CHARTS; chartNum++)
@@ -188,6 +208,8 @@ namespace Omniscient
             }
         }
 
+        /// <summary>
+        /// UpdateChart is called whenever the data to be displayed on a chart changes. </summary>
         private void UpdateChart(int chartNum)
         {
             LiveCharts.WinForms.CartesianChart chart;
@@ -277,6 +299,11 @@ namespace Omniscient
             chart.Series = seriesColl;
         }
 
+        /// <summary>
+        /// UpdateChartVisibility is called whenever the user clicks on a 
+        /// checkbox in a channel panel.</summary>
+        /// <remarks>Determines which charts have data to be displayed and 
+        /// adjusts the size of the table layout panel accordingly.</remarks>
         private void UpdateChartVisibility()
         {
             StripChartsLayoutPanel.SuspendLayout();
@@ -302,6 +329,9 @@ namespace Omniscient
             StripChartsLayoutPanel.ResumeLayout();
         }
 
+        /// <summary>
+        /// OnChannelPannelCheckChanged is directly called whenever the user 
+        /// clicks on a checkbox in a channel panel.</summary>
         private void OnChannelPannelCheckChanged(object sender, EventArgs e)
         {
             CheckBox checker = (CheckBox)sender;
@@ -309,6 +339,10 @@ namespace Omniscient
             UpdateChartVisibility();
         }
 
+        /// <summary>
+        /// When a user selects an instrument in the tree view of the site 
+        /// manager, AddChannelPanels is called to populate the appropriate
+        /// channel panels.</summary>
         private void AddChannelPanels(Instrument inst)
         {
             activeInstruments.Add(inst);
@@ -353,6 +387,9 @@ namespace Omniscient
             UpdatesCharts();
         }
 
+        /// <summary>
+        /// Determines which instrument was selected or deselected and
+        /// either adds or removes channel panels as appropriate.</summary>
         private void SitesTreeView_AfterCheck(object sender, TreeViewEventArgs e)
         {
             const int INST_LEVEL = 3;
@@ -416,6 +453,9 @@ namespace Omniscient
             rangeChanged = true;
         }
 
+        /// <summary>
+        /// Changes the viewed end date when either the start date or interval
+        /// changes.</summary>
         private void UpdateEndPickers()
         {
             int range = int.Parse(RangeTextBox.Text);
@@ -448,6 +488,9 @@ namespace Omniscient
 
         }
 
+        /// <summary>
+        /// Changes the x-axis of the charts whenever the viewing range
+        /// changes.</summary>
         private void UpdateRange()
         {
             if (bootingUp) return;
@@ -634,6 +677,9 @@ namespace Omniscient
             UpdateRange();
         }
 
+        /// <summary>
+        /// When a user clicks on a chart, DrawMarker puts a 
+        /// marker/indicator/cursor on the same spot on all of the charts.</summary>
         private void DrawMarker()
         {
             Cursor.Current = Cursors.WaitCursor;
@@ -656,12 +702,6 @@ namespace Omniscient
                         break;
                 }
 
-                //GearedValues<DateTimePoint> chartVals = new GearedValues<DateTimePoint>();
-                //List<DateTimePoint> list = new List<DateTimePoint>();
-                //list.Add(new DateTimePoint(new DateTime((long)markerValue), 0.0));
-                //list.Add(new DateTimePoint(new DateTime((long)markerValue), chart.AxisY[0].ActualMaxValue));
-                //chartVals = list.AsGearedValues().WithQuality(Quality.Highest);
-
                 chart.AxisX[0].Sections.Clear();
                 chart.AxisX[0].Sections = new SectionsCollection()
                 {
@@ -677,6 +717,8 @@ namespace Omniscient
             Cursor.Current = Cursors.Default;
         }
 
+        /// <summary>
+        /// Called when a user clicks on any of the charts.</summary>
         private void StripChart_MouseClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             LiveCharts.Wpf.CartesianChart chartBase = (LiveCharts.Wpf.CartesianChart)sender;
@@ -687,6 +729,8 @@ namespace Omniscient
             DrawMarker();
         }
 
+        /// <summary>
+        /// Called when a user moves the mouse over any of the charts.</summary>
         public void StripChart_MouseMoved(object sender, System.Windows.Input.MouseEventArgs e)
         {
             mouseX = e.GetPosition((LiveCharts.Wpf.CartesianChart) sender).X;
