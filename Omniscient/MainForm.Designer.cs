@@ -98,6 +98,8 @@ namespace Omniscient
             this.Instrument3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.EventControlPanel = new System.Windows.Forms.Panel();
             this.button2 = new System.Windows.Forms.Button();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.MarkerToolStripLabel = new System.Windows.Forms.ToolStripLabel();
             this.StripChartControlPanel.SuspendLayout();
             this.StripChartsPanel.SuspendLayout();
             this.StripChartsLayoutPanel.SuspendLayout();
@@ -307,7 +309,9 @@ namespace Omniscient
             // toolStrip1
             // 
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripButton1});
+            this.toolStripButton1,
+            this.toolStripSeparator1,
+            this.MarkerToolStripLabel});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(1254, 25);
@@ -780,6 +784,18 @@ namespace Omniscient
             this.button2.Text = "Generate Events";
             this.button2.UseVisualStyleBackColor = true;
             // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            // 
+            // MarkerToolStripLabel
+            // 
+            this.MarkerToolStripLabel.Margin = new System.Windows.Forms.Padding(200, 1, 0, 2);
+            this.MarkerToolStripLabel.Name = "MarkerToolStripLabel";
+            this.MarkerToolStripLabel.Size = new System.Drawing.Size(99, 22);
+            this.MarkerToolStripLabel.Text = "Marker Location: ";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -902,6 +918,8 @@ namespace Omniscient
         private CheckBox C2LogScaleCheckBox;
         private CheckBox C3LogScaleCheckBox;
         private CheckBox C4LogScaleCheckBox;
+        private ToolStripSeparator toolStripSeparator1;
+        private ToolStripLabel MarkerToolStripLabel;
     }
 }
 

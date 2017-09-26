@@ -708,12 +708,14 @@ namespace Omniscient
                     new AxisSection()
                     {
                         Value = markerValue,
-                        Stroke = new SolidColorBrush(System.Windows.Media.Color.FromRgb(154, 255, 255)),
-                        StrokeThickness = 2,
+                        Stroke = new SolidColorBrush(System.Windows.Media.Color.FromRgb(64, 64, 64)),
+                        StrokeThickness = 1,
                     }
                 };
                 chart.Update(true, true);
             }
+            DateTime markerTime = new DateTime((long)markerValue);
+            MarkerToolStripLabel.Text = "Marker Location: " + markerTime.ToString("MMM dd, yyyy  HH:mm:ss");
             Cursor.Current = Cursors.Default;
         }
 
