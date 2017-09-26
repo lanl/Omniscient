@@ -800,5 +800,11 @@ namespace Omniscient
         {
             rangeChanged = true;
         }
+
+        private void RangeOnlyCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!RangeOnlyCheckBox.Checked)
+                UpdatesCharts();
+        }
     }
 }

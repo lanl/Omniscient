@@ -52,12 +52,15 @@ namespace Omniscient
             this.label1 = new System.Windows.Forms.Label();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.MarkerToolStripLabel = new System.Windows.Forms.ToolStripLabel();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.ToolStripProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.RightPanel = new System.Windows.Forms.Panel();
             this.ChannelsPanel = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.RangeOnlyCheckBox = new System.Windows.Forms.CheckBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.Chart1TabPage = new System.Windows.Forms.TabPage();
             this.C1LogScaleCheckBox = new System.Windows.Forms.CheckBox();
@@ -98,9 +101,6 @@ namespace Omniscient
             this.Instrument3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.EventControlPanel = new System.Windows.Forms.Panel();
             this.button2 = new System.Windows.Forms.Button();
-            this.RangeOnlyCheckBox = new System.Windows.Forms.CheckBox();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.MarkerToolStripLabel = new System.Windows.Forms.ToolStripLabel();
             this.StripChartControlPanel.SuspendLayout();
             this.StripChartsPanel.SuspendLayout();
             this.StripChartsLayoutPanel.SuspendLayout();
@@ -328,6 +328,18 @@ namespace Omniscient
             this.toolStripButton1.Size = new System.Drawing.Size(23, 22);
             this.toolStripButton1.Text = "toolStripButton1";
             // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            // 
+            // MarkerToolStripLabel
+            // 
+            this.MarkerToolStripLabel.Margin = new System.Windows.Forms.Padding(200, 1, 0, 2);
+            this.MarkerToolStripLabel.Name = "MarkerToolStripLabel";
+            this.MarkerToolStripLabel.Size = new System.Drawing.Size(99, 22);
+            this.MarkerToolStripLabel.Text = "Marker Location: ";
+            // 
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -395,6 +407,19 @@ namespace Omniscient
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "View";
+            // 
+            // RangeOnlyCheckBox
+            // 
+            this.RangeOnlyCheckBox.AutoSize = true;
+            this.RangeOnlyCheckBox.Checked = true;
+            this.RangeOnlyCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.RangeOnlyCheckBox.Location = new System.Drawing.Point(47, 105);
+            this.RangeOnlyCheckBox.Name = "RangeOnlyCheckBox";
+            this.RangeOnlyCheckBox.Size = new System.Drawing.Size(109, 17);
+            this.RangeOnlyCheckBox.TabIndex = 17;
+            this.RangeOnlyCheckBox.Text = "Load Range Only";
+            this.RangeOnlyCheckBox.UseVisualStyleBackColor = true;
+            this.RangeOnlyCheckBox.CheckedChanged += new System.EventHandler(this.RangeOnlyCheckBox_CheckedChanged);
             // 
             // tabControl1
             // 
@@ -785,30 +810,6 @@ namespace Omniscient
             this.button2.TabIndex = 0;
             this.button2.Text = "Generate Events";
             this.button2.UseVisualStyleBackColor = true;
-            // 
-            // RangeOnlyCheckBox
-            // 
-            this.RangeOnlyCheckBox.AutoSize = true;
-            this.RangeOnlyCheckBox.Checked = true;
-            this.RangeOnlyCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.RangeOnlyCheckBox.Location = new System.Drawing.Point(47, 105);
-            this.RangeOnlyCheckBox.Name = "RangeOnlyCheckBox";
-            this.RangeOnlyCheckBox.Size = new System.Drawing.Size(109, 17);
-            this.RangeOnlyCheckBox.TabIndex = 17;
-            this.RangeOnlyCheckBox.Text = "Load Range Only";
-            this.RangeOnlyCheckBox.UseVisualStyleBackColor = true;
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
-            // 
-            // MarkerToolStripLabel
-            // 
-            this.MarkerToolStripLabel.Margin = new System.Windows.Forms.Padding(200, 1, 0, 2);
-            this.MarkerToolStripLabel.Name = "MarkerToolStripLabel";
-            this.MarkerToolStripLabel.Size = new System.Drawing.Size(99, 22);
-            this.MarkerToolStripLabel.Text = "Marker Location: ";
             // 
             // MainForm
             // 
