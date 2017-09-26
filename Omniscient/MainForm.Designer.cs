@@ -98,6 +98,7 @@ namespace Omniscient
             this.Instrument3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.EventControlPanel = new System.Windows.Forms.Panel();
             this.button2 = new System.Windows.Forms.Button();
+            this.RangeOnlyCheckBox = new System.Windows.Forms.CheckBox();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.MarkerToolStripLabel = new System.Windows.Forms.ToolStripLabel();
             this.StripChartControlPanel.SuspendLayout();
@@ -375,6 +376,7 @@ namespace Omniscient
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.RangeOnlyCheckBox);
             this.groupBox1.Controls.Add(this.tabControl1);
             this.groupBox1.Controls.Add(this.RangeUpdateButton);
             this.groupBox1.Controls.Add(this.RangeComboBox);
@@ -784,6 +786,18 @@ namespace Omniscient
             this.button2.Text = "Generate Events";
             this.button2.UseVisualStyleBackColor = true;
             // 
+            // RangeOnlyCheckBox
+            // 
+            this.RangeOnlyCheckBox.AutoSize = true;
+            this.RangeOnlyCheckBox.Checked = true;
+            this.RangeOnlyCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.RangeOnlyCheckBox.Location = new System.Drawing.Point(47, 105);
+            this.RangeOnlyCheckBox.Name = "RangeOnlyCheckBox";
+            this.RangeOnlyCheckBox.Size = new System.Drawing.Size(109, 17);
+            this.RangeOnlyCheckBox.TabIndex = 17;
+            this.RangeOnlyCheckBox.Text = "Load Range Only";
+            this.RangeOnlyCheckBox.UseVisualStyleBackColor = true;
+            // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
@@ -918,6 +932,7 @@ namespace Omniscient
         private CheckBox C2LogScaleCheckBox;
         private CheckBox C3LogScaleCheckBox;
         private CheckBox C4LogScaleCheckBox;
+        private CheckBox RangeOnlyCheckBox;
         private ToolStripSeparator toolStripSeparator1;
         private ToolStripLabel MarkerToolStripLabel;
     }

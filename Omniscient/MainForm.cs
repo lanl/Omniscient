@@ -212,8 +212,15 @@ namespace Omniscient
         /// UpdateChart is called whenever the data to be displayed on a chart changes. </summary>
         private void UpdateChart(int chartNum)
         {
+            Cursor.Current = Cursors.WaitCursor;
             LiveCharts.WinForms.CartesianChart chart;
             chart = GetChart(chartNum);
+
+            // Needed for speedy loading
+            DateTime start = StartDatePicker.Value.Date;
+            start = start.Add(StartTimePicker.Value.TimeOfDay);
+            DateTime end = EndDatePicker.Value.Date;
+            end = end.Add(EndTimePicker.Value.TimeOfDay);
 
             SeriesCollection seriesColl;
             if (logScale[chartNum])
@@ -270,19 +277,41 @@ namespace Omniscient
                     // Load up the chart values
                     GearedValues<DateTimePoint> chartVals = new GearedValues<DateTimePoint>();
                     List<DateTimePoint> list = new List<DateTimePoint>();
-                    if (logScale[chartNum])
+                    if (RangeOnlyCheckBox.Checked)
                     {
-                        for (int i = 0; i < dates.Count; ++i) //
+                        if (logScale[chartNum])
                         {
-                            if (vals[i] > 0)
-                                list.Add(new DateTimePoint(dates[i], vals[i]));
+                            for (int i = 0; i < dates.Count; ++i) //
+                            {
+                                if (vals[i] > 0 && dates[i] >= start  && dates[i] <= end)
+                                    list.Add(new DateTimePoint(dates[i], vals[i]));
+                            }
+                        }
+                        else
+                        {
+                            for (int i = 0; i < dates.Count; ++i) //
+                            {
+                                if (dates[i] >= start && dates[i] <= end)
+                                    list.Add(new DateTimePoint(dates[i], vals[i]));
+                            }
                         }
                     }
                     else
                     {
-                        for (int i = 0; i < dates.Count; ++i) //
+                        if (logScale[chartNum])
                         {
-                            list.Add(new DateTimePoint(dates[i], vals[i]));
+                            for (int i = 0; i < dates.Count; ++i) //
+                            {
+                                if (vals[i] > 0)
+                                    list.Add(new DateTimePoint(dates[i], vals[i]));
+                            }
+                        }
+                        else
+                        {
+                            for (int i = 0; i < dates.Count; ++i) //
+                            {
+                                list.Add(new DateTimePoint(dates[i], vals[i]));
+                            }
                         }
                     }
                     chartVals = list.AsGearedValues().WithQuality(Quality.Highest);
@@ -297,6 +326,7 @@ namespace Omniscient
                 }
             }
             chart.Series = seriesColl;
+            Cursor.Current = Cursors.Default;
         }
 
         /// <summary>
@@ -493,6 +523,7 @@ namespace Omniscient
         /// changes.</summary>
         private void UpdateRange()
         {
+            Cursor.Current = Cursors.WaitCursor;
             if (bootingUp) return;
             if (RangeTextBox.Text == "") return;
 
@@ -642,6 +673,9 @@ namespace Omniscient
                 
                 
             }
+            Cursor.Current = Cursors.Default;
+            if (RangeOnlyCheckBox.Checked)
+                UpdatesCharts();
             StripChartsPanel.ResumeLayout();
         }
 
