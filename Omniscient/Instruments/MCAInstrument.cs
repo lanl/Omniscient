@@ -29,7 +29,7 @@ namespace Omniscient.Instruments
 
             numChannels = NUM_CHANNELS;
             channels = new Channel[numChannels];
-            channels[COUNT_RATE] = new Channel(name + "-Count_Rate", this, Channel.ChannelType.COUNT_RATE);
+            channels[COUNT_RATE] = new Channel(name + "-Count_Rate", this, Channel.ChannelType.DURATION_VALUE);
         }
 
         public override void ScanDataFolder()
@@ -71,18 +71,20 @@ namespace Omniscient.Instruments
             if (endIndex == -1) endIndex = (chnDates.Length) - 1;
 
             DateTime time;
+            TimeSpan duration;
 
             for (int i = startIndex; i <= endIndex; ++i)
             {
                 returnCode = chnParser.ParseFile(chnFiles[i]);
                 time = chnParser.GetStartDateTime();
+                duration = TimeSpan.FromSeconds(chnParser.GetRealTime());
 
                 int counts = 0;
                 for (int ch=0; ch<chnParser.GetNumChannels();ch++)
                 {
                     counts += chnParser.GetCounts()[ch];
                 }
-                channels[COUNT_RATE].AddDataPoint(time, counts/chnParser.GetLiveTime()); 
+                channels[COUNT_RATE].AddDataPoint(time, counts/chnParser.GetLiveTime(), duration); 
             }
             channels[COUNT_RATE].Sort();
         }
