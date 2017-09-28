@@ -76,6 +76,12 @@
     <Compile Include="Instruments\GRANDInstrument.cs" />
     <Compile Include="Instruments\Instrument.cs" />
     <Compile Include="Instruments\ISRInstrument.cs" />
+    <Compile Include="InstrumentTypeDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="InstrumentTypeDialog.Designer.cs">
+      <DependentUpon>InstrumentTypeDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -105,6 +111,9 @@
     </Compile>
     <EmbeddedResource Include="Inspectrum.resx">
       <DependentUpon>Inspectrum.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="InstrumentTypeDialog.resx">
+      <DependentUpon>InstrumentTypeDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

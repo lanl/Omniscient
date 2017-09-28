@@ -78,6 +78,9 @@ namespace Omniscient
                 DirectoryTextBox.Enabled = false;
                 DirectoryTextBox.Text = "";
                 DirectoryButton.Enabled = false;
+
+                NewInstrumentButton.Enabled = false;
+                NewSystemButton.Enabled = false;
             }
             else if (node.Tag is Facility)
             {
@@ -90,6 +93,9 @@ namespace Omniscient
                 DirectoryTextBox.Enabled = false;
                 DirectoryTextBox.Text = "";
                 DirectoryButton.Enabled = false;
+
+                NewInstrumentButton.Enabled = false;
+                NewSystemButton.Enabled = true;
             }
             else if (node.Tag is DetectionSystem)
             {
@@ -102,6 +108,9 @@ namespace Omniscient
                 DirectoryTextBox.Enabled = false;
                 DirectoryTextBox.Text = "";
                 DirectoryButton.Enabled = false;
+
+                NewInstrumentButton.Enabled = true;
+                NewSystemButton.Enabled = true;
             }
             else if (node.Tag is Instrument)
             {
@@ -119,6 +128,9 @@ namespace Omniscient
                 DirectoryTextBox.Enabled = true;
                 DirectoryTextBox.Text = inst.GetDataFolder();
                 DirectoryButton.Enabled = true;
+
+                NewInstrumentButton.Enabled = true;
+                NewSystemButton.Enabled = true;
             }
         }
 
@@ -234,6 +246,203 @@ namespace Omniscient
             {
                 DirectoryTextBox.Text = folderBrowserDialog.SelectedPath;
             }
+        }
+
+        private void NewSiteButton_Click(object sender, EventArgs e)
+        {
+            bool uniqueName = false;
+            int iteration = 0;
+
+            string name = "";
+            while (!uniqueName)
+            {
+                iteration++;
+                name = "New-Site-" + iteration.ToString();
+                uniqueName = true;
+                foreach(Site site in siteMan.GetSites())
+                {
+                    if (site.GetName() == name) uniqueName = false;
+                }
+            }
+            siteMan.GetSites().Add(new Site(name));
+            siteMan.Save();
+            UpdateSitesTree();
+        }
+
+        private void NewFacilityButton_Click(object sender, EventArgs e)
+        {
+            // Get parent site
+            Site site;
+            int index = -1;
+            TreeNode node = SitesTreeView.SelectedNode;
+            if (node.Tag is Site)
+            {
+                site = (Site)node.Tag;
+            }
+            else if (node.Tag is Facility)
+            {
+                Facility fac = (Facility)node.Tag;
+                site = (Site)node.Parent.Tag;
+                index = site.GetFacilities().IndexOf(fac) + 1;
+            }
+            else if (node.Tag is DetectionSystem)
+            {
+                Facility fac = (Facility)node.Parent.Tag;
+                site = (Site)node.Parent.Parent.Tag;
+                index = site.GetFacilities().IndexOf(fac) + 1;
+            }
+            else
+            {
+                Facility fac = (Facility)node.Parent.Parent.Tag;
+                site = (Site)node.Parent.Parent.Parent.Tag;
+                index = site.GetFacilities().IndexOf(fac) + 1;
+            }
+
+            if (index < 0)
+                index = site.GetFacilities().Count;
+
+            bool uniqueName = false;
+            int iteration = 0;
+
+            string name = "";
+            while (!uniqueName)
+            {
+                iteration++;
+                name = "New-Facility-" + iteration.ToString();
+                uniqueName = true;
+                foreach (Facility fac in site.GetFacilities())
+                {
+                    if (fac.GetName() == name) uniqueName = false;
+                }
+            }
+            site.GetFacilities().Insert(index, new Facility(name));
+            siteMan.Save();
+            UpdateSitesTree();
+        }
+
+        private void NewSystemButton_Click(object sender, EventArgs e)
+        {
+            // Get parent facility
+            int index = -1;
+            TreeNode node = SitesTreeView.SelectedNode;
+            Facility fac;
+            if (node.Tag is Facility)
+            {
+                fac = (Facility)node.Tag;
+            }
+            else if (node.Tag is DetectionSystem)
+            {
+                fac = (Facility)node.Parent.Tag;
+                DetectionSystem sys = (DetectionSystem)node.Tag;
+                index = fac.GetSystems().IndexOf(sys) + 1;
+            }
+            else
+            {
+                fac = (Facility)node.Parent.Parent.Tag;
+                DetectionSystem sys = (DetectionSystem)node.Parent.Tag;
+                index = fac.GetSystems().IndexOf(sys) + 1;
+            }
+
+            if (index < 0)
+                index = fac.GetSystems().Count;
+
+            bool uniqueName = false;
+            int iteration = 0;
+
+            string name = "";
+            while (!uniqueName)
+            {
+                iteration++;
+                name = "New-System-" + iteration.ToString();
+                uniqueName = true;
+                foreach (DetectionSystem sys in fac.GetSystems())
+                {
+                    if (sys.GetName() == name) uniqueName = false;
+                }
+            }
+            fac.GetSystems().Insert(index, new DetectionSystem(name));
+            siteMan.Save();
+            UpdateSitesTree();
+        }
+
+        private void NewInstrumentButton_Click(object sender, EventArgs e)
+        {
+            // Choose instrument type
+            InstrumentTypeDialog dialog = new InstrumentTypeDialog();
+            DialogResult result = dialog.ShowDialog();
+            if (result == DialogResult.Cancel) return;
+
+            // Get parent system
+            int index = -1;
+            TreeNode node = SitesTreeView.SelectedNode;
+            DetectionSystem sys;
+            if (node.Tag is DetectionSystem)
+            {
+                sys = (DetectionSystem)node.Tag;
+            }
+            else
+            {
+                sys = (DetectionSystem)node.Parent.Tag;
+                Instrument inst = (Instrument)node.Tag;
+                index = sys.GetInstruments().IndexOf(inst) + 1;
+            }
+
+            if (index < 0)
+                index = sys.GetInstruments().Count;
+
+            bool uniqueName = false;
+            int iteration = 0;
+
+            string name = "";
+
+            Instrument newInstrument;
+
+            switch (dialog.InstrumentType)
+            {
+                case "GRAND":
+                    while (!uniqueName)
+                    {
+                        iteration++;
+                        name = "New-GRAND-" + iteration.ToString();
+                        uniqueName = true;
+                        foreach (Instrument inst in sys.GetInstruments())
+                        {
+                            if (sys.GetName() == name) uniqueName = false;
+                        }
+                    }
+                    newInstrument = new GRANDInstrument(name);
+                    break;
+                case "ISR":
+                    while (!uniqueName)
+                    {
+                        iteration++;
+                        name = "New-ISR-" + iteration.ToString();
+                        uniqueName = true;
+                        foreach (Instrument inst in sys.GetInstruments())
+                        {
+                            if (sys.GetName() == name) uniqueName = false;
+                        }
+                    }
+                    newInstrument = new ISRInstrument(name);
+                    break;
+                default:                // MCA
+                    while (!uniqueName)
+                    {
+                        iteration++;
+                        name = "New-MCA-" + iteration.ToString();
+                        uniqueName = true;
+                        foreach (Instrument inst in sys.GetInstruments())
+                        {
+                            if (sys.GetName() == name) uniqueName = false;
+                        }
+                    }
+                    newInstrument = new MCAInstrument(name);
+                    break;
+            }
+
+            sys.GetInstruments().Insert(index, newInstrument);
+            siteMan.Save();
+            UpdateSitesTree();
         }
     }
 }

@@ -202,6 +202,7 @@
             this.NewInstrumentButton.TabIndex = 3;
             this.NewInstrumentButton.Text = "New Instrument";
             this.NewInstrumentButton.UseVisualStyleBackColor = true;
+            this.NewInstrumentButton.Click += new System.EventHandler(this.NewInstrumentButton_Click);
             // 
             // NewSystemButton
             // 
@@ -211,6 +212,7 @@
             this.NewSystemButton.TabIndex = 2;
             this.NewSystemButton.Text = "New System";
             this.NewSystemButton.UseVisualStyleBackColor = true;
+            this.NewSystemButton.Click += new System.EventHandler(this.NewSystemButton_Click);
             // 
             // NewFacilityButton
             // 
@@ -220,6 +222,7 @@
             this.NewFacilityButton.TabIndex = 1;
             this.NewFacilityButton.Text = "New Facility";
             this.NewFacilityButton.UseVisualStyleBackColor = true;
+            this.NewFacilityButton.Click += new System.EventHandler(this.NewFacilityButton_Click);
             // 
             // NewSiteButton
             // 
@@ -229,6 +232,7 @@
             this.NewSiteButton.TabIndex = 0;
             this.NewSiteButton.Text = "New Site";
             this.NewSiteButton.UseVisualStyleBackColor = true;
+            this.NewSiteButton.Click += new System.EventHandler(this.NewSiteButton_Click);
             // 
             // panel3
             // 
