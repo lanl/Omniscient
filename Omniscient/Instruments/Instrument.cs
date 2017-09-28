@@ -23,6 +23,7 @@ namespace Omniscient.Instruments
             
         }
 
+        public abstract void SetName(string newName);
         public abstract void ScanDataFolder();
         public abstract void LoadData(DateTime startDate, DateTime endDate);
         public abstract void ClearData();

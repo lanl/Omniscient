@@ -32,6 +32,12 @@ namespace Omniscient.Instruments
             channels[COUNT_RATE] = new Channel(name + "-Count_Rate", this, Channel.ChannelType.DURATION_VALUE);
         }
 
+        public override void SetName(string newName)
+        {
+            name = newName;
+            channels[COUNT_RATE].SetName(name + "-Count_Rate");
+        }
+
         public override void ScanDataFolder()
         {
             List<string> chnFileList = new List<string>();

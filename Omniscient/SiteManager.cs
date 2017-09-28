@@ -13,10 +13,22 @@ namespace Omniscient
     public class SiteManager
     {
         private List<Site> sites;
+        private string xmlFile;
 
-        public SiteManager()
+        public SiteManager(string newXMLFile)
         {
             sites = new List<Site>();
+            xmlFile = newXMLFile;
+        }
+
+        public ReturnCode Reload()
+        {
+            return LoadFromXML(xmlFile);
+        }
+
+        public ReturnCode Save()
+        {
+            return WriteToXML(xmlFile);
         }
 
         public ReturnCode LoadFromXML(string fileName)
@@ -66,6 +78,48 @@ namespace Omniscient
                 }
                 sites.Add(newSite);
             }
+            return ReturnCode.SUCCESS;
+        }
+
+        public ReturnCode WriteToXML(string fileName)
+        {
+
+            XmlWriter xmlWriter = XmlWriter.Create(fileName, new XmlWriterSettings()
+            {
+                Indent = true,
+            });
+            
+            xmlWriter.WriteStartDocument();
+            xmlWriter.WriteStartElement("SiteManager");
+            foreach (Site site in sites)
+            {
+                xmlWriter.WriteStartElement("Site");
+                xmlWriter.WriteAttributeString("name", site.GetName());
+                foreach (Facility fac in site.GetFacilities())
+                {
+                    xmlWriter.WriteStartElement("Facility");
+                    xmlWriter.WriteAttributeString("name", fac.GetName());
+                    foreach (DetectionSystem sys in fac.GetSystems())
+                    {
+                        xmlWriter.WriteStartElement("System");
+                        xmlWriter.WriteAttributeString("name", sys.GetName());
+                        foreach (Instrument inst in sys.GetInstruments())
+                        {
+                            xmlWriter.WriteStartElement("Instrument");
+                            xmlWriter.WriteAttributeString("name", inst.GetName());
+                            xmlWriter.WriteAttributeString("file_prefix", inst.GetFilePrefix());
+                            xmlWriter.WriteAttributeString("type", inst.GetInstrumentType());
+                            xmlWriter.WriteAttributeString("directory", inst.GetDataFolder());
+                            xmlWriter.WriteEndElement();
+                        }
+                        xmlWriter.WriteEndElement();
+                    }
+                    xmlWriter.WriteEndElement();
+                }
+                xmlWriter.WriteEndElement();
+            }
+            xmlWriter.WriteEndDocument();
+            xmlWriter.Close();
             return ReturnCode.SUCCESS;
         }
 

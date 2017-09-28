@@ -81,6 +81,7 @@
             this.SaveButton.TabIndex = 1;
             this.SaveButton.Text = "Save";
             this.SaveButton.UseVisualStyleBackColor = true;
+            this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
             // 
             // label1
             // 
@@ -289,6 +290,7 @@
             this.ExportButton.TabIndex = 1;
             this.ExportButton.Text = "Export";
             this.ExportButton.UseVisualStyleBackColor = true;
+            this.ExportButton.Click += new System.EventHandler(this.ExportButton_Click);
             // 
             // ImportButton
             // 
@@ -325,6 +327,7 @@
             this.DiscardButton.TabIndex = 15;
             this.DiscardButton.Text = "Discard Changes";
             this.DiscardButton.UseVisualStyleBackColor = true;
+            this.DiscardButton.Click += new System.EventHandler(this.DiscardButton_Click);
             // 
             // DirectoryButton
             // 

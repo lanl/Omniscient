@@ -16,6 +16,8 @@ namespace Omniscient
     {
         SiteManager siteMan;
 
+        bool newNode = false;
+
         public SiteManagerForm(SiteManager newSiteMan)
         {
             siteMan = newSiteMan;
@@ -60,13 +62,14 @@ namespace Omniscient
             }
         }
 
-        private void SitesTreeView_AfterSelect(object sender, TreeViewEventArgs e)
+        private void ResetFields()
         {
-            NameTextBox.Text = e.Node.Text;
+            TreeNode node = SitesTreeView.SelectedNode;
+            NameTextBox.Text = node.Text;
 
-            if (e.Node.Tag is Site)
+            if (node.Tag is Site)
             {
-                Site site = (Site) e.Node.Tag;
+                Site site = (Site)node.Tag;
                 TypeLabel.Text = "Site";
                 InstTypeComboBox.Enabled = false;
                 InstTypeComboBox.Text = "";
@@ -75,9 +78,9 @@ namespace Omniscient
                 DirectoryTextBox.Enabled = false;
                 DirectoryTextBox.Text = "";
             }
-            else if (e.Node.Tag is Facility)
+            else if (node.Tag is Facility)
             {
-                Facility fac = (Facility)e.Node.Tag;
+                Facility fac = (Facility)node.Tag;
                 TypeLabel.Text = "Facility";
                 InstTypeComboBox.Enabled = false;
                 InstTypeComboBox.Text = "";
@@ -86,9 +89,9 @@ namespace Omniscient
                 DirectoryTextBox.Enabled = false;
                 DirectoryTextBox.Text = "";
             }
-            else if (e.Node.Tag is DetectionSystem)
+            else if (node.Tag is DetectionSystem)
             {
-                DetectionSystem sys = (DetectionSystem)e.Node.Tag;
+                DetectionSystem sys = (DetectionSystem)node.Tag;
                 TypeLabel.Text = "System";
                 InstTypeComboBox.Enabled = false;
                 InstTypeComboBox.Text = "";
@@ -97,11 +100,11 @@ namespace Omniscient
                 DirectoryTextBox.Enabled = false;
                 DirectoryTextBox.Text = "";
             }
-            else if (e.Node.Tag is Instrument)
+            else if (node.Tag is Instrument)
             {
-                Instrument inst = (Instrument)e.Node.Tag;
+                Instrument inst = (Instrument)node.Tag;
                 TypeLabel.Text = "Instrument";
-                InstTypeComboBox.Enabled = true;
+                InstTypeComboBox.Enabled = false;
                 if (inst is MCAInstrument)
                     InstTypeComboBox.Text = "MCA";
                 else if (inst is ISRInstrument)
@@ -115,9 +118,55 @@ namespace Omniscient
             }
         }
 
+        private void SitesTreeView_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            ResetFields();
+        }
+
         private void ExitButton_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void ExportButton_Click(object sender, EventArgs e)
+        {
+            siteMan.WriteToXML("temp.xml");
+        }
+
+        private void DiscardButton_Click(object sender, EventArgs e)
+        {
+            ResetFields();
+        }
+
+        private void SaveButton_Click(object sender, EventArgs e)
+        {
+            TreeNode node = SitesTreeView.SelectedNode;
+
+            if (node.Tag is Site)
+            {
+                Site site = (Site)node.Tag;
+                site.SetName(NameTextBox.Text);
+            }
+            else if (node.Tag is Facility)
+            {
+                Facility fac = (Facility)node.Tag;
+                fac.SetName(NameTextBox.Text);
+            }
+            else if (node.Tag is DetectionSystem)
+            {
+                DetectionSystem sys = (DetectionSystem)node.Tag;
+                sys.SetName(NameTextBox.Text);
+            }
+            else if (node.Tag is Instrument)
+            {
+                Instrument inst = (Instrument)node.Tag;
+
+                inst.SetName(NameTextBox.Text);
+                inst.SetFilePrefix(PrefixTextBox.Text);
+                inst.SetDataFolder(DirectoryTextBox.Text);
+            }
+            siteMan.Save();
+            UpdateSitesTree();
         }
     }
 }

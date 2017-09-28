@@ -82,8 +82,8 @@ namespace Omniscient
             StartTimePicker.Value = globalStart.Date;
             EndTimePicker.Value = globalEnd.Date;
             chPanels = new List<ChannelPanel>();
-            siteMan = new SiteManager();
-            siteMan.LoadFromXML("SiteManager.xml");
+            siteMan = new SiteManager("SiteManager.xml");
+            siteMan.Reload();
             UpdateSitesTree();
             RangeTextBox.Text = "7";
             RangeComboBox.Text = "Days";

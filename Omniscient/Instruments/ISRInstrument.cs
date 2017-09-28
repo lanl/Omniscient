@@ -40,6 +40,16 @@ namespace Omniscient.Instruments
             channels[ACC] = new Channel(name + "-Acc", this, Channel.ChannelType.COUNT_RATE);
         }
 
+        public override void SetName(string newName)
+        {
+            name = newName;
+            channels[TOTALS1].SetName(name + "-Totals-1");
+            channels[TOTALS1].SetName(name + "-Totals-2");
+            channels[TOTALS1].SetName(name + "-Totals-3");
+            channels[REALS_PLUS_ACC].SetName(name + "-Real+Acc");
+            channels[ACC].SetName(name + "-Acc");
+        }
+
         public override void ScanDataFolder()
         {
             List<string> isrFileList = new List<string>();

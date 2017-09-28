@@ -66,6 +66,11 @@ namespace Omniscient.Instruments
             values = valueArray.ToList();
         }
 
+        public void SetName(string newName)
+        {
+            name = newName;
+        }
+
         public string GetName() { return name; }
         public ChannelType GetChannelType() { return channelType; }
         public List<DateTime> GetTimeStamps() { return timeStamps; }
