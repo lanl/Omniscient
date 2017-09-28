@@ -375,6 +375,11 @@ namespace Omniscient
             UpdateChartVisibility();
         }
 
+        /// <summary>
+        /// UpdateGlobalStartEnd is called whenever a channel panel is either
+        /// added or removed.</summary>
+        /// <remarks>It updates globalStart and globalEnd and changes the
+        /// start/end pickers if they are out of the global range.</remarks>
         private void UpdateGlobalStartEnd()
         {
             DateTime earliest = new DateTime(3000,1,1);
