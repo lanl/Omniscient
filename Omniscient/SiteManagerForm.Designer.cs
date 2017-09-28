@@ -339,6 +339,7 @@
             this.DirectoryButton.TabIndex = 16;
             this.DirectoryButton.Text = "Select Directory";
             this.DirectoryButton.UseVisualStyleBackColor = true;
+            this.DirectoryButton.Click += new System.EventHandler(this.DirectoryButton_Click);
             // 
             // SiteManagerForm
             // 

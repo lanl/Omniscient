@@ -77,6 +77,7 @@ namespace Omniscient
                 PrefixTextBox.Text = "";
                 DirectoryTextBox.Enabled = false;
                 DirectoryTextBox.Text = "";
+                DirectoryButton.Enabled = false;
             }
             else if (node.Tag is Facility)
             {
@@ -88,6 +89,7 @@ namespace Omniscient
                 PrefixTextBox.Text = "";
                 DirectoryTextBox.Enabled = false;
                 DirectoryTextBox.Text = "";
+                DirectoryButton.Enabled = false;
             }
             else if (node.Tag is DetectionSystem)
             {
@@ -99,6 +101,7 @@ namespace Omniscient
                 PrefixTextBox.Text = "";
                 DirectoryTextBox.Enabled = false;
                 DirectoryTextBox.Text = "";
+                DirectoryButton.Enabled = false;
             }
             else if (node.Tag is Instrument)
             {
@@ -115,6 +118,7 @@ namespace Omniscient
                 PrefixTextBox.Text = inst.GetFilePrefix();
                 DirectoryTextBox.Enabled = true;
                 DirectoryTextBox.Text = inst.GetDataFolder();
+                DirectoryButton.Enabled = true;
             }
         }
 
@@ -220,6 +224,16 @@ namespace Omniscient
             }
             siteMan.Save();
             UpdateSitesTree();
+        }
+
+        private void DirectoryButton_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
+            DialogResult result = folderBrowserDialog.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                DirectoryTextBox.Text = folderBrowserDialog.SelectedPath;
+            }
         }
     }
 }
