@@ -148,6 +148,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Presets.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="SiteManager.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

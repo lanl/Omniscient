@@ -875,7 +875,10 @@ namespace Omniscient
         /// Called when a user moves the mouse over any of the charts.</summary>
         public void StripChart_MouseMoved(object sender, System.Windows.Input.MouseEventArgs e)
         {
-            mouseX = e.GetPosition((LiveCharts.Wpf.CartesianChart) sender).X;
+            LiveCharts.Wpf.CartesianChart chartBase = (LiveCharts.Wpf.CartesianChart)sender;
+            mouseX = e.GetPosition(chartBase).X;
+            DateTime mouseTime = new DateTime((long)LiveCharts.ChartFunctions.FromPlotArea(mouseX, AxisOrientation.X, chartBase.Model));
+            MouseTimeToolStripLabel.Text = "Mouse Location: " + mouseTime.ToString("MMM dd, yyyy  HH:mm:ss");
         }
 
         private void C1LogScaleCheckBox_CheckedChanged(object sender, EventArgs e)

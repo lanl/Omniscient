@@ -42,8 +42,8 @@ namespace Omniscient
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.launchInspectrumToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SiteManagerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.launchInspectrumToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ChannelsLabelPanel = new System.Windows.Forms.Panel();
             this.label5 = new System.Windows.Forms.Label();
@@ -82,6 +82,7 @@ namespace Omniscient
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.SitesTreeView = new Omniscient.Controls.ResponsiveTreeView();
             this.button1 = new System.Windows.Forms.Button();
             this.textBox7 = new System.Windows.Forms.TextBox();
             this.comboBox5 = new System.Windows.Forms.ComboBox();
@@ -101,7 +102,7 @@ namespace Omniscient
             this.Instrument3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.EventControlPanel = new System.Windows.Forms.Panel();
             this.button2 = new System.Windows.Forms.Button();
-            this.SitesTreeView = new Omniscient.Controls.ResponsiveTreeView();
+            this.MouseTimeToolStripLabel = new System.Windows.Forms.ToolStripLabel();
             this.StripChartControlPanel.SuspendLayout();
             this.StripChartsPanel.SuspendLayout();
             this.StripChartsLayoutPanel.SuspendLayout();
@@ -238,19 +239,19 @@ namespace Omniscient
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
             // 
-            // launchInspectrumToolStripMenuItem
-            // 
-            this.launchInspectrumToolStripMenuItem.Name = "launchInspectrumToolStripMenuItem";
-            this.launchInspectrumToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
-            this.launchInspectrumToolStripMenuItem.Text = "Launch Inspectrum";
-            this.launchInspectrumToolStripMenuItem.Click += new System.EventHandler(this.launchInspectrumToolStripMenuItem_Click);
-            // 
             // SiteManagerToolStripMenuItem
             // 
             this.SiteManagerToolStripMenuItem.Name = "SiteManagerToolStripMenuItem";
             this.SiteManagerToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
             this.SiteManagerToolStripMenuItem.Text = "Site Manager";
             this.SiteManagerToolStripMenuItem.Click += new System.EventHandler(this.SiteManagerToolStripMenuItem_Click);
+            // 
+            // launchInspectrumToolStripMenuItem
+            // 
+            this.launchInspectrumToolStripMenuItem.Name = "launchInspectrumToolStripMenuItem";
+            this.launchInspectrumToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.launchInspectrumToolStripMenuItem.Text = "Launch Inspectrum";
+            this.launchInspectrumToolStripMenuItem.Click += new System.EventHandler(this.launchInspectrumToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
@@ -321,6 +322,7 @@ namespace Omniscient
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripButton1,
             this.toolStripSeparator1,
+            this.MouseTimeToolStripLabel,
             this.MarkerToolStripLabel});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
             this.toolStrip1.Name = "toolStrip1";
@@ -339,15 +341,17 @@ namespace Omniscient
             // 
             // toolStripSeparator1
             // 
+            this.toolStripSeparator1.Margin = new System.Windows.Forms.Padding(0, 0, 180, 0);
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
             // MarkerToolStripLabel
             // 
-            this.MarkerToolStripLabel.Margin = new System.Windows.Forms.Padding(200, 1, 0, 2);
+            this.MarkerToolStripLabel.AutoSize = false;
             this.MarkerToolStripLabel.Name = "MarkerToolStripLabel";
-            this.MarkerToolStripLabel.Size = new System.Drawing.Size(99, 22);
+            this.MarkerToolStripLabel.Size = new System.Drawing.Size(250, 22);
             this.MarkerToolStripLabel.Text = "Marker Location: ";
+            this.MarkerToolStripLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // statusStrip1
             // 
@@ -655,6 +659,15 @@ namespace Omniscient
             this.panel2.Size = new System.Drawing.Size(200, 667);
             this.panel2.TabIndex = 5;
             // 
+            // SitesTreeView
+            // 
+            this.SitesTreeView.CheckBoxes = true;
+            this.SitesTreeView.Location = new System.Drawing.Point(15, 73);
+            this.SitesTreeView.Name = "SitesTreeView";
+            this.SitesTreeView.Size = new System.Drawing.Size(167, 215);
+            this.SitesTreeView.TabIndex = 11;
+            this.SitesTreeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.SitesTreeView_AfterCheck);
+            // 
             // button1
             // 
             this.button1.Location = new System.Drawing.Point(134, 17);
@@ -811,14 +824,13 @@ namespace Omniscient
             this.button2.Text = "Generate Events";
             this.button2.UseVisualStyleBackColor = true;
             // 
-            // SitesTreeView
+            // MouseTimeToolStripLabel
             // 
-            this.SitesTreeView.CheckBoxes = true;
-            this.SitesTreeView.Location = new System.Drawing.Point(15, 73);
-            this.SitesTreeView.Name = "SitesTreeView";
-            this.SitesTreeView.Size = new System.Drawing.Size(167, 215);
-            this.SitesTreeView.TabIndex = 11;
-            this.SitesTreeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.SitesTreeView_AfterCheck);
+            this.MouseTimeToolStripLabel.AutoSize = false;
+            this.MouseTimeToolStripLabel.Name = "MouseTimeToolStripLabel";
+            this.MouseTimeToolStripLabel.Size = new System.Drawing.Size(250, 22);
+            this.MouseTimeToolStripLabel.Text = "Mouse Location:";
+            this.MouseTimeToolStripLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // MainForm
             // 
@@ -946,6 +958,7 @@ namespace Omniscient
         private ToolStripSeparator toolStripSeparator1;
         private ToolStripLabel MarkerToolStripLabel;
         private ToolStripMenuItem SiteManagerToolStripMenuItem;
+        private ToolStripLabel MouseTimeToolStripLabel;
     }
 }
 
