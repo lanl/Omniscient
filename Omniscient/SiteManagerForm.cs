@@ -187,5 +187,39 @@ namespace Omniscient
             siteMan.Save();
             UpdateSitesTree();
         }
+
+        private void RemoveButton_Click(object sender, EventArgs e)
+        {
+            TreeNode node = SitesTreeView.SelectedNode;
+            DialogResult dialogResult = MessageBox.Show("Are you sure you want to delete " + node.Text + "?", "Delete Item", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.No)
+                return;
+
+            if (node.Tag is Site)
+            {
+                Site site = (Site)node.Tag;
+                siteMan.GetSites().Remove(site);
+            }
+            else if (node.Tag is Facility)
+            {
+                Facility fac = (Facility)node.Tag;
+                Site site = (Site)node.Parent.Tag;
+                site.GetFacilities().Remove(fac);
+            }
+            else if (node.Tag is DetectionSystem)
+            {
+                DetectionSystem sys = (DetectionSystem)node.Tag;
+                Facility fac = (Facility)node.Parent.Tag;
+                fac.GetSystems().Remove(sys);
+            }
+            else if (node.Tag is Instrument)
+            {
+                Instrument inst = (Instrument)node.Tag;
+                DetectionSystem sys = (DetectionSystem)node.Parent.Tag;
+                sys.GetInstruments().Remove(inst);
+            }
+            siteMan.Save();
+            UpdateSitesTree();
+        }
     }
 }
