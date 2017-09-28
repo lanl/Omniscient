@@ -8,7 +8,7 @@ using Omniscient.Instruments;
 
 namespace Omniscient
 {
-    class DetectionSystem
+    public class DetectionSystem
     {
         List<Instrument> instruments;
         string name;

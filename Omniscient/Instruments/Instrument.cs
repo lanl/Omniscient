@@ -41,6 +41,7 @@ namespace Omniscient.Instruments
         public string GetName() { return name; }
         public string GetInstrumentType() { return instrumentType; }
         public string GetDataFolder() { return dataFolder; }
+        public string GetFilePrefix() { return filePrefix; }
         public int GetNumChannels() { return numChannels; }
         public Channel[] GetChannels() { return channels; }
         public Channel GetChannel(int chanNum)

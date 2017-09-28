@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Omniscient
 {
-    class Site
+    public class Site
     {
         private List<Facility> facilities;
         private string name;

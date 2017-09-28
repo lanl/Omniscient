@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Omniscient
 {
-    class Facility
+    public class Facility
     {
         List<DetectionSystem> systems;
         string name;

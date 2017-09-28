@@ -10,7 +10,7 @@ using Omniscient.Instruments;
 
 namespace Omniscient
 {
-    class SiteManager
+    public class SiteManager
     {
         private List<Site> sites;
 
