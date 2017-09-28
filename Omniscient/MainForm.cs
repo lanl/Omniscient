@@ -28,7 +28,7 @@ namespace Omniscient
     {
         ///////////////////////////////////////////////////////////////////////
         private const int N_CHARTS = 4;
-        SiteManager siteMan;
+        public SiteManager siteMan;
         List<ChannelPanel> chPanels;
         List<Instrument> activeInstruments;
 
@@ -92,9 +92,17 @@ namespace Omniscient
             UpdateRange();
         }
 
+        public void ClearPanels()
+        {
+            while (activeInstruments.Count>0)
+            {
+                RemoveChannelPanels(activeInstruments[0]);
+            }
+        }
+
         /// <summary>
         /// UpdateSitesTree() builds the tree view of the SiteManager.</summary>
-        private void UpdateSitesTree()
+        public void UpdateSitesTree()
         {
             SitesTreeView.Nodes.Clear();
             foreach(Site site in siteMan.GetSites())
@@ -907,7 +915,7 @@ namespace Omniscient
 
         private void SiteManagerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SiteManagerForm siteManForm = new SiteManagerForm(siteMan);
+            SiteManagerForm siteManForm = new SiteManagerForm(this, siteMan);
             siteManForm.Show();
         }
     }

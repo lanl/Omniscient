@@ -14,12 +14,14 @@ namespace Omniscient
 {
     public partial class SiteManagerForm : Form
     {
+        MainForm main;
         SiteManager siteMan;
 
-        bool newNode = false;
+        bool siteManChanged = false;
 
-        public SiteManagerForm(SiteManager newSiteMan)
+        public SiteManagerForm(MainForm master, SiteManager newSiteMan)
         {
+            main = master;
             siteMan = newSiteMan;
             InitializeComponent();
         }
@@ -141,7 +143,13 @@ namespace Omniscient
 
         private void ExitButton_Click(object sender, EventArgs e)
         {
-            this.Close();
+            if (siteManChanged)
+            {
+                main.ClearPanels();
+                main.siteMan.Reload();
+                main.UpdateSitesTree();
+            }
+            Close();
         }
 
         private void ExportButton_Click(object sender, EventArgs e)
@@ -166,6 +174,7 @@ namespace Omniscient
             }
             siteMan.Save();
             UpdateSitesTree();
+            siteManChanged = true;
         }
 
         private void DiscardButton_Click(object sender, EventArgs e)
@@ -202,6 +211,7 @@ namespace Omniscient
             }
             siteMan.Save();
             UpdateSitesTree();
+            siteManChanged = true;
         }
 
         private void RemoveButton_Click(object sender, EventArgs e)
@@ -236,6 +246,7 @@ namespace Omniscient
             }
             siteMan.Save();
             UpdateSitesTree();
+            siteManChanged = true;
         }
 
         private void DirectoryButton_Click(object sender, EventArgs e)
@@ -267,6 +278,7 @@ namespace Omniscient
             siteMan.GetSites().Add(new Site(name));
             siteMan.Save();
             UpdateSitesTree();
+            siteManChanged = true;
         }
 
         private void NewFacilityButton_Click(object sender, EventArgs e)
@@ -318,6 +330,7 @@ namespace Omniscient
             site.GetFacilities().Insert(index, new Facility(name));
             siteMan.Save();
             UpdateSitesTree();
+            siteManChanged = true;
         }
 
         private void NewSystemButton_Click(object sender, EventArgs e)
@@ -363,6 +376,7 @@ namespace Omniscient
             fac.GetSystems().Insert(index, new DetectionSystem(name));
             siteMan.Save();
             UpdateSitesTree();
+            siteManChanged = true;
         }
 
         private void NewInstrumentButton_Click(object sender, EventArgs e)
@@ -443,6 +457,7 @@ namespace Omniscient
             sys.GetInstruments().Insert(index, newInstrument);
             siteMan.Save();
             UpdateSitesTree();
+            siteManChanged = true;
         }
     }
 }
