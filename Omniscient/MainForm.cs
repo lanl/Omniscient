@@ -904,5 +904,11 @@ namespace Omniscient
             if (!RangeOnlyCheckBox.Checked)
                 UpdatesCharts();
         }
+
+        private void SiteManagerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SiteManagerForm siteManForm = new SiteManagerForm(siteMan);
+            siteManForm.Show();
+        }
     }
 }

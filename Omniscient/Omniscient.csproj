@@ -97,6 +97,12 @@
     <Compile Include="Controls\ChannelPanel.Designer.cs">
       <DependentUpon>ChannelPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="SiteManagerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SiteManagerForm.Designer.cs">
+      <DependentUpon>SiteManagerForm.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Inspectrum.resx">
       <DependentUpon>Inspectrum.cs</DependentUpon>
     </EmbeddedResource>
@@ -114,6 +120,9 @@
     </Compile>
     <EmbeddedResource Include="Controls\ChannelPanel.resx">
       <DependentUpon>ChannelPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="SiteManagerForm.resx">
+      <DependentUpon>SiteManagerForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
