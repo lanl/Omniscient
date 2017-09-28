@@ -130,7 +130,26 @@ namespace Omniscient
 
         private void ExportButton_Click(object sender, EventArgs e)
         {
-            siteMan.WriteToXML("temp.xml");
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+
+            saveFileDialog.Filter = "xml files (*.xml)|*.xml";
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                siteMan.WriteToXML(saveFileDialog.FileName);
+            }
+        }
+
+        private void ImportButton_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "xml files (*.xml)|*.xml";
+
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                siteMan.LoadFromXML(openFileDialog.FileName);
+            }
+            siteMan.Save();
+            UpdateSitesTree();
         }
 
         private void DiscardButton_Click(object sender, EventArgs e)

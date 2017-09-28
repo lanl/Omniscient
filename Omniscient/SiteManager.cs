@@ -35,6 +35,7 @@ namespace Omniscient
         {
             XmlDocument doc = new XmlDocument();
             doc.Load(fileName);
+            sites.Clear();
             foreach (XmlNode siteNode in doc.DocumentElement.ChildNodes)
             {
                 Site newSite = new Site(siteNode.Attributes["name"]?.InnerText);

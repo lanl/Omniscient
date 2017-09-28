@@ -300,6 +300,7 @@
             this.ImportButton.TabIndex = 0;
             this.ImportButton.Text = "Import";
             this.ImportButton.UseVisualStyleBackColor = true;
+            this.ImportButton.Click += new System.EventHandler(this.ImportButton_Click);
             // 
             // RemoveButton
             // 
