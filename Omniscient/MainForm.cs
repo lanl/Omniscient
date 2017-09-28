@@ -73,12 +73,18 @@ namespace Omniscient
             this.StripChart2.Base.MouseMove += new System.Windows.Input.MouseEventHandler(this.StripChart_MouseMoved);
             this.StripChart3.Base.MouseMove += new System.Windows.Input.MouseEventHandler(this.StripChart_MouseMoved);
 
-            globalStart = new DateTime(1957, 7, 29);
+            globalStart = DateTime.Today.AddDays(-7);
+            GlobalStartTextBox.Text = globalStart.ToString("MMM dd, yyyy");
             globalEnd = DateTime.Today;
+            GlobalEndTextBox.Text = globalEnd.ToString("MMM dd, yyyy");
+            StartDatePicker.Value = globalStart;
+            EndDatePicker.Value = globalEnd;
+            StartTimePicker.Value = globalStart.Date;
+            EndTimePicker.Value = globalEnd.Date;
             chPanels = new List<ChannelPanel>();
             siteMan = new SiteManager();
             siteMan.LoadFromXML("SiteManager.xml");
-            UpdateSiteTree();
+            UpdateSitesTree();
             RangeTextBox.Text = "7";
             RangeComboBox.Text = "Days";
             InitializeCharts();
@@ -87,8 +93,8 @@ namespace Omniscient
         }
 
         /// <summary>
-        /// UpdateSiteTree() builds the tree view of the SiteManager.</summary>
-        private void UpdateSiteTree()
+        /// UpdateSitesTree() builds the tree view of the SiteManager.</summary>
+        private void UpdateSitesTree()
         {
             SitesTreeView.Nodes.Clear();
             foreach(Site site in siteMan.GetSites())
@@ -369,6 +375,90 @@ namespace Omniscient
             UpdateChartVisibility();
         }
 
+        private void UpdateGlobalStartEnd()
+        {
+            DateTime earliest = new DateTime(3000,1,1);
+            DateTime latest = new DateTime(1000, 1, 1);
+            DateTime chStart;
+            DateTime chEnd;
+
+            if (activeInstruments.Count == 0) return;
+
+            // Figure out the earliest and latest data point
+            foreach (Instrument inst in activeInstruments)
+            {
+                foreach (Channel ch in inst.GetChannels())
+                {
+                    if(ch.GetTimeStamps().Count > 0)
+                    {
+                        chStart = ch.GetTimeStamps()[0];
+                        chEnd = ch.GetTimeStamps()[ch.GetTimeStamps().Count - 1];
+                        if (chStart < earliest)
+                            earliest = chStart;
+                        if (chEnd > latest)
+                            latest = chEnd;
+                    }
+                }
+            }
+
+            if (earliest > latest) return;
+
+            // Update global start and end
+            globalStart = earliest;
+            globalEnd = latest;
+            GlobalStartTextBox.Text = globalStart.ToString("MMM dd, yyyy");
+            GlobalEndTextBox.Text = globalEnd.ToString("MMM dd, yyyy");
+
+            // Update the range pickers as needed
+            DateTime start = StartDatePicker.Value.Date;
+            start = start.Add(StartTimePicker.Value.TimeOfDay);
+            DateTime end = EndDatePicker.Value.Date;
+            end = end.Add(EndTimePicker.Value.TimeOfDay);
+
+            bool changedRange = false;
+            if (start < globalStart || start > globalEnd)
+            {
+                start = globalStart;
+                changedRange = true;
+            }
+            if (end > globalEnd || end < globalStart)
+            {
+                end = globalEnd;
+                changedRange = true;
+            }
+            if (changedRange)
+            {
+                if (TimeSpan.FromTicks(end.Ticks - start.Ticks).TotalDays > 7)
+                {
+                    start = end.AddDays(-7);
+                    RangeTextBox.Text = "7";
+                    RangeComboBox.Text = "Days";
+                }
+                else if (TimeSpan.FromTicks(end.Ticks - start.Ticks).TotalDays > 1)
+                {
+                    start = end.AddDays(-1);
+                    RangeTextBox.Text = "24";
+                    RangeComboBox.Text = "Hours";
+                }
+                else if (TimeSpan.FromTicks(end.Ticks - start.Ticks).TotalHours > 1)
+                {
+                    start = end.AddHours(-1);
+                    RangeTextBox.Text = "60";
+                    RangeComboBox.Text = "Minutes";
+                }
+                else
+                {
+                    RangeTextBox.Text = "";
+                    RangeComboBox.Text = "Minutes";
+                }
+                StartDatePicker.Value = start.Date;
+                StartTimePicker.Value = start;
+                EndDatePicker.Value = end.Date;
+                EndTimePicker.Value = end;
+            }
+            UpdateRange();
+        }
+
         /// <summary>
         /// When a user selects an instrument in the tree view of the site 
         /// manager, AddChannelPanels is called to populate the appropriate
@@ -379,6 +469,7 @@ namespace Omniscient
             UpdateInstrumentData(inst);
 
             ChannelsPanel.SuspendLayout();
+
             foreach (Channel ch in inst.GetChannels())
             {
                 ChannelPanel chanPan = new ChannelPanel(ch);
@@ -393,6 +484,7 @@ namespace Omniscient
 
             ChannelsLabelPanel.SendToBack();
             ChannelsPanel.ResumeLayout();
+            UpdateGlobalStartEnd();
         }
 
         private void RemoveChannelPanels(Instrument inst)
@@ -414,6 +506,7 @@ namespace Omniscient
                 chPanels.Remove(chanPan);
             }
             chToGo.Clear();
+            UpdateGlobalStartEnd();
             UpdatesCharts();
         }
 

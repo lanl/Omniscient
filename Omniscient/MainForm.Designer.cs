@@ -84,8 +84,8 @@ namespace Omniscient
             this.button1 = new System.Windows.Forms.Button();
             this.textBox7 = new System.Windows.Forms.TextBox();
             this.comboBox5 = new System.Windows.Forms.ComboBox();
-            this.textBox6 = new System.Windows.Forms.TextBox();
-            this.textBox5 = new System.Windows.Forms.TextBox();
+            this.GlobalEndTextBox = new System.Windows.Forms.TextBox();
+            this.GlobalStartTextBox = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
@@ -635,8 +635,8 @@ namespace Omniscient
             this.panel2.Controls.Add(this.button1);
             this.panel2.Controls.Add(this.textBox7);
             this.panel2.Controls.Add(this.comboBox5);
-            this.panel2.Controls.Add(this.textBox6);
-            this.panel2.Controls.Add(this.textBox5);
+            this.panel2.Controls.Add(this.GlobalEndTextBox);
+            this.panel2.Controls.Add(this.GlobalStartTextBox);
             this.panel2.Controls.Add(this.label9);
             this.panel2.Controls.Add(this.label8);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Left;
@@ -672,23 +672,23 @@ namespace Omniscient
             this.comboBox5.Size = new System.Drawing.Size(140, 21);
             this.comboBox5.TabIndex = 8;
             // 
-            // textBox6
+            // GlobalEndTextBox
             // 
-            this.textBox6.BackColor = System.Drawing.SystemColors.Control;
-            this.textBox6.Location = new System.Drawing.Point(101, 361);
-            this.textBox6.Name = "textBox6";
-            this.textBox6.Size = new System.Drawing.Size(85, 20);
-            this.textBox6.TabIndex = 6;
-            this.textBox6.Text = "Oct. 27, 2004";
+            this.GlobalEndTextBox.BackColor = System.Drawing.SystemColors.Control;
+            this.GlobalEndTextBox.Location = new System.Drawing.Point(101, 361);
+            this.GlobalEndTextBox.Name = "GlobalEndTextBox";
+            this.GlobalEndTextBox.Size = new System.Drawing.Size(85, 20);
+            this.GlobalEndTextBox.TabIndex = 6;
+            this.GlobalEndTextBox.Text = "Oct. 27, 2004";
             // 
-            // textBox5
+            // GlobalStartTextBox
             // 
-            this.textBox5.BackColor = System.Drawing.SystemColors.Control;
-            this.textBox5.Location = new System.Drawing.Point(101, 334);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(85, 20);
-            this.textBox5.TabIndex = 5;
-            this.textBox5.Text = "Jan. 3, 1920";
+            this.GlobalStartTextBox.BackColor = System.Drawing.SystemColors.Control;
+            this.GlobalStartTextBox.Location = new System.Drawing.Point(101, 334);
+            this.GlobalStartTextBox.Name = "GlobalStartTextBox";
+            this.GlobalStartTextBox.Size = new System.Drawing.Size(85, 20);
+            this.GlobalStartTextBox.TabIndex = 5;
+            this.GlobalStartTextBox.Text = "Jan. 3, 1920";
             // 
             // label9
             // 
@@ -885,8 +885,8 @@ namespace Omniscient
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TextBox textBox6;
-        private System.Windows.Forms.TextBox textBox5;
+        private System.Windows.Forms.TextBox GlobalEndTextBox;
+        private System.Windows.Forms.TextBox GlobalStartTextBox;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Panel ChannelsPanel;
         private System.Windows.Forms.DateTimePicker EndDatePicker;
