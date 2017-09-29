@@ -83,7 +83,6 @@ namespace Omniscient
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.SitesTreeView = new Omniscient.Controls.ResponsiveTreeView();
             this.PresetSaveButton = new System.Windows.Forms.Button();
             this.PresetNameTextBox = new System.Windows.Forms.TextBox();
             this.PresetsComboBox = new System.Windows.Forms.ComboBox();
@@ -103,6 +102,7 @@ namespace Omniscient
             this.Instrument3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.EventControlPanel = new System.Windows.Forms.Panel();
             this.button2 = new System.Windows.Forms.Button();
+            this.SitesTreeView = new Omniscient.Controls.ResponsiveTreeView();
             this.StripChartControlPanel.SuspendLayout();
             this.StripChartsPanel.SuspendLayout();
             this.StripChartsLayoutPanel.SuspendLayout();
@@ -667,15 +667,6 @@ namespace Omniscient
             this.panel2.Size = new System.Drawing.Size(200, 667);
             this.panel2.TabIndex = 5;
             // 
-            // SitesTreeView
-            // 
-            this.SitesTreeView.CheckBoxes = true;
-            this.SitesTreeView.Location = new System.Drawing.Point(15, 73);
-            this.SitesTreeView.Name = "SitesTreeView";
-            this.SitesTreeView.Size = new System.Drawing.Size(167, 215);
-            this.SitesTreeView.TabIndex = 11;
-            this.SitesTreeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.SitesTreeView_AfterCheck);
-            // 
             // PresetSaveButton
             // 
             this.PresetSaveButton.Location = new System.Drawing.Point(134, 17);
@@ -834,6 +825,15 @@ namespace Omniscient
             this.button2.Text = "Generate Events";
             this.button2.UseVisualStyleBackColor = true;
             // 
+            // SitesTreeView
+            // 
+            this.SitesTreeView.CheckBoxes = true;
+            this.SitesTreeView.Location = new System.Drawing.Point(15, 73);
+            this.SitesTreeView.Name = "SitesTreeView";
+            this.SitesTreeView.Size = new System.Drawing.Size(167, 215);
+            this.SitesTreeView.TabIndex = 11;
+            this.SitesTreeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.SitesTreeView_AfterCheck);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -848,7 +848,7 @@ namespace Omniscient
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
             this.Padding = new System.Windows.Forms.Padding(0, 0, 5, 0);
-            this.Text = "Omniscient (v. Demo 8)";
+            this.Text = "Omniscient (v. Demo 9)";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.StripChartControlPanel.ResumeLayout(false);
             this.StripChartsPanel.ResumeLayout(false);
