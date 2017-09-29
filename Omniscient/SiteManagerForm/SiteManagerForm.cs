@@ -63,6 +63,14 @@ namespace Omniscient
                             instNode.SelectedImageIndex = 3;
                             sysNode.Nodes.Add(instNode);
                         }
+                        foreach (EventGenerator eg in sys.GetEventGenerators())
+                        {
+                            TreeNode egNode = new TreeNode(eg.GetName());
+                            egNode.Tag = eg;
+                            egNode.ImageIndex = 4;
+                            egNode.SelectedImageIndex = 4;
+                            sysNode.Nodes.Add(egNode);
+                        }
                         facNode.Nodes.Add(sysNode);
                     }
                     facNode.Expand();
@@ -147,6 +155,23 @@ namespace Omniscient
                 NewSystemButton.Enabled = true;
                 NewEventButton.Enabled = false;
             }
+            else if (node.Tag is EventGenerator)
+            {
+                EventGenerator eg = (EventGenerator)node.Tag;
+                TypeLabel.Text = "Event Generator";
+                InstTypeComboBox.Enabled = false;
+                InstTypeComboBox.Text = "";
+                PrefixTextBox.Enabled = false;
+                PrefixTextBox.Text = "";
+                DirectoryTextBox.Enabled = false;
+                DirectoryTextBox.Text = "";
+                DirectoryButton.Enabled = false;
+
+                NewInstrumentButton.Enabled = false;
+                NewSystemButton.Enabled = false;
+                NewEventButton.Enabled = false;
+            }
+
         }
 
         private void SitesTreeView_AfterSelect(object sender, TreeViewEventArgs e)
@@ -222,6 +247,11 @@ namespace Omniscient
                 inst.SetName(NameTextBox.Text);
                 inst.SetFilePrefix(PrefixTextBox.Text);
                 inst.SetDataFolder(DirectoryTextBox.Text);
+            }
+            else if (node.Tag is EventGenerator)
+            {
+                EventGenerator eg = (EventGenerator)node.Tag;
+                eg.SetName(NameTextBox.Text);
             }
             siteMan.Save();
             UpdateSitesTree();
@@ -478,8 +508,12 @@ namespace Omniscient
         {
             DetectionSystem sys = (DetectionSystem)SitesTreeView.SelectedNode.Tag;
 
-            //sys.GetEventGenerators().Add(new ThresholdEG()
+            NewEventDialog dialog = new NewEventDialog(sys);
+            DialogResult result = dialog.ShowDialog();
+            if (result == DialogResult.Cancel) return;
 
+            sys.GetEventGenerators().Add(new ThresholdEG(dialog.name, dialog.channel, dialog.threshold));
+            UpdateSitesTree();
         }
     }
 }

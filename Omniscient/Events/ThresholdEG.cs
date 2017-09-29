@@ -16,8 +16,9 @@ namespace Omniscient.Events
         Channel channel;
         double threshold;
 
-        public ThresholdEG(Channel newChannel, double newThreshold)
+        public ThresholdEG(string newName, Channel newChannel, double newThreshold)
         {
+            name = newName;
             channel = newChannel;
             threshold = newThreshold;
         }
@@ -66,5 +67,15 @@ namespace Omniscient.Events
 
         public Channel GetChannel() { return channel; }
         public double GetThreshold() { return threshold; }
+
+        public override string GetName()
+        {
+            return name;
+        }
+
+        public override void SetName(string newName)
+        {
+            name = newName;
+        }
     }
 }
