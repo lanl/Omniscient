@@ -18,6 +18,7 @@ using LiveCharts.Configurations;
 
 using Omniscient.Parsers;
 using Omniscient.Instruments;
+using Omniscient.Events;
 
 namespace Omniscient
 {
@@ -1075,6 +1076,48 @@ namespace Omniscient
         private void PresetSaveButton_Click(object sender, EventArgs e)
         {
             SavePreset(PresetNameTextBox.Text);
+        }
+
+        private void GenerateEventsButton_Click(object sender, EventArgs e)
+        {
+            GenerateEvents(globalStart, globalEnd);
+        }
+
+        private void GenerateEvents(DateTime start, DateTime end)
+        {
+            List<EventWatcher> eventWatchers = new List<EventWatcher>();
+            List<Event> events = new List<Event>();
+
+            //  Put all of the checked systems in the SitesTreeView in eventWatchers
+            foreach (TreeNode siteNode in SitesTreeView.Nodes)
+            {
+                foreach (TreeNode facNode in siteNode.Nodes)
+                {
+                    foreach(TreeNode sysNode in facNode.Nodes)
+                    {
+                        if (sysNode.Checked)
+                        {
+                            eventWatchers.Add((DetectionSystem)sysNode.Tag);
+                        }
+                    }
+                }
+            }
+
+            foreach(EventWatcher ew in eventWatchers)
+            {
+                ew.GenerateEvents(start, end);
+                events.AddRange(ew.GetEvents());
+            }
+
+            EventGridView.Rows.Clear();
+            foreach (Event eve in events)
+            {
+                EventGridView.Rows.Add(
+                    eve.GetEventGenerator().GetName(),
+                    eve.GetStartTime().ToString("MM/dd/yy HH:mm:ss"),
+                    eve.GetEndTime().ToString("MM/dd/yy HH:mm:ss"),
+                    eve.GetComment());
+            }
         }
     }
 }

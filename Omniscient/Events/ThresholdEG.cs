@@ -28,7 +28,7 @@ namespace Omniscient.Events
             List<DateTime> times = channel.GetTimeStamps();
             List<double> vals = channel.GetValues();
             List<Event> events = new List<Event>();
-            Event eve = new Event();        // Really shouldn't need to make an event here but visual studio freaks out without it
+            Event eve = new Event(this);        // Really shouldn't need to make an event here but visual studio freaks out without it
 
             bool inEvent = false;
             for (int i=0; i<times.Count; i++)
@@ -37,7 +37,7 @@ namespace Omniscient.Events
                 {
                     if (vals[i] >= threshold)
                     {
-                        eve = new Event();
+                        eve = new Event(this);
                         eve.SetStartTime(times[i]);
                         eve.SetComment(channel.GetName() + " is above threshold.");
                         inEvent = true;

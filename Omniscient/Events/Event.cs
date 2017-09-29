@@ -10,6 +10,19 @@ namespace Omniscient.Events
 {
     public class Event
     {
+        public Event(EventGenerator myGenerator)
+        {
+            eventGenerator = myGenerator;
+        }
+
+        public Event(EventGenerator myGenerator, DateTime start, DateTime end)
+        {
+            eventGenerator = myGenerator;
+            StartTime = start;
+            EndTime = end;
+        }
+
+        EventGenerator eventGenerator;
         DateTime StartTime;
         DateTime EndTime;
 
@@ -22,5 +35,6 @@ namespace Omniscient.Events
         public DateTime GetStartTime() { return StartTime; }
         public DateTime GetEndTime() { return EndTime; }
         public string GetComment() { return comment; }
+        public EventGenerator GetEventGenerator() { return eventGenerator; }
     }
 }
