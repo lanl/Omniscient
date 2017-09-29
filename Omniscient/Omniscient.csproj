@@ -80,10 +80,10 @@
     <Compile Include="Instruments\GRANDInstrument.cs" />
     <Compile Include="Instruments\Instrument.cs" />
     <Compile Include="Instruments\ISRInstrument.cs" />
-    <Compile Include="InstrumentTypeDialog.cs">
+    <Compile Include="SiteManagerForm\InstrumentTypeDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="InstrumentTypeDialog.Designer.cs">
+    <Compile Include="SiteManagerForm\InstrumentTypeDialog.Designer.cs">
       <DependentUpon>InstrumentTypeDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="MainForm.cs">
@@ -109,16 +109,16 @@
     <Compile Include="Controls\ChannelPanel.Designer.cs">
       <DependentUpon>ChannelPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="SiteManagerForm.cs">
+    <Compile Include="SiteManagerForm\SiteManagerForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SiteManagerForm.Designer.cs">
+    <Compile Include="SiteManagerForm\SiteManagerForm.Designer.cs">
       <DependentUpon>SiteManagerForm.cs</DependentUpon>
     </Compile>
     <EmbeddedResource Include="Inspectrum.resx">
       <DependentUpon>Inspectrum.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="InstrumentTypeDialog.resx">
+    <EmbeddedResource Include="SiteManagerForm\InstrumentTypeDialog.resx">
       <DependentUpon>InstrumentTypeDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
@@ -136,7 +136,7 @@
     <EmbeddedResource Include="Controls\ChannelPanel.resx">
       <DependentUpon>ChannelPanel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SiteManagerForm.resx">
+    <EmbeddedResource Include="SiteManagerForm\SiteManagerForm.resx">
       <DependentUpon>SiteManagerForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />

@@ -11,6 +11,12 @@ namespace Omniscient.Events
         List<EventGenerator> eventGenerators;
         List<Event> events;
 
+        public EventWatcher()
+        {
+            eventGenerators = new List<EventGenerator>();
+            events = new List<Event>();
+        }
+
         public void GenerateEvents(DateTime start, DateTime end)
         {
             foreach(EventGenerator eg in eventGenerators)

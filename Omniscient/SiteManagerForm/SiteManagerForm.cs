@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using Omniscient.Instruments;
+using Omniscient.Events;
 
 namespace Omniscient
 {
@@ -91,6 +92,7 @@ namespace Omniscient
 
                 NewInstrumentButton.Enabled = false;
                 NewSystemButton.Enabled = false;
+                NewEventButton.Enabled = false;
             }
             else if (node.Tag is Facility)
             {
@@ -106,6 +108,7 @@ namespace Omniscient
 
                 NewInstrumentButton.Enabled = false;
                 NewSystemButton.Enabled = true;
+                NewEventButton.Enabled = false;
             }
             else if (node.Tag is DetectionSystem)
             {
@@ -121,6 +124,7 @@ namespace Omniscient
 
                 NewInstrumentButton.Enabled = true;
                 NewSystemButton.Enabled = true;
+                NewEventButton.Enabled = true;
             }
             else if (node.Tag is Instrument)
             {
@@ -141,6 +145,7 @@ namespace Omniscient
 
                 NewInstrumentButton.Enabled = true;
                 NewSystemButton.Enabled = true;
+                NewEventButton.Enabled = false;
             }
         }
 
@@ -467,6 +472,14 @@ namespace Omniscient
             siteMan.Save();
             UpdateSitesTree();
             siteManChanged = true;
+        }
+
+        private void NewEventButton_Click(object sender, EventArgs e)
+        {
+            DetectionSystem sys = (DetectionSystem)SitesTreeView.SelectedNode.Tag;
+
+            //sys.GetEventGenerators().Add(new ThresholdEG()
+
         }
     }
 }

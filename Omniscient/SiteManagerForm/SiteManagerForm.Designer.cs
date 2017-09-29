@@ -59,6 +59,7 @@
             this.ExportButton = new System.Windows.Forms.Button();
             this.ImportButton = new System.Windows.Forms.Button();
             this.TreeImageList = new System.Windows.Forms.ImageList(this.components);
+            this.NewEventButton = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -229,6 +230,7 @@
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.NewEventButton);
             this.panel2.Controls.Add(this.NewInstrumentButton);
             this.panel2.Controls.Add(this.NewSystemButton);
             this.panel2.Controls.Add(this.NewFacilityButton);
@@ -359,6 +361,17 @@
             this.TreeImageList.Images.SetKeyName(1, "cylinder");
             this.TreeImageList.Images.SetKeyName(2, "cog");
             this.TreeImageList.Images.SetKeyName(3, "gauge");
+            this.TreeImageList.Images.SetKeyName(4, "binoculars");
+            // 
+            // NewEventButton
+            // 
+            this.NewEventButton.Location = new System.Drawing.Point(32, 64);
+            this.NewEventButton.Name = "NewEventButton";
+            this.NewEventButton.Size = new System.Drawing.Size(120, 23);
+            this.NewEventButton.TabIndex = 4;
+            this.NewEventButton.Text = "New Event Generator";
+            this.NewEventButton.UseVisualStyleBackColor = true;
+            this.NewEventButton.Click += new System.EventHandler(this.NewEventButton_Click);
             // 
             // SiteManagerForm
             // 
@@ -370,7 +383,7 @@
             this.Controls.Add(this.LeftPanel);
             this.MinimumSize = new System.Drawing.Size(512, 512);
             this.Name = "SiteManagerForm";
-            this.Text = "SiteManagerForm";
+            this.Text = "Site Manager";
             this.Load += new System.EventHandler(this.SiteManagerForm_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
@@ -414,5 +427,6 @@
         private System.Windows.Forms.Button DiscardButton;
         private System.Windows.Forms.Button DirectoryButton;
         private System.Windows.Forms.ImageList TreeImageList;
+        private System.Windows.Forms.Button NewEventButton;
     }
 }
