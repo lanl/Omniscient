@@ -147,6 +147,7 @@ namespace Omniscient
             {
                 main.ClearPanels();
                 main.siteMan.Reload();
+                if (main.presetMan.Reload() != ReturnCode.SUCCESS) MessageBox.Show("Warning: Bad trouble loading the preset manager!");
                 main.UpdateSitesTree();
             }
             Close();

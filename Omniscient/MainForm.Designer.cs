@@ -83,7 +83,8 @@ namespace Omniscient
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.button1 = new System.Windows.Forms.Button();
+            this.SitesTreeView = new Omniscient.Controls.ResponsiveTreeView();
+            this.PresetSaveButton = new System.Windows.Forms.Button();
             this.PresetNameTextBox = new System.Windows.Forms.TextBox();
             this.PresetsComboBox = new System.Windows.Forms.ComboBox();
             this.GlobalEndTextBox = new System.Windows.Forms.TextBox();
@@ -102,7 +103,6 @@ namespace Omniscient
             this.Instrument3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.EventControlPanel = new System.Windows.Forms.Panel();
             this.button2 = new System.Windows.Forms.Button();
-            this.SitesTreeView = new Omniscient.Controls.ResponsiveTreeView();
             this.StripChartControlPanel.SuspendLayout();
             this.StripChartsPanel.SuspendLayout();
             this.StripChartsLayoutPanel.SuspendLayout();
@@ -653,7 +653,7 @@ namespace Omniscient
             // panel2
             // 
             this.panel2.Controls.Add(this.SitesTreeView);
-            this.panel2.Controls.Add(this.button1);
+            this.panel2.Controls.Add(this.PresetSaveButton);
             this.panel2.Controls.Add(this.PresetNameTextBox);
             this.panel2.Controls.Add(this.PresetsComboBox);
             this.panel2.Controls.Add(this.GlobalEndTextBox);
@@ -667,14 +667,24 @@ namespace Omniscient
             this.panel2.Size = new System.Drawing.Size(200, 667);
             this.panel2.TabIndex = 5;
             // 
-            // button1
+            // SitesTreeView
             // 
-            this.button1.Location = new System.Drawing.Point(134, 17);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(48, 23);
-            this.button1.TabIndex = 10;
-            this.button1.Text = "Save";
-            this.button1.UseVisualStyleBackColor = true;
+            this.SitesTreeView.CheckBoxes = true;
+            this.SitesTreeView.Location = new System.Drawing.Point(15, 73);
+            this.SitesTreeView.Name = "SitesTreeView";
+            this.SitesTreeView.Size = new System.Drawing.Size(167, 215);
+            this.SitesTreeView.TabIndex = 11;
+            this.SitesTreeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.SitesTreeView_AfterCheck);
+            // 
+            // PresetSaveButton
+            // 
+            this.PresetSaveButton.Location = new System.Drawing.Point(134, 17);
+            this.PresetSaveButton.Name = "PresetSaveButton";
+            this.PresetSaveButton.Size = new System.Drawing.Size(48, 23);
+            this.PresetSaveButton.TabIndex = 10;
+            this.PresetSaveButton.Text = "Save";
+            this.PresetSaveButton.UseVisualStyleBackColor = true;
+            this.PresetSaveButton.Click += new System.EventHandler(this.PresetSaveButton_Click);
             // 
             // PresetNameTextBox
             // 
@@ -824,15 +834,6 @@ namespace Omniscient
             this.button2.Text = "Generate Events";
             this.button2.UseVisualStyleBackColor = true;
             // 
-            // SitesTreeView
-            // 
-            this.SitesTreeView.CheckBoxes = true;
-            this.SitesTreeView.Location = new System.Drawing.Point(15, 73);
-            this.SitesTreeView.Name = "SitesTreeView";
-            this.SitesTreeView.Size = new System.Drawing.Size(167, 215);
-            this.SitesTreeView.TabIndex = 11;
-            this.SitesTreeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.SitesTreeView_AfterCheck);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -936,7 +937,7 @@ namespace Omniscient
         private LiveCharts.WinForms.CartesianChart StripChart3;
         private LiveCharts.WinForms.CartesianChart StripChart2;
         private System.Windows.Forms.ComboBox PresetsComboBox;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button PresetSaveButton;
         private System.Windows.Forms.TextBox PresetNameTextBox;
         private System.Windows.Forms.Panel EventControlPanel;
         private System.Windows.Forms.Button button2;
