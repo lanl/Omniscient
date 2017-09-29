@@ -1044,6 +1044,8 @@ namespace Omniscient
                 presetMan.GetPresets().Add(preset);
                 PresetsComboBox.Items.Add(preset.GetName());
             }
+
+            // Save the new preset to xml
             presetMan.Save();
         }
 
