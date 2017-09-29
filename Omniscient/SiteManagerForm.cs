@@ -40,18 +40,26 @@ namespace Omniscient
             {
                 TreeNode siteNode = new TreeNode(site.GetName());
                 siteNode.Tag = site;
+                siteNode.ImageIndex = 0;
+                siteNode.SelectedImageIndex = 0;
                 foreach (Facility fac in site.GetFacilities())
                 {
                     TreeNode facNode = new TreeNode(fac.GetName());
                     facNode.Tag = fac;
+                    facNode.ImageIndex = 1;
+                    facNode.SelectedImageIndex = 1;
                     foreach (DetectionSystem sys in fac.GetSystems())
                     {
                         TreeNode sysNode = new TreeNode(sys.GetName());
                         sysNode.Tag = sys;
+                        sysNode.ImageIndex = 2;
+                        sysNode.SelectedImageIndex = 2;
                         foreach (Instrument inst in sys.GetInstruments())
                         {
                             TreeNode instNode = new TreeNode(inst.GetName());
                             instNode.Tag = inst;
+                            instNode.ImageIndex = 3;
+                            instNode.SelectedImageIndex = 3;
                             sysNode.Nodes.Add(instNode);
                         }
                         facNode.Nodes.Add(sysNode);

@@ -28,6 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SiteManagerForm));
             this.SitesTreeView = new System.Windows.Forms.TreeView();
             this.SaveButton = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
@@ -36,6 +38,10 @@
             this.InstTypeComboBox = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.DirectoryButton = new System.Windows.Forms.Button();
+            this.DiscardButton = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
+            this.RemoveButton = new System.Windows.Forms.Button();
             this.PrefixTextBox = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.DirectoryTextBox = new System.Windows.Forms.TextBox();
@@ -52,10 +58,7 @@
             this.panel4 = new System.Windows.Forms.Panel();
             this.ExportButton = new System.Windows.Forms.Button();
             this.ImportButton = new System.Windows.Forms.Button();
-            this.RemoveButton = new System.Windows.Forms.Button();
-            this.label2 = new System.Windows.Forms.Label();
-            this.DiscardButton = new System.Windows.Forms.Button();
-            this.DirectoryButton = new System.Windows.Forms.Button();
+            this.TreeImageList = new System.Windows.Forms.ImageList(this.components);
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -67,9 +70,12 @@
             // SitesTreeView
             // 
             this.SitesTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.SitesTreeView.ImageIndex = 0;
+            this.SitesTreeView.ImageList = this.TreeImageList;
             this.SitesTreeView.Location = new System.Drawing.Point(10, 10);
             this.SitesTreeView.Name = "SitesTreeView";
-            this.SitesTreeView.Size = new System.Drawing.Size(200, 453);
+            this.SitesTreeView.SelectedImageIndex = 0;
+            this.SitesTreeView.Size = new System.Drawing.Size(200, 476);
             this.SitesTreeView.TabIndex = 0;
             this.SitesTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.SitesTreeView_AfterSelect);
             // 
@@ -149,6 +155,45 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(266, 204);
             this.panel1.TabIndex = 9;
+            // 
+            // DirectoryButton
+            // 
+            this.DirectoryButton.Location = new System.Drawing.Point(158, 137);
+            this.DirectoryButton.Name = "DirectoryButton";
+            this.DirectoryButton.Size = new System.Drawing.Size(100, 23);
+            this.DirectoryButton.TabIndex = 16;
+            this.DirectoryButton.Text = "Select Directory";
+            this.DirectoryButton.UseVisualStyleBackColor = true;
+            this.DirectoryButton.Click += new System.EventHandler(this.DirectoryButton_Click);
+            // 
+            // DiscardButton
+            // 
+            this.DiscardButton.Location = new System.Drawing.Point(93, 178);
+            this.DiscardButton.Name = "DiscardButton";
+            this.DiscardButton.Size = new System.Drawing.Size(98, 23);
+            this.DiscardButton.TabIndex = 15;
+            this.DiscardButton.Text = "Discard Changes";
+            this.DiscardButton.UseVisualStyleBackColor = true;
+            this.DiscardButton.Click += new System.EventHandler(this.DiscardButton_Click);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(58, 15);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(31, 13);
+            this.label2.TabIndex = 14;
+            this.label2.Text = "Type";
+            // 
+            // RemoveButton
+            // 
+            this.RemoveButton.Location = new System.Drawing.Point(3, 178);
+            this.RemoveButton.Name = "RemoveButton";
+            this.RemoveButton.Size = new System.Drawing.Size(66, 23);
+            this.RemoveButton.TabIndex = 13;
+            this.RemoveButton.Text = "Remove";
+            this.RemoveButton.UseVisualStyleBackColor = true;
+            this.RemoveButton.Click += new System.EventHandler(this.RemoveButton_Click);
             // 
             // PrefixTextBox
             // 
@@ -238,7 +283,7 @@
             // 
             this.panel3.Controls.Add(this.ExitButton);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel3.Location = new System.Drawing.Point(5, 439);
+            this.panel3.Location = new System.Drawing.Point(5, 462);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(266, 29);
             this.panel3.TabIndex = 11;
@@ -260,7 +305,7 @@
             this.LeftPanel.Location = new System.Drawing.Point(0, 0);
             this.LeftPanel.Name = "LeftPanel";
             this.LeftPanel.Padding = new System.Windows.Forms.Padding(10);
-            this.LeftPanel.Size = new System.Drawing.Size(220, 473);
+            this.LeftPanel.Size = new System.Drawing.Size(220, 496);
             this.LeftPanel.TabIndex = 12;
             // 
             // RightPanel
@@ -273,7 +318,7 @@
             this.RightPanel.Location = new System.Drawing.Point(220, 0);
             this.RightPanel.Name = "RightPanel";
             this.RightPanel.Padding = new System.Windows.Forms.Padding(5);
-            this.RightPanel.Size = new System.Drawing.Size(276, 473);
+            this.RightPanel.Size = new System.Drawing.Size(276, 496);
             this.RightPanel.TabIndex = 13;
             // 
             // panel4
@@ -306,50 +351,20 @@
             this.ImportButton.UseVisualStyleBackColor = true;
             this.ImportButton.Click += new System.EventHandler(this.ImportButton_Click);
             // 
-            // RemoveButton
+            // TreeImageList
             // 
-            this.RemoveButton.Location = new System.Drawing.Point(3, 178);
-            this.RemoveButton.Name = "RemoveButton";
-            this.RemoveButton.Size = new System.Drawing.Size(66, 23);
-            this.RemoveButton.TabIndex = 13;
-            this.RemoveButton.Text = "Remove";
-            this.RemoveButton.UseVisualStyleBackColor = true;
-            this.RemoveButton.Click += new System.EventHandler(this.RemoveButton_Click);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(58, 15);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(31, 13);
-            this.label2.TabIndex = 14;
-            this.label2.Text = "Type";
-            // 
-            // DiscardButton
-            // 
-            this.DiscardButton.Location = new System.Drawing.Point(93, 178);
-            this.DiscardButton.Name = "DiscardButton";
-            this.DiscardButton.Size = new System.Drawing.Size(98, 23);
-            this.DiscardButton.TabIndex = 15;
-            this.DiscardButton.Text = "Discard Changes";
-            this.DiscardButton.UseVisualStyleBackColor = true;
-            this.DiscardButton.Click += new System.EventHandler(this.DiscardButton_Click);
-            // 
-            // DirectoryButton
-            // 
-            this.DirectoryButton.Location = new System.Drawing.Point(158, 137);
-            this.DirectoryButton.Name = "DirectoryButton";
-            this.DirectoryButton.Size = new System.Drawing.Size(100, 23);
-            this.DirectoryButton.TabIndex = 16;
-            this.DirectoryButton.Text = "Select Directory";
-            this.DirectoryButton.UseVisualStyleBackColor = true;
-            this.DirectoryButton.Click += new System.EventHandler(this.DirectoryButton_Click);
+            this.TreeImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("TreeImageList.ImageStream")));
+            this.TreeImageList.TransparentColor = System.Drawing.Color.Transparent;
+            this.TreeImageList.Images.SetKeyName(0, "globe");
+            this.TreeImageList.Images.SetKeyName(1, "cylinder");
+            this.TreeImageList.Images.SetKeyName(2, "cog");
+            this.TreeImageList.Images.SetKeyName(3, "gauge");
             // 
             // SiteManagerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(496, 473);
+            this.ClientSize = new System.Drawing.Size(496, 496);
             this.ControlBox = false;
             this.Controls.Add(this.RightPanel);
             this.Controls.Add(this.LeftPanel);
@@ -398,5 +413,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button DiscardButton;
         private System.Windows.Forms.Button DirectoryButton;
+        private System.Windows.Forms.ImageList TreeImageList;
     }
 }
