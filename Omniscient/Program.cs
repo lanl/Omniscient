@@ -6,7 +6,7 @@ using System.Windows.Forms;
 
 namespace Omniscient
 {
-    public enum ReturnCode { SUCCESS, FAIL, COULD_NOT_OPEN_FILE }
+    public enum ReturnCode { SUCCESS, FAIL, COULD_NOT_OPEN_FILE, CORRUPTED_FILE }
 
     static class Program
     {
