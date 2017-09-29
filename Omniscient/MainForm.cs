@@ -618,11 +618,31 @@ namespace Omniscient
 
         private void StartDatePicker_ValueChanged(object sender, EventArgs e)
         {
+            if (StartDatePicker.Value.Date < globalStart.Date)
+            {
+                StartDatePicker.Value = globalStart.Date;
+                StartTimePicker.Value = globalStart;
+            }
+            if (StartDatePicker.Value.Date > globalEnd.Date)
+            {
+                StartDatePicker.Value = globalEnd.Date;
+                StartTimePicker.Value = globalEnd.Date;
+            }
             rangeChanged = true;
         }
 
         private void StartTimePicker_ValueChanged(object sender, EventArgs e)
         {
+            if (StartDatePicker.Value.Date.AddTicks(StartTimePicker.Value.TimeOfDay.Ticks) < globalStart)
+            {
+                StartDatePicker.Value = globalStart.Date;
+                StartTimePicker.Value = globalStart;
+            }
+            if (StartDatePicker.Value.Date.AddTicks(StartTimePicker.Value.TimeOfDay.Ticks) > globalEnd)
+            {
+                StartDatePicker.Value = globalEnd.Date;
+                StartTimePicker.Value = globalEnd.Date;
+            }
             rangeChanged = true;
         }
 
@@ -656,6 +676,8 @@ namespace Omniscient
                     break;
             }
             newEnd = newEnd.AddTicks(StartTimePicker.Value.TimeOfDay.Ticks);
+            if (newEnd > globalEnd)
+                newEnd = globalEnd;
             EndDatePicker.Value = newEnd.Date;
             EndTimePicker.Value = newEnd;
 
@@ -691,6 +713,7 @@ namespace Omniscient
             end = end.Add(EndTimePicker.Value.TimeOfDay);
 
             if (start >= end) return;
+
 
             // Update Scrollbar
             StripChartScroll.Minimum = (int)(globalStart.Ticks/6e8);
