@@ -29,6 +29,7 @@ namespace Omniscient
         ///////////////////////////////////////////////////////////////////////
         private const int N_CHARTS = 4;
         public SiteManager siteMan;
+        public PresetManager presetMan;
         List<ChannelPanel> chPanels;
         List<Instrument> activeInstruments;
 
@@ -84,6 +85,7 @@ namespace Omniscient
             chPanels = new List<ChannelPanel>();
             siteMan = new SiteManager("SiteManager.xml");
             siteMan.Reload();
+            LoadPresets();
             UpdateSitesTree();
             RangeTextBox.Text = "7";
             RangeComboBox.Text = "Days";
@@ -100,6 +102,17 @@ namespace Omniscient
             }
         }
 
+        public void LoadPresets()
+        {
+            presetMan = new PresetManager(siteMan);
+            presetMan.LoadFromXML("Presets.xml");
+            PresetsComboBox.Items.Clear();
+            foreach (Preset preset in presetMan.GetPresets())
+            {
+                PresetsComboBox.Items.Add(preset.GetName());
+            }
+        }
+
         /// <summary>
         /// UpdateSitesTree() builds the tree view of the SiteManager.</summary>
         public void UpdateSitesTree()
@@ -108,15 +121,24 @@ namespace Omniscient
             foreach(Site site in siteMan.GetSites())
             {
                 TreeNode siteNode = new TreeNode(site.GetName());
+                siteNode.Name = site.GetName();
+                siteNode.Tag = site;
+
                 foreach(Facility fac in site.GetFacilities())
                 {
                     TreeNode facNode = new TreeNode(fac.GetName());
+                    facNode.Name = fac.GetName();
+                    facNode.Tag = fac;
                     foreach (DetectionSystem sys in fac.GetSystems())
                     {
                         TreeNode sysNode = new TreeNode(sys.GetName());
+                        sysNode.Name = sys.GetName();
+                        sysNode.Tag = sys;
                         foreach (Instrument inst in sys.GetInstruments())
                         {
                             TreeNode instNode = new TreeNode(inst.GetName());
+                            instNode.Name = inst.GetName();
+                            instNode.Tag = inst;
                             sysNode.Nodes.Add(instNode);
                         }
                         facNode.Nodes.Add(sysNode);
@@ -920,6 +942,50 @@ namespace Omniscient
         {
             SiteManagerForm siteManForm = new SiteManagerForm(this, siteMan);
             siteManForm.Show();
+        }
+
+        private void PresetsComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ApplyPreset(PresetsComboBox.Text);
+        }
+
+        /// <summary>
+        /// Called when a user selects a preset from the preset ComboBox.</summary>
+        private void ApplyPreset(string presetName)
+        {
+            Preset preset = presetMan.GetPresets().Single(p => p.GetName() == presetName);
+            ClearPanels();
+
+            foreach (Instrument inst in preset.GetActiveInstruments())
+            {
+                SitesTreeView.Nodes.Find(inst.GetName(),true)[0].Checked = true;
+            }
+
+            // So, this next part could probably be more elegant...
+            int c = 0;
+            foreach(Channel chan in preset.GetActiveChannels()[c])
+            {
+                chPanels.Single(cp => cp.GetChannel().Equals(chan)).Chart1CheckBox.Checked = true;
+            }
+
+            c = 1;
+            foreach (Channel chan in preset.GetActiveChannels()[c])
+            {
+                chPanels.Single(cp => cp.GetChannel().Equals(chan)).Chart2CheckBox.Checked = true;
+            }
+
+            c = 2;
+            foreach (Channel chan in preset.GetActiveChannels()[c])
+            {
+                chPanels.Single(cp => cp.GetChannel().Equals(chan)).Chart3CheckBox.Checked = true;
+            }
+
+            c = 3;
+            foreach (Channel chan in preset.GetActiveChannels()[c])
+            {
+                chPanels.Single(cp => cp.GetChannel().Equals(chan)).Chart4CheckBox.Checked = true;
+            }
+            // ... whatever.
         }
     }
 }
