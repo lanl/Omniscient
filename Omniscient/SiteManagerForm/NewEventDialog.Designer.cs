@@ -121,6 +121,7 @@
             this.Controls.Add(this.CancelButton);
             this.Controls.Add(this.OkButton);
             this.Name = "NewEventDialog";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "New Event Generator";
             this.Load += new System.EventHandler(this.NewEventDialog_Load);
             this.ResumeLayout(false);

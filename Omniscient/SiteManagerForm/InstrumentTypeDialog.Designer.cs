@@ -84,7 +84,7 @@
             this.Controls.Add(this.ISRButton);
             this.Controls.Add(this.GRANDButton);
             this.Name = "InstrumentTypeDialog";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Instrument Type";
             this.ResumeLayout(false);
 

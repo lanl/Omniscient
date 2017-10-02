@@ -24,6 +24,8 @@ namespace Omniscient
         {
             main = master;
             siteMan = newSiteMan;
+
+            this.StartPosition = FormStartPosition.CenterParent;
             InitializeComponent();
         }
 

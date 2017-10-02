@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SiteManagerForm));
             this.SitesTreeView = new System.Windows.Forms.TreeView();
+            this.TreeImageList = new System.Windows.Forms.ImageList(this.components);
             this.SaveButton = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.NameTextBox = new System.Windows.Forms.TextBox();
@@ -47,6 +48,7 @@
             this.DirectoryTextBox = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.NewEventButton = new System.Windows.Forms.Button();
             this.NewInstrumentButton = new System.Windows.Forms.Button();
             this.NewSystemButton = new System.Windows.Forms.Button();
             this.NewFacilityButton = new System.Windows.Forms.Button();
@@ -58,8 +60,6 @@
             this.panel4 = new System.Windows.Forms.Panel();
             this.ExportButton = new System.Windows.Forms.Button();
             this.ImportButton = new System.Windows.Forms.Button();
-            this.TreeImageList = new System.Windows.Forms.ImageList(this.components);
-            this.NewEventButton = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -79,6 +79,16 @@
             this.SitesTreeView.Size = new System.Drawing.Size(200, 476);
             this.SitesTreeView.TabIndex = 0;
             this.SitesTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.SitesTreeView_AfterSelect);
+            // 
+            // TreeImageList
+            // 
+            this.TreeImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("TreeImageList.ImageStream")));
+            this.TreeImageList.TransparentColor = System.Drawing.Color.Transparent;
+            this.TreeImageList.Images.SetKeyName(0, "globe");
+            this.TreeImageList.Images.SetKeyName(1, "cylinder");
+            this.TreeImageList.Images.SetKeyName(2, "cog");
+            this.TreeImageList.Images.SetKeyName(3, "gauge");
+            this.TreeImageList.Images.SetKeyName(4, "binoculars");
             // 
             // SaveButton
             // 
@@ -241,6 +251,16 @@
             this.panel2.Size = new System.Drawing.Size(266, 129);
             this.panel2.TabIndex = 10;
             // 
+            // NewEventButton
+            // 
+            this.NewEventButton.Location = new System.Drawing.Point(32, 64);
+            this.NewEventButton.Name = "NewEventButton";
+            this.NewEventButton.Size = new System.Drawing.Size(120, 23);
+            this.NewEventButton.TabIndex = 4;
+            this.NewEventButton.Text = "New Event Generator";
+            this.NewEventButton.UseVisualStyleBackColor = true;
+            this.NewEventButton.Click += new System.EventHandler(this.NewEventButton_Click);
+            // 
             // NewInstrumentButton
             // 
             this.NewInstrumentButton.Location = new System.Drawing.Point(158, 93);
@@ -353,26 +373,6 @@
             this.ImportButton.UseVisualStyleBackColor = true;
             this.ImportButton.Click += new System.EventHandler(this.ImportButton_Click);
             // 
-            // TreeImageList
-            // 
-            this.TreeImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("TreeImageList.ImageStream")));
-            this.TreeImageList.TransparentColor = System.Drawing.Color.Transparent;
-            this.TreeImageList.Images.SetKeyName(0, "globe");
-            this.TreeImageList.Images.SetKeyName(1, "cylinder");
-            this.TreeImageList.Images.SetKeyName(2, "cog");
-            this.TreeImageList.Images.SetKeyName(3, "gauge");
-            this.TreeImageList.Images.SetKeyName(4, "binoculars");
-            // 
-            // NewEventButton
-            // 
-            this.NewEventButton.Location = new System.Drawing.Point(32, 64);
-            this.NewEventButton.Name = "NewEventButton";
-            this.NewEventButton.Size = new System.Drawing.Size(120, 23);
-            this.NewEventButton.TabIndex = 4;
-            this.NewEventButton.Text = "New Event Generator";
-            this.NewEventButton.UseVisualStyleBackColor = true;
-            this.NewEventButton.Click += new System.EventHandler(this.NewEventButton_Click);
-            // 
             // SiteManagerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -383,6 +383,7 @@
             this.Controls.Add(this.LeftPanel);
             this.MinimumSize = new System.Drawing.Size(512, 512);
             this.Name = "SiteManagerForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Site Manager";
             this.Load += new System.EventHandler(this.SiteManagerForm_Load);
             this.panel1.ResumeLayout(false);

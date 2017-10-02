@@ -859,7 +859,7 @@ namespace Omniscient
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
             this.Padding = new System.Windows.Forms.Padding(0, 0, 5, 0);
-            this.Text = "Omniscient (v. Demo 9)";
+            this.Text = "Omniscient (v. Demo 10)";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.StripChartControlPanel.ResumeLayout(false);
             this.StripChartsPanel.ResumeLayout(false);

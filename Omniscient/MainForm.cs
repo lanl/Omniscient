@@ -980,7 +980,7 @@ namespace Omniscient
         private void SiteManagerToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SiteManagerForm siteManForm = new SiteManagerForm(this, siteMan);
-            siteManForm.Show();
+            siteManForm.ShowDialog();
         }
 
         private void PresetsComboBox_SelectedIndexChanged(object sender, EventArgs e)
