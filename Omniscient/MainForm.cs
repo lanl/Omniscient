@@ -95,9 +95,20 @@ namespace Omniscient
             UpdateRange();
         }
 
+        public void CheckChildrenNodes(TreeNode node)
+        {
+            if (!node.Checked)
+                node.Checked = true;
+            foreach (TreeNode child in node.Nodes)
+            {
+                CheckChildrenNodes(child);
+            }
+        }
+
         public void UncheckChildrenNodes(TreeNode node)
         {
-            node.Checked = false;
+            if (node.Checked)
+                node.Checked = false;
             foreach (TreeNode child in node.Nodes)
             {
                 UncheckChildrenNodes(child);
@@ -561,6 +572,20 @@ namespace Omniscient
             UpdatesCharts();
         }
 
+        private void UncheckParentNodes(TreeNode node)
+        {
+            if (node.Parent != null)
+            {
+                if (node.Parent.Checked)
+                {
+                    node.Parent.Checked = false;
+                }
+                UncheckParentNodes(node.Parent);
+            }
+        }
+
+        bool checkingChildren = false;
+        bool checkingParents = false;
         /// <summary>
         /// Determines which instrument was selected or deselected and
         /// either adds or removes channel panels as appropriate.</summary>
@@ -572,7 +597,30 @@ namespace Omniscient
                 if (e.Node.Checked)
                     AddChannelPanels(inst);
                 else
+                {
                     RemoveChannelPanels(inst);
+                    checkingParents = true;
+                    UncheckParentNodes(e.Node);
+                    checkingParents = false;
+                }
+            }
+            else
+            {
+                if(!checkingChildren && !checkingParents)
+                {
+                    checkingChildren = true;
+                    // Check/uncheck all children
+                    if (e.Node.Checked)
+                        CheckChildrenNodes(e.Node);
+                    else
+                    {
+                        UncheckChildrenNodes(e.Node);
+                        checkingParents = true;
+                        UncheckParentNodes(e.Node);
+                        checkingParents = false;
+                    }
+                    checkingChildren = false;
+                }
             }
         }
 
