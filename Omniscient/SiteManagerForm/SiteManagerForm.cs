@@ -290,6 +290,12 @@ namespace Omniscient
                 DetectionSystem sys = (DetectionSystem)node.Parent.Tag;
                 sys.GetInstruments().Remove(inst);
             }
+            else if (node.Tag is EventGenerator)
+            {
+                EventGenerator eg = (EventGenerator)node.Tag;
+                DetectionSystem sys = (DetectionSystem)node.Parent.Tag;
+                sys.GetEventGenerators().Remove(eg);
+            }
             siteMan.Save();
             UpdateSitesTree();
             siteManChanged = true;
