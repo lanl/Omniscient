@@ -82,25 +82,27 @@ namespace Omniscient
             this.EndDatePicker = new System.Windows.Forms.DateTimePicker();
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.SitesTreeView = new Omniscient.Controls.ResponsiveTreeView();
-            this.PresetSaveButton = new System.Windows.Forms.Button();
-            this.PresetNameTextBox = new System.Windows.Forms.TextBox();
-            this.PresetsComboBox = new System.Windows.Forms.ComboBox();
-            this.GlobalEndTextBox = new System.Windows.Forms.TextBox();
-            this.GlobalStartTextBox = new System.Windows.Forms.TextBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
+            this.LeftPanel = new System.Windows.Forms.Panel();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.CenterSplitContainer = new System.Windows.Forms.SplitContainer();
             this.BottomPanel = new System.Windows.Forms.Panel();
             this.EventGridView = new System.Windows.Forms.DataGridView();
-            this.EventControlPanel = new System.Windows.Forms.Panel();
-            this.GenerateEventsButton = new System.Windows.Forms.Button();
             this.EventGenerator = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.EventStart = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.EventEnd = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Comment = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.EventControlPanel = new System.Windows.Forms.Panel();
+            this.GenerateEventsButton = new System.Windows.Forms.Button();
+            this.BottomLeftPanel = new System.Windows.Forms.Panel();
+            this.GlobalEndTextBox = new System.Windows.Forms.TextBox();
+            this.GlobalStartTextBox = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.TopLeftPanel = new System.Windows.Forms.Panel();
+            this.PresetSaveButton = new System.Windows.Forms.Button();
+            this.PresetNameTextBox = new System.Windows.Forms.TextBox();
+            this.PresetsComboBox = new System.Windows.Forms.ComboBox();
+            this.SitesTreeView = new Omniscient.Controls.ResponsiveTreeView();
             this.StripChartControlPanel.SuspendLayout();
             this.StripChartsPanel.SuspendLayout();
             this.StripChartsLayoutPanel.SuspendLayout();
@@ -116,7 +118,7 @@ namespace Omniscient
             this.Chart2TabPage.SuspendLayout();
             this.Chart3TabPage.SuspendLayout();
             this.Chart4TabPage.SuspendLayout();
-            this.panel2.SuspendLayout();
+            this.LeftPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CenterSplitContainer)).BeginInit();
             this.CenterSplitContainer.Panel1.SuspendLayout();
             this.CenterSplitContainer.Panel2.SuspendLayout();
@@ -124,6 +126,8 @@ namespace Omniscient
             this.BottomPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.EventGridView)).BeginInit();
             this.EventControlPanel.SuspendLayout();
+            this.BottomLeftPanel.SuspendLayout();
+            this.TopLeftPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // StripChartControlPanel
@@ -648,95 +652,18 @@ namespace Omniscient
             this.label11.TabIndex = 5;
             this.label11.Text = "Start";
             // 
-            // panel2
+            // LeftPanel
             // 
-            this.panel2.Controls.Add(this.SitesTreeView);
-            this.panel2.Controls.Add(this.PresetSaveButton);
-            this.panel2.Controls.Add(this.PresetNameTextBox);
-            this.panel2.Controls.Add(this.PresetsComboBox);
-            this.panel2.Controls.Add(this.GlobalEndTextBox);
-            this.panel2.Controls.Add(this.GlobalStartTextBox);
-            this.panel2.Controls.Add(this.label9);
-            this.panel2.Controls.Add(this.label8);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Left;
-            this.panel2.Location = new System.Drawing.Point(0, 49);
-            this.panel2.MinimumSize = new System.Drawing.Size(200, 0);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(200, 667);
-            this.panel2.TabIndex = 5;
-            // 
-            // SitesTreeView
-            // 
-            this.SitesTreeView.CheckBoxes = true;
-            this.SitesTreeView.Location = new System.Drawing.Point(15, 73);
-            this.SitesTreeView.Name = "SitesTreeView";
-            this.SitesTreeView.Size = new System.Drawing.Size(167, 215);
-            this.SitesTreeView.TabIndex = 11;
-            this.SitesTreeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.SitesTreeView_AfterCheck);
-            // 
-            // PresetSaveButton
-            // 
-            this.PresetSaveButton.Location = new System.Drawing.Point(134, 17);
-            this.PresetSaveButton.Name = "PresetSaveButton";
-            this.PresetSaveButton.Size = new System.Drawing.Size(48, 23);
-            this.PresetSaveButton.TabIndex = 10;
-            this.PresetSaveButton.Text = "Save";
-            this.PresetSaveButton.UseVisualStyleBackColor = true;
-            this.PresetSaveButton.Click += new System.EventHandler(this.PresetSaveButton_Click);
-            // 
-            // PresetNameTextBox
-            // 
-            this.PresetNameTextBox.Location = new System.Drawing.Point(15, 20);
-            this.PresetNameTextBox.Name = "PresetNameTextBox";
-            this.PresetNameTextBox.Size = new System.Drawing.Size(113, 20);
-            this.PresetNameTextBox.TabIndex = 9;
-            // 
-            // PresetsComboBox
-            // 
-            this.PresetsComboBox.FormattingEnabled = true;
-            this.PresetsComboBox.Items.AddRange(new object[] {
-            "UCVS Default View"});
-            this.PresetsComboBox.Location = new System.Drawing.Point(15, 46);
-            this.PresetsComboBox.Name = "PresetsComboBox";
-            this.PresetsComboBox.Size = new System.Drawing.Size(167, 21);
-            this.PresetsComboBox.TabIndex = 8;
-            this.PresetsComboBox.SelectedIndexChanged += new System.EventHandler(this.PresetsComboBox_SelectedIndexChanged);
-            // 
-            // GlobalEndTextBox
-            // 
-            this.GlobalEndTextBox.BackColor = System.Drawing.SystemColors.Control;
-            this.GlobalEndTextBox.Location = new System.Drawing.Point(101, 361);
-            this.GlobalEndTextBox.Name = "GlobalEndTextBox";
-            this.GlobalEndTextBox.Size = new System.Drawing.Size(85, 20);
-            this.GlobalEndTextBox.TabIndex = 6;
-            this.GlobalEndTextBox.Text = "Oct. 27, 2004";
-            // 
-            // GlobalStartTextBox
-            // 
-            this.GlobalStartTextBox.BackColor = System.Drawing.SystemColors.Control;
-            this.GlobalStartTextBox.Location = new System.Drawing.Point(101, 334);
-            this.GlobalStartTextBox.Name = "GlobalStartTextBox";
-            this.GlobalStartTextBox.Size = new System.Drawing.Size(85, 20);
-            this.GlobalStartTextBox.TabIndex = 5;
-            this.GlobalStartTextBox.Text = "Jan. 3, 1920";
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(44, 365);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(52, 13);
-            this.label9.TabIndex = 4;
-            this.label9.Text = "End Date";
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(41, 338);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(55, 13);
-            this.label8.TabIndex = 3;
-            this.label8.Text = "Start Date";
+            this.LeftPanel.Controls.Add(this.SitesTreeView);
+            this.LeftPanel.Controls.Add(this.TopLeftPanel);
+            this.LeftPanel.Controls.Add(this.BottomLeftPanel);
+            this.LeftPanel.Dock = System.Windows.Forms.DockStyle.Left;
+            this.LeftPanel.Location = new System.Drawing.Point(0, 49);
+            this.LeftPanel.MinimumSize = new System.Drawing.Size(200, 0);
+            this.LeftPanel.Name = "LeftPanel";
+            this.LeftPanel.Padding = new System.Windows.Forms.Padding(5);
+            this.LeftPanel.Size = new System.Drawing.Size(200, 667);
+            this.LeftPanel.TabIndex = 5;
             // 
             // CenterSplitContainer
             // 
@@ -782,25 +709,6 @@ namespace Omniscient
             this.EventGridView.Size = new System.Drawing.Size(735, 184);
             this.EventGridView.TabIndex = 2;
             // 
-            // EventControlPanel
-            // 
-            this.EventControlPanel.Controls.Add(this.GenerateEventsButton);
-            this.EventControlPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.EventControlPanel.Location = new System.Drawing.Point(0, 0);
-            this.EventControlPanel.Name = "EventControlPanel";
-            this.EventControlPanel.Size = new System.Drawing.Size(735, 34);
-            this.EventControlPanel.TabIndex = 3;
-            // 
-            // GenerateEventsButton
-            // 
-            this.GenerateEventsButton.Location = new System.Drawing.Point(5, 3);
-            this.GenerateEventsButton.Name = "GenerateEventsButton";
-            this.GenerateEventsButton.Size = new System.Drawing.Size(104, 23);
-            this.GenerateEventsButton.TabIndex = 0;
-            this.GenerateEventsButton.Text = "Generate Events";
-            this.GenerateEventsButton.UseVisualStyleBackColor = true;
-            this.GenerateEventsButton.Click += new System.EventHandler(this.GenerateEventsButton_Click);
-            // 
             // EventGenerator
             // 
             this.EventGenerator.HeaderText = "Event Generator";
@@ -823,13 +731,127 @@ namespace Omniscient
             this.Comment.Name = "Comment";
             this.Comment.Width = 300;
             // 
+            // EventControlPanel
+            // 
+            this.EventControlPanel.Controls.Add(this.GenerateEventsButton);
+            this.EventControlPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.EventControlPanel.Location = new System.Drawing.Point(0, 0);
+            this.EventControlPanel.Name = "EventControlPanel";
+            this.EventControlPanel.Size = new System.Drawing.Size(735, 34);
+            this.EventControlPanel.TabIndex = 3;
+            // 
+            // GenerateEventsButton
+            // 
+            this.GenerateEventsButton.Location = new System.Drawing.Point(5, 3);
+            this.GenerateEventsButton.Name = "GenerateEventsButton";
+            this.GenerateEventsButton.Size = new System.Drawing.Size(104, 23);
+            this.GenerateEventsButton.TabIndex = 0;
+            this.GenerateEventsButton.Text = "Generate Events";
+            this.GenerateEventsButton.UseVisualStyleBackColor = true;
+            this.GenerateEventsButton.Click += new System.EventHandler(this.GenerateEventsButton_Click);
+            // 
+            // BottomLeftPanel
+            // 
+            this.BottomLeftPanel.Controls.Add(this.GlobalEndTextBox);
+            this.BottomLeftPanel.Controls.Add(this.GlobalStartTextBox);
+            this.BottomLeftPanel.Controls.Add(this.label9);
+            this.BottomLeftPanel.Controls.Add(this.label8);
+            this.BottomLeftPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.BottomLeftPanel.Location = new System.Drawing.Point(5, 596);
+            this.BottomLeftPanel.Name = "BottomLeftPanel";
+            this.BottomLeftPanel.Size = new System.Drawing.Size(190, 66);
+            this.BottomLeftPanel.TabIndex = 12;
+            // 
+            // GlobalEndTextBox
+            // 
+            this.GlobalEndTextBox.BackColor = System.Drawing.SystemColors.Control;
+            this.GlobalEndTextBox.Location = new System.Drawing.Point(102, 40);
+            this.GlobalEndTextBox.Name = "GlobalEndTextBox";
+            this.GlobalEndTextBox.Size = new System.Drawing.Size(85, 20);
+            this.GlobalEndTextBox.TabIndex = 10;
+            this.GlobalEndTextBox.Text = "Oct. 27, 2004";
+            // 
+            // GlobalStartTextBox
+            // 
+            this.GlobalStartTextBox.BackColor = System.Drawing.SystemColors.Control;
+            this.GlobalStartTextBox.Location = new System.Drawing.Point(102, 10);
+            this.GlobalStartTextBox.Name = "GlobalStartTextBox";
+            this.GlobalStartTextBox.Size = new System.Drawing.Size(85, 20);
+            this.GlobalStartTextBox.TabIndex = 9;
+            this.GlobalStartTextBox.Text = "Jan. 3, 1920";
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(19, 44);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(78, 13);
+            this.label9.TabIndex = 8;
+            this.label9.Text = "Data End Date";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(16, 14);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(81, 13);
+            this.label8.TabIndex = 7;
+            this.label8.Text = "Data Start Date";
+            // 
+            // TopLeftPanel
+            // 
+            this.TopLeftPanel.Controls.Add(this.PresetSaveButton);
+            this.TopLeftPanel.Controls.Add(this.PresetNameTextBox);
+            this.TopLeftPanel.Controls.Add(this.PresetsComboBox);
+            this.TopLeftPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.TopLeftPanel.Location = new System.Drawing.Point(5, 5);
+            this.TopLeftPanel.Name = "TopLeftPanel";
+            this.TopLeftPanel.Size = new System.Drawing.Size(190, 63);
+            this.TopLeftPanel.TabIndex = 13;
+            // 
+            // PresetSaveButton
+            // 
+            this.PresetSaveButton.Location = new System.Drawing.Point(139, 3);
+            this.PresetSaveButton.Name = "PresetSaveButton";
+            this.PresetSaveButton.Size = new System.Drawing.Size(48, 23);
+            this.PresetSaveButton.TabIndex = 13;
+            this.PresetSaveButton.Text = "Save";
+            this.PresetSaveButton.UseVisualStyleBackColor = true;
+            // 
+            // PresetNameTextBox
+            // 
+            this.PresetNameTextBox.Location = new System.Drawing.Point(3, 6);
+            this.PresetNameTextBox.Name = "PresetNameTextBox";
+            this.PresetNameTextBox.Size = new System.Drawing.Size(130, 20);
+            this.PresetNameTextBox.TabIndex = 12;
+            // 
+            // PresetsComboBox
+            // 
+            this.PresetsComboBox.FormattingEnabled = true;
+            this.PresetsComboBox.Items.AddRange(new object[] {
+            "UCVS Default View"});
+            this.PresetsComboBox.Location = new System.Drawing.Point(3, 32);
+            this.PresetsComboBox.Name = "PresetsComboBox";
+            this.PresetsComboBox.Size = new System.Drawing.Size(184, 21);
+            this.PresetsComboBox.TabIndex = 11;
+            // 
+            // SitesTreeView
+            // 
+            this.SitesTreeView.CheckBoxes = true;
+            this.SitesTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.SitesTreeView.Location = new System.Drawing.Point(5, 68);
+            this.SitesTreeView.Name = "SitesTreeView";
+            this.SitesTreeView.Size = new System.Drawing.Size(190, 528);
+            this.SitesTreeView.TabIndex = 11;
+            this.SitesTreeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.SitesTreeView_AfterCheck);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1259, 738);
             this.Controls.Add(this.CenterSplitContainer);
-            this.Controls.Add(this.panel2);
+            this.Controls.Add(this.LeftPanel);
             this.Controls.Add(this.RightPanel);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.toolStrip1);
@@ -863,8 +885,7 @@ namespace Omniscient
             this.Chart3TabPage.PerformLayout();
             this.Chart4TabPage.ResumeLayout(false);
             this.Chart4TabPage.PerformLayout();
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
+            this.LeftPanel.ResumeLayout(false);
             this.CenterSplitContainer.Panel1.ResumeLayout(false);
             this.CenterSplitContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.CenterSplitContainer)).EndInit();
@@ -872,6 +893,10 @@ namespace Omniscient
             this.BottomPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.EventGridView)).EndInit();
             this.EventControlPanel.ResumeLayout(false);
+            this.BottomLeftPanel.ResumeLayout(false);
+            this.BottomLeftPanel.PerformLayout();
+            this.TopLeftPanel.ResumeLayout(false);
+            this.TopLeftPanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -894,11 +919,7 @@ namespace Omniscient
         private System.Windows.Forms.ToolStripButton toolStripButton1;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.Panel RightPanel;
-        private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.TextBox GlobalEndTextBox;
-        private System.Windows.Forms.TextBox GlobalStartTextBox;
+        private System.Windows.Forms.Panel LeftPanel;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Panel ChannelsPanel;
         private System.Windows.Forms.DateTimePicker EndDatePicker;
@@ -919,9 +940,6 @@ namespace Omniscient
         private LiveCharts.WinForms.CartesianChart StripChart0;
         private LiveCharts.WinForms.CartesianChart StripChart3;
         private LiveCharts.WinForms.CartesianChart StripChart2;
-        private System.Windows.Forms.ComboBox PresetsComboBox;
-        private System.Windows.Forms.Button PresetSaveButton;
-        private System.Windows.Forms.TextBox PresetNameTextBox;
         private System.Windows.Forms.Panel EventControlPanel;
         private System.Windows.Forms.Button GenerateEventsButton;
         private System.Windows.Forms.ToolStripMenuItem launchInspectrumToolStripMenuItem;
@@ -948,6 +966,15 @@ namespace Omniscient
         private DataGridViewTextBoxColumn EventStart;
         private DataGridViewTextBoxColumn EventEnd;
         private DataGridViewTextBoxColumn Comment;
+        private Panel BottomLeftPanel;
+        private Panel TopLeftPanel;
+        private Button PresetSaveButton;
+        private TextBox PresetNameTextBox;
+        private ComboBox PresetsComboBox;
+        private TextBox GlobalEndTextBox;
+        private TextBox GlobalStartTextBox;
+        private Label label9;
+        private Label label8;
     }
 }
 
