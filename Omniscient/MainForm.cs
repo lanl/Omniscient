@@ -566,46 +566,13 @@ namespace Omniscient
         /// either adds or removes channel panels as appropriate.</summary>
         private void SitesTreeView_AfterCheck(object sender, TreeViewEventArgs e)
         {
-            const int INST_LEVEL = 3;
-            if ( e.Node.Level == INST_LEVEL)
+            if ( e.Node.Tag is Instrument)
             {
-                string instName = e.Node.Text;
-                string sysName = e.Node.Parent.Text;
-                string facName = e.Node.Parent.Parent.Text;
-                string siteName = e.Node.Parent.Parent.Parent.Text;
-                foreach (Site site in siteMan.GetSites())
-                {
-                    if (site.GetName().Equals(siteName))
-                    {
-                        foreach (Facility fac in site.GetFacilities())
-                        {
-                            if (fac.GetName().Equals(facName))
-                            {
-                                foreach (DetectionSystem sys in fac.GetSystems())
-                                {
-                                    if (sys.GetName().Equals(sysName))
-                                    {
-                                        foreach (Instrument inst in sys.GetInstruments())
-                                        {
-                                            if(inst.GetName().Equals(instName))
-                                            {
-                                                if (e.Node.Checked)
-                                                    AddChannelPanels(inst);
-                                                else
-                                                    RemoveChannelPanels(inst);
-                                                break;
-                                            }
-                                        }
-                                        break;
-                                    }
-                                }
-                                break;
-                            }
-                        }
-                        break;
-                    }
-
-                }
+                Instrument inst = (Instrument)e.Node.Tag;
+                if (e.Node.Checked)
+                    AddChannelPanels(inst);
+                else
+                    RemoveChannelPanels(inst);
             }
         }
 
