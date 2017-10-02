@@ -76,6 +76,7 @@
             this.SitesTreeView.Location = new System.Drawing.Point(10, 10);
             this.SitesTreeView.Name = "SitesTreeView";
             this.SitesTreeView.SelectedImageIndex = 0;
+            this.SitesTreeView.ShowNodeToolTips = true;
             this.SitesTreeView.Size = new System.Drawing.Size(200, 476);
             this.SitesTreeView.TabIndex = 0;
             this.SitesTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.SitesTreeView_AfterSelect);

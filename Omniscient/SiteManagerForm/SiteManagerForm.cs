@@ -45,24 +45,28 @@ namespace Omniscient
                 siteNode.Tag = site;
                 siteNode.ImageIndex = 0;
                 siteNode.SelectedImageIndex = 0;
+                siteNode.ToolTipText = siteNode.Text;
                 foreach (Facility fac in site.GetFacilities())
                 {
                     TreeNode facNode = new TreeNode(fac.GetName());
                     facNode.Tag = fac;
                     facNode.ImageIndex = 1;
                     facNode.SelectedImageIndex = 1;
+                    facNode.ToolTipText = facNode.Text;
                     foreach (DetectionSystem sys in fac.GetSystems())
                     {
                         TreeNode sysNode = new TreeNode(sys.GetName());
                         sysNode.Tag = sys;
                         sysNode.ImageIndex = 2;
                         sysNode.SelectedImageIndex = 2;
+                        sysNode.ToolTipText = sysNode.Text;
                         foreach (Instrument inst in sys.GetInstruments())
                         {
                             TreeNode instNode = new TreeNode(inst.GetName());
                             instNode.Tag = inst;
                             instNode.ImageIndex = 3;
                             instNode.SelectedImageIndex = 3;
+                            instNode.ToolTipText = instNode.Text;
                             sysNode.Nodes.Add(instNode);
                         }
                         foreach (EventGenerator eg in sys.GetEventGenerators())
@@ -71,6 +75,7 @@ namespace Omniscient
                             egNode.Tag = eg;
                             egNode.ImageIndex = 4;
                             egNode.SelectedImageIndex = 4;
+                            egNode.ToolTipText = egNode.Text;
                             sysNode.Nodes.Add(egNode);
                         }
                         facNode.Nodes.Add(sysNode);

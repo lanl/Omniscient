@@ -145,28 +145,44 @@ namespace Omniscient
         public void UpdateSitesTree()
         {
             SitesTreeView.Nodes.Clear();
-            foreach(Site site in siteMan.GetSites())
+            foreach (Site site in siteMan.GetSites())
             {
                 TreeNode siteNode = new TreeNode(site.GetName());
-                siteNode.Name = site.GetName();
                 siteNode.Tag = site;
-
-                foreach(Facility fac in site.GetFacilities())
+                siteNode.ImageIndex = 0;
+                siteNode.SelectedImageIndex = 0;
+                siteNode.ToolTipText = siteNode.Text;
+                foreach (Facility fac in site.GetFacilities())
                 {
                     TreeNode facNode = new TreeNode(fac.GetName());
-                    facNode.Name = fac.GetName();
                     facNode.Tag = fac;
+                    facNode.ImageIndex = 1;
+                    facNode.SelectedImageIndex = 1;
+                    facNode.ToolTipText = facNode.Text;
                     foreach (DetectionSystem sys in fac.GetSystems())
                     {
                         TreeNode sysNode = new TreeNode(sys.GetName());
-                        sysNode.Name = sys.GetName();
                         sysNode.Tag = sys;
+                        sysNode.ImageIndex = 2;
+                        sysNode.SelectedImageIndex = 2;
+                        sysNode.ToolTipText = sysNode.Text;
                         foreach (Instrument inst in sys.GetInstruments())
                         {
                             TreeNode instNode = new TreeNode(inst.GetName());
-                            instNode.Name = inst.GetName();
                             instNode.Tag = inst;
+                            instNode.ImageIndex = 3;
+                            instNode.SelectedImageIndex = 3;
+                            instNode.ToolTipText = instNode.Text;
                             sysNode.Nodes.Add(instNode);
+                        }
+                        foreach (EventGenerator eg in sys.GetEventGenerators())
+                        {
+                            TreeNode egNode = new TreeNode(eg.GetName());
+                            egNode.Tag = eg;
+                            egNode.ImageIndex = 4;
+                            egNode.SelectedImageIndex = 4;
+                            egNode.ToolTipText = egNode.Text;
+                            sysNode.Nodes.Add(egNode);
                         }
                         facNode.Nodes.Add(sysNode);
                     }
@@ -1100,7 +1116,7 @@ namespace Omniscient
 
         private void GenerateEvents(DateTime start, DateTime end)
         {
-            List<EventWatcher> eventWatchers = new List<EventWatcher>();
+            List<EventGenerator> eventGenerators = new List<EventGenerator>();
             List<Event> events = new List<Event>();
 
             //  Put all of the checked systems in the SitesTreeView in eventWatchers
@@ -1110,18 +1126,20 @@ namespace Omniscient
                 {
                     foreach(TreeNode sysNode in facNode.Nodes)
                     {
-                        if (sysNode.Checked)
+                        foreach(TreeNode node in sysNode.Nodes)
                         {
-                            eventWatchers.Add((DetectionSystem)sysNode.Tag);
+                            if (node.Tag is EventGenerator && node.Checked)
+                            {
+                                eventGenerators.Add((EventGenerator)node.Tag);
+                            }
                         }
                     }
                 }
             }
 
-            foreach(EventWatcher ew in eventWatchers)
+            foreach(EventGenerator eg in eventGenerators)
             {
-                ew.GenerateEvents(start, end);
-                events.AddRange(ew.GetEvents());
+                events.AddRange(eg.GenerateEvents(start, end));
             }
             events.Sort((x, y) => x.GetStartTime().CompareTo(y.GetStartTime()));
 
