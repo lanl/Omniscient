@@ -1108,6 +1108,7 @@ namespace Omniscient
                 ew.GenerateEvents(start, end);
                 events.AddRange(ew.GetEvents());
             }
+            events.Sort((x, y) => x.GetStartTime().CompareTo(y.GetStartTime()));
 
             EventGridView.Rows.Clear();
             foreach (Event eve in events)
