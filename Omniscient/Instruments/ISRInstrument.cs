@@ -44,8 +44,8 @@ namespace Omniscient.Instruments
         {
             name = newName;
             channels[TOTALS1].SetName(name + "-Totals-1");
-            channels[TOTALS1].SetName(name + "-Totals-2");
-            channels[TOTALS1].SetName(name + "-Totals-3");
+            channels[TOTALS2].SetName(name + "-Totals-2");
+            channels[TOTALS3].SetName(name + "-Totals-3");
             channels[REALS_PLUS_ACC].SetName(name + "-Real+Acc");
             channels[ACC].SetName(name + "-Acc");
         }
