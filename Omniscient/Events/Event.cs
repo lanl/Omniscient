@@ -28,6 +28,8 @@ namespace Omniscient.Events
 
         string comment;
 
+        public TimeSpan GetDuration() { return EndTime - StartTime; }
+
         public void SetStartTime(DateTime start) { StartTime = start; }
         public void SetEndTime(DateTime end) { EndTime = end; }
         public void SetComment(string newComment) { comment = newComment; }

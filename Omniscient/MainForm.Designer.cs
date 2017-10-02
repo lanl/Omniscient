@@ -87,10 +87,6 @@ namespace Omniscient
             this.CenterSplitContainer = new System.Windows.Forms.SplitContainer();
             this.BottomPanel = new System.Windows.Forms.Panel();
             this.EventGridView = new System.Windows.Forms.DataGridView();
-            this.EventGenerator = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.EventStart = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.EventEnd = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Comment = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.EventControlPanel = new System.Windows.Forms.Panel();
             this.GenerateEventsButton = new System.Windows.Forms.Button();
             this.BottomLeftPanel = new System.Windows.Forms.Panel();
@@ -103,6 +99,11 @@ namespace Omniscient
             this.PresetNameTextBox = new System.Windows.Forms.TextBox();
             this.PresetsComboBox = new System.Windows.Forms.ComboBox();
             this.SitesTreeView = new Omniscient.Controls.ResponsiveTreeView();
+            this.EventGenerator = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.EventStart = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.EventEnd = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Duration = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Comment = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.StripChartControlPanel.SuspendLayout();
             this.StripChartsPanel.SuspendLayout();
             this.StripChartsLayoutPanel.SuspendLayout();
@@ -702,34 +703,13 @@ namespace Omniscient
             this.EventGenerator,
             this.EventStart,
             this.EventEnd,
+            this.Duration,
             this.Comment});
             this.EventGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.EventGridView.Location = new System.Drawing.Point(0, 34);
             this.EventGridView.Name = "EventGridView";
             this.EventGridView.Size = new System.Drawing.Size(735, 184);
             this.EventGridView.TabIndex = 2;
-            // 
-            // EventGenerator
-            // 
-            this.EventGenerator.HeaderText = "Event Generator";
-            this.EventGenerator.Name = "EventGenerator";
-            this.EventGenerator.Width = 150;
-            // 
-            // EventStart
-            // 
-            this.EventStart.HeaderText = "Event Start";
-            this.EventStart.Name = "EventStart";
-            // 
-            // EventEnd
-            // 
-            this.EventEnd.HeaderText = "Event End";
-            this.EventEnd.Name = "EventEnd";
-            // 
-            // Comment
-            // 
-            this.Comment.HeaderText = "Comment";
-            this.Comment.Name = "Comment";
-            this.Comment.Width = 300;
             // 
             // EventControlPanel
             // 
@@ -844,6 +824,33 @@ namespace Omniscient
             this.SitesTreeView.Size = new System.Drawing.Size(190, 528);
             this.SitesTreeView.TabIndex = 11;
             this.SitesTreeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.SitesTreeView_AfterCheck);
+            // 
+            // EventGenerator
+            // 
+            this.EventGenerator.HeaderText = "Event Generator";
+            this.EventGenerator.Name = "EventGenerator";
+            this.EventGenerator.Width = 150;
+            // 
+            // EventStart
+            // 
+            this.EventStart.HeaderText = "Event Start";
+            this.EventStart.Name = "EventStart";
+            // 
+            // EventEnd
+            // 
+            this.EventEnd.HeaderText = "Event End";
+            this.EventEnd.Name = "EventEnd";
+            // 
+            // Duration
+            // 
+            this.Duration.HeaderText = "Duration";
+            this.Duration.Name = "Duration";
+            // 
+            // Comment
+            // 
+            this.Comment.HeaderText = "Comment";
+            this.Comment.Name = "Comment";
+            this.Comment.Width = 300;
             // 
             // MainForm
             // 
@@ -962,10 +969,6 @@ namespace Omniscient
         private ToolStripLabel MarkerToolStripLabel;
         private ToolStripMenuItem SiteManagerToolStripMenuItem;
         private ToolStripLabel MouseTimeToolStripLabel;
-        private DataGridViewTextBoxColumn EventGenerator;
-        private DataGridViewTextBoxColumn EventStart;
-        private DataGridViewTextBoxColumn EventEnd;
-        private DataGridViewTextBoxColumn Comment;
         private Panel BottomLeftPanel;
         private Panel TopLeftPanel;
         private Button PresetSaveButton;
@@ -975,6 +978,11 @@ namespace Omniscient
         private TextBox GlobalStartTextBox;
         private Label label9;
         private Label label8;
+        private DataGridViewTextBoxColumn EventGenerator;
+        private DataGridViewTextBoxColumn EventStart;
+        private DataGridViewTextBoxColumn EventEnd;
+        private DataGridViewTextBoxColumn Duration;
+        private DataGridViewTextBoxColumn Comment;
     }
 }
 
