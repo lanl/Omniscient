@@ -84,7 +84,6 @@ namespace Omniscient
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.LeftPanel = new System.Windows.Forms.Panel();
-            this.SitesTreeView = new Omniscient.Controls.ResponsiveTreeView();
             this.TreeImageList = new System.Windows.Forms.ImageList(this.components);
             this.TopLeftPanel = new System.Windows.Forms.Panel();
             this.PresetSaveButton = new System.Windows.Forms.Button();
@@ -109,6 +108,8 @@ namespace Omniscient
             this.HighlightEventsCheckBox = new System.Windows.Forms.CheckBox();
             this.EventsWarningLabel = new System.Windows.Forms.Label();
             this.GenerateEventsButton = new System.Windows.Forms.Button();
+            this.ButtonImageList = new System.Windows.Forms.ImageList(this.components);
+            this.SitesTreeView = new Omniscient.Controls.ResponsiveTreeView();
             this.StripChartControlPanel.SuspendLayout();
             this.StripChartsPanel.SuspendLayout();
             this.StripChartsLayoutPanel.SuspendLayout();
@@ -666,20 +667,6 @@ namespace Omniscient
             this.LeftPanel.Size = new System.Drawing.Size(200, 667);
             this.LeftPanel.TabIndex = 5;
             // 
-            // SitesTreeView
-            // 
-            this.SitesTreeView.CheckBoxes = true;
-            this.SitesTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SitesTreeView.ImageIndex = 0;
-            this.SitesTreeView.ImageList = this.TreeImageList;
-            this.SitesTreeView.Location = new System.Drawing.Point(5, 68);
-            this.SitesTreeView.Name = "SitesTreeView";
-            this.SitesTreeView.SelectedImageIndex = 0;
-            this.SitesTreeView.ShowNodeToolTips = true;
-            this.SitesTreeView.Size = new System.Drawing.Size(190, 528);
-            this.SitesTreeView.TabIndex = 11;
-            this.SitesTreeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.SitesTreeView_AfterCheck);
-            // 
             // TreeImageList
             // 
             this.TreeImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("TreeImageList.ImageStream")));
@@ -897,6 +884,29 @@ namespace Omniscient
             this.GenerateEventsButton.UseVisualStyleBackColor = true;
             this.GenerateEventsButton.Click += new System.EventHandler(this.GenerateEventsButton_Click);
             // 
+            // ButtonImageList
+            // 
+            this.ButtonImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("ButtonImageList.ImageStream")));
+            this.ButtonImageList.TransparentColor = System.Drawing.Color.Transparent;
+            this.ButtonImageList.Images.SetKeyName(0, "UpArrow");
+            this.ButtonImageList.Images.SetKeyName(1, "DownArrow");
+            this.ButtonImageList.Images.SetKeyName(2, "Plus");
+            this.ButtonImageList.Images.SetKeyName(3, "Delete");
+            // 
+            // SitesTreeView
+            // 
+            this.SitesTreeView.CheckBoxes = true;
+            this.SitesTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.SitesTreeView.ImageIndex = 0;
+            this.SitesTreeView.ImageList = this.TreeImageList;
+            this.SitesTreeView.Location = new System.Drawing.Point(5, 68);
+            this.SitesTreeView.Name = "SitesTreeView";
+            this.SitesTreeView.SelectedImageIndex = 0;
+            this.SitesTreeView.ShowNodeToolTips = true;
+            this.SitesTreeView.Size = new System.Drawing.Size(190, 528);
+            this.SitesTreeView.TabIndex = 11;
+            this.SitesTreeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.SitesTreeView_AfterCheck);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1035,6 +1045,7 @@ namespace Omniscient
         private Label EventsWarningLabel;
         private Panel RightEventControlPanel;
         private ToolStripMenuItem EventManagerToolStripMenuItem;
+        public ImageList ButtonImageList;
     }
 }
 
