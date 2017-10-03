@@ -29,6 +29,8 @@ namespace Omniscient
     {
         ///////////////////////////////////////////////////////////////////////
         private const int N_CHARTS = 4;
+        private const int MAX_HIGHLIGHTED_EVENTS = 60;
+
         public SiteManager siteMan;
         public PresetManager presetMan;
         List<ChannelPanel> chPanels;
@@ -290,6 +292,18 @@ namespace Omniscient
             }
         }
 
+        private DateTime GetRangeStart()
+        {
+            DateTime start = StartDatePicker.Value.Date;
+            return start.Add(StartTimePicker.Value.TimeOfDay);
+        }
+
+        private DateTime GetRangeEnd()
+        {
+            DateTime end = EndDatePicker.Value.Date;
+            return end.Add(EndTimePicker.Value.TimeOfDay);
+        }
+
         /// <summary>
         /// UpdateChart is called whenever the data to be displayed on a chart changes. </summary>
         private void UpdateChart(int chartNum)
@@ -299,10 +313,8 @@ namespace Omniscient
             chart = GetChart(chartNum);
 
             // Needed for speedy loading
-            DateTime start = StartDatePicker.Value.Date;
-            start = start.Add(StartTimePicker.Value.TimeOfDay);
-            DateTime end = EndDatePicker.Value.Date;
-            end = end.Add(EndTimePicker.Value.TimeOfDay);
+            DateTime start = GetRangeStart();
+            DateTime end = GetRangeEnd();
 
             SeriesCollection seriesColl;
             if (logScale[chartNum])
@@ -388,6 +400,56 @@ namespace Omniscient
             }
             chart.Series = seriesColl;
             Cursor.Current = Cursors.Default;
+        }
+
+        private void DrawSections()
+        {
+            DateTime start = GetRangeStart();
+            DateTime end = GetRangeEnd();
+            int eventCount = 0;
+            LiveCharts.WinForms.CartesianChart chart;
+            for (int chartNum = 0; chartNum < N_CHARTS; chartNum++)
+            {
+                chart = GetChart(chartNum);
+                if (chart.AxisX[0].Sections != null)
+                    chart.AxisX[0].Sections.Clear();
+                chart.AxisX[0].Sections = new SectionsCollection();
+                chart.AxisX[0].Sections.Add(
+                    new AxisSection()
+                    {
+                        Value = markerValue,
+                        Stroke = new SolidColorBrush(System.Windows.Media.Color.FromRgb(64, 64, 64)),
+                        StrokeThickness = 1,
+                    }
+                );
+
+                eventCount = 0;
+                if (HighlightEventsCheckBox.Checked)
+                {
+                    foreach (Event eve in events)
+                    {
+                        if (eve.GetStartTime() < end && eve.GetEndTime() > start && eventCount < MAX_HIGHLIGHTED_EVENTS)
+                        {
+                            chart.AxisX[0].Sections.Add(new AxisSection()
+                            {
+                                Value = eve.GetStartTime().Ticks,
+                                SectionWidth = eve.GetEndTime().Ticks - eve.GetStartTime().Ticks,
+                                Fill = new SolidColorBrush
+                                {
+                                    Color = System.Windows.Media.Color.FromRgb(0, 255, 0),
+                                    Opacity = .5
+                                }
+                            });
+                            eventCount++;
+                        }
+                    }
+                }
+                chart.Update(true, true);
+            }
+            if (eventCount == MAX_HIGHLIGHTED_EVENTS)
+                EventsWarningLabel.Text = "Warning: Too many events in view. Not all are highlighted";
+            else
+                EventsWarningLabel.Text = "";
         }
 
         /// <summary>
@@ -721,13 +783,10 @@ namespace Omniscient
             StripChartsPanel.SuspendLayout();
 
             // Setup x-axis format
-            DateTime start = StartDatePicker.Value.Date;
-            start = start.Add(StartTimePicker.Value.TimeOfDay);
-            DateTime end = EndDatePicker.Value.Date;
-            end = end.Add(EndTimePicker.Value.TimeOfDay);
+            DateTime start = GetRangeStart();
+            DateTime end = GetRangeEnd();
 
             if (start >= end) return;
-
 
             // Update Scrollbar
             StripChartScroll.Minimum = (int)(globalStart.Ticks/6e8);
@@ -855,6 +914,7 @@ namespace Omniscient
             }
             Cursor.Current = Cursors.Default;
             UpdatesCharts();
+            DrawSections();
             StripChartsPanel.ResumeLayout();
         }
 
@@ -884,7 +944,7 @@ namespace Omniscient
         private void StripChartScroll_Scroll(object sender, ScrollEventArgs e)
         {
             DateTime newStart = new DateTime((long)(StripChartScroll.Value * 6e8));
-            StartDatePicker.Value = newStart;
+            StartDatePicker.Value = newStart.Date;
             StartTimePicker.Value = newStart;
             UpdateEndPickers();
             UpdateRange();
@@ -896,37 +956,7 @@ namespace Omniscient
         private void DrawMarker()
         {
             Cursor.Current = Cursors.WaitCursor;
-            for (int i = 0; i < N_CHARTS; ++i)
-            {
-                LiveCharts.WinForms.CartesianChart chart;
-                switch (i)
-                {
-                    case 0:
-                        chart = StripChart0;
-                        break;
-                    case 1:
-                        chart = StripChart1;
-                        break;
-                    case 2:
-                        chart = StripChart2;
-                        break;
-                    default:
-                        chart = StripChart3;
-                        break;
-                }
-
-                chart.AxisX[0].Sections.Clear();
-                chart.AxisX[0].Sections = new SectionsCollection()
-                {
-                    new AxisSection()
-                    {
-                        Value = markerValue,
-                        Stroke = new SolidColorBrush(System.Windows.Media.Color.FromRgb(64, 64, 64)),
-                        StrokeThickness = 1,
-                    }
-                };
-                chart.Update(true, true);
-            }
+            DrawSections();
             DateTime markerTime = new DateTime((long)markerValue);
             MarkerToolStripLabel.Text = "Marker Location: " + markerTime.ToString("MMM dd, yyyy  HH:mm:ss");
             Cursor.Current = Cursors.Default;
@@ -1128,6 +1158,13 @@ namespace Omniscient
                     eve.GetDuration().TotalSeconds,
                     eve.GetComment());
             }
+            if (HighlightEventsCheckBox.Checked)
+                DrawSections();
+        }
+
+        private void HighlightEventsCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            DrawSections();
         }
     }
 }
