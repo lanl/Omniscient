@@ -115,10 +115,10 @@
     <Compile Include="Controls\ChannelPanel.Designer.cs">
       <DependentUpon>ChannelPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="SiteManagerForm\NewEventDialog.cs">
+    <Compile Include="EventManagerForm\NewEventDialog.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SiteManagerForm\NewEventDialog.Designer.cs">
+    <Compile Include="EventManagerForm\NewEventDialog.Designer.cs">
       <DependentUpon>NewEventDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="SiteManagerForm\SiteManagerForm.cs">
@@ -151,7 +151,7 @@
     <EmbeddedResource Include="Controls\ChannelPanel.resx">
       <DependentUpon>ChannelPanel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SiteManagerForm\NewEventDialog.resx">
+    <EmbeddedResource Include="EventManagerForm\NewEventDialog.resx">
       <DependentUpon>NewEventDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SiteManagerForm\SiteManagerForm.resx">
