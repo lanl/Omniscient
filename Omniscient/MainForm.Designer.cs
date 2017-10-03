@@ -105,8 +105,9 @@ namespace Omniscient
             this.EventControlPanel = new System.Windows.Forms.Panel();
             this.GenerateEventsButton = new System.Windows.Forms.Button();
             this.HighlightEventsCheckBox = new System.Windows.Forms.CheckBox();
-            this.SitesTreeView = new Omniscient.Controls.ResponsiveTreeView();
             this.EventsWarningLabel = new System.Windows.Forms.Label();
+            this.SitesTreeView = new Omniscient.Controls.ResponsiveTreeView();
+            this.RightEventControlPanel = new System.Windows.Forms.Panel();
             this.StripChartControlPanel.SuspendLayout();
             this.StripChartsPanel.SuspendLayout();
             this.StripChartsLayoutPanel.SuspendLayout();
@@ -132,6 +133,7 @@ namespace Omniscient
             this.BottomPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.EventGridView)).BeginInit();
             this.EventControlPanel.SuspendLayout();
+            this.RightEventControlPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // StripChartControlPanel
@@ -824,8 +826,8 @@ namespace Omniscient
             // 
             // EventControlPanel
             // 
+            this.EventControlPanel.Controls.Add(this.RightEventControlPanel);
             this.EventControlPanel.Controls.Add(this.EventsWarningLabel);
-            this.EventControlPanel.Controls.Add(this.HighlightEventsCheckBox);
             this.EventControlPanel.Controls.Add(this.GenerateEventsButton);
             this.EventControlPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.EventControlPanel.Location = new System.Drawing.Point(0, 0);
@@ -846,13 +848,22 @@ namespace Omniscient
             // HighlightEventsCheckBox
             // 
             this.HighlightEventsCheckBox.AutoSize = true;
-            this.HighlightEventsCheckBox.Location = new System.Drawing.Point(627, 8);
+            this.HighlightEventsCheckBox.Location = new System.Drawing.Point(79, 10);
             this.HighlightEventsCheckBox.Name = "HighlightEventsCheckBox";
             this.HighlightEventsCheckBox.Size = new System.Drawing.Size(103, 17);
             this.HighlightEventsCheckBox.TabIndex = 1;
             this.HighlightEventsCheckBox.Text = "Highlight Events";
             this.HighlightEventsCheckBox.UseVisualStyleBackColor = true;
             this.HighlightEventsCheckBox.CheckedChanged += new System.EventHandler(this.HighlightEventsCheckBox_CheckedChanged);
+            // 
+            // EventsWarningLabel
+            // 
+            this.EventsWarningLabel.AutoSize = true;
+            this.EventsWarningLabel.ForeColor = System.Drawing.Color.DarkRed;
+            this.EventsWarningLabel.Location = new System.Drawing.Point(115, 9);
+            this.EventsWarningLabel.Name = "EventsWarningLabel";
+            this.EventsWarningLabel.Size = new System.Drawing.Size(0, 13);
+            this.EventsWarningLabel.TabIndex = 2;
             // 
             // SitesTreeView
             // 
@@ -868,14 +879,14 @@ namespace Omniscient
             this.SitesTreeView.TabIndex = 11;
             this.SitesTreeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.SitesTreeView_AfterCheck);
             // 
-            // EventsWarningLabel
+            // RightEventControlPanel
             // 
-            this.EventsWarningLabel.AutoSize = true;
-            this.EventsWarningLabel.ForeColor = System.Drawing.Color.DarkRed;
-            this.EventsWarningLabel.Location = new System.Drawing.Point(115, 9);
-            this.EventsWarningLabel.Name = "EventsWarningLabel";
-            this.EventsWarningLabel.Size = new System.Drawing.Size(0, 13);
-            this.EventsWarningLabel.TabIndex = 2;
+            this.RightEventControlPanel.Controls.Add(this.HighlightEventsCheckBox);
+            this.RightEventControlPanel.Dock = System.Windows.Forms.DockStyle.Right;
+            this.RightEventControlPanel.Location = new System.Drawing.Point(548, 0);
+            this.RightEventControlPanel.Name = "RightEventControlPanel";
+            this.RightEventControlPanel.Size = new System.Drawing.Size(187, 34);
+            this.RightEventControlPanel.TabIndex = 3;
             // 
             // MainForm
             // 
@@ -930,6 +941,8 @@ namespace Omniscient
             ((System.ComponentModel.ISupportInitialize)(this.EventGridView)).EndInit();
             this.EventControlPanel.ResumeLayout(false);
             this.EventControlPanel.PerformLayout();
+            this.RightEventControlPanel.ResumeLayout(false);
+            this.RightEventControlPanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1011,6 +1024,7 @@ namespace Omniscient
         private ImageList TreeImageList;
         private CheckBox HighlightEventsCheckBox;
         private Label EventsWarningLabel;
+        private Panel RightEventControlPanel;
     }
 }
 

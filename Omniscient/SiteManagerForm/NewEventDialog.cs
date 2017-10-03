@@ -19,6 +19,7 @@ namespace Omniscient
         public string name;
         public Channel channel;
         public double threshold;
+        public TimeSpan debounceTime;
 
         public NewEventDialog(DetectionSystem newSys)
         {
@@ -28,6 +29,8 @@ namespace Omniscient
 
         private void NewEventDialog_Load(object sender, EventArgs e)
         {
+            DebounceComboBox.Text = "Seconds";
+
             ChannelComboBox.Items.Clear();
             
             foreach (Instrument inst in sys.GetInstruments())
@@ -79,6 +82,34 @@ namespace Omniscient
             catch
             {
                 MessageBox.Show("You must enter a valid threshold!");
+                return;
+            }
+            
+            try
+            {
+                double debTextVal = double.Parse(DebounceTextBox.Text);
+                switch (DebounceComboBox.Text)
+                {
+                    case "Seconds":
+                        debounceTime = TimeSpan.FromSeconds(debTextVal);
+                        break;
+                    case "Minutes":
+                        debounceTime = TimeSpan.FromMinutes(debTextVal);
+                        break;
+                    case "Hours":
+                        debounceTime = TimeSpan.FromHours(debTextVal);
+                        break;
+                    case "Days":
+                        debounceTime = TimeSpan.FromDays(debTextVal);
+                        break;
+                    default:
+                        MessageBox.Show("Invalid debounce time unit!");
+                        return;
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Invalid debounce time!");
                 return;
             }
 

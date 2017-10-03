@@ -525,8 +525,10 @@ namespace Omniscient
             DialogResult result = dialog.ShowDialog();
             if (result == DialogResult.Cancel) return;
 
-            sys.GetEventGenerators().Add(new ThresholdEG(dialog.name, dialog.channel, dialog.threshold));
+            sys.GetEventGenerators().Add(new ThresholdEG(dialog.name, dialog.channel, dialog.threshold, dialog.debounceTime));
+            siteMan.Save();
             UpdateSitesTree();
+            siteManChanged = true;
         }
     }
 }

@@ -36,11 +36,14 @@
             this.ThresholdTextBox = new System.Windows.Forms.TextBox();
             this.ChannelComboBox = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.DebounceTextBox = new System.Windows.Forms.TextBox();
+            this.DebounceComboBox = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // OkButton
             // 
-            this.OkButton.Location = new System.Drawing.Point(120, 102);
+            this.OkButton.Location = new System.Drawing.Point(144, 136);
             this.OkButton.Name = "OkButton";
             this.OkButton.Size = new System.Drawing.Size(59, 36);
             this.OkButton.TabIndex = 0;
@@ -50,7 +53,7 @@
             // 
             // CancelButton
             // 
-            this.CancelButton.Location = new System.Drawing.Point(185, 102);
+            this.CancelButton.Location = new System.Drawing.Point(209, 136);
             this.CancelButton.Name = "CancelButton";
             this.CancelButton.Size = new System.Drawing.Size(59, 36);
             this.CancelButton.TabIndex = 1;
@@ -60,7 +63,7 @@
             // 
             // NameTextBox
             // 
-            this.NameTextBox.Location = new System.Drawing.Point(72, 8);
+            this.NameTextBox.Location = new System.Drawing.Point(96, 8);
             this.NameTextBox.Name = "NameTextBox";
             this.NameTextBox.Size = new System.Drawing.Size(172, 20);
             this.NameTextBox.TabIndex = 2;
@@ -68,7 +71,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(31, 11);
+            this.label1.Location = new System.Drawing.Point(56, 11);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(35, 13);
             this.label1.TabIndex = 3;
@@ -77,7 +80,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(20, 38);
+            this.label2.Location = new System.Drawing.Point(45, 38);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(46, 13);
             this.label2.TabIndex = 4;
@@ -85,7 +88,7 @@
             // 
             // ThresholdTextBox
             // 
-            this.ThresholdTextBox.Location = new System.Drawing.Point(72, 65);
+            this.ThresholdTextBox.Location = new System.Drawing.Point(96, 65);
             this.ThresholdTextBox.Name = "ThresholdTextBox";
             this.ThresholdTextBox.Size = new System.Drawing.Size(172, 20);
             this.ThresholdTextBox.TabIndex = 5;
@@ -93,7 +96,7 @@
             // ChannelComboBox
             // 
             this.ChannelComboBox.FormattingEnabled = true;
-            this.ChannelComboBox.Location = new System.Drawing.Point(72, 35);
+            this.ChannelComboBox.Location = new System.Drawing.Point(96, 35);
             this.ChannelComboBox.Name = "ChannelComboBox";
             this.ChannelComboBox.Size = new System.Drawing.Size(172, 21);
             this.ChannelComboBox.TabIndex = 6;
@@ -101,17 +104,49 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 68);
+            this.label3.Location = new System.Drawing.Point(37, 68);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(54, 13);
             this.label3.TabIndex = 7;
             this.label3.Text = "Threshold";
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(8, 97);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(83, 13);
+            this.label4.TabIndex = 8;
+            this.label4.Text = "Debounce Time";
+            // 
+            // DebounceTextBox
+            // 
+            this.DebounceTextBox.Location = new System.Drawing.Point(96, 93);
+            this.DebounceTextBox.Name = "DebounceTextBox";
+            this.DebounceTextBox.Size = new System.Drawing.Size(52, 20);
+            this.DebounceTextBox.TabIndex = 9;
+            // 
+            // DebounceComboBox
+            // 
+            this.DebounceComboBox.FormattingEnabled = true;
+            this.DebounceComboBox.Items.AddRange(new object[] {
+            "Seconds",
+            "Minutes",
+            "Hours",
+            "Days"});
+            this.DebounceComboBox.Location = new System.Drawing.Point(154, 93);
+            this.DebounceComboBox.Name = "DebounceComboBox";
+            this.DebounceComboBox.Size = new System.Drawing.Size(114, 21);
+            this.DebounceComboBox.TabIndex = 10;
+            // 
             // NewEventDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(251, 144);
+            this.ClientSize = new System.Drawing.Size(280, 184);
+            this.Controls.Add(this.DebounceComboBox);
+            this.Controls.Add(this.DebounceTextBox);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.ChannelComboBox);
             this.Controls.Add(this.ThresholdTextBox);
@@ -139,5 +174,8 @@
         private System.Windows.Forms.TextBox ThresholdTextBox;
         private System.Windows.Forms.ComboBox ChannelComboBox;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox DebounceTextBox;
+        private System.Windows.Forms.ComboBox DebounceComboBox;
     }
 }

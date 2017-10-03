@@ -96,6 +96,8 @@ namespace Omniscient
                                 try
                                 {
                                     eg = new ThresholdEG(eventNode.Attributes["name"]?.InnerText, channel, double.Parse(instrumentNode.Attributes["threshold"]?.InnerText));
+                                    if (eventNode.Attributes["debounce_time"] != null)
+                                        ((ThresholdEG)eg).SetDebounceTime(TimeSpan.FromSeconds(double.Parse(eventNode.Attributes["debounce_time"]?.InnerText)));
                                 }
                                 catch
                                 {
@@ -153,6 +155,7 @@ namespace Omniscient
                             xmlWriter.WriteAttributeString("name", eg.GetName());
                             xmlWriter.WriteAttributeString("channel", ((ThresholdEG)eg).GetChannel().GetName());    // Not friendly for non-threshold event generators
                             xmlWriter.WriteAttributeString("threshold", ((ThresholdEG)eg).GetThreshold().ToString());    // Not friendly for non-threshold event generators
+                            xmlWriter.WriteAttributeString("debounce_time", ((ThresholdEG)eg).GetDebounceTime().TotalSeconds.ToString()); // Not friendly for non-threshold event generators
                             xmlWriter.WriteEndElement();
                         }
                         xmlWriter.WriteEndElement();

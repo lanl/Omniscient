@@ -433,7 +433,9 @@ namespace Omniscient
                             chart.AxisX[0].Sections.Add(new AxisSection()
                             {
                                 Value = eve.GetStartTime().Ticks,
-                                SectionWidth = eve.GetEndTime().Ticks - eve.GetStartTime().Ticks,
+                                SectionWidth = (eve.GetEndTime().Ticks - eve.GetStartTime().Ticks > 0) ? 
+                                                    eve.GetEndTime().Ticks - eve.GetStartTime().Ticks :
+                                                    TimeSpan.FromSeconds(5).Ticks,
                                 Fill = new SolidColorBrush
                                 {
                                     Color = System.Windows.Media.Color.FromRgb(0, 255, 0),

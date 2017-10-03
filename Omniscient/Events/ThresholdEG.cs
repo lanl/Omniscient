@@ -15,12 +15,22 @@ namespace Omniscient.Events
     {
         Channel channel;
         double threshold;
+        TimeSpan debounceTime;
+
+        public ThresholdEG(string newName, Channel newChannel, double newThreshold, TimeSpan newDebounceTime)
+        {
+            name = newName;
+            channel = newChannel;
+            threshold = newThreshold;
+            debounceTime = newDebounceTime;
+        }
 
         public ThresholdEG(string newName, Channel newChannel, double newThreshold)
         {
             name = newName;
             channel = newChannel;
             threshold = newThreshold;
+            debounceTime = TimeSpan.FromTicks(0);
         }
 
         public override List<Event> GenerateEvents(DateTime start, DateTime end)
@@ -31,6 +41,8 @@ namespace Omniscient.Events
             Event eve = new Event(this);        // Really shouldn't need to make an event here but visual studio freaks out without it
 
             bool inEvent = false;
+            bool onTheDrop = false;
+            DateTime lastDrop = new DateTime();
             for (int i=0; i<times.Count; i++)
             {
                 if (!inEvent)
@@ -41,16 +53,29 @@ namespace Omniscient.Events
                         eve.SetStartTime(times[i]);
                         eve.SetComment(channel.GetName() + " is above threshold.");
                         inEvent = true;
+                        onTheDrop = false;
                     }
                 }
                 else
                 {
                     if (vals[i] < threshold)
                     {
-                        eve.SetEndTime(times[i - 1]);
-                        events.Add(eve);
-                        inEvent = false;
+                        if (!onTheDrop)
+                        {
+                            lastDrop = times[i];
+                            onTheDrop = true;
+                        }
+
+                        if (times[i] - lastDrop >= debounceTime)
+                        {
+                            eve.SetEndTime(lastDrop);
+                            events.Add(eve);
+                            inEvent = false;
+                            onTheDrop = false;
+                        }
                     }
+                    else
+                        onTheDrop = false;
                 }
             }
             if (inEvent)
@@ -64,9 +89,11 @@ namespace Omniscient.Events
 
         public void SetChannel(Channel newChannel) { channel = newChannel; }
         public void SetThreshold(double newThreshold) { threshold = newThreshold; }
+        public void SetDebounceTime(TimeSpan newBounce) { debounceTime = newBounce; }
 
         public Channel GetChannel() { return channel; }
         public double GetThreshold() { return threshold; }
+        public TimeSpan GetDebounceTime() { return debounceTime; }
 
         public override string GetName()
         {
