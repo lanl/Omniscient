@@ -9,6 +9,7 @@ namespace Omniscient.Events
     public abstract class EventGenerator
     {
         protected string name;
+        protected List<Event> events;
         public abstract List<Event> GenerateEvents(DateTime start, DateTime end);
         public abstract string GetName();
         public abstract void SetName(string newName);

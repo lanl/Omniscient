@@ -20,6 +20,7 @@ namespace Omniscient.Events
         public ThresholdEG(string newName, Channel newChannel, double newThreshold, TimeSpan newDebounceTime)
         {
             name = newName;
+            events = new List<Event>();
             channel = newChannel;
             threshold = newThreshold;
             debounceTime = newDebounceTime;
@@ -28,6 +29,7 @@ namespace Omniscient.Events
         public ThresholdEG(string newName, Channel newChannel, double newThreshold)
         {
             name = newName;
+            events = new List<Event>();
             channel = newChannel;
             threshold = newThreshold;
             debounceTime = TimeSpan.FromTicks(0);
@@ -37,7 +39,7 @@ namespace Omniscient.Events
         {
             List<DateTime> times = channel.GetTimeStamps();
             List<double> vals = channel.GetValues();
-            List<Event> events = new List<Event>();
+            events = new List<Event>();
             Event eve = new Event(this);        // Really shouldn't need to make an event here but visual studio freaks out without it
 
             bool inEvent = false;
@@ -94,6 +96,7 @@ namespace Omniscient.Events
         public Channel GetChannel() { return channel; }
         public double GetThreshold() { return threshold; }
         public TimeSpan GetDebounceTime() { return debounceTime; }
+        public List<Event> GetEvents() { return events; }
 
         public override string GetName()
         {
