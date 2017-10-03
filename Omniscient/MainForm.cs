@@ -1168,5 +1168,11 @@ namespace Omniscient
         {
             DrawSections();
         }
+
+        private void EventManagerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            EventManagerForm eventManForm = new EventManagerForm(this, siteMan);
+            eventManForm.ShowDialog();
+        }
     }
 }

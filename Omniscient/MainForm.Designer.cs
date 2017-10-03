@@ -106,8 +106,9 @@ namespace Omniscient
             this.GenerateEventsButton = new System.Windows.Forms.Button();
             this.HighlightEventsCheckBox = new System.Windows.Forms.CheckBox();
             this.EventsWarningLabel = new System.Windows.Forms.Label();
-            this.SitesTreeView = new Omniscient.Controls.ResponsiveTreeView();
             this.RightEventControlPanel = new System.Windows.Forms.Panel();
+            this.SitesTreeView = new Omniscient.Controls.ResponsiveTreeView();
+            this.EventManagerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.StripChartControlPanel.SuspendLayout();
             this.StripChartsPanel.SuspendLayout();
             this.StripChartsLayoutPanel.SuspendLayout();
@@ -242,6 +243,7 @@ namespace Omniscient
             // 
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.SiteManagerToolStripMenuItem,
+            this.EventManagerToolStripMenuItem,
             this.launchInspectrumToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
@@ -865,6 +867,15 @@ namespace Omniscient
             this.EventsWarningLabel.Size = new System.Drawing.Size(0, 13);
             this.EventsWarningLabel.TabIndex = 2;
             // 
+            // RightEventControlPanel
+            // 
+            this.RightEventControlPanel.Controls.Add(this.HighlightEventsCheckBox);
+            this.RightEventControlPanel.Dock = System.Windows.Forms.DockStyle.Right;
+            this.RightEventControlPanel.Location = new System.Drawing.Point(548, 0);
+            this.RightEventControlPanel.Name = "RightEventControlPanel";
+            this.RightEventControlPanel.Size = new System.Drawing.Size(187, 34);
+            this.RightEventControlPanel.TabIndex = 3;
+            // 
             // SitesTreeView
             // 
             this.SitesTreeView.CheckBoxes = true;
@@ -879,14 +890,12 @@ namespace Omniscient
             this.SitesTreeView.TabIndex = 11;
             this.SitesTreeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.SitesTreeView_AfterCheck);
             // 
-            // RightEventControlPanel
+            // EventManagerToolStripMenuItem
             // 
-            this.RightEventControlPanel.Controls.Add(this.HighlightEventsCheckBox);
-            this.RightEventControlPanel.Dock = System.Windows.Forms.DockStyle.Right;
-            this.RightEventControlPanel.Location = new System.Drawing.Point(548, 0);
-            this.RightEventControlPanel.Name = "RightEventControlPanel";
-            this.RightEventControlPanel.Size = new System.Drawing.Size(187, 34);
-            this.RightEventControlPanel.TabIndex = 3;
+            this.EventManagerToolStripMenuItem.Name = "EventManagerToolStripMenuItem";
+            this.EventManagerToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.EventManagerToolStripMenuItem.Text = "Event Manager";
+            this.EventManagerToolStripMenuItem.Click += new System.EventHandler(this.EventManagerToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -1025,6 +1034,7 @@ namespace Omniscient
         private CheckBox HighlightEventsCheckBox;
         private Label EventsWarningLabel;
         private Panel RightEventControlPanel;
+        private ToolStripMenuItem EventManagerToolStripMenuItem;
     }
 }
 

@@ -65,6 +65,12 @@
     <Compile Include="Controls\ResponsiveTreeView.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="EventManagerForm\EventManagerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EventManagerForm\EventManagerForm.Designer.cs">
+      <DependentUpon>EventManagerForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Events\Event.cs" />
     <Compile Include="Events\EventGenerator.cs" />
     <Compile Include="Events\EventWatcher.cs" />
@@ -121,6 +127,9 @@
     <Compile Include="SiteManagerForm\SiteManagerForm.Designer.cs">
       <DependentUpon>SiteManagerForm.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="EventManagerForm\EventManagerForm.resx">
+      <DependentUpon>EventManagerForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Inspectrum.resx">
       <DependentUpon>Inspectrum.cs</DependentUpon>
     </EmbeddedResource>
