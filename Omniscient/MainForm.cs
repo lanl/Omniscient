@@ -153,6 +153,7 @@ namespace Omniscient
             foreach (Site site in siteMan.GetSites())
             {
                 TreeNode siteNode = new TreeNode(site.GetName());
+                siteNode.Name = site.GetName();
                 siteNode.Tag = site;
                 siteNode.ImageIndex = 0;
                 siteNode.SelectedImageIndex = 0;
@@ -160,6 +161,7 @@ namespace Omniscient
                 foreach (Facility fac in site.GetFacilities())
                 {
                     TreeNode facNode = new TreeNode(fac.GetName());
+                    facNode.Name = fac.GetName();
                     facNode.Tag = fac;
                     facNode.ImageIndex = 1;
                     facNode.SelectedImageIndex = 1;
@@ -167,6 +169,7 @@ namespace Omniscient
                     foreach (DetectionSystem sys in fac.GetSystems())
                     {
                         TreeNode sysNode = new TreeNode(sys.GetName());
+                        sysNode.Name = sys.GetName();
                         sysNode.Tag = sys;
                         sysNode.ImageIndex = 2;
                         sysNode.SelectedImageIndex = 2;
@@ -174,6 +177,7 @@ namespace Omniscient
                         foreach (Instrument inst in sys.GetInstruments())
                         {
                             TreeNode instNode = new TreeNode(inst.GetName());
+                            instNode.Name = inst.GetName();
                             instNode.Tag = inst;
                             instNode.ImageIndex = 3;
                             instNode.SelectedImageIndex = 3;
@@ -183,6 +187,7 @@ namespace Omniscient
                         foreach (EventGenerator eg in sys.GetEventGenerators())
                         {
                             TreeNode egNode = new TreeNode(eg.GetName());
+                            egNode.Name = eg.GetName();
                             egNode.Tag = eg;
                             egNode.ImageIndex = 4;
                             egNode.SelectedImageIndex = 4;
@@ -1064,6 +1069,11 @@ namespace Omniscient
             }
             // ... whatever.
 
+            foreach (EventGenerator eventGenerator in preset.GetActiveEventGenerators())
+            {
+                SitesTreeView.Nodes.Find(eventGenerator.GetName(), true)[0].Checked = true;
+            }
+
             PresetNameTextBox.Text = preset.GetName();
         }
 
@@ -1095,6 +1105,24 @@ namespace Omniscient
                     preset.AddChannel(cp.GetChannel(), 2);
                 if (cp.Chart4CheckBox.Checked)
                     preset.AddChannel(cp.GetChannel(), 3);
+            }
+
+            //  Put all of the checked systems in the SitesTreeView in eventWatchers
+            foreach (TreeNode siteNode in SitesTreeView.Nodes)
+            {
+                foreach (TreeNode facNode in siteNode.Nodes)
+                {
+                    foreach (TreeNode sysNode in facNode.Nodes)
+                    {
+                        foreach (TreeNode node in sysNode.Nodes)
+                        {
+                            if (node.Tag is EventGenerator && node.Checked)
+                            {
+                                preset.GetActiveEventGenerators().Add((EventGenerator)node.Tag);
+                            }
+                        }
+                    }
+                }
             }
 
             if (indexToDelete >= 0)

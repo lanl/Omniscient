@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Xml;
 
 using Omniscient.Instruments;
+using Omniscient.Events;
 
 namespace Omniscient
 {
@@ -54,28 +55,42 @@ namespace Omniscient
                                 DetectionSystem sys = fac.GetSystems().Single(s => s.GetName() == systemNode.Attributes["name"]?.InnerText);
                                 foreach (XmlNode instrumentNode in systemNode.ChildNodes)
                                 {
-                                    Instrument inst = sys.GetInstruments().Single(i => i.GetName() == instrumentNode.Attributes["name"]?.InnerText);
-                                    if (instrumentNode.Attributes["checked"] != null)
+                                    if (instrumentNode.Name == "Instrument")
                                     {
-                                        if (instrumentNode.Attributes["checked"].InnerText == "true")
+                                        Instrument inst = sys.GetInstruments().Single(i => i.GetName() == instrumentNode.Attributes["name"]?.InnerText);
+                                        if (instrumentNode.Attributes["checked"] != null)
                                         {
-                                            newPreset.GetActiveInstruments().Add(inst);
-                                            foreach (XmlNode chanNode in instrumentNode.ChildNodes)
+                                            if (instrumentNode.Attributes["checked"].InnerText == "true")
                                             {
-                                                Channel chan = inst.GetChannels().Single(c => c.GetName() == chanNode.Attributes["name"]?.InnerText);
-                                                foreach (XmlNode checkNode in chanNode.ChildNodes)
+                                                newPreset.GetActiveInstruments().Add(inst);
+                                                foreach (XmlNode chanNode in instrumentNode.ChildNodes)
                                                 {
-                                                    if (checkNode.Attributes["checked"] != null)
+                                                    Channel chan = inst.GetChannels().Single(c => c.GetName() == chanNode.Attributes["name"]?.InnerText);
+                                                    foreach (XmlNode checkNode in chanNode.ChildNodes)
                                                     {
-                                                        if (checkNode.Attributes["checked"].InnerText == "true")
+                                                        if (checkNode.Attributes["checked"] != null)
                                                         {
-                                                            newPreset.AddChannel(chan, int.Parse(checkNode.Attributes["chart"].InnerText));
+                                                            if (checkNode.Attributes["checked"].InnerText == "true")
+                                                            {
+                                                                newPreset.AddChannel(chan, int.Parse(checkNode.Attributes["chart"].InnerText));
+                                                            }
                                                         }
                                                     }
                                                 }
                                             }
                                         }
                                     }
+                                    else if (instrumentNode.Name == "EventGenerator")
+                                    {
+                                        XmlNode eventGenNode = instrumentNode;
+                                        EventGenerator eventGenerator = sys.GetEventGenerators().Single(e => e.GetName() == eventGenNode.Attributes["name"]?.InnerText);
+                                        if (eventGenNode.Attributes["checked"].InnerText == "true")
+                                        {
+                                            newPreset.GetActiveEventGenerators().Add(eventGenerator);
+                                        }
+                                    }
+                                    else
+                                        return ReturnCode.CORRUPTED_FILE;
                                 }
                             }
                         }
@@ -138,6 +153,16 @@ namespace Omniscient
                                         }
                                         xmlWriter.WriteEndElement();
                                     }
+                                }
+                                xmlWriter.WriteEndElement();
+                            }
+                            foreach (EventGenerator eventGenerator in sys.GetEventGenerators())
+                            {
+                                xmlWriter.WriteStartElement("EventGenerator");
+                                xmlWriter.WriteAttributeString("name", eventGenerator.GetName());
+                                if (preset.GetActiveEventGenerators().Contains(eventGenerator))
+                                {
+                                    xmlWriter.WriteAttributeString("checked", "true");
                                 }
                                 xmlWriter.WriteEndElement();
                             }
