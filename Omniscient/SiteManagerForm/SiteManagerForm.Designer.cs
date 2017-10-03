@@ -45,7 +45,6 @@
             this.DirectoryTextBox = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.NewEventButton = new System.Windows.Forms.Button();
             this.NewInstrumentButton = new System.Windows.Forms.Button();
             this.NewSystemButton = new System.Windows.Forms.Button();
             this.NewFacilityButton = new System.Windows.Forms.Button();
@@ -225,7 +224,6 @@
             // 
             // panel2
             // 
-            this.panel2.Controls.Add(this.NewEventButton);
             this.panel2.Controls.Add(this.NewInstrumentButton);
             this.panel2.Controls.Add(this.NewSystemButton);
             this.panel2.Controls.Add(this.NewFacilityButton);
@@ -235,16 +233,6 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(280, 129);
             this.panel2.TabIndex = 10;
-            // 
-            // NewEventButton
-            // 
-            this.NewEventButton.Location = new System.Drawing.Point(32, 64);
-            this.NewEventButton.Name = "NewEventButton";
-            this.NewEventButton.Size = new System.Drawing.Size(120, 23);
-            this.NewEventButton.TabIndex = 4;
-            this.NewEventButton.Text = "New Event Generator";
-            this.NewEventButton.UseVisualStyleBackColor = true;
-            this.NewEventButton.Click += new System.EventHandler(this.NewEventButton_Click);
             // 
             // NewInstrumentButton
             // 
@@ -412,6 +400,5 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button DiscardButton;
         private System.Windows.Forms.Button DirectoryButton;
-        private System.Windows.Forms.Button NewEventButton;
     }
 }

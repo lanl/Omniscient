@@ -73,6 +73,7 @@ namespace Omniscient
                         foreach (EventGenerator eg in sys.GetEventGenerators())
                         {
                             TreeNode egNode = new TreeNode(eg.GetName());
+                            egNode.ForeColor = System.Drawing.SystemColors.GrayText;
                             egNode.Tag = eg;
                             egNode.ImageIndex = 4;
                             egNode.SelectedImageIndex = 4;
@@ -108,7 +109,6 @@ namespace Omniscient
 
                 NewInstrumentButton.Enabled = false;
                 NewSystemButton.Enabled = false;
-                NewEventButton.Enabled = false;
             }
             else if (node.Tag is Facility)
             {
@@ -124,7 +124,6 @@ namespace Omniscient
 
                 NewInstrumentButton.Enabled = false;
                 NewSystemButton.Enabled = true;
-                NewEventButton.Enabled = false;
             }
             else if (node.Tag is DetectionSystem)
             {
@@ -140,7 +139,6 @@ namespace Omniscient
 
                 NewInstrumentButton.Enabled = true;
                 NewSystemButton.Enabled = true;
-                NewEventButton.Enabled = true;
             }
             else if (node.Tag is Instrument)
             {
@@ -161,7 +159,6 @@ namespace Omniscient
 
                 NewInstrumentButton.Enabled = true;
                 NewSystemButton.Enabled = true;
-                NewEventButton.Enabled = false;
             }
             else if (node.Tag is EventGenerator)
             {
@@ -177,7 +174,6 @@ namespace Omniscient
 
                 NewInstrumentButton.Enabled = false;
                 NewSystemButton.Enabled = false;
-                NewEventButton.Enabled = false;
             }
 
         }
@@ -258,8 +254,8 @@ namespace Omniscient
             }
             else if (node.Tag is EventGenerator)
             {
-                EventGenerator eg = (EventGenerator)node.Tag;
-                eg.SetName(NameTextBox.Text);
+                MessageBox.Show("Use the Event Manager to edit events.");
+                return;
             }
             siteMan.Save();
             UpdateSitesTree();
@@ -513,20 +509,6 @@ namespace Omniscient
             }
 
             sys.GetInstruments().Insert(index, newInstrument);
-            siteMan.Save();
-            UpdateSitesTree();
-            siteManChanged = true;
-        }
-
-        private void NewEventButton_Click(object sender, EventArgs e)
-        {
-            DetectionSystem sys = (DetectionSystem)SitesTreeView.SelectedNode.Tag;
-
-            NewEventDialog dialog = new NewEventDialog(sys);
-            DialogResult result = dialog.ShowDialog();
-            if (result == DialogResult.Cancel) return;
-
-            sys.GetEventGenerators().Add(new ThresholdEG(dialog.name, dialog.channel, dialog.threshold, dialog.debounceTime));
             siteMan.Save();
             UpdateSitesTree();
             siteManChanged = true;
