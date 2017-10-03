@@ -31,6 +31,7 @@ namespace Omniscient
 
         private void SiteManagerForm_Load(object sender, EventArgs e)
         {
+            SitesTreeView.ImageList = main.TreeImageList;
             UpdateSitesTree();
         }
 

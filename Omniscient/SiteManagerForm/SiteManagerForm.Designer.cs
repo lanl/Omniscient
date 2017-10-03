@@ -28,10 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SiteManagerForm));
             this.SitesTreeView = new System.Windows.Forms.TreeView();
-            this.TreeImageList = new System.Windows.Forms.ImageList(this.components);
             this.SaveButton = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.NameTextBox = new System.Windows.Forms.TextBox();
@@ -71,25 +68,12 @@
             // SitesTreeView
             // 
             this.SitesTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SitesTreeView.ImageIndex = 0;
-            this.SitesTreeView.ImageList = this.TreeImageList;
             this.SitesTreeView.Location = new System.Drawing.Point(10, 10);
             this.SitesTreeView.Name = "SitesTreeView";
-            this.SitesTreeView.SelectedImageIndex = 0;
             this.SitesTreeView.ShowNodeToolTips = true;
             this.SitesTreeView.Size = new System.Drawing.Size(274, 476);
             this.SitesTreeView.TabIndex = 0;
             this.SitesTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.SitesTreeView_AfterSelect);
-            // 
-            // TreeImageList
-            // 
-            this.TreeImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("TreeImageList.ImageStream")));
-            this.TreeImageList.TransparentColor = System.Drawing.Color.Transparent;
-            this.TreeImageList.Images.SetKeyName(0, "globe");
-            this.TreeImageList.Images.SetKeyName(1, "cylinder");
-            this.TreeImageList.Images.SetKeyName(2, "cog");
-            this.TreeImageList.Images.SetKeyName(3, "gauge");
-            this.TreeImageList.Images.SetKeyName(4, "binoculars");
             // 
             // SaveButton
             // 
@@ -428,7 +412,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button DiscardButton;
         private System.Windows.Forms.Button DirectoryButton;
-        private System.Windows.Forms.ImageList TreeImageList;
         private System.Windows.Forms.Button NewEventButton;
     }
 }
