@@ -77,7 +77,7 @@
             this.SitesTreeView.Name = "SitesTreeView";
             this.SitesTreeView.SelectedImageIndex = 0;
             this.SitesTreeView.ShowNodeToolTips = true;
-            this.SitesTreeView.Size = new System.Drawing.Size(200, 476);
+            this.SitesTreeView.Size = new System.Drawing.Size(274, 476);
             this.SitesTreeView.TabIndex = 0;
             this.SitesTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.SitesTreeView_AfterSelect);
             // 
@@ -165,7 +165,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(5, 167);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(266, 204);
+            this.panel1.Size = new System.Drawing.Size(280, 204);
             this.panel1.TabIndex = 9;
             // 
             // DirectoryButton
@@ -249,7 +249,7 @@
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(5, 38);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(266, 129);
+            this.panel2.Size = new System.Drawing.Size(280, 129);
             this.panel2.TabIndex = 10;
             // 
             // NewEventButton
@@ -308,7 +308,7 @@
             this.panel3.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel3.Location = new System.Drawing.Point(5, 462);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(266, 29);
+            this.panel3.Size = new System.Drawing.Size(280, 29);
             this.panel3.TabIndex = 11;
             // 
             // ExitButton
@@ -328,7 +328,7 @@
             this.LeftPanel.Location = new System.Drawing.Point(0, 0);
             this.LeftPanel.Name = "LeftPanel";
             this.LeftPanel.Padding = new System.Windows.Forms.Padding(10);
-            this.LeftPanel.Size = new System.Drawing.Size(220, 496);
+            this.LeftPanel.Size = new System.Drawing.Size(294, 496);
             this.LeftPanel.TabIndex = 12;
             // 
             // RightPanel
@@ -338,10 +338,10 @@
             this.RightPanel.Controls.Add(this.panel2);
             this.RightPanel.Controls.Add(this.panel4);
             this.RightPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.RightPanel.Location = new System.Drawing.Point(220, 0);
+            this.RightPanel.Location = new System.Drawing.Point(294, 0);
             this.RightPanel.Name = "RightPanel";
             this.RightPanel.Padding = new System.Windows.Forms.Padding(5);
-            this.RightPanel.Size = new System.Drawing.Size(276, 496);
+            this.RightPanel.Size = new System.Drawing.Size(290, 496);
             this.RightPanel.TabIndex = 13;
             // 
             // panel4
@@ -351,7 +351,7 @@
             this.panel4.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel4.Location = new System.Drawing.Point(5, 5);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(266, 33);
+            this.panel4.Size = new System.Drawing.Size(280, 33);
             this.panel4.TabIndex = 12;
             // 
             // ExportButton
@@ -378,7 +378,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(496, 496);
+            this.ClientSize = new System.Drawing.Size(584, 496);
             this.ControlBox = false;
             this.Controls.Add(this.RightPanel);
             this.Controls.Add(this.LeftPanel);
