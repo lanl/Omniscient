@@ -63,7 +63,6 @@ namespace Omniscient
             this.RightPanel = new System.Windows.Forms.Panel();
             this.ChannelsPanel = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.RangeOnlyCheckBox = new System.Windows.Forms.CheckBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.Chart1TabPage = new System.Windows.Forms.TabPage();
             this.C1LogScaleCheckBox = new System.Windows.Forms.CheckBox();
@@ -85,6 +84,7 @@ namespace Omniscient
             this.label11 = new System.Windows.Forms.Label();
             this.LeftPanel = new System.Windows.Forms.Panel();
             this.SitesTreeView = new Omniscient.Controls.ResponsiveTreeView();
+            this.TreeImageList = new System.Windows.Forms.ImageList(this.components);
             this.TopLeftPanel = new System.Windows.Forms.Panel();
             this.PresetSaveButton = new System.Windows.Forms.Button();
             this.PresetNameTextBox = new System.Windows.Forms.TextBox();
@@ -105,7 +105,6 @@ namespace Omniscient
             this.Comment = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.EventControlPanel = new System.Windows.Forms.Panel();
             this.GenerateEventsButton = new System.Windows.Forms.Button();
-            this.TreeImageList = new System.Windows.Forms.ImageList(this.components);
             this.StripChartControlPanel.SuspendLayout();
             this.StripChartsPanel.SuspendLayout();
             this.StripChartsLayoutPanel.SuspendLayout();
@@ -414,7 +413,6 @@ namespace Omniscient
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.RangeOnlyCheckBox);
             this.groupBox1.Controls.Add(this.tabControl1);
             this.groupBox1.Controls.Add(this.RangeUpdateButton);
             this.groupBox1.Controls.Add(this.RangeComboBox);
@@ -433,19 +431,6 @@ namespace Omniscient
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "View";
-            // 
-            // RangeOnlyCheckBox
-            // 
-            this.RangeOnlyCheckBox.AutoSize = true;
-            this.RangeOnlyCheckBox.Checked = true;
-            this.RangeOnlyCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.RangeOnlyCheckBox.Location = new System.Drawing.Point(47, 105);
-            this.RangeOnlyCheckBox.Name = "RangeOnlyCheckBox";
-            this.RangeOnlyCheckBox.Size = new System.Drawing.Size(109, 17);
-            this.RangeOnlyCheckBox.TabIndex = 17;
-            this.RangeOnlyCheckBox.Text = "Load Range Only";
-            this.RangeOnlyCheckBox.UseVisualStyleBackColor = true;
-            this.RangeOnlyCheckBox.CheckedChanged += new System.EventHandler(this.RangeOnlyCheckBox_CheckedChanged);
             // 
             // tabControl1
             // 
@@ -682,6 +667,16 @@ namespace Omniscient
             this.SitesTreeView.TabIndex = 11;
             this.SitesTreeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.SitesTreeView_AfterCheck);
             // 
+            // TreeImageList
+            // 
+            this.TreeImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("TreeImageList.ImageStream")));
+            this.TreeImageList.TransparentColor = System.Drawing.Color.Transparent;
+            this.TreeImageList.Images.SetKeyName(0, "globe");
+            this.TreeImageList.Images.SetKeyName(1, "cylinder");
+            this.TreeImageList.Images.SetKeyName(2, "cog");
+            this.TreeImageList.Images.SetKeyName(3, "gauge");
+            this.TreeImageList.Images.SetKeyName(4, "binoculars");
+            // 
             // TopLeftPanel
             // 
             this.TopLeftPanel.Controls.Add(this.PresetSaveButton);
@@ -858,16 +853,6 @@ namespace Omniscient
             this.GenerateEventsButton.UseVisualStyleBackColor = true;
             this.GenerateEventsButton.Click += new System.EventHandler(this.GenerateEventsButton_Click);
             // 
-            // TreeImageList
-            // 
-            this.TreeImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("TreeImageList.ImageStream")));
-            this.TreeImageList.TransparentColor = System.Drawing.Color.Transparent;
-            this.TreeImageList.Images.SetKeyName(0, "globe");
-            this.TreeImageList.Images.SetKeyName(1, "cylinder");
-            this.TreeImageList.Images.SetKeyName(2, "cog");
-            this.TreeImageList.Images.SetKeyName(3, "gauge");
-            this.TreeImageList.Images.SetKeyName(4, "binoculars");
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -980,7 +965,6 @@ namespace Omniscient
         private CheckBox C2LogScaleCheckBox;
         private CheckBox C3LogScaleCheckBox;
         private CheckBox C4LogScaleCheckBox;
-        private CheckBox RangeOnlyCheckBox;
         private ToolStripSeparator toolStripSeparator1;
         private ToolStripLabel MarkerToolStripLabel;
         private ToolStripMenuItem SiteManagerToolStripMenuItem;

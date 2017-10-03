@@ -46,6 +46,8 @@ namespace Omniscient
         double mouseX = 0;
         private bool showMarker = false;
         private double markerValue = 0;
+
+        List<Event> events;
         ///////////////////////////////////////////////////////////////////////
 
         /// <summary>
@@ -56,6 +58,7 @@ namespace Omniscient
             logScale = new bool[N_CHARTS];
             for (int c = 0; c < N_CHARTS; c++) logScale[c] = false;
             activeInstruments = new List<Instrument>();
+            events = new List<Event>();
             InitializeComponent();
         }
 
@@ -356,41 +359,20 @@ namespace Omniscient
                     // Load up the chart values
                     GearedValues<DateTimePoint> chartVals = new GearedValues<DateTimePoint>();
                     List<DateTimePoint> list = new List<DateTimePoint>();
-                    if (RangeOnlyCheckBox.Checked)
+                    if (logScale[chartNum])
                     {
-                        if (logScale[chartNum])
+                        for (int i = 0; i < dates.Count; ++i) //
                         {
-                            for (int i = 0; i < dates.Count; ++i) //
-                            {
-                                if (vals[i] > 0 && dates[i] >= start  && dates[i] <= end)
-                                    list.Add(new DateTimePoint(dates[i], vals[i]));
-                            }
-                        }
-                        else
-                        {
-                            for (int i = 0; i < dates.Count; ++i) //
-                            {
-                                if (dates[i] >= start && dates[i] <= end)
-                                    list.Add(new DateTimePoint(dates[i], vals[i]));
-                            }
+                            if (vals[i] > 0 && dates[i] >= start  && dates[i] <= end)
+                                list.Add(new DateTimePoint(dates[i], vals[i]));
                         }
                     }
                     else
                     {
-                        if (logScale[chartNum])
+                        for (int i = 0; i < dates.Count; ++i) //
                         {
-                            for (int i = 0; i < dates.Count; ++i) //
-                            {
-                                if (vals[i] > 0)
-                                    list.Add(new DateTimePoint(dates[i], vals[i]));
-                            }
-                        }
-                        else
-                        {
-                            for (int i = 0; i < dates.Count; ++i) //
-                            {
+                            if (dates[i] >= start && dates[i] <= end)
                                 list.Add(new DateTimePoint(dates[i], vals[i]));
-                            }
                         }
                     }
                     chartVals = list.AsGearedValues().WithQuality(Quality.Highest);
@@ -872,8 +854,7 @@ namespace Omniscient
                 
             }
             Cursor.Current = Cursors.Default;
-            if (RangeOnlyCheckBox.Checked)
-                UpdatesCharts();
+            UpdatesCharts();
             StripChartsPanel.ResumeLayout();
         }
 
@@ -1002,12 +983,6 @@ namespace Omniscient
             rangeChanged = true;
         }
 
-        private void RangeOnlyCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!RangeOnlyCheckBox.Checked)
-                UpdatesCharts();
-        }
-
         private void SiteManagerToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SiteManagerForm siteManForm = new SiteManagerForm(this, siteMan);
@@ -1117,7 +1092,7 @@ namespace Omniscient
         private void GenerateEvents(DateTime start, DateTime end)
         {
             List<EventGenerator> eventGenerators = new List<EventGenerator>();
-            List<Event> events = new List<Event>();
+            events = new List<Event>();
 
             //  Put all of the checked systems in the SitesTreeView in eventWatchers
             foreach (TreeNode siteNode in SitesTreeView.Nodes)
