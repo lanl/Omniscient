@@ -84,7 +84,6 @@ namespace Omniscient
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.LeftPanel = new System.Windows.Forms.Panel();
-            this.SitesTreeView = new Omniscient.Controls.ResponsiveTreeView();
             this.TreeImageList = new System.Windows.Forms.ImageList(this.components);
             this.TopLeftPanel = new System.Windows.Forms.Panel();
             this.PresetSaveButton = new System.Windows.Forms.Button();
@@ -99,12 +98,6 @@ namespace Omniscient
             this.CenterSplitContainer = new System.Windows.Forms.SplitContainer();
             this.BottomPanel = new System.Windows.Forms.Panel();
             this.EventGridView = new System.Windows.Forms.DataGridView();
-            this.EventControlPanel = new System.Windows.Forms.Panel();
-            this.RightEventControlPanel = new System.Windows.Forms.Panel();
-            this.HighlightEventsCheckBox = new System.Windows.Forms.CheckBox();
-            this.EventsWarningLabel = new System.Windows.Forms.Label();
-            this.GenerateEventsButton = new System.Windows.Forms.Button();
-            this.ButtonImageList = new System.Windows.Forms.ImageList(this.components);
             this.EventGenerator = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.EventStart = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.EventEnd = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -112,6 +105,13 @@ namespace Omniscient
             this.MaxValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.MaxTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Comment = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.EventControlPanel = new System.Windows.Forms.Panel();
+            this.RightEventControlPanel = new System.Windows.Forms.Panel();
+            this.HighlightEventsCheckBox = new System.Windows.Forms.CheckBox();
+            this.EventsWarningLabel = new System.Windows.Forms.Label();
+            this.GenerateEventsButton = new System.Windows.Forms.Button();
+            this.ButtonImageList = new System.Windows.Forms.ImageList(this.components);
+            this.SitesTreeView = new Omniscient.Controls.ResponsiveTreeView();
             this.StripChartControlPanel.SuspendLayout();
             this.StripChartsPanel.SuspendLayout();
             this.StripChartsLayoutPanel.SuspendLayout();
@@ -669,20 +669,6 @@ namespace Omniscient
             this.LeftPanel.Size = new System.Drawing.Size(200, 667);
             this.LeftPanel.TabIndex = 5;
             // 
-            // SitesTreeView
-            // 
-            this.SitesTreeView.CheckBoxes = true;
-            this.SitesTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SitesTreeView.ImageIndex = 0;
-            this.SitesTreeView.ImageList = this.TreeImageList;
-            this.SitesTreeView.Location = new System.Drawing.Point(5, 68);
-            this.SitesTreeView.Name = "SitesTreeView";
-            this.SitesTreeView.SelectedImageIndex = 0;
-            this.SitesTreeView.ShowNodeToolTips = true;
-            this.SitesTreeView.Size = new System.Drawing.Size(190, 528);
-            this.SitesTreeView.TabIndex = 11;
-            this.SitesTreeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.SitesTreeView_AfterCheck);
-            // 
             // TreeImageList
             // 
             this.TreeImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("TreeImageList.ImageStream")));
@@ -827,6 +813,44 @@ namespace Omniscient
             this.EventGridView.Size = new System.Drawing.Size(735, 184);
             this.EventGridView.TabIndex = 2;
             // 
+            // EventGenerator
+            // 
+            this.EventGenerator.HeaderText = "Event Generator";
+            this.EventGenerator.Name = "EventGenerator";
+            this.EventGenerator.Width = 150;
+            // 
+            // EventStart
+            // 
+            this.EventStart.HeaderText = "Event Start";
+            this.EventStart.Name = "EventStart";
+            // 
+            // EventEnd
+            // 
+            this.EventEnd.HeaderText = "Event End";
+            this.EventEnd.Name = "EventEnd";
+            // 
+            // Duration
+            // 
+            this.Duration.HeaderText = "Duration";
+            this.Duration.Name = "Duration";
+            // 
+            // MaxValue
+            // 
+            this.MaxValue.HeaderText = "Max Value";
+            this.MaxValue.Name = "MaxValue";
+            this.MaxValue.Width = 80;
+            // 
+            // MaxTime
+            // 
+            this.MaxTime.HeaderText = "Max Time";
+            this.MaxTime.Name = "MaxTime";
+            // 
+            // Comment
+            // 
+            this.Comment.HeaderText = "Comment";
+            this.Comment.Name = "Comment";
+            this.Comment.Width = 300;
+            // 
             // EventControlPanel
             // 
             this.EventControlPanel.Controls.Add(this.RightEventControlPanel);
@@ -886,43 +910,19 @@ namespace Omniscient
             this.ButtonImageList.Images.SetKeyName(2, "Plus");
             this.ButtonImageList.Images.SetKeyName(3, "Delete");
             // 
-            // EventGenerator
+            // SitesTreeView
             // 
-            this.EventGenerator.HeaderText = "Event Generator";
-            this.EventGenerator.Name = "EventGenerator";
-            this.EventGenerator.Width = 150;
-            // 
-            // EventStart
-            // 
-            this.EventStart.HeaderText = "Event Start";
-            this.EventStart.Name = "EventStart";
-            // 
-            // EventEnd
-            // 
-            this.EventEnd.HeaderText = "Event End";
-            this.EventEnd.Name = "EventEnd";
-            // 
-            // Duration
-            // 
-            this.Duration.HeaderText = "Duration";
-            this.Duration.Name = "Duration";
-            // 
-            // MaxValue
-            // 
-            this.MaxValue.HeaderText = "Max Value";
-            this.MaxValue.Name = "MaxValue";
-            this.MaxValue.Width = 80;
-            // 
-            // MaxTime
-            // 
-            this.MaxTime.HeaderText = "Max Time";
-            this.MaxTime.Name = "MaxTime";
-            // 
-            // Comment
-            // 
-            this.Comment.HeaderText = "Comment";
-            this.Comment.Name = "Comment";
-            this.Comment.Width = 300;
+            this.SitesTreeView.CheckBoxes = true;
+            this.SitesTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.SitesTreeView.ImageIndex = 0;
+            this.SitesTreeView.ImageList = this.TreeImageList;
+            this.SitesTreeView.Location = new System.Drawing.Point(5, 68);
+            this.SitesTreeView.Name = "SitesTreeView";
+            this.SitesTreeView.SelectedImageIndex = 0;
+            this.SitesTreeView.ShowNodeToolTips = true;
+            this.SitesTreeView.Size = new System.Drawing.Size(190, 528);
+            this.SitesTreeView.TabIndex = 11;
+            this.SitesTreeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.SitesTreeView_AfterCheck);
             // 
             // MainForm
             // 
@@ -938,7 +938,7 @@ namespace Omniscient
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "MainForm";
             this.Padding = new System.Windows.Forms.Padding(0, 0, 5, 0);
-            this.Text = "Omniscient (v. Demo 11)";
+            this.Text = "Omniscient (v. Demo 12)";
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.StripChartControlPanel.ResumeLayout(false);
             this.StripChartsPanel.ResumeLayout(false);

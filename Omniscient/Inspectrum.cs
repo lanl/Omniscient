@@ -24,9 +24,42 @@ namespace Omniscient
         CHNParser chnParser;
         GearedValues<ObservablePoint> chartVals;
 
+        bool calibrationChanged = false;
+        bool fileLoaded = false;
+
+        double calibrationZero;
+        double calibrationSlope;
+        int[] counts;
+
         public Inspectrum()
         {
+            calibrationZero = 0;
+            calibrationSlope = 1;
+            counts = new int[0];
             InitializeComponent();
+        }
+
+        private void DrawSpectrum()
+        {
+            chartVals = new GearedValues<ObservablePoint>();
+            List<ObservablePoint> list = new List<ObservablePoint>();
+            for (int i = 0; i < counts.Length; ++i) //
+            {
+                list.Add(new ObservablePoint(calibrationZero + i * calibrationSlope, counts[i]));
+            }
+            chartVals = list.AsGearedValues().WithQuality(Quality.Highest);
+
+            SpecChart.Series = new SeriesCollection()
+                {
+                    new GStepLineSeries()
+                    {
+                        Title = "Spectrum",
+                        PointGeometry = null,
+                        Values = chartVals
+                    }
+                };
+
+            SpecChart.AxisY[0].MinValue = 0;
         }
 
         private void LoadCHNFile(string fileName)
@@ -44,27 +77,12 @@ namespace Omniscient
                 double deadTimePerc = 100 * (chnParser.GetRealTime() - chnParser.GetLiveTime()) / chnParser.GetRealTime();
                 DeadTimeStripTextBox.Text = string.Format("{0:F2} %", deadTimePerc);
 
-                // Load up the chart values
-                chartVals = new GearedValues<ObservablePoint>();
-                List<ObservablePoint> list = new List<ObservablePoint>();
-                for (int i=0; i< chnParser.GetNumChannels(); ++i) //
-                {
-                    list.Add(new ObservablePoint(chnParser.GetCalibrationZero() + i * chnParser.GetCalibrationSlope(), chnParser.GetCounts()[i]));
-                }
-                chartVals = list.AsGearedValues().WithQuality(Quality.Highest);
+                calibrationZero = chnParser.GetCalibrationZero();
+                calibrationSlope = chnParser.GetCalibrationSlope();
+                counts = chnParser.GetCounts();
+                DrawSpectrum();
 
-                SpecChart.Series = new SeriesCollection()
-                {
-                    new GStepLineSeries()
-                    {
-                        Title = "Spectrum",
-                        PointGeometry = null,
-                        Values = chartVals
-                    }
-                };
-
-                SpecChart.AxisY[0].MinValue = 0;
-                
+                fileLoaded = true;
             }
             else
             {
@@ -102,6 +120,58 @@ namespace Omniscient
             SeriesCollection seriesCollection = new SeriesCollection();
             SpecChart.Series = seriesCollection;
             SpecChart.Zoom = ZoomingOptions.X;
+        }
+
+        private void UpdateCalibration()
+        {
+            try
+            {
+                calibrationZero = double.Parse(CalZeroTextBox.Text);
+                calibrationSlope = double.Parse(CalSlopeTextBox.Text);
+                DrawSpectrum();
+            }
+            catch
+            {
+                MessageBox.Show("Invalid calibration!");
+            }
+        }
+
+        private void CalZeroTextBox_TextChanged(object sender, EventArgs e)
+        {
+            calibrationChanged = true;
+        }
+
+        private void CalSlopeTextBox_TextChanged(object sender, EventArgs e)
+        {
+            calibrationChanged = true;
+        }
+
+        private void CalZeroTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (calibrationChanged & e.KeyCode == Keys.Enter)
+            {
+                UpdateCalibration();
+            }
+            calibrationChanged = false;
+        }
+
+        private void CalSlopeTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (calibrationChanged & e.KeyCode == Keys.Enter)
+            {
+                UpdateCalibration();
+            }
+            calibrationChanged = false;
+        }
+
+        private void CalResetButton_Click(object sender, EventArgs e)
+        {
+            if(fileLoaded)
+            {
+                calibrationZero = chnParser.GetCalibrationZero();
+                calibrationSlope = chnParser.GetCalibrationSlope();
+                DrawSpectrum();
+            }
         }
     }
 }

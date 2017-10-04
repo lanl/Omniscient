@@ -56,6 +56,7 @@
             this.SpecPanel = new System.Windows.Forms.Panel();
             this.vScrollBar1 = new System.Windows.Forms.VScrollBar();
             this.hScrollBar1 = new System.Windows.Forms.HScrollBar();
+            this.CalResetButton = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.LeftPanel.SuspendLayout();
@@ -167,13 +168,14 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.CalResetButton);
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.CalSlopeTextBox);
             this.groupBox1.Controls.Add(this.CalZeroTextBox);
             this.groupBox1.Location = new System.Drawing.Point(3, 235);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(200, 100);
+            this.groupBox1.Size = new System.Drawing.Size(200, 107);
             this.groupBox1.TabIndex = 6;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Calibration";
@@ -181,7 +183,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(111, 31);
+            this.label5.Location = new System.Drawing.Point(111, 22);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(70, 13);
             this.label5.TabIndex = 7;
@@ -190,7 +192,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(10, 31);
+            this.label4.Location = new System.Drawing.Point(10, 22);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(29, 13);
             this.label4.TabIndex = 6;
@@ -198,19 +200,23 @@
             // 
             // CalSlopeTextBox
             // 
-            this.CalSlopeTextBox.Location = new System.Drawing.Point(114, 47);
+            this.CalSlopeTextBox.Location = new System.Drawing.Point(114, 38);
             this.CalSlopeTextBox.Name = "CalSlopeTextBox";
             this.CalSlopeTextBox.Size = new System.Drawing.Size(80, 20);
             this.CalSlopeTextBox.TabIndex = 5;
             this.CalSlopeTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.CalSlopeTextBox.TextChanged += new System.EventHandler(this.CalSlopeTextBox_TextChanged);
+            this.CalSlopeTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CalSlopeTextBox_KeyDown);
             // 
             // CalZeroTextBox
             // 
-            this.CalZeroTextBox.Location = new System.Drawing.Point(12, 47);
+            this.CalZeroTextBox.Location = new System.Drawing.Point(12, 38);
             this.CalZeroTextBox.Name = "CalZeroTextBox";
             this.CalZeroTextBox.Size = new System.Drawing.Size(80, 20);
             this.CalZeroTextBox.TabIndex = 4;
             this.CalZeroTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.CalZeroTextBox.TextChanged += new System.EventHandler(this.CalZeroTextBox_TextChanged);
+            this.CalZeroTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.CalZeroTextBox_KeyDown);
             // 
             // TimeTextBox
             // 
@@ -297,6 +303,16 @@
             this.hScrollBar1.Size = new System.Drawing.Size(803, 17);
             this.hScrollBar1.TabIndex = 1;
             // 
+            // CalResetButton
+            // 
+            this.CalResetButton.Location = new System.Drawing.Point(13, 64);
+            this.CalResetButton.Name = "CalResetButton";
+            this.CalResetButton.Size = new System.Drawing.Size(181, 26);
+            this.CalResetButton.TabIndex = 8;
+            this.CalResetButton.Text = "Reset to File Calibration";
+            this.CalResetButton.UseVisualStyleBackColor = true;
+            this.CalResetButton.Click += new System.EventHandler(this.CalResetButton_Click);
+            // 
             // Inspectrum
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -354,5 +370,6 @@
         private System.Windows.Forms.Panel SpecPanel;
         private System.Windows.Forms.VScrollBar vScrollBar1;
         private System.Windows.Forms.HScrollBar hScrollBar1;
+        private System.Windows.Forms.Button CalResetButton;
     }
 }
