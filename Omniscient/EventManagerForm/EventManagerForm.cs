@@ -109,7 +109,6 @@ namespace Omniscient
                     ChannelComboBox.Items.Add(ch.GetName());
                 }
             }
-
         }
 
         public void ResetFields()
@@ -118,6 +117,8 @@ namespace Omniscient
 
             if (node.Tag is EventGenerator)
             {
+                EventWatcher eventWatcher = (EventWatcher)node.Parent.Tag;
+
                 NameTextBox.Enabled = true;
                 ChannelComboBox.Enabled = true;
                 ThresholdTextBox.Enabled = true;
@@ -126,35 +127,145 @@ namespace Omniscient
 
                 EventGenerator eg = (EventGenerator)node.Tag;
                 NameTextBox.Text = eg.GetName();
-                ThresholdEG threshEg = (ThresholdEG)eg;
-                PopulateChannelCombo((DetectionSystem)node.Parent.Tag);
-                ChannelComboBox.Text = threshEg.GetChannel().GetName();
-                ThresholdTextBox.Text = threshEg.GetThreshold().ToString();
-                TimeSpan debounce = threshEg.GetDebounceTime();
-                if(debounce.TotalSeconds == 0)
+                if (eg is ThresholdEG)
                 {
-                    DebounceTextBox.Text = "0";
-                    DebounceComboBox.Text = "Seconds";
+                    ThresholdEG threshEg = (ThresholdEG)eg;
+                    PopulateChannelCombo((DetectionSystem)eventWatcher);
+                    ChannelComboBox.Text = threshEg.GetChannel().GetName();
+                    ThresholdTextBox.Text = threshEg.GetThreshold().ToString();
+                    TimeSpan debounce = threshEg.GetDebounceTime();
+                    if (debounce.TotalSeconds == 0)
+                    {
+                        DebounceTextBox.Text = "0";
+                        DebounceComboBox.Text = "Seconds";
+                    }
+                    else if (Math.Abs(debounce.TotalDays % 1) <= (Double.Epsilon * 100))
+                    {
+                        DebounceTextBox.Text = debounce.TotalDays.ToString();
+                        DebounceComboBox.Text = "Days";
+                    }
+                    else if (Math.Abs(debounce.TotalHours % 1) <= (Double.Epsilon * 100))
+                    {
+                        DebounceTextBox.Text = debounce.TotalHours.ToString();
+                        DebounceComboBox.Text = "Hours";
+                    }
+                    else if (Math.Abs(debounce.TotalMinutes % 1) <= (Double.Epsilon * 100))
+                    {
+                        DebounceTextBox.Text = debounce.TotalMinutes.ToString();
+                        DebounceComboBox.Text = "Minutes";
+                    }
+                    else if (Math.Abs(debounce.TotalSeconds % 1) <= (Double.Epsilon * 100))
+                    {
+                        DebounceTextBox.Text = debounce.TotalSeconds.ToString();
+                        DebounceComboBox.Text = "Seconds";
+                    }
+
+                    ThresholdPanel.Visible = true;
+                    CoincidencePanel.Visible = false;
                 }
-                else if (Math.Abs(debounce.TotalDays % 1) <= (Double.Epsilon * 100))
+                else if (eg is CoincidenceEG)
                 {
-                    DebounceTextBox.Text = debounce.TotalDays.ToString();
-                    DebounceComboBox.Text = "Days";
-                }
-                else if (Math.Abs(debounce.TotalHours % 1) <= (Double.Epsilon * 100))
-                {
-                    DebounceTextBox.Text = debounce.TotalHours.ToString();
-                    DebounceComboBox.Text = "Hours";
-                }
-                else if (Math.Abs(debounce.TotalMinutes % 1) <= (Double.Epsilon * 100))
-                {
-                    DebounceTextBox.Text = debounce.TotalMinutes.ToString();
-                    DebounceComboBox.Text = "Minutes";
-                }
-                else if (Math.Abs(debounce.TotalSeconds % 1) <= (Double.Epsilon * 100))
-                {
-                    DebounceTextBox.Text = debounce.TotalSeconds.ToString();
-                    DebounceComboBox.Text = "Seconds";
+                    CoincidenceEG coinkEG = (CoincidenceEG)eg;
+                    int index = eventWatcher.GetEventGenerators().IndexOf(eg);
+                    EventGeneratorAComboBox.Items.Clear();
+                    EventGeneratorBComboBox.Items.Clear();
+                    EventGenerator otherEG;
+                    for(int i=0; i< index;i++)
+                    {
+                        otherEG = eventWatcher.GetEventGenerators()[i];
+                        EventGeneratorAComboBox.Items.Add(otherEG.GetName());
+                        EventGeneratorBComboBox.Items.Add(otherEG.GetName());
+                    }
+                    EventGeneratorAComboBox.Text = coinkEG.GetEventGeneratorA().GetName();
+                    EventGeneratorBComboBox.Text = coinkEG.GetEventGeneratorB().GetName();
+
+                    switch (coinkEG.GetCoincidenceType())
+                    {
+                        case CoincidenceEG.CoincidenceType.A_THEN_B:
+                            CoincidenceTypeComboBox.Text = "A then B";
+                            break;
+                        case CoincidenceEG.CoincidenceType.B_THEN_A:
+                            CoincidenceTypeComboBox.Text = "B then A";
+                            break;
+                        case CoincidenceEG.CoincidenceType.EITHER_ORDER:
+                            CoincidenceTypeComboBox.Text = "Either order";
+                            break;
+                    }
+                    switch (coinkEG.GetTimingType())
+                    {
+                        case CoincidenceEG.TimingType.START_TO_START:
+                            TimingTypeComboBox.Text = "Start to Start";
+                            break;
+                        case CoincidenceEG.TimingType.START_TO_END:
+                            TimingTypeComboBox.Text = "Start to End";
+                            break;
+                        case CoincidenceEG.TimingType.END_TO_START:
+                            TimingTypeComboBox.Text = "End to Start";
+                            break;
+                        case CoincidenceEG.TimingType.END_TO_END:
+                            TimingTypeComboBox.Text = "End to End";
+                            break;
+                        case CoincidenceEG.TimingType.MAX_TO_MAX:
+                            TimingTypeComboBox.Text = "Max to Max";
+                            break;
+                    }
+
+                    TimeSpan window = coinkEG.GetWindow();
+                    if (window.TotalSeconds == 0)
+                    {
+                        WindowTextBox.Text = "0";
+                        WindowComboBox.Text = "Seconds";
+                    }
+                    else if (Math.Abs(window.TotalDays % 1) <= (Double.Epsilon * 100))
+                    {
+                        WindowTextBox.Text = window.TotalDays.ToString();
+                        WindowComboBox.Text = "Days";
+                    }
+                    else if (Math.Abs(window.TotalHours % 1) <= (Double.Epsilon * 100))
+                    {
+                        WindowTextBox.Text = window.TotalHours.ToString();
+                        WindowComboBox.Text = "Hours";
+                    }
+                    else if (Math.Abs(window.TotalMinutes % 1) <= (Double.Epsilon * 100))
+                    {
+                        WindowTextBox.Text = window.TotalMinutes.ToString();
+                        WindowComboBox.Text = "Minutes";
+                    }
+                    else if (Math.Abs(window.TotalSeconds % 1) <= (Double.Epsilon * 100))
+                    {
+                        WindowTextBox.Text = window.TotalSeconds.ToString();
+                        WindowComboBox.Text = "Seconds";
+                    }
+
+                    TimeSpan minDiff = coinkEG.GetMinDifference();
+                    if (minDiff.TotalSeconds == 0)
+                    {
+                        MinDifferenceTextBox.Text = "0";
+                        MinDifferenceComboBox.Text = "Seconds";
+                    }
+                    else if (Math.Abs(minDiff.TotalDays % 1) <= (Double.Epsilon * 100))
+                    {
+                        MinDifferenceTextBox.Text = minDiff.TotalDays.ToString();
+                        MinDifferenceComboBox.Text = "Days";
+                    }
+                    else if (Math.Abs(minDiff.TotalHours % 1) <= (Double.Epsilon * 100))
+                    {
+                        MinDifferenceTextBox.Text = minDiff.TotalHours.ToString();
+                        MinDifferenceComboBox.Text = "Hours";
+                    }
+                    else if (Math.Abs(minDiff.TotalMinutes % 1) <= (Double.Epsilon * 100))
+                    {
+                        MinDifferenceTextBox.Text = minDiff.TotalMinutes.ToString();
+                        MinDifferenceComboBox.Text = "Minutes";
+                    }
+                    else if (Math.Abs(minDiff.TotalSeconds % 1) <= (Double.Epsilon * 100))
+                    {
+                        MinDifferenceTextBox.Text = window.TotalSeconds.ToString();
+                        MinDifferenceComboBox.Text = "Seconds";
+                    }
+
+                    ThresholdPanel.Visible = false;
+                    CoincidencePanel.Visible = true;
                 }
 
                 UpButton.Enabled = true;
@@ -175,6 +286,9 @@ namespace Omniscient
                 DebounceTextBox.Enabled = false;
                 DebounceComboBox.Enabled = false;
 
+                ThresholdPanel.Visible = false;
+                CoincidencePanel.Visible = false;
+
                 UpButton.Enabled = false;
                 DownButton.Enabled = false;
                 AddButton.Enabled = true;
@@ -192,6 +306,9 @@ namespace Omniscient
                 DebounceTextBox.Text = "";
                 DebounceTextBox.Enabled = false;
                 DebounceComboBox.Enabled = false;
+
+                ThresholdPanel.Visible = false;
+                CoincidencePanel.Visible = false;
 
                 UpButton.Enabled = false;
                 DownButton.Enabled = false;
@@ -284,6 +401,10 @@ namespace Omniscient
 
         private void AddButton_Click(object sender, EventArgs e)
         {
+            EventTypeDialog dialog = new EventTypeDialog();
+            DialogResult result = dialog.ShowDialog();
+            if (result == DialogResult.Cancel) return;
+
             TreeNode node = SitesTreeView.SelectedNode;
             EventWatcher eventWatcher;
 
@@ -298,12 +419,70 @@ namespace Omniscient
                 insertIndex = eventWatcher.GetEventGenerators().IndexOf((EventGenerator)node.Tag) + 1;
             }
 
-            NewEventDialog dialog = new NewEventDialog((DetectionSystem)eventWatcher);  // Probably not good for long term...
-            DialogResult result = dialog.ShowDialog();
-            if (result == DialogResult.Cancel) return;
+            bool uniqueName = false;
+            int iteration = 0;
 
-            EventGenerator eg = new ThresholdEG(dialog.name, dialog.channel, dialog.threshold, dialog.debounceTime);
+            string name = "";
+
+            EventGenerator eg = null;
+            switch (dialog.eventType)
+            {
+                case "Threshold":
+                    if(((DetectionSystem)eventWatcher).GetInstruments().Count == 0)
+                    {
+                        MessageBox.Show("No instruments to watch in this system!");
+                        return;
+                    }
+                    while (!uniqueName)
+                    {
+                        iteration++;
+                        name = "New-ThresholdEG-" + iteration.ToString();
+                        uniqueName = true;
+                        foreach (EventGenerator otherEG in eventWatcher.GetEventGenerators())
+                        {
+                            if (otherEG.GetName() == name) uniqueName = false;
+                        }
+                    }
+                    eg = new ThresholdEG(name, ((DetectionSystem)eventWatcher).GetInstruments()[0].GetChannels()[0], 0);
+                    break;
+                case "Coincidence":
+                    if(eventWatcher.GetEventGenerators().Count == 0)
+                    {
+                        MessageBox.Show("No event generators to watch in this system!");
+                        return;
+                    }
+                    while (!uniqueName)
+                    {
+                        iteration++;
+                        name = "New-CoincidenceEG-" + iteration.ToString();
+                        uniqueName = true;
+                        foreach (EventGenerator otherEG in eventWatcher.GetEventGenerators())
+                        {
+                            if (otherEG.GetName() == name) uniqueName = false;
+                        }
+                    }
+                    eg = new CoincidenceEG(name);
+                    ((CoincidenceEG)eg).SetEventGeneratorA(eventWatcher.GetEventGenerators()[0]);
+                    ((CoincidenceEG)eg).SetEventGeneratorB(eventWatcher.GetEventGenerators()[0]);
+                    break;
+            }
+
+            //if (dialog.eventType == "Threshold")
+            //{
+            //    NewEventDialog tDialog = new NewEventDialog((DetectionSystem)eventWatcher);  // Probably not good for long term...
+            //    DialogResult tResult = tDialog.ShowDialog();
+            //    if (tResult == DialogResult.Cancel) return;
+
+            //    eg = new ThresholdEG(tDialog.name, tDialog.channel, tDialog.threshold, tDialog.debounceTime);
+            //}
+            //else if (dialog.eventType == "Coincidence")
+            //{
+            //    MessageBox.Show("Let's make a coincidence event!");
+            //}
+            //else return;
+
             eventWatcher.GetEventGenerators().Add(eg);
+
             siteMan.Save();
             UpdateSitesTree();
             siteManChanged = true;
@@ -315,56 +494,166 @@ namespace Omniscient
             TreeNode node = SitesTreeView.SelectedNode;
             if (node.Tag is EventGenerator)
             {
-                DetectionSystem sys = (DetectionSystem)node.Parent.Tag;
+                EventWatcher eventWatcher = (EventWatcher)node.Parent.Tag;
                 EventGenerator eg = (EventGenerator)node.Tag;
 
                 eg.SetName(NameTextBox.Text);
-
-                ThresholdEG threshEg = (ThresholdEG)eg;
-
-                foreach (Instrument inst in sys.GetInstruments())
+                if (eg is ThresholdEG)
                 {
-                    foreach (Channel ch in inst.GetChannels())
+                    DetectionSystem sys = (DetectionSystem)eventWatcher;
+                    ThresholdEG threshEg = (ThresholdEG)eg;
+
+                    foreach (Instrument inst in sys.GetInstruments())
                     {
-                        if (ch.GetName() == ChannelComboBox.Text)
+                        foreach (Channel ch in inst.GetChannels())
                         {
-                            threshEg.SetChannel(ch);
-                            break;
+                            if (ch.GetName() == ChannelComboBox.Text)
+                            {
+                                threshEg.SetChannel(ch);
+                                break;
+                            }
                         }
                     }
-                }
 
-                threshEg.SetThreshold(double.Parse(ThresholdTextBox.Text));
+                    threshEg.SetThreshold(double.Parse(ThresholdTextBox.Text));
 
-                TimeSpan debounceTime;
-                try
-                {
-                    double debTextVal = double.Parse(DebounceTextBox.Text);
-                    switch (DebounceComboBox.Text)
+                    TimeSpan debounceTime;
+                    try
                     {
-                        case "Seconds":
-                            debounceTime = TimeSpan.FromSeconds(debTextVal);
+                        double debTextVal = double.Parse(DebounceTextBox.Text);
+                        switch (DebounceComboBox.Text)
+                        {
+                            case "Seconds":
+                                debounceTime = TimeSpan.FromSeconds(debTextVal);
+                                break;
+                            case "Minutes":
+                                debounceTime = TimeSpan.FromMinutes(debTextVal);
+                                break;
+                            case "Hours":
+                                debounceTime = TimeSpan.FromHours(debTextVal);
+                                break;
+                            case "Days":
+                                debounceTime = TimeSpan.FromDays(debTextVal);
+                                break;
+                            default:
+                                MessageBox.Show("Invalid debounce time unit!");
+                                return;
+                        }
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Invalid debounce time!");
+                        return;
+                    }
+                    threshEg.SetDebounceTime(debounceTime);
+                }
+                else if (eg is CoincidenceEG)
+                {
+                    CoincidenceEG coinkEG = (CoincidenceEG)eg;
+
+                    foreach(EventGenerator otherEg in eventWatcher.GetEventGenerators())
+                    {
+                        if (otherEg.GetName() == EventGeneratorAComboBox.Text)
+                            coinkEG.SetEventGeneratorA(otherEg);
+                        if (otherEg.GetName() == EventGeneratorBComboBox.Text)
+                            coinkEG.SetEventGeneratorB(otherEg);
+                    }
+                    switch (CoincidenceTypeComboBox.Text)
+                    {
+                        case "A then B":
+                            coinkEG.SetCoincidenceType(CoincidenceEG.CoincidenceType.A_THEN_B);
                             break;
-                        case "Minutes":
-                            debounceTime = TimeSpan.FromMinutes(debTextVal);
+                        case "B then A":
+                            coinkEG.SetCoincidenceType(CoincidenceEG.CoincidenceType.A_THEN_B);
                             break;
-                        case "Hours":
-                            debounceTime = TimeSpan.FromHours(debTextVal);
-                            break;
-                        case "Days":
-                            debounceTime = TimeSpan.FromDays(debTextVal);
+                        case "Either order":
+                            coinkEG.SetCoincidenceType(CoincidenceEG.CoincidenceType.EITHER_ORDER);
                             break;
                         default:
-                            MessageBox.Show("Invalid debounce time unit!");
+                            MessageBox.Show("Invalid coincidence type!");
                             return;
                     }
+                    switch(TimingTypeComboBox.Text)
+                    {
+                        case "Start to Start":
+                            coinkEG.SetTimingType(CoincidenceEG.TimingType.START_TO_START);
+                            break;
+                        case "Start to End":
+                            coinkEG.SetTimingType(CoincidenceEG.TimingType.START_TO_END);
+                            break;
+                        case "End to Start":
+                            coinkEG.SetTimingType(CoincidenceEG.TimingType.END_TO_START);
+                            break;
+                        case "End to End":
+                            coinkEG.SetTimingType(CoincidenceEG.TimingType.END_TO_END);
+                            break;
+                        case "Max to Max":
+                            coinkEG.SetTimingType(CoincidenceEG.TimingType.MAX_TO_MAX);
+                            break;
+                        default:
+                            MessageBox.Show("Invalid timing type!");
+                            return;
+                    }
+                    TimeSpan window;
+                    try
+                    {
+                        double windowTextVal = double.Parse(WindowTextBox.Text);
+                        switch (WindowComboBox.Text)
+                        {
+                            case "Seconds":
+                                window = TimeSpan.FromSeconds(windowTextVal);
+                                break;
+                            case "Minutes":
+                                window = TimeSpan.FromMinutes(windowTextVal);
+                                break;
+                            case "Hours":
+                                window = TimeSpan.FromHours(windowTextVal);
+                                break;
+                            case "Days":
+                                window = TimeSpan.FromDays(windowTextVal);
+                                break;
+                            default:
+                                MessageBox.Show("Invalid window time unit!");
+                                return;
+                        }
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Invalid window time!");
+                        return;
+                    }
+                    coinkEG.SetWindow(window);
+
+                    TimeSpan minDiff;
+                    try
+                    {
+                        double minDiffTextVal = double.Parse(MinDifferenceTextBox.Text);
+                        switch (MinDifferenceComboBox.Text)
+                        {
+                            case "Seconds":
+                                minDiff = TimeSpan.FromSeconds(minDiffTextVal);
+                                break;
+                            case "Minutes":
+                                minDiff = TimeSpan.FromMinutes(minDiffTextVal);
+                                break;
+                            case "Hours":
+                                minDiff = TimeSpan.FromHours(minDiffTextVal);
+                                break;
+                            case "Days":
+                                minDiff = TimeSpan.FromDays(minDiffTextVal);
+                                break;
+                            default:
+                                MessageBox.Show("Invalid min difference time unit!");
+                                return;
+                        }
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Invalid min difference time!");
+                        return;
+                    }
+                    coinkEG.SetMinDifference(minDiff);
                 }
-                catch
-                {
-                    MessageBox.Show("Invalid debounce time!");
-                    return;
-                }
-                threshEg.SetDebounceTime(debounceTime);
 
                 siteMan.Save();
                 UpdateSitesTree();

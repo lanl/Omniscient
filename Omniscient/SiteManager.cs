@@ -82,26 +82,87 @@ namespace Omniscient
                             else if (instrumentNode.Name == "EventGenerator")
                             {
                                 XmlNode eventNode = instrumentNode;     // Correct some shoddy nomenclature...
-                                Channel channel = null;
                                 EventGenerator eg;
-                                foreach (Instrument inst in newSystem.GetInstruments())
+                                switch (eventNode.Attributes["type"]?.InnerText)
                                 {
-                                    foreach(Channel ch in inst.GetChannels())
-                                    {
-                                        if (ch.GetName() == eventNode.Attributes["channel"]?.InnerText)
-                                            channel = ch;
-                                    }
-                                }
-                                if (channel is null) return ReturnCode.CORRUPTED_FILE;
-                                try
-                                {
-                                    eg = new ThresholdEG(eventNode.Attributes["name"]?.InnerText, channel, double.Parse(instrumentNode.Attributes["threshold"]?.InnerText));
-                                    if (eventNode.Attributes["debounce_time"] != null)
-                                        ((ThresholdEG)eg).SetDebounceTime(TimeSpan.FromSeconds(double.Parse(eventNode.Attributes["debounce_time"]?.InnerText)));
-                                }
-                                catch
-                                {
-                                    return ReturnCode.CORRUPTED_FILE;
+                                    case "Threshold":
+                                        Channel channel = null;
+                                        foreach (Instrument inst in newSystem.GetInstruments())
+                                        {
+                                            foreach (Channel ch in inst.GetChannels())
+                                            {
+                                                if (ch.GetName() == eventNode.Attributes["channel"]?.InnerText)
+                                                    channel = ch;
+                                            }
+                                        }
+                                        if (channel is null) return ReturnCode.CORRUPTED_FILE;
+                                        try
+                                        {
+                                            eg = new ThresholdEG(eventNode.Attributes["name"]?.InnerText, channel, double.Parse(instrumentNode.Attributes["threshold"]?.InnerText));
+                                            if (eventNode.Attributes["debounce_time"] != null)
+                                                ((ThresholdEG)eg).SetDebounceTime(TimeSpan.FromSeconds(double.Parse(eventNode.Attributes["debounce_time"]?.InnerText)));
+                                        }
+                                        catch
+                                        {
+                                            return ReturnCode.CORRUPTED_FILE;
+                                        }
+                                        break;
+                                    case "Coincidence":
+                                        try
+                                        {
+                                            eg = new CoincidenceEG(eventNode.Attributes["name"]?.InnerText);
+                                            CoincidenceEG coinkEG = (CoincidenceEG)eg;
+                                            switch (eventNode.Attributes["coincidence_type"]?.InnerText)
+                                            {
+                                                case "A_THEN_B":
+                                                    coinkEG.SetCoincidenceType(CoincidenceEG.CoincidenceType.A_THEN_B);
+                                                    break;
+                                                case "B_THEN_A":
+                                                    coinkEG.SetCoincidenceType(CoincidenceEG.CoincidenceType.B_THEN_A);
+                                                    break;
+                                                case "EITHER_ORDER":
+                                                    coinkEG.SetCoincidenceType(CoincidenceEG.CoincidenceType.EITHER_ORDER);
+                                                    break;
+                                                default:
+                                                    return ReturnCode.CORRUPTED_FILE;
+                                            }
+                                            switch (eventNode.Attributes["timing_type"]?.InnerText)
+                                            {
+                                                case "START_TO_START":
+                                                    coinkEG.SetTimingType(CoincidenceEG.TimingType.START_TO_START);
+                                                    break;
+                                                case "START_TO_END":
+                                                    coinkEG.SetTimingType(CoincidenceEG.TimingType.START_TO_END);
+                                                    break;
+                                                case "END_TO_START":
+                                                    coinkEG.SetTimingType(CoincidenceEG.TimingType.END_TO_START);
+                                                    break;
+                                                case "END_TO_END":
+                                                    coinkEG.SetTimingType(CoincidenceEG.TimingType.END_TO_END);
+                                                    break;
+                                                case "MAX_TO_MAX":
+                                                    coinkEG.SetTimingType(CoincidenceEG.TimingType.MAX_TO_MAX);
+                                                    break;
+                                                default:
+                                                    return ReturnCode.CORRUPTED_FILE;
+                                            }
+                                            foreach(EventGenerator watchedEG in newSystem.GetEventGenerators())
+                                            {
+                                                if (watchedEG.GetName() == eventNode.Attributes["event_generator_A"]?.InnerText)
+                                                    coinkEG.SetEventGeneratorA(watchedEG);
+                                                if (watchedEG.GetName() == eventNode.Attributes["event_generator_B"]?.InnerText)
+                                                    coinkEG.SetEventGeneratorB(watchedEG);
+                                            }
+                                            coinkEG.SetWindow(TimeSpan.FromSeconds(double.Parse(eventNode.Attributes["window"]?.InnerText)));
+                                            coinkEG.SetMinDifference(TimeSpan.FromSeconds(double.Parse(eventNode.Attributes["min_difference"]?.InnerText)));
+                                        }
+                                        catch
+                                        {
+                                            return ReturnCode.CORRUPTED_FILE;
+                                        }
+                                        break;
+                                    default:
+                                        return ReturnCode.CORRUPTED_FILE;
                                 }
                                 newSystem.GetEventGenerators().Add(eg);
                             }
@@ -153,9 +214,51 @@ namespace Omniscient
                         {
                             xmlWriter.WriteStartElement("EventGenerator");
                             xmlWriter.WriteAttributeString("name", eg.GetName());
-                            xmlWriter.WriteAttributeString("channel", ((ThresholdEG)eg).GetChannel().GetName());    // Not friendly for non-threshold event generators
-                            xmlWriter.WriteAttributeString("threshold", ((ThresholdEG)eg).GetThreshold().ToString());    // Not friendly for non-threshold event generators
-                            xmlWriter.WriteAttributeString("debounce_time", ((ThresholdEG)eg).GetDebounceTime().TotalSeconds.ToString()); // Not friendly for non-threshold event generators
+                            xmlWriter.WriteAttributeString("type", eg.GetEventGeneratorType());
+                            if (eg is ThresholdEG)
+                            {
+                                xmlWriter.WriteAttributeString("channel", ((ThresholdEG)eg).GetChannel().GetName());    
+                                xmlWriter.WriteAttributeString("threshold", ((ThresholdEG)eg).GetThreshold().ToString());
+                                xmlWriter.WriteAttributeString("debounce_time", ((ThresholdEG)eg).GetDebounceTime().TotalSeconds.ToString());
+                            }
+                            else if(eg is CoincidenceEG)
+                            {
+                                CoincidenceEG coinkEg = (CoincidenceEG)eg;
+                                switch (coinkEg.GetCoincidenceType())
+                                {
+                                    case CoincidenceEG.CoincidenceType.A_THEN_B:
+                                        xmlWriter.WriteAttributeString("coincidence_type", "A_THEN_B");
+                                        break;
+                                    case CoincidenceEG.CoincidenceType.B_THEN_A:
+                                        xmlWriter.WriteAttributeString("coincidence_type", "B_THEN_A");
+                                        break;
+                                    case CoincidenceEG.CoincidenceType.EITHER_ORDER:
+                                        xmlWriter.WriteAttributeString("coincidence_type", "EITHER_ORDER");
+                                        break;
+                                }
+                                switch (coinkEg.GetTimingType())
+                                {
+                                    case CoincidenceEG.TimingType.START_TO_START:
+                                        xmlWriter.WriteAttributeString("timing_type", "START_TO_START");
+                                        break;
+                                    case CoincidenceEG.TimingType.START_TO_END:
+                                        xmlWriter.WriteAttributeString("timing_type", "START_TO_END");
+                                        break;
+                                    case CoincidenceEG.TimingType.END_TO_START:
+                                        xmlWriter.WriteAttributeString("timing_type", "END_TO_START");
+                                        break;
+                                    case CoincidenceEG.TimingType.END_TO_END:
+                                        xmlWriter.WriteAttributeString("timing_type", "END_TO_END");
+                                        break;
+                                    case CoincidenceEG.TimingType.MAX_TO_MAX:
+                                        xmlWriter.WriteAttributeString("timing_type", "MAX_TO_MAX");
+                                        break;
+                                }
+                                xmlWriter.WriteAttributeString("event_generator_A", coinkEg.GetEventGeneratorA().GetName());
+                                xmlWriter.WriteAttributeString("event_generator_B", coinkEg.GetEventGeneratorA().GetName());
+                                xmlWriter.WriteAttributeString("window", coinkEg.GetWindow().TotalSeconds.ToString());
+                                xmlWriter.WriteAttributeString("min_difference", coinkEg.GetMinDifference().TotalSeconds.ToString());
+                            }
                             xmlWriter.WriteEndElement();
                         }
                         xmlWriter.WriteEndElement();

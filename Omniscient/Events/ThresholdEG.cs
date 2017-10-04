@@ -20,6 +20,7 @@ namespace Omniscient.Events
         public ThresholdEG(string newName, Channel newChannel, double newThreshold, TimeSpan newDebounceTime)
         {
             name = newName;
+            eventGeneratorType = "Threshold";
             events = new List<Event>();
             channel = newChannel;
             threshold = newThreshold;
@@ -29,6 +30,7 @@ namespace Omniscient.Events
         public ThresholdEG(string newName, Channel newChannel, double newThreshold)
         {
             name = newName;
+            eventGeneratorType = "Threshold";
             events = new List<Event>();
             channel = newChannel;
             threshold = newThreshold;
