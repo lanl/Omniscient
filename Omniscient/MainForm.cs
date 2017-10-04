@@ -100,6 +100,26 @@ namespace Omniscient
             UpdateRange();
         }
 
+        public void CheckFullNodes()
+        {
+            foreach (TreeNode node in SitesTreeView.Nodes)
+                CheckFullNodes(node);
+        }
+
+        public void CheckFullNodes(TreeNode topNode)
+        {
+            if (topNode.Nodes.Count == 0) return;
+
+            bool allChecked = true;
+            foreach (TreeNode child in topNode.Nodes)
+            {
+                CheckFullNodes(child);
+                if (!child.Checked) allChecked = false;
+            }
+            if (allChecked && (!topNode.Checked))
+                topNode.Checked = true;
+        }
+
         public void CheckChildrenNodes(TreeNode node)
         {
             if (!node.Checked)
@@ -689,6 +709,7 @@ namespace Omniscient
                     checkingChildren = false;
                 }
             }
+            CheckFullNodes();
         }
 
         private void UpdatesCharts()
