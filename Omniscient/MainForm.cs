@@ -1207,6 +1207,8 @@ namespace Omniscient
                     eve.GetStartTime().ToString("MM/dd/yy HH:mm:ss"),
                     eve.GetEndTime().ToString("MM/dd/yy HH:mm:ss"),
                     eve.GetDuration().TotalSeconds,
+                    eve.GetMaxValue(),
+                    eve.GetMaxTime().ToString("MM/dd/yy HH:mm:ss"),
                     eve.GetComment());
             }
             if (HighlightEventsCheckBox.Checked)

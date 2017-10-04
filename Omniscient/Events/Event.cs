@@ -26,16 +26,23 @@ namespace Omniscient.Events
         DateTime StartTime;
         DateTime EndTime;
 
+        DateTime MaxTime;
+        double maxValue;
+
         string comment;
 
         public TimeSpan GetDuration() { return EndTime - StartTime; }
 
         public void SetStartTime(DateTime start) { StartTime = start; }
         public void SetEndTime(DateTime end) { EndTime = end; }
+        public void SetMaxTime(DateTime max) { MaxTime = max; }
+        public void SetMaxValue(double max) { maxValue = max; }
         public void SetComment(string newComment) { comment = newComment; }
 
         public DateTime GetStartTime() { return StartTime; }
         public DateTime GetEndTime() { return EndTime; }
+        public DateTime GetMaxTime() { return MaxTime; }
+        public double GetMaxValue() { return maxValue; }
         public string GetComment() { return comment; }
         public EventGenerator GetEventGenerator() { return eventGenerator; }
     }

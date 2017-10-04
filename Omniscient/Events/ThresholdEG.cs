@@ -41,6 +41,8 @@ namespace Omniscient.Events
             List<double> vals = channel.GetValues();
             events = new List<Event>();
             Event eve = new Event(this);        // Really shouldn't need to make an event here but visual studio freaks out without it
+            DateTime maxTime = new DateTime();
+            double maxValue = 0;
 
             bool inEvent = false;
             bool onTheDrop = false;
@@ -54,6 +56,8 @@ namespace Omniscient.Events
                         eve = new Event(this);
                         eve.SetStartTime(times[i]);
                         eve.SetComment(channel.GetName() + " is above threshold.");
+                        maxValue = vals[i];
+                        maxTime = times[i];
                         inEvent = true;
                         onTheDrop = false;
                     }
@@ -71,18 +75,29 @@ namespace Omniscient.Events
                         if (times[i] - lastDrop >= debounceTime)
                         {
                             eve.SetEndTime(lastDrop);
+                            eve.SetMaxValue(maxValue);
+                            eve.SetMaxTime(maxTime);
                             events.Add(eve);
                             inEvent = false;
                             onTheDrop = false;
                         }
                     }
                     else
+                    {
+                        if(vals[i] > maxValue)
+                        {
+                            maxValue = vals[i];
+                            maxTime = times[i];
+                        }
                         onTheDrop = false;
+                    }
                 }
             }
             if (inEvent)
             {
                 eve.SetEndTime(times[times.Count - 1]);
+                eve.SetMaxValue(maxValue);
+                eve.SetMaxTime(maxTime);
                 events.Add(eve);
                 inEvent = false;
             }

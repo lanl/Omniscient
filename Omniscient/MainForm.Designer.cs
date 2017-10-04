@@ -99,17 +99,19 @@ namespace Omniscient
             this.CenterSplitContainer = new System.Windows.Forms.SplitContainer();
             this.BottomPanel = new System.Windows.Forms.Panel();
             this.EventGridView = new System.Windows.Forms.DataGridView();
-            this.EventGenerator = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.EventStart = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.EventEnd = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Duration = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Comment = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.EventControlPanel = new System.Windows.Forms.Panel();
             this.RightEventControlPanel = new System.Windows.Forms.Panel();
             this.HighlightEventsCheckBox = new System.Windows.Forms.CheckBox();
             this.EventsWarningLabel = new System.Windows.Forms.Label();
             this.GenerateEventsButton = new System.Windows.Forms.Button();
             this.ButtonImageList = new System.Windows.Forms.ImageList(this.components);
+            this.EventGenerator = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.EventStart = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.EventEnd = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Duration = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.MaxValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.MaxTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Comment = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.StripChartControlPanel.SuspendLayout();
             this.StripChartsPanel.SuspendLayout();
             this.StripChartsLayoutPanel.SuspendLayout();
@@ -816,39 +818,14 @@ namespace Omniscient
             this.EventStart,
             this.EventEnd,
             this.Duration,
+            this.MaxValue,
+            this.MaxTime,
             this.Comment});
             this.EventGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.EventGridView.Location = new System.Drawing.Point(0, 34);
             this.EventGridView.Name = "EventGridView";
             this.EventGridView.Size = new System.Drawing.Size(735, 184);
             this.EventGridView.TabIndex = 2;
-            // 
-            // EventGenerator
-            // 
-            this.EventGenerator.HeaderText = "Event Generator";
-            this.EventGenerator.Name = "EventGenerator";
-            this.EventGenerator.Width = 150;
-            // 
-            // EventStart
-            // 
-            this.EventStart.HeaderText = "Event Start";
-            this.EventStart.Name = "EventStart";
-            // 
-            // EventEnd
-            // 
-            this.EventEnd.HeaderText = "Event End";
-            this.EventEnd.Name = "EventEnd";
-            // 
-            // Duration
-            // 
-            this.Duration.HeaderText = "Duration";
-            this.Duration.Name = "Duration";
-            // 
-            // Comment
-            // 
-            this.Comment.HeaderText = "Comment";
-            this.Comment.Name = "Comment";
-            this.Comment.Width = 300;
             // 
             // EventControlPanel
             // 
@@ -908,6 +885,44 @@ namespace Omniscient
             this.ButtonImageList.Images.SetKeyName(1, "DownArrow");
             this.ButtonImageList.Images.SetKeyName(2, "Plus");
             this.ButtonImageList.Images.SetKeyName(3, "Delete");
+            // 
+            // EventGenerator
+            // 
+            this.EventGenerator.HeaderText = "Event Generator";
+            this.EventGenerator.Name = "EventGenerator";
+            this.EventGenerator.Width = 150;
+            // 
+            // EventStart
+            // 
+            this.EventStart.HeaderText = "Event Start";
+            this.EventStart.Name = "EventStart";
+            // 
+            // EventEnd
+            // 
+            this.EventEnd.HeaderText = "Event End";
+            this.EventEnd.Name = "EventEnd";
+            // 
+            // Duration
+            // 
+            this.Duration.HeaderText = "Duration";
+            this.Duration.Name = "Duration";
+            // 
+            // MaxValue
+            // 
+            this.MaxValue.HeaderText = "Max Value";
+            this.MaxValue.Name = "MaxValue";
+            this.MaxValue.Width = 80;
+            // 
+            // MaxTime
+            // 
+            this.MaxTime.HeaderText = "Max Time";
+            this.MaxTime.Name = "MaxTime";
+            // 
+            // Comment
+            // 
+            this.Comment.HeaderText = "Comment";
+            this.Comment.Name = "Comment";
+            this.Comment.Width = 300;
             // 
             // MainForm
             // 
@@ -1037,17 +1052,19 @@ namespace Omniscient
         private TextBox GlobalStartTextBox;
         private Label label9;
         private Label label8;
-        private DataGridViewTextBoxColumn EventGenerator;
-        private DataGridViewTextBoxColumn EventStart;
-        private DataGridViewTextBoxColumn EventEnd;
-        private DataGridViewTextBoxColumn Duration;
-        private DataGridViewTextBoxColumn Comment;
         public ImageList TreeImageList;
         private CheckBox HighlightEventsCheckBox;
         private Label EventsWarningLabel;
         private Panel RightEventControlPanel;
         private ToolStripMenuItem EventManagerToolStripMenuItem;
         public ImageList ButtonImageList;
+        private DataGridViewTextBoxColumn EventGenerator;
+        private DataGridViewTextBoxColumn EventStart;
+        private DataGridViewTextBoxColumn EventEnd;
+        private DataGridViewTextBoxColumn Duration;
+        private DataGridViewTextBoxColumn MaxValue;
+        private DataGridViewTextBoxColumn MaxTime;
+        private DataGridViewTextBoxColumn Comment;
     }
 }
 
