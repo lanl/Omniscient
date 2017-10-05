@@ -61,7 +61,7 @@
             this.RemoveVirtualChannelButton = new System.Windows.Forms.Button();
             this.AddVirtualChannelButton = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.VirtualChannelsComboBox = new System.Windows.Forms.ComboBox();
             this.DirectoryButton = new System.Windows.Forms.Button();
             this.PrefixTextBox = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -165,7 +165,7 @@
             this.InstrumentPanel.Controls.Add(this.RemoveVirtualChannelButton);
             this.InstrumentPanel.Controls.Add(this.AddVirtualChannelButton);
             this.InstrumentPanel.Controls.Add(this.label6);
-            this.InstrumentPanel.Controls.Add(this.comboBox1);
+            this.InstrumentPanel.Controls.Add(this.VirtualChannelsComboBox);
             this.InstrumentPanel.Controls.Add(this.DirectoryButton);
             this.InstrumentPanel.Controls.Add(this.PrefixTextBox);
             this.InstrumentPanel.Controls.Add(this.label4);
@@ -413,6 +413,7 @@
             this.AddVirtualChannelButton.Size = new System.Drawing.Size(28, 28);
             this.AddVirtualChannelButton.TabIndex = 19;
             this.AddVirtualChannelButton.UseVisualStyleBackColor = true;
+            this.AddVirtualChannelButton.Click += new System.EventHandler(this.AddVirtualChannelButton_Click);
             // 
             // label6
             // 
@@ -423,13 +424,13 @@
             this.label6.TabIndex = 18;
             this.label6.Text = "Virtual Channels";
             // 
-            // comboBox1
+            // VirtualChannelsComboBox
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(102, 93);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(159, 21);
-            this.comboBox1.TabIndex = 17;
+            this.VirtualChannelsComboBox.FormattingEnabled = true;
+            this.VirtualChannelsComboBox.Location = new System.Drawing.Point(102, 93);
+            this.VirtualChannelsComboBox.Name = "VirtualChannelsComboBox";
+            this.VirtualChannelsComboBox.Size = new System.Drawing.Size(159, 21);
+            this.VirtualChannelsComboBox.TabIndex = 17;
             // 
             // DirectoryButton
             // 
@@ -764,7 +765,7 @@
         private System.Windows.Forms.Button RemoveVirtualChannelButton;
         private System.Windows.Forms.Button AddVirtualChannelButton;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox VirtualChannelsComboBox;
         private System.Windows.Forms.GroupBox VirtualChannelGroupBox;
         private System.Windows.Forms.Panel VCTopPanel;
         private System.Windows.Forms.Label label8;

@@ -93,6 +93,11 @@ namespace Omniscient
             }
         }
 
+        private void SetupVirtualChannelGroupBox()
+        {
+
+        }
+
         private void ResetFields()
         {
             TreeNode node = SitesTreeView.SelectedNode;
@@ -137,6 +142,19 @@ namespace Omniscient
                     InstTypeComboBox.Text = "GRAND";
                 PrefixTextBox.Text = inst.GetFilePrefix();
                 DirectoryTextBox.Text = inst.GetDataFolder();
+
+                VirtualChannelsComboBox.Items.Clear();
+                if (inst.GetVirtualChannels().Count > 0)
+                {
+                    foreach (VirtualChannel vc in inst.GetVirtualChannels())
+                        VirtualChannelsComboBox.Items.Add(vc.GetName());
+                    VirtualChannelsComboBox.Text = inst.GetVirtualChannels()[0].GetName();
+                    VirtualChannelGroupBox.Visible = true;
+                    SetupVirtualChannelGroupBox();
+                }
+                else
+                    VirtualChannelGroupBox.Visible = false;
+
 
                 InstrumentPanel.Visible = true;
                 NewInstrumentButton.Enabled = true;
@@ -488,6 +506,16 @@ namespace Omniscient
             siteMan.Save();
             UpdateSitesTree();
             siteManChanged = true;
+        }
+
+        private void AddVirtualChannelButton_Click(object sender, EventArgs e)
+        {
+            Instrument inst = (Instrument)SitesTreeView.SelectedNode.Tag;
+            if (inst.GetChannels().Length == 0)
+            {
+                MessageBox.Show("The instrument has no channels to make a virtual instrument from!");
+            }
+            //VirtualChannel virtualChannel = new VirtualChannel("New-VC", inst, Channel.ChannelType.C
         }
     }
 }
