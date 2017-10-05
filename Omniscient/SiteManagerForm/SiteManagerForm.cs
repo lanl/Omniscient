@@ -32,6 +32,9 @@ namespace Omniscient
         private void SiteManagerForm_Load(object sender, EventArgs e)
         {
             SitesTreeView.ImageList = main.TreeImageList;
+            UpButton.Image = main.ButtonImageList.Images[0];
+            DownButton.Image = main.ButtonImageList.Images[1];           
+            RemoveButton.Image = main.ButtonImageList.Images[3];
             UpdateSitesTree();
         }
 
@@ -99,14 +102,8 @@ namespace Omniscient
             {
                 Site site = (Site)node.Tag;
                 TypeLabel.Text = "Site";
-                InstTypeComboBox.Enabled = false;
-                InstTypeComboBox.Text = "";
-                PrefixTextBox.Enabled = false;
-                PrefixTextBox.Text = "";
-                DirectoryTextBox.Enabled = false;
-                DirectoryTextBox.Text = "";
-                DirectoryButton.Enabled = false;
 
+                InstrumentPanel.Visible = false;
                 NewInstrumentButton.Enabled = false;
                 NewSystemButton.Enabled = false;
             }
@@ -114,14 +111,8 @@ namespace Omniscient
             {
                 Facility fac = (Facility)node.Tag;
                 TypeLabel.Text = "Facility";
-                InstTypeComboBox.Enabled = false;
-                InstTypeComboBox.Text = "";
-                PrefixTextBox.Enabled = false;
-                PrefixTextBox.Text = "";
-                DirectoryTextBox.Enabled = false;
-                DirectoryTextBox.Text = "";
-                DirectoryButton.Enabled = false;
 
+                InstrumentPanel.Visible = false;
                 NewInstrumentButton.Enabled = false;
                 NewSystemButton.Enabled = true;
             }
@@ -129,14 +120,8 @@ namespace Omniscient
             {
                 DetectionSystem sys = (DetectionSystem)node.Tag;
                 TypeLabel.Text = "System";
-                InstTypeComboBox.Enabled = false;
-                InstTypeComboBox.Text = "";
-                PrefixTextBox.Enabled = false;
-                PrefixTextBox.Text = "";
-                DirectoryTextBox.Enabled = false;
-                DirectoryTextBox.Text = "";
-                DirectoryButton.Enabled = false;
 
+                InstrumentPanel.Visible = false;
                 NewInstrumentButton.Enabled = true;
                 NewSystemButton.Enabled = true;
             }
@@ -144,19 +129,16 @@ namespace Omniscient
             {
                 Instrument inst = (Instrument)node.Tag;
                 TypeLabel.Text = "Instrument";
-                InstTypeComboBox.Enabled = false;
                 if (inst is MCAInstrument)
                     InstTypeComboBox.Text = "MCA";
                 else if (inst is ISRInstrument)
                     InstTypeComboBox.Text = "ISR";
                 else if (inst is GRANDInstrument)
                     InstTypeComboBox.Text = "GRAND";
-                PrefixTextBox.Enabled = true;
                 PrefixTextBox.Text = inst.GetFilePrefix();
-                DirectoryTextBox.Enabled = true;
                 DirectoryTextBox.Text = inst.GetDataFolder();
-                DirectoryButton.Enabled = true;
 
+                InstrumentPanel.Visible = true;
                 NewInstrumentButton.Enabled = true;
                 NewSystemButton.Enabled = true;
             }
@@ -164,14 +146,8 @@ namespace Omniscient
             {
                 EventGenerator eg = (EventGenerator)node.Tag;
                 TypeLabel.Text = "Event Generator";
-                InstTypeComboBox.Enabled = false;
-                InstTypeComboBox.Text = "";
-                PrefixTextBox.Enabled = false;
-                PrefixTextBox.Text = "";
-                DirectoryTextBox.Enabled = false;
-                DirectoryTextBox.Text = "";
-                DirectoryButton.Enabled = false;
 
+                InstrumentPanel.Visible = false;
                 NewInstrumentButton.Enabled = false;
                 NewSystemButton.Enabled = false;
             }

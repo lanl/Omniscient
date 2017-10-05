@@ -25,9 +25,8 @@ namespace Omniscient.Instruments
         string[] bidFiles;
         DateTime[] bidDates;
 
-        public GRANDInstrument(string newName)
+        public GRANDInstrument(string newName) : base(newName)
         {
-            name = newName;
             instrumentType = "GRAND";
             filePrefix = "";
             bidFiles = new string[0];

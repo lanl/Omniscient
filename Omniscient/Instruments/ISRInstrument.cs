@@ -22,9 +22,8 @@ namespace Omniscient.Instruments
         string[] isrFiles;
         DateTime[] isrDates;
 
-        public ISRInstrument(string newName)
+        public ISRInstrument(string newName) : base(newName)
         {
-            name = newName;
             instrumentType = "ISR";
             filePrefix = "";
             isrFiles = new string[0];

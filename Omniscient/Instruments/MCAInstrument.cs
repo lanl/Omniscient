@@ -18,9 +18,8 @@ namespace Omniscient.Instruments
         string[] chnFiles;
         DateTime[] chnDates;
 
-        public MCAInstrument(string newName)
+        public MCAInstrument(string newName) : base(newName)
         {
-            name = newName;
             instrumentType = "MCA";
             filePrefix = "";
             chnFiles = new string[0];

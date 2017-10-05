@@ -10,12 +10,12 @@ namespace Omniscient.Instruments
     {
         public enum ChannelType { COUNT_RATE, DURATION_VALUE, GAMMA_SPECTRUM, VIDEO};
 
-        private Instrument instrument;
-        private string name;
-        private ChannelType channelType;
-        private List<DateTime> timeStamps;
-        private List<TimeSpan> durations;
-        private List<double> values;
+        protected Instrument instrument;
+        protected string name;
+        protected ChannelType channelType;
+        protected List<DateTime> timeStamps;
+        protected List<TimeSpan> durations;
+        protected List<double> values;
 
         public Channel(string newName, Instrument parent, ChannelType newType)
         {
