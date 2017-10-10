@@ -861,5 +861,22 @@ namespace Omniscient
         {
             SetupVirtualChannelGroupBox();
         }
+
+        private void RemoveVirtualChannelButton_Click(object sender, EventArgs e)
+        {
+            Instrument inst = (Instrument)SitesTreeView.SelectedNode.Tag;
+            VirtualChannel chan = null;
+            foreach (VirtualChannel otherChan in inst.GetVirtualChannels())
+            {
+                if (otherChan.GetName() == VirtualChannelsComboBox.Text)
+                    chan = otherChan;
+            }
+            inst.GetVirtualChannels().Remove(chan);
+            siteMan.Save();
+            UpdateSitesTree();
+            siteManChanged = true;
+            SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(inst.GetName(), true)[0];
+            ResetFields();
+        }
     }
 }
