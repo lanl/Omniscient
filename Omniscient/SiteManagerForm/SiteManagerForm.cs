@@ -409,25 +409,44 @@ namespace Omniscient
             if (node.Tag is Site)
             {
                 Site site = (Site)node.Tag;
+                if(site.GetName() != NameTextBox.Text && siteMan.ContainsName(NameTextBox.Text))
+                {
+                    MessageBox.Show("All items in the Site Manager require a unique name!");
+                    return;
+                }
                 site.SetName(NameTextBox.Text);
                 nodeName = site.GetName();
             }
             else if (node.Tag is Facility)
             {
                 Facility fac = (Facility)node.Tag;
+                if (fac.GetName() != NameTextBox.Text && siteMan.ContainsName(NameTextBox.Text))
+                {
+                    MessageBox.Show("All items in the Site Manager require a unique name!");
+                    return;
+                }
                 fac.SetName(NameTextBox.Text);
                 nodeName = fac.GetName();
             }
             else if (node.Tag is DetectionSystem)
             {
                 DetectionSystem sys = (DetectionSystem)node.Tag;
+                if (sys.GetName() != NameTextBox.Text && siteMan.ContainsName(NameTextBox.Text))
+                {
+                    MessageBox.Show("All items in the Site Manager require a unique name!");
+                    return;
+                }
                 sys.SetName(NameTextBox.Text);
                 nodeName = sys.GetName();
             }
             else if (node.Tag is Instrument)
             {
                 Instrument inst = (Instrument)node.Tag;
-
+                if (inst.GetName() != NameTextBox.Text && siteMan.ContainsName(NameTextBox.Text))
+                {
+                    MessageBox.Show("All items in the Site Manager require a unique name!");
+                    return;
+                }
                 inst.SetName(NameTextBox.Text);
                 inst.SetFilePrefix(PrefixTextBox.Text);
                 inst.SetDataFolder(DirectoryTextBox.Text);
