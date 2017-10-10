@@ -22,6 +22,31 @@ namespace Omniscient
             xmlFile = newXMLFile;
         }
 
+        public bool ContainsName(string name)
+        {
+            foreach(Site site in sites)
+            {
+                if (site.GetName() == name) return true;
+                foreach(Facility fac in site.GetFacilities())
+                {
+                    if (fac.GetName() == name) return true;
+                    foreach(DetectionSystem sys in fac.GetSystems())
+                    {
+                        if (sys.GetName() == name) return true;
+                        foreach(Instrument inst in sys.GetInstruments())
+                        {
+                            if (inst.GetName() == name) return true;
+                            foreach(Channel chan in inst.GetChannels())
+                                if (chan.GetName() == name) return true;
+                        }
+                        foreach(EventGenerator eventGenerator in sys.GetEventGenerators())
+                            if (eventGenerator.GetName() == name) return true;
+                    }
+                }
+            }
+            return false;
+        }
+
         public ReturnCode Reload()
         {
             return LoadFromXML(xmlFile);

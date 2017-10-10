@@ -513,11 +513,7 @@ namespace Omniscient
             {
                 iteration++;
                 name = "New-Site-" + iteration.ToString();
-                uniqueName = true;
-                foreach(Site site in siteMan.GetSites())
-                {
-                    if (site.GetName() == name) uniqueName = false;
-                }
+                uniqueName = !siteMan.ContainsName(name);
             }
             siteMan.GetSites().Add(new Site(name));
             siteMan.Save();
@@ -565,11 +561,7 @@ namespace Omniscient
             {
                 iteration++;
                 name = "New-Facility-" + iteration.ToString();
-                uniqueName = true;
-                foreach (Facility fac in site.GetFacilities())
-                {
-                    if (fac.GetName() == name) uniqueName = false;
-                }
+                uniqueName = !siteMan.ContainsName(name);
             }
             site.GetFacilities().Insert(index, new Facility(name));
             siteMan.Save();
@@ -611,11 +603,7 @@ namespace Omniscient
             {
                 iteration++;
                 name = "New-System-" + iteration.ToString();
-                uniqueName = true;
-                foreach (DetectionSystem sys in fac.GetSystems())
-                {
-                    if (sys.GetName() == name) uniqueName = false;
-                }
+                uniqueName = !siteMan.ContainsName(name);
             }
             fac.GetSystems().Insert(index, new DetectionSystem(name));
             siteMan.Save();
@@ -662,11 +650,7 @@ namespace Omniscient
                     {
                         iteration++;
                         name = "New-GRAND-" + iteration.ToString();
-                        uniqueName = true;
-                        foreach (Instrument inst in sys.GetInstruments())
-                        {
-                            if (sys.GetName() == name) uniqueName = false;
-                        }
+                        uniqueName = !siteMan.ContainsName(name);
                     }
                     newInstrument = new GRANDInstrument(name);
                     break;
@@ -675,11 +659,7 @@ namespace Omniscient
                     {
                         iteration++;
                         name = "New-ISR-" + iteration.ToString();
-                        uniqueName = true;
-                        foreach (Instrument inst in sys.GetInstruments())
-                        {
-                            if (sys.GetName() == name) uniqueName = false;
-                        }
+                        uniqueName = !siteMan.ContainsName(name);
                     }
                     newInstrument = new ISRInstrument(name);
                     break;
@@ -688,11 +668,7 @@ namespace Omniscient
                     {
                         iteration++;
                         name = "New-MCA-" + iteration.ToString();
-                        uniqueName = true;
-                        foreach (Instrument inst in sys.GetInstruments())
-                        {
-                            if (sys.GetName() == name) uniqueName = false;
-                        }
+                        uniqueName = !siteMan.ContainsName(name);
                     }
                     newInstrument = new MCAInstrument(name);
                     break;
