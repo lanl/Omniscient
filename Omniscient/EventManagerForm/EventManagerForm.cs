@@ -437,11 +437,7 @@ namespace Omniscient
                     {
                         iteration++;
                         name = "New-ThresholdEG-" + iteration.ToString();
-                        uniqueName = true;
-                        foreach (EventGenerator otherEG in eventWatcher.GetEventGenerators())
-                        {
-                            if (otherEG.GetName() == name) uniqueName = false;
-                        }
+                        uniqueName = !siteMan.ContainsName(name);
                     }
                     eg = new ThresholdEG(name, ((DetectionSystem)eventWatcher).GetInstruments()[0].GetChannels()[0], 0);
                     break;
@@ -455,11 +451,7 @@ namespace Omniscient
                     {
                         iteration++;
                         name = "New-CoincidenceEG-" + iteration.ToString();
-                        uniqueName = true;
-                        foreach (EventGenerator otherEG in eventWatcher.GetEventGenerators())
-                        {
-                            if (otherEG.GetName() == name) uniqueName = false;
-                        }
+                        uniqueName = !siteMan.ContainsName(name);
                     }
                     eg = new CoincidenceEG(name);
                     ((CoincidenceEG)eg).SetEventGeneratorA(eventWatcher.GetEventGenerators()[0]);
@@ -496,7 +488,11 @@ namespace Omniscient
             {
                 EventWatcher eventWatcher = (EventWatcher)node.Parent.Tag;
                 EventGenerator eg = (EventGenerator)node.Tag;
-
+                if (eg.GetName() != NameTextBox.Text && siteMan.ContainsName(NameTextBox.Text))
+                {
+                    MessageBox.Show("All items in the Site Manager and Event Manager require a unique name!");
+                    return;
+                }
                 eg.SetName(NameTextBox.Text);
                 if (eg is ThresholdEG)
                 {
