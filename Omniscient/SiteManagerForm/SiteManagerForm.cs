@@ -319,6 +319,12 @@ namespace Omniscient
 
         private void SaveVirtualChannel(Instrument inst, VirtualChannel chan)
         {
+            if (chan.GetName() != VirtualChannelNameTextBox.Text && siteMan.ContainsName(VirtualChannelNameTextBox.Text))
+            {
+                MessageBox.Show("All items in the Site Manager require a unique name!");
+                return;
+            }
+
             chan.SetName(VirtualChannelNameTextBox.Text);
             switch (VirtualChannelTypeComboBox.Text)
             {
@@ -706,7 +712,16 @@ namespace Omniscient
             {
                 MessageBox.Show("The instrument has no channels to make a virtual instrument from!");
             }
-            VirtualChannel virtualChannel = new VirtualChannel("New-VC", inst, inst.GetChannels()[0].GetChannelType());
+            int iteration = 0;
+            bool uniqueName = false;
+            string name = "";
+            while (!uniqueName)
+            {
+                iteration++;
+                name = "New-VC-" + iteration.ToString();
+                uniqueName = !siteMan.ContainsName(name);
+            }
+            VirtualChannel virtualChannel = new VirtualChannel(name, inst, inst.GetChannels()[0].GetChannelType());
             virtualChannel.SetChannelA(inst.GetChannels()[0]);
             virtualChannel.SetVirtualChannelType(VirtualChannel.VirtualChannelType.ADD_CONST);
             virtualChannel.SetConstant(0);
