@@ -120,6 +120,7 @@ namespace Omniscient.Instruments
             channels[gamCh1Sigma].Sort();
             channels[gamInGamCh2].Sort();
             channels[gamCh2Sigma].Sort();
+            LoadVirtualChannels();
         }
 
         public override void ClearData()

@@ -92,6 +92,7 @@ namespace Omniscient.Instruments
                 channels[COUNT_RATE].AddDataPoint(time, counts/chnParser.GetLiveTime(), duration); 
             }
             channels[COUNT_RATE].Sort();
+            LoadVirtualChannels();
         }
 
         public override void ClearData()

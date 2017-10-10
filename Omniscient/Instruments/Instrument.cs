@@ -25,6 +25,12 @@ namespace Omniscient.Instruments
             virtualChannels = new List<VirtualChannel>();
         }
 
+        public void LoadVirtualChannels()
+        {
+            foreach (VirtualChannel chan in virtualChannels)
+                chan.CalculateValues();
+        }
+
         public abstract void SetName(string newName);
         public abstract void ScanDataFolder();
         public abstract void LoadData(DateTime startDate, DateTime endDate);
@@ -56,7 +62,7 @@ namespace Omniscient.Instruments
                 else
                     result[i] = virtualChannels[i - channels.Length];
             }
-            return channels;
+            return result;
         }
         //public Channel GetChannel(int chanNum)
         //{

@@ -27,8 +27,7 @@ namespace Omniscient.Instruments
 
         public void CalculateValues()
         {
-            values = new List<double>(chanA.GetValues().Count);
-            timeStamps = chanA.GetTimeStamps();
+            double[] arrayVals = new double[chanA.GetValues().Count];
 
             if (channelType == ChannelType.DURATION_VALUE)
                 durations = chanA.GetDurations();
@@ -40,41 +39,49 @@ namespace Omniscient.Instruments
             switch (virtualType)
             {
                 case VirtualChannelType.RATIO:
+                    timeStamps = chanA.GetTimeStamps();
                     A = chanA.GetValues();
                     B = chanB.GetValues();
                     for (int i = 0; i < A.Count; i++)
-                        values[i] = A[i] / B[i];
+                        arrayVals[i] = A[i] / B[i];
                     break;
                 case VirtualChannelType.SUM:
+                    timeStamps = chanA.GetTimeStamps();
                     A = chanA.GetValues();
                     B = chanB.GetValues();
                     for (int i = 0; i < A.Count; i++)
-                        values[i] = A[i] + B[i];
+                        arrayVals[i] = A[i] + B[i];
                     break;
                 case VirtualChannelType.DIFFERENCE:
+                    timeStamps = chanA.GetTimeStamps();
                     A = chanA.GetValues();
                     B = chanB.GetValues();
                     for (int i = 0; i < A.Count; i++)
-                        values[i] = A[i] - B[i];
+                        arrayVals[i] = A[i] - B[i];
                     break;
                 case VirtualChannelType.ADD_CONST:
+                    timeStamps = chanA.GetTimeStamps();
                     A = chanA.GetValues();
                     for (int i = 0; i < A.Count; i++)
-                        values[i] = A[i] + constant;
+                        arrayVals[i] = A[i] + constant;
                     break;
                 case VirtualChannelType.SCALE:
+                    timeStamps = chanA.GetTimeStamps();
                     A = chanA.GetValues();
                     for (int i = 0; i < A.Count; i++)
-                        values[i] = constant*A[i];
+                        arrayVals[i] = constant*A[i];
                     break;
                 case VirtualChannelType.DELAY:
                     A = chanA.GetValues();
-                    values = A;
+                    arrayVals = A.ToArray();
                     ATime = chanA.GetTimeStamps();
+                    DateTime[] arrayTimeStamps = new DateTime[ATime.Count];
                     for (int i = 0; i < A.Count; i++)
-                        timeStamps[i] = ATime[i] + delay;
+                        arrayTimeStamps[i] = ATime[i].AddSeconds(delay.TotalSeconds);
+                    timeStamps = arrayTimeStamps.ToList();
                     break;
             }
+            values = arrayVals.ToList();
         }
 
         public void SetChannelA(Channel newChan)

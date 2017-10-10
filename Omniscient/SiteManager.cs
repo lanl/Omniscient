@@ -76,6 +76,69 @@ namespace Omniscient
                                         newInstrument.SetFilePrefix(instrumentNode.Attributes["file_prefix"].InnerText);
                                     }
                                     newInstrument.SetDataFolder(instrumentNode.Attributes["directory"]?.InnerText);
+                                    foreach(XmlNode chanNode in instrumentNode.ChildNodes)
+                                    {
+                                        try
+                                        {
+                                            Channel chanA = null;
+                                            foreach (Channel ch in newInstrument.GetChannels())
+                                            {
+                                                if (ch.GetName() == chanNode.Attributes["channel_A"]?.InnerText)
+                                                    chanA = ch;
+                                            }
+                                            VirtualChannel chan = new VirtualChannel(chanNode.Attributes["name"]?.InnerText,
+                                                                                    newInstrument, chanA.GetChannelType());
+                                            chan.SetChannelA(chanA);
+                                            switch(chanNode.Attributes["type"]?.InnerText)
+                                            {
+                                                case "RATIO":
+                                                    chan.SetVirtualChannelType(VirtualChannel.VirtualChannelType.RATIO);
+                                                    break;
+                                                case "SUM":
+                                                    chan.SetVirtualChannelType(VirtualChannel.VirtualChannelType.SUM);
+                                                    break;
+                                                case "DIFFERENCE":
+                                                    chan.SetVirtualChannelType(VirtualChannel.VirtualChannelType.DIFFERENCE);
+                                                    break;
+                                                case "ADD_CONST":
+                                                    chan.SetVirtualChannelType(VirtualChannel.VirtualChannelType.ADD_CONST);
+                                                    break;
+                                                case "SCALE":
+                                                    chan.SetVirtualChannelType(VirtualChannel.VirtualChannelType.SCALE);
+                                                    break;
+                                                case "DELAY":
+                                                    chan.SetVirtualChannelType(VirtualChannel.VirtualChannelType.DELAY);
+                                                    break;
+                                                default:
+                                                    return ReturnCode.CORRUPTED_FILE;
+                                            }
+                                            switch(chan.GetVirtualChannelType())
+                                            {
+                                                case VirtualChannel.VirtualChannelType.RATIO:
+                                                case VirtualChannel.VirtualChannelType.SUM:
+                                                case VirtualChannel.VirtualChannelType.DIFFERENCE:
+                                                    Channel chanB = null;
+                                                    foreach (Channel ch in newInstrument.GetChannels())
+                                                    {
+                                                        if (ch.GetName() == chanNode.Attributes["channel_B"]?.InnerText)
+                                                            chanB = ch;
+                                                    }
+                                                    chan.SetChannelB(chanB);
+                                                    break;
+                                                case VirtualChannel.VirtualChannelType.ADD_CONST:
+                                                case VirtualChannel.VirtualChannelType.SCALE:
+                                                    chan.SetConstant(double.Parse(chanNode.Attributes["constant"]?.InnerText));
+                                                    break;
+                                                case VirtualChannel.VirtualChannelType.DELAY:
+                                                    chan.SetDelay(TimeSpan.FromSeconds(double.Parse(chanNode.Attributes["delay"]?.InnerText)));
+                                                    break;
+                                                default:
+                                                    return ReturnCode.CORRUPTED_FILE;
+                                            }
+                                            newInstrument.GetVirtualChannels().Add(chan);
+                                        }
+                                        catch { return ReturnCode.CORRUPTED_FILE; }
+                                    }
                                     newSystem.AddInstrument(newInstrument);
                                 }
                             }
@@ -208,6 +271,29 @@ namespace Omniscient
                             xmlWriter.WriteAttributeString("file_prefix", inst.GetFilePrefix());
                             xmlWriter.WriteAttributeString("type", inst.GetInstrumentType());
                             xmlWriter.WriteAttributeString("directory", inst.GetDataFolder());
+                            foreach(VirtualChannel chan in inst.GetVirtualChannels())
+                            {
+                                xmlWriter.WriteStartElement("VirtualChannel");
+                                xmlWriter.WriteAttributeString("name", chan.GetName());
+                                xmlWriter.WriteAttributeString("type", chan.GetVirtualChannelType().ToString());
+                                xmlWriter.WriteAttributeString("channel_A", chan.GetChannelA().GetName());
+                                switch (chan.GetVirtualChannelType())
+                                {
+                                    case VirtualChannel.VirtualChannelType.RATIO:
+                                    case VirtualChannel.VirtualChannelType.SUM:
+                                    case VirtualChannel.VirtualChannelType.DIFFERENCE:
+                                        xmlWriter.WriteAttributeString("channel_B", chan.GetChannelB().GetName());
+                                        break;
+                                    case VirtualChannel.VirtualChannelType.ADD_CONST:
+                                    case VirtualChannel.VirtualChannelType.SCALE:
+                                        xmlWriter.WriteAttributeString("constant", chan.GetConstant().ToString());
+                                        break;
+                                    case VirtualChannel.VirtualChannelType.DELAY:
+                                        xmlWriter.WriteAttributeString("delay", chan.GetDelay().TotalSeconds.ToString());
+                                        break;
+                                }
+                                xmlWriter.WriteEndElement();
+                            }
                             xmlWriter.WriteEndElement();
                         }
                         foreach (EventGenerator eg in sys.GetEventGenerators())

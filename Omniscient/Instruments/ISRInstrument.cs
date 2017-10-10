@@ -108,6 +108,7 @@ namespace Omniscient.Instruments
             channels[TOTALS3].Sort();
             channels[REALS_PLUS_ACC].Sort();
             channels[ACC].Sort();
+            LoadVirtualChannels();
         }
 
         public override void ClearData()

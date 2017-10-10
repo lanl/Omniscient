@@ -107,35 +107,39 @@
             // SitesTreeView
             // 
             this.SitesTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SitesTreeView.Location = new System.Drawing.Point(10, 10);
+            this.SitesTreeView.Location = new System.Drawing.Point(13, 12);
+            this.SitesTreeView.Margin = new System.Windows.Forms.Padding(4);
             this.SitesTreeView.Name = "SitesTreeView";
             this.SitesTreeView.ShowNodeToolTips = true;
-            this.SitesTreeView.Size = new System.Drawing.Size(380, 621);
+            this.SitesTreeView.Size = new System.Drawing.Size(507, 765);
             this.SitesTreeView.TabIndex = 0;
             this.SitesTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.SitesTreeView_AfterSelect);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(61, 33);
+            this.label1.Location = new System.Drawing.Point(81, 41);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(35, 13);
+            this.label1.Size = new System.Drawing.Size(45, 17);
             this.label1.TabIndex = 2;
             this.label1.Text = "Name";
             // 
             // NameTextBox
             // 
-            this.NameTextBox.Location = new System.Drawing.Point(102, 29);
+            this.NameTextBox.Location = new System.Drawing.Point(136, 36);
+            this.NameTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.NameTextBox.Name = "NameTextBox";
-            this.NameTextBox.Size = new System.Drawing.Size(160, 20);
+            this.NameTextBox.Size = new System.Drawing.Size(212, 22);
             this.NameTextBox.TabIndex = 3;
             // 
             // TypeLabel
             // 
             this.TypeLabel.AutoSize = true;
-            this.TypeLabel.Location = new System.Drawing.Point(99, 13);
+            this.TypeLabel.Location = new System.Drawing.Point(132, 16);
+            this.TypeLabel.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.TypeLabel.Name = "TypeLabel";
-            this.TypeLabel.Size = new System.Drawing.Size(0, 13);
+            this.TypeLabel.Size = new System.Drawing.Size(0, 17);
             this.TypeLabel.TabIndex = 4;
             // 
             // InstTypeComboBox
@@ -145,17 +149,19 @@
             "ISR",
             "GRAND",
             "MCA"});
-            this.InstTypeComboBox.Location = new System.Drawing.Point(102, 8);
+            this.InstTypeComboBox.Location = new System.Drawing.Point(136, 10);
+            this.InstTypeComboBox.Margin = new System.Windows.Forms.Padding(4);
             this.InstTypeComboBox.Name = "InstTypeComboBox";
-            this.InstTypeComboBox.Size = new System.Drawing.Size(160, 21);
+            this.InstTypeComboBox.Size = new System.Drawing.Size(212, 24);
             this.InstTypeComboBox.TabIndex = 5;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(13, 7);
+            this.label3.Location = new System.Drawing.Point(17, 9);
+            this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(83, 13);
+            this.label3.Size = new System.Drawing.Size(110, 17);
             this.label3.TabIndex = 6;
             this.label3.Text = "Instrument Type";
             // 
@@ -174,9 +180,10 @@
             this.InstrumentPanel.Controls.Add(this.label3);
             this.InstrumentPanel.Controls.Add(this.InstTypeComboBox);
             this.InstrumentPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.InstrumentPanel.Location = new System.Drawing.Point(0, 126);
+            this.InstrumentPanel.Location = new System.Drawing.Point(0, 155);
+            this.InstrumentPanel.Margin = new System.Windows.Forms.Padding(4);
             this.InstrumentPanel.Name = "InstrumentPanel";
-            this.InstrumentPanel.Size = new System.Drawing.Size(334, 368);
+            this.InstrumentPanel.Size = new System.Drawing.Size(446, 453);
             this.InstrumentPanel.TabIndex = 9;
             // 
             // VirtualChannelGroupBox
@@ -185,9 +192,11 @@
             this.VirtualChannelGroupBox.Controls.Add(this.VCDelayPanel);
             this.VirtualChannelGroupBox.Controls.Add(this.VCTwoChannelPanel);
             this.VirtualChannelGroupBox.Controls.Add(this.VCTopPanel);
-            this.VirtualChannelGroupBox.Location = new System.Drawing.Point(3, 122);
+            this.VirtualChannelGroupBox.Location = new System.Drawing.Point(4, 150);
+            this.VirtualChannelGroupBox.Margin = new System.Windows.Forms.Padding(4);
             this.VirtualChannelGroupBox.Name = "VirtualChannelGroupBox";
-            this.VirtualChannelGroupBox.Size = new System.Drawing.Size(328, 230);
+            this.VirtualChannelGroupBox.Padding = new System.Windows.Forms.Padding(4);
+            this.VirtualChannelGroupBox.Size = new System.Drawing.Size(437, 283);
             this.VirtualChannelGroupBox.TabIndex = 21;
             this.VirtualChannelGroupBox.TabStop = false;
             this.VirtualChannelGroupBox.Text = "Virtual Channel";
@@ -199,43 +208,48 @@
             this.VCChannelConstPanel.Controls.Add(this.label12);
             this.VCChannelConstPanel.Controls.Add(this.VirtualChannelChannelComboBox);
             this.VCChannelConstPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.VCChannelConstPanel.Location = new System.Drawing.Point(3, 194);
+            this.VCChannelConstPanel.Location = new System.Drawing.Point(4, 237);
+            this.VCChannelConstPanel.Margin = new System.Windows.Forms.Padding(4);
             this.VCChannelConstPanel.Name = "VCChannelConstPanel";
-            this.VCChannelConstPanel.Size = new System.Drawing.Size(322, 58);
+            this.VCChannelConstPanel.Size = new System.Drawing.Size(429, 71);
             this.VCChannelConstPanel.TabIndex = 8;
             this.VCChannelConstPanel.Visible = false;
             // 
             // VirtualChannelConstantTextBox
             // 
-            this.VirtualChannelConstantTextBox.Location = new System.Drawing.Point(94, 33);
+            this.VirtualChannelConstantTextBox.Location = new System.Drawing.Point(125, 41);
+            this.VirtualChannelConstantTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.VirtualChannelConstantTextBox.Name = "VirtualChannelConstantTextBox";
-            this.VirtualChannelConstantTextBox.Size = new System.Drawing.Size(160, 20);
+            this.VirtualChannelConstantTextBox.Size = new System.Drawing.Size(212, 22);
             this.VirtualChannelConstantTextBox.TabIndex = 23;
             // 
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(37, 36);
+            this.label11.Location = new System.Drawing.Point(49, 44);
+            this.label11.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(49, 13);
+            this.label11.Size = new System.Drawing.Size(64, 17);
             this.label11.TabIndex = 22;
             this.label11.Text = "Constant";
             // 
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(40, 9);
+            this.label12.Location = new System.Drawing.Point(53, 11);
+            this.label12.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(46, 13);
+            this.label12.Size = new System.Drawing.Size(60, 17);
             this.label12.TabIndex = 20;
             this.label12.Text = "Channel";
             // 
             // VirtualChannelChannelComboBox
             // 
             this.VirtualChannelChannelComboBox.FormattingEnabled = true;
-            this.VirtualChannelChannelComboBox.Location = new System.Drawing.Point(95, 6);
+            this.VirtualChannelChannelComboBox.Location = new System.Drawing.Point(127, 7);
+            this.VirtualChannelChannelComboBox.Margin = new System.Windows.Forms.Padding(4);
             this.VirtualChannelChannelComboBox.Name = "VirtualChannelChannelComboBox";
-            this.VirtualChannelChannelComboBox.Size = new System.Drawing.Size(159, 21);
+            this.VirtualChannelChannelComboBox.Size = new System.Drawing.Size(211, 24);
             this.VirtualChannelChannelComboBox.TabIndex = 19;
             // 
             // VCDelayPanel
@@ -246,9 +260,10 @@
             this.VCDelayPanel.Controls.Add(this.label14);
             this.VCDelayPanel.Controls.Add(this.DelayChannelComboBox);
             this.VCDelayPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.VCDelayPanel.Location = new System.Drawing.Point(3, 136);
+            this.VCDelayPanel.Location = new System.Drawing.Point(4, 166);
+            this.VCDelayPanel.Margin = new System.Windows.Forms.Padding(4);
             this.VCDelayPanel.Name = "VCDelayPanel";
-            this.VCDelayPanel.Size = new System.Drawing.Size(322, 58);
+            this.VCDelayPanel.Size = new System.Drawing.Size(429, 71);
             this.VCDelayPanel.TabIndex = 9;
             this.VCDelayPanel.Visible = false;
             // 
@@ -260,42 +275,47 @@
             "Minutes",
             "Hours",
             "Days"});
-            this.DelayComboBox.Location = new System.Drawing.Point(153, 31);
+            this.DelayComboBox.Location = new System.Drawing.Point(204, 38);
+            this.DelayComboBox.Margin = new System.Windows.Forms.Padding(4);
             this.DelayComboBox.Name = "DelayComboBox";
-            this.DelayComboBox.Size = new System.Drawing.Size(114, 21);
+            this.DelayComboBox.Size = new System.Drawing.Size(151, 24);
             this.DelayComboBox.TabIndex = 33;
             // 
             // DelayTextBox
             // 
-            this.DelayTextBox.Location = new System.Drawing.Point(95, 31);
+            this.DelayTextBox.Location = new System.Drawing.Point(127, 38);
+            this.DelayTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.DelayTextBox.Name = "DelayTextBox";
-            this.DelayTextBox.Size = new System.Drawing.Size(52, 20);
+            this.DelayTextBox.Size = new System.Drawing.Size(68, 22);
             this.DelayTextBox.TabIndex = 32;
             // 
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(37, 36);
+            this.label13.Location = new System.Drawing.Point(49, 44);
+            this.label13.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(34, 13);
+            this.label13.Size = new System.Drawing.Size(44, 17);
             this.label13.TabIndex = 22;
             this.label13.Text = "Delay";
             // 
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(40, 9);
+            this.label14.Location = new System.Drawing.Point(53, 11);
+            this.label14.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(46, 13);
+            this.label14.Size = new System.Drawing.Size(60, 17);
             this.label14.TabIndex = 20;
             this.label14.Text = "Channel";
             // 
             // DelayChannelComboBox
             // 
             this.DelayChannelComboBox.FormattingEnabled = true;
-            this.DelayChannelComboBox.Location = new System.Drawing.Point(95, 6);
+            this.DelayChannelComboBox.Location = new System.Drawing.Point(127, 7);
+            this.DelayChannelComboBox.Margin = new System.Windows.Forms.Padding(4);
             this.DelayChannelComboBox.Name = "DelayChannelComboBox";
-            this.DelayChannelComboBox.Size = new System.Drawing.Size(159, 21);
+            this.DelayChannelComboBox.Size = new System.Drawing.Size(211, 24);
             this.DelayChannelComboBox.TabIndex = 19;
             // 
             // VCTwoChannelPanel
@@ -305,43 +325,48 @@
             this.VCTwoChannelPanel.Controls.Add(this.label9);
             this.VCTwoChannelPanel.Controls.Add(this.VirtualChannelChanAComboBox);
             this.VCTwoChannelPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.VCTwoChannelPanel.Location = new System.Drawing.Point(3, 74);
+            this.VCTwoChannelPanel.Location = new System.Drawing.Point(4, 90);
+            this.VCTwoChannelPanel.Margin = new System.Windows.Forms.Padding(4);
             this.VCTwoChannelPanel.Name = "VCTwoChannelPanel";
-            this.VCTwoChannelPanel.Size = new System.Drawing.Size(322, 62);
+            this.VCTwoChannelPanel.Size = new System.Drawing.Size(429, 76);
             this.VCTwoChannelPanel.TabIndex = 7;
             // 
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(30, 36);
+            this.label10.Location = new System.Drawing.Point(40, 44);
+            this.label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(56, 13);
+            this.label10.Size = new System.Drawing.Size(73, 17);
             this.label10.TabIndex = 22;
             this.label10.Text = "Channel B";
             // 
             // VirtualChannelChanBComboBox
             // 
             this.VirtualChannelChanBComboBox.FormattingEnabled = true;
-            this.VirtualChannelChanBComboBox.Location = new System.Drawing.Point(95, 33);
+            this.VirtualChannelChanBComboBox.Location = new System.Drawing.Point(127, 41);
+            this.VirtualChannelChanBComboBox.Margin = new System.Windows.Forms.Padding(4);
             this.VirtualChannelChanBComboBox.Name = "VirtualChannelChanBComboBox";
-            this.VirtualChannelChanBComboBox.Size = new System.Drawing.Size(159, 21);
+            this.VirtualChannelChanBComboBox.Size = new System.Drawing.Size(211, 24);
             this.VirtualChannelChanBComboBox.TabIndex = 21;
             // 
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(30, 9);
+            this.label9.Location = new System.Drawing.Point(40, 11);
+            this.label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(56, 13);
+            this.label9.Size = new System.Drawing.Size(73, 17);
             this.label9.TabIndex = 20;
             this.label9.Text = "Channel A";
             // 
             // VirtualChannelChanAComboBox
             // 
             this.VirtualChannelChanAComboBox.FormattingEnabled = true;
-            this.VirtualChannelChanAComboBox.Location = new System.Drawing.Point(95, 6);
+            this.VirtualChannelChanAComboBox.Location = new System.Drawing.Point(127, 7);
+            this.VirtualChannelChanAComboBox.Margin = new System.Windows.Forms.Padding(4);
             this.VirtualChannelChanAComboBox.Name = "VirtualChannelChanAComboBox";
-            this.VirtualChannelChanAComboBox.Size = new System.Drawing.Size(159, 21);
+            this.VirtualChannelChanAComboBox.Size = new System.Drawing.Size(211, 24);
             this.VirtualChannelChanAComboBox.TabIndex = 19;
             // 
             // VCTopPanel
@@ -351,17 +376,19 @@
             this.VCTopPanel.Controls.Add(this.VirtualChannelNameTextBox);
             this.VCTopPanel.Controls.Add(this.label7);
             this.VCTopPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.VCTopPanel.Location = new System.Drawing.Point(3, 16);
+            this.VCTopPanel.Location = new System.Drawing.Point(4, 19);
+            this.VCTopPanel.Margin = new System.Windows.Forms.Padding(4);
             this.VCTopPanel.Name = "VCTopPanel";
-            this.VCTopPanel.Size = new System.Drawing.Size(322, 58);
+            this.VCTopPanel.Size = new System.Drawing.Size(429, 71);
             this.VCTopPanel.TabIndex = 6;
             // 
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(55, 32);
+            this.label8.Location = new System.Drawing.Point(73, 39);
+            this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(31, 13);
+            this.label8.Size = new System.Drawing.Size(40, 17);
             this.label8.TabIndex = 20;
             this.label8.Text = "Type";
             // 
@@ -375,42 +402,48 @@
             "Add Constant",
             "Scale",
             "Delay"});
-            this.VirtualChannelTypeComboBox.Location = new System.Drawing.Point(96, 29);
+            this.VirtualChannelTypeComboBox.Location = new System.Drawing.Point(128, 36);
+            this.VirtualChannelTypeComboBox.Margin = new System.Windows.Forms.Padding(4);
             this.VirtualChannelTypeComboBox.Name = "VirtualChannelTypeComboBox";
-            this.VirtualChannelTypeComboBox.Size = new System.Drawing.Size(159, 21);
+            this.VirtualChannelTypeComboBox.Size = new System.Drawing.Size(211, 24);
             this.VirtualChannelTypeComboBox.TabIndex = 19;
+            this.VirtualChannelTypeComboBox.SelectedIndexChanged += new System.EventHandler(this.VirtualChannelTypeComboBox_SelectedIndexChanged);
             // 
             // VirtualChannelNameTextBox
             // 
-            this.VirtualChannelNameTextBox.Location = new System.Drawing.Point(95, 3);
+            this.VirtualChannelNameTextBox.Location = new System.Drawing.Point(127, 4);
+            this.VirtualChannelNameTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.VirtualChannelNameTextBox.Name = "VirtualChannelNameTextBox";
-            this.VirtualChannelNameTextBox.Size = new System.Drawing.Size(160, 20);
+            this.VirtualChannelNameTextBox.Size = new System.Drawing.Size(212, 22);
             this.VirtualChannelNameTextBox.TabIndex = 5;
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(54, 7);
+            this.label7.Location = new System.Drawing.Point(72, 9);
+            this.label7.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(35, 13);
+            this.label7.Size = new System.Drawing.Size(45, 17);
             this.label7.TabIndex = 4;
             this.label7.Text = "Name";
             // 
             // RemoveVirtualChannelButton
             // 
             this.RemoveVirtualChannelButton.Image = ((System.Drawing.Image)(resources.GetObject("RemoveVirtualChannelButton.Image")));
-            this.RemoveVirtualChannelButton.Location = new System.Drawing.Point(301, 88);
+            this.RemoveVirtualChannelButton.Location = new System.Drawing.Point(401, 108);
+            this.RemoveVirtualChannelButton.Margin = new System.Windows.Forms.Padding(4);
             this.RemoveVirtualChannelButton.Name = "RemoveVirtualChannelButton";
-            this.RemoveVirtualChannelButton.Size = new System.Drawing.Size(28, 28);
+            this.RemoveVirtualChannelButton.Size = new System.Drawing.Size(37, 34);
             this.RemoveVirtualChannelButton.TabIndex = 20;
             this.RemoveVirtualChannelButton.UseVisualStyleBackColor = true;
             // 
             // AddVirtualChannelButton
             // 
             this.AddVirtualChannelButton.Image = ((System.Drawing.Image)(resources.GetObject("AddVirtualChannelButton.Image")));
-            this.AddVirtualChannelButton.Location = new System.Drawing.Point(267, 88);
+            this.AddVirtualChannelButton.Location = new System.Drawing.Point(356, 108);
+            this.AddVirtualChannelButton.Margin = new System.Windows.Forms.Padding(4);
             this.AddVirtualChannelButton.Name = "AddVirtualChannelButton";
-            this.AddVirtualChannelButton.Size = new System.Drawing.Size(28, 28);
+            this.AddVirtualChannelButton.Size = new System.Drawing.Size(37, 34);
             this.AddVirtualChannelButton.TabIndex = 19;
             this.AddVirtualChannelButton.UseVisualStyleBackColor = true;
             this.AddVirtualChannelButton.Click += new System.EventHandler(this.AddVirtualChannelButton_Click);
@@ -418,68 +451,77 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(13, 96);
+            this.label6.Location = new System.Drawing.Point(17, 118);
+            this.label6.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(83, 13);
+            this.label6.Size = new System.Drawing.Size(111, 17);
             this.label6.TabIndex = 18;
             this.label6.Text = "Virtual Channels";
             // 
             // VirtualChannelsComboBox
             // 
             this.VirtualChannelsComboBox.FormattingEnabled = true;
-            this.VirtualChannelsComboBox.Location = new System.Drawing.Point(102, 93);
+            this.VirtualChannelsComboBox.Location = new System.Drawing.Point(136, 114);
+            this.VirtualChannelsComboBox.Margin = new System.Windows.Forms.Padding(4);
             this.VirtualChannelsComboBox.Name = "VirtualChannelsComboBox";
-            this.VirtualChannelsComboBox.Size = new System.Drawing.Size(159, 21);
+            this.VirtualChannelsComboBox.Size = new System.Drawing.Size(211, 24);
             this.VirtualChannelsComboBox.TabIndex = 17;
+            this.VirtualChannelsComboBox.SelectedIndexChanged += new System.EventHandler(this.VirtualChannelsComboBox_SelectedIndexChanged);
             // 
             // DirectoryButton
             // 
             this.DirectoryButton.Image = ((System.Drawing.Image)(resources.GetObject("DirectoryButton.Image")));
-            this.DirectoryButton.Location = new System.Drawing.Point(267, 59);
+            this.DirectoryButton.Location = new System.Drawing.Point(356, 73);
+            this.DirectoryButton.Margin = new System.Windows.Forms.Padding(4);
             this.DirectoryButton.Name = "DirectoryButton";
-            this.DirectoryButton.Size = new System.Drawing.Size(28, 28);
+            this.DirectoryButton.Size = new System.Drawing.Size(37, 34);
             this.DirectoryButton.TabIndex = 16;
             this.DirectoryButton.UseVisualStyleBackColor = true;
             this.DirectoryButton.Click += new System.EventHandler(this.DirectoryButton_Click);
             // 
             // PrefixTextBox
             // 
-            this.PrefixTextBox.Location = new System.Drawing.Point(102, 35);
+            this.PrefixTextBox.Location = new System.Drawing.Point(136, 43);
+            this.PrefixTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.PrefixTextBox.Name = "PrefixTextBox";
-            this.PrefixTextBox.Size = new System.Drawing.Size(160, 20);
+            this.PrefixTextBox.Size = new System.Drawing.Size(212, 22);
             this.PrefixTextBox.TabIndex = 12;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(44, 34);
+            this.label4.Location = new System.Drawing.Point(59, 42);
+            this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(52, 13);
+            this.label4.Size = new System.Drawing.Size(69, 17);
             this.label4.TabIndex = 11;
             this.label4.Text = "File Prefix";
             // 
             // DirectoryTextBox
             // 
-            this.DirectoryTextBox.Location = new System.Drawing.Point(102, 63);
+            this.DirectoryTextBox.Location = new System.Drawing.Point(136, 78);
+            this.DirectoryTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.DirectoryTextBox.Name = "DirectoryTextBox";
-            this.DirectoryTextBox.Size = new System.Drawing.Size(160, 20);
+            this.DirectoryTextBox.Size = new System.Drawing.Size(212, 22);
             this.DirectoryTextBox.TabIndex = 10;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(21, 67);
+            this.label5.Location = new System.Drawing.Point(28, 82);
+            this.label5.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(75, 13);
+            this.label5.Size = new System.Drawing.Size(99, 17);
             this.label5.TabIndex = 9;
             this.label5.Text = "Data Directory";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(61, 13);
+            this.label2.Location = new System.Drawing.Point(81, 16);
+            this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(31, 13);
+            this.label2.Size = new System.Drawing.Size(40, 17);
             this.label2.TabIndex = 14;
             this.label2.Text = "Type";
             // 
@@ -491,15 +533,17 @@
             this.NewButtonPanel.Controls.Add(this.NewSiteButton);
             this.NewButtonPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.NewButtonPanel.Location = new System.Drawing.Point(0, 0);
+            this.NewButtonPanel.Margin = new System.Windows.Forms.Padding(4);
             this.NewButtonPanel.Name = "NewButtonPanel";
-            this.NewButtonPanel.Size = new System.Drawing.Size(334, 71);
+            this.NewButtonPanel.Size = new System.Drawing.Size(446, 87);
             this.NewButtonPanel.TabIndex = 10;
             // 
             // NewInstrumentButton
             // 
-            this.NewInstrumentButton.Location = new System.Drawing.Point(145, 38);
+            this.NewInstrumentButton.Location = new System.Drawing.Point(193, 47);
+            this.NewInstrumentButton.Margin = new System.Windows.Forms.Padding(4);
             this.NewInstrumentButton.Name = "NewInstrumentButton";
-            this.NewInstrumentButton.Size = new System.Drawing.Size(100, 23);
+            this.NewInstrumentButton.Size = new System.Drawing.Size(133, 28);
             this.NewInstrumentButton.TabIndex = 3;
             this.NewInstrumentButton.Text = "New Instrument";
             this.NewInstrumentButton.UseVisualStyleBackColor = true;
@@ -507,9 +551,10 @@
             // 
             // NewSystemButton
             // 
-            this.NewSystemButton.Location = new System.Drawing.Point(145, 10);
+            this.NewSystemButton.Location = new System.Drawing.Point(193, 12);
+            this.NewSystemButton.Margin = new System.Windows.Forms.Padding(4);
             this.NewSystemButton.Name = "NewSystemButton";
-            this.NewSystemButton.Size = new System.Drawing.Size(100, 23);
+            this.NewSystemButton.Size = new System.Drawing.Size(133, 28);
             this.NewSystemButton.TabIndex = 2;
             this.NewSystemButton.Text = "New System";
             this.NewSystemButton.UseVisualStyleBackColor = true;
@@ -517,9 +562,10 @@
             // 
             // NewFacilityButton
             // 
-            this.NewFacilityButton.Location = new System.Drawing.Point(10, 38);
+            this.NewFacilityButton.Location = new System.Drawing.Point(13, 47);
+            this.NewFacilityButton.Margin = new System.Windows.Forms.Padding(4);
             this.NewFacilityButton.Name = "NewFacilityButton";
-            this.NewFacilityButton.Size = new System.Drawing.Size(100, 23);
+            this.NewFacilityButton.Size = new System.Drawing.Size(133, 28);
             this.NewFacilityButton.TabIndex = 1;
             this.NewFacilityButton.Text = "New Facility";
             this.NewFacilityButton.UseVisualStyleBackColor = true;
@@ -527,9 +573,10 @@
             // 
             // NewSiteButton
             // 
-            this.NewSiteButton.Location = new System.Drawing.Point(10, 10);
+            this.NewSiteButton.Location = new System.Drawing.Point(13, 12);
+            this.NewSiteButton.Margin = new System.Windows.Forms.Padding(4);
             this.NewSiteButton.Name = "NewSiteButton";
-            this.NewSiteButton.Size = new System.Drawing.Size(100, 23);
+            this.NewSiteButton.Size = new System.Drawing.Size(133, 28);
             this.NewSiteButton.TabIndex = 0;
             this.NewSiteButton.Text = "New Site";
             this.NewSiteButton.UseVisualStyleBackColor = true;
@@ -541,34 +588,40 @@
             this.BottomRightPanel.Controls.Add(this.SaveButton);
             this.BottomRightPanel.Controls.Add(this.ExitButton);
             this.BottomRightPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.BottomRightPanel.Location = new System.Drawing.Point(5, 576);
+            this.BottomRightPanel.Location = new System.Drawing.Point(7, 709);
+            this.BottomRightPanel.Margin = new System.Windows.Forms.Padding(4);
             this.BottomRightPanel.Name = "BottomRightPanel";
-            this.BottomRightPanel.Size = new System.Drawing.Size(380, 60);
+            this.BottomRightPanel.Size = new System.Drawing.Size(506, 74);
             this.BottomRightPanel.TabIndex = 11;
             // 
             // DiscardButton
             // 
-            this.DiscardButton.Location = new System.Drawing.Point(205, 6);
+            this.DiscardButton.Location = new System.Drawing.Point(273, 7);
+            this.DiscardButton.Margin = new System.Windows.Forms.Padding(4);
             this.DiscardButton.Name = "DiscardButton";
-            this.DiscardButton.Size = new System.Drawing.Size(98, 23);
+            this.DiscardButton.Size = new System.Drawing.Size(131, 28);
             this.DiscardButton.TabIndex = 17;
             this.DiscardButton.Text = "Discard Changes";
             this.DiscardButton.UseVisualStyleBackColor = true;
+            this.DiscardButton.Click += new System.EventHandler(this.DiscardButton_Click);
             // 
             // SaveButton
             // 
-            this.SaveButton.Location = new System.Drawing.Point(309, 6);
+            this.SaveButton.Location = new System.Drawing.Point(412, 7);
+            this.SaveButton.Margin = new System.Windows.Forms.Padding(4);
             this.SaveButton.Name = "SaveButton";
-            this.SaveButton.Size = new System.Drawing.Size(66, 23);
+            this.SaveButton.Size = new System.Drawing.Size(88, 28);
             this.SaveButton.TabIndex = 16;
             this.SaveButton.Text = "Save";
             this.SaveButton.UseVisualStyleBackColor = true;
+            this.SaveButton.Click += new System.EventHandler(this.SaveButton_Click);
             // 
             // ExitButton
             // 
-            this.ExitButton.Location = new System.Drawing.Point(309, 35);
+            this.ExitButton.Location = new System.Drawing.Point(412, 43);
+            this.ExitButton.Margin = new System.Windows.Forms.Padding(4);
             this.ExitButton.Name = "ExitButton";
-            this.ExitButton.Size = new System.Drawing.Size(66, 23);
+            this.ExitButton.Size = new System.Drawing.Size(88, 28);
             this.ExitButton.TabIndex = 1;
             this.ExitButton.Text = "Exit";
             this.ExitButton.UseVisualStyleBackColor = true;
@@ -579,9 +632,10 @@
             this.LeftPanel.Controls.Add(this.SitesTreeView);
             this.LeftPanel.Dock = System.Windows.Forms.DockStyle.Left;
             this.LeftPanel.Location = new System.Drawing.Point(0, 0);
+            this.LeftPanel.Margin = new System.Windows.Forms.Padding(4);
             this.LeftPanel.Name = "LeftPanel";
-            this.LeftPanel.Padding = new System.Windows.Forms.Padding(10);
-            this.LeftPanel.Size = new System.Drawing.Size(400, 641);
+            this.LeftPanel.Padding = new System.Windows.Forms.Padding(13, 12, 13, 12);
+            this.LeftPanel.Size = new System.Drawing.Size(533, 789);
             this.LeftPanel.TabIndex = 12;
             // 
             // RightPanel
@@ -591,10 +645,11 @@
             this.RightPanel.Controls.Add(this.BottomRightPanel);
             this.RightPanel.Controls.Add(this.panel4);
             this.RightPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.RightPanel.Location = new System.Drawing.Point(400, 0);
+            this.RightPanel.Location = new System.Drawing.Point(533, 0);
+            this.RightPanel.Margin = new System.Windows.Forms.Padding(4);
             this.RightPanel.Name = "RightPanel";
-            this.RightPanel.Padding = new System.Windows.Forms.Padding(5);
-            this.RightPanel.Size = new System.Drawing.Size(390, 641);
+            this.RightPanel.Padding = new System.Windows.Forms.Padding(7, 6, 7, 6);
+            this.RightPanel.Size = new System.Drawing.Size(520, 789);
             this.RightPanel.TabIndex = 13;
             // 
             // InnerRightPanel
@@ -603,9 +658,10 @@
             this.InnerRightPanel.Controls.Add(this.NamePanel);
             this.InnerRightPanel.Controls.Add(this.NewButtonPanel);
             this.InnerRightPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.InnerRightPanel.Location = new System.Drawing.Point(51, 65);
+            this.InnerRightPanel.Location = new System.Drawing.Point(67, 80);
+            this.InnerRightPanel.Margin = new System.Windows.Forms.Padding(4);
             this.InnerRightPanel.Name = "InnerRightPanel";
-            this.InnerRightPanel.Size = new System.Drawing.Size(334, 511);
+            this.InnerRightPanel.Size = new System.Drawing.Size(446, 629);
             this.InnerRightPanel.TabIndex = 13;
             // 
             // NamePanel
@@ -615,9 +671,10 @@
             this.NamePanel.Controls.Add(this.label1);
             this.NamePanel.Controls.Add(this.NameTextBox);
             this.NamePanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.NamePanel.Location = new System.Drawing.Point(0, 71);
+            this.NamePanel.Location = new System.Drawing.Point(0, 87);
+            this.NamePanel.Margin = new System.Windows.Forms.Padding(4);
             this.NamePanel.Name = "NamePanel";
-            this.NamePanel.Size = new System.Drawing.Size(334, 55);
+            this.NamePanel.Size = new System.Drawing.Size(446, 68);
             this.NamePanel.TabIndex = 11;
             // 
             // LeftRightPanel
@@ -627,17 +684,19 @@
             this.LeftRightPanel.Controls.Add(this.DownButton);
             this.LeftRightPanel.Controls.Add(this.UpButton);
             this.LeftRightPanel.Dock = System.Windows.Forms.DockStyle.Left;
-            this.LeftRightPanel.Location = new System.Drawing.Point(5, 65);
+            this.LeftRightPanel.Location = new System.Drawing.Point(7, 80);
+            this.LeftRightPanel.Margin = new System.Windows.Forms.Padding(4);
             this.LeftRightPanel.Name = "LeftRightPanel";
-            this.LeftRightPanel.Padding = new System.Windows.Forms.Padding(2);
-            this.LeftRightPanel.Size = new System.Drawing.Size(46, 511);
+            this.LeftRightPanel.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.LeftRightPanel.Size = new System.Drawing.Size(60, 629);
             this.LeftRightPanel.TabIndex = 14;
             // 
             // RemoveButton
             // 
-            this.RemoveButton.Location = new System.Drawing.Point(2, 205);
+            this.RemoveButton.Location = new System.Drawing.Point(3, 252);
+            this.RemoveButton.Margin = new System.Windows.Forms.Padding(4);
             this.RemoveButton.Name = "RemoveButton";
-            this.RemoveButton.Size = new System.Drawing.Size(40, 40);
+            this.RemoveButton.Size = new System.Drawing.Size(53, 49);
             this.RemoveButton.TabIndex = 3;
             this.RemoveButton.UseVisualStyleBackColor = true;
             this.RemoveButton.Click += new System.EventHandler(this.RemoveButton_Click);
@@ -645,18 +704,20 @@
             // DownButton
             // 
             this.DownButton.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.DownButton.Location = new System.Drawing.Point(2, 465);
+            this.DownButton.Location = new System.Drawing.Point(3, 574);
+            this.DownButton.Margin = new System.Windows.Forms.Padding(4);
             this.DownButton.Name = "DownButton";
-            this.DownButton.Size = new System.Drawing.Size(38, 40);
+            this.DownButton.Size = new System.Drawing.Size(50, 49);
             this.DownButton.TabIndex = 1;
             this.DownButton.UseVisualStyleBackColor = true;
             // 
             // UpButton
             // 
             this.UpButton.Dock = System.Windows.Forms.DockStyle.Top;
-            this.UpButton.Location = new System.Drawing.Point(2, 2);
+            this.UpButton.Location = new System.Drawing.Point(3, 2);
+            this.UpButton.Margin = new System.Windows.Forms.Padding(4);
             this.UpButton.Name = "UpButton";
-            this.UpButton.Size = new System.Drawing.Size(38, 40);
+            this.UpButton.Size = new System.Drawing.Size(50, 49);
             this.UpButton.TabIndex = 0;
             this.UpButton.UseVisualStyleBackColor = true;
             // 
@@ -665,16 +726,18 @@
             this.panel4.Controls.Add(this.ExportButton);
             this.panel4.Controls.Add(this.ImportButton);
             this.panel4.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel4.Location = new System.Drawing.Point(5, 5);
+            this.panel4.Location = new System.Drawing.Point(7, 6);
+            this.panel4.Margin = new System.Windows.Forms.Padding(4);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(380, 60);
+            this.panel4.Size = new System.Drawing.Size(506, 74);
             this.panel4.TabIndex = 12;
             // 
             // ExportButton
             // 
-            this.ExportButton.Location = new System.Drawing.Point(72, 3);
+            this.ExportButton.Location = new System.Drawing.Point(96, 4);
+            this.ExportButton.Margin = new System.Windows.Forms.Padding(4);
             this.ExportButton.Name = "ExportButton";
-            this.ExportButton.Size = new System.Drawing.Size(66, 23);
+            this.ExportButton.Size = new System.Drawing.Size(88, 28);
             this.ExportButton.TabIndex = 1;
             this.ExportButton.Text = "Export";
             this.ExportButton.UseVisualStyleBackColor = true;
@@ -682,9 +745,10 @@
             // 
             // ImportButton
             // 
-            this.ImportButton.Location = new System.Drawing.Point(3, 3);
+            this.ImportButton.Location = new System.Drawing.Point(4, 4);
+            this.ImportButton.Margin = new System.Windows.Forms.Padding(4);
             this.ImportButton.Name = "ImportButton";
-            this.ImportButton.Size = new System.Drawing.Size(66, 23);
+            this.ImportButton.Size = new System.Drawing.Size(88, 28);
             this.ImportButton.TabIndex = 0;
             this.ImportButton.Text = "Import";
             this.ImportButton.UseVisualStyleBackColor = true;
@@ -692,13 +756,14 @@
             // 
             // SiteManagerForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(790, 641);
+            this.ClientSize = new System.Drawing.Size(1053, 789);
             this.ControlBox = false;
             this.Controls.Add(this.RightPanel);
             this.Controls.Add(this.LeftPanel);
-            this.MinimumSize = new System.Drawing.Size(512, 512);
+            this.Margin = new System.Windows.Forms.Padding(4);
+            this.MinimumSize = new System.Drawing.Size(677, 619);
             this.Name = "SiteManagerForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Site Manager";
