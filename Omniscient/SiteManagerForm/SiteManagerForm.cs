@@ -544,6 +544,7 @@ namespace Omniscient
             siteMan.Save();
             UpdateSitesTree();
             siteManChanged = true;
+            SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(name, true)[0];
         }
 
         private void NewFacilityButton_Click(object sender, EventArgs e)
@@ -592,6 +593,7 @@ namespace Omniscient
             siteMan.Save();
             UpdateSitesTree();
             siteManChanged = true;
+            SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(name, true)[0];
         }
 
         private void NewSystemButton_Click(object sender, EventArgs e)
@@ -634,6 +636,7 @@ namespace Omniscient
             siteMan.Save();
             UpdateSitesTree();
             siteManChanged = true;
+            SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(name, true)[0];
         }
 
         private void NewInstrumentButton_Click(object sender, EventArgs e)
@@ -703,6 +706,7 @@ namespace Omniscient
             siteMan.Save();
             UpdateSitesTree();
             siteManChanged = true;
+            SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(name, true)[0];
         }
 
         private void AddVirtualChannelButton_Click(object sender, EventArgs e)
@@ -730,6 +734,7 @@ namespace Omniscient
             UpdateSitesTree();
             siteManChanged = true;
             SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(inst.GetName(), true)[0];
+            VirtualChannelsComboBox.Text = name;
         }
 
         private void PopulateVCTwoChannelPanel(VirtualChannel chan, Instrument inst)
