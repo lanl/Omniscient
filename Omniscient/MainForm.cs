@@ -1196,6 +1196,7 @@ namespace Omniscient
             foreach(EventGenerator eg in eventGenerators)
             {
                 events.AddRange(eg.GenerateEvents(start, end));
+                eg.RunActions();
             }
             events.Sort((x, y) => x.GetStartTime().CompareTo(y.GetStartTime()));
 

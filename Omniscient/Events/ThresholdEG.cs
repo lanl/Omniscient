@@ -17,21 +17,17 @@ namespace Omniscient.Events
         double threshold;
         TimeSpan debounceTime;
 
-        public ThresholdEG(string newName, Channel newChannel, double newThreshold, TimeSpan newDebounceTime)
+        public ThresholdEG(string newName, Channel newChannel, double newThreshold, TimeSpan newDebounceTime) : base(newName)
         {
-            name = newName;
             eventGeneratorType = "Threshold";
-            events = new List<Event>();
             channel = newChannel;
             threshold = newThreshold;
             debounceTime = newDebounceTime;
         }
 
-        public ThresholdEG(string newName, Channel newChannel, double newThreshold)
+        public ThresholdEG(string newName, Channel newChannel, double newThreshold) : base(newName)
         {
-            name = newName;
             eventGeneratorType = "Threshold";
-            events = new List<Event>();
             channel = newChannel;
             threshold = newThreshold;
             debounceTime = TimeSpan.FromTicks(0);

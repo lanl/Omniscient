@@ -252,6 +252,21 @@ namespace Omniscient
                                     default:
                                         return ReturnCode.CORRUPTED_FILE;
                                 }
+                                foreach (XmlNode actionNode in eventNode.ChildNodes)
+                                {
+                                    if (actionNode.Name != "Action") return ReturnCode.CORRUPTED_FILE;
+                                    Events.Action action;
+                                    switch(actionNode.Attributes["type"]?.InnerText)
+                                    {
+                                        case "command":
+                                            action = new CommandAction(actionNode.Attributes["name"]?.InnerText);
+                                            ((CommandAction)action).SetCommand(actionNode.Attributes["command"]?.InnerText);
+                                            break;
+                                        default:
+                                            return ReturnCode.CORRUPTED_FILE;
+                                    }
+                                    eg.GetActions().Add(action);
+                                }
                                 newSystem.GetEventGenerators().Add(eg);
                             }
                             else
@@ -369,6 +384,17 @@ namespace Omniscient
                                 xmlWriter.WriteAttributeString("event_generator_B", coinkEg.GetEventGeneratorA().GetName());
                                 xmlWriter.WriteAttributeString("window", coinkEg.GetWindow().TotalSeconds.ToString());
                                 xmlWriter.WriteAttributeString("min_difference", coinkEg.GetMinDifference().TotalSeconds.ToString());
+                            }
+                            foreach(Events.Action action in eg.GetActions())
+                            {
+                                xmlWriter.WriteStartElement("Action");
+                                xmlWriter.WriteAttributeString("name", action.GetName());
+                                xmlWriter.WriteAttributeString("type", action.GetActionType());
+                                if (action is CommandAction)
+                                {
+                                    xmlWriter.WriteAttributeString("command", ((CommandAction)action).GetCommand());
+                                }
+                                xmlWriter.WriteEndElement();
                             }
                             xmlWriter.WriteEndElement();
                         }

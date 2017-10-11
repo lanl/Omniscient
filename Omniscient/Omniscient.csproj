@@ -77,7 +77,9 @@
     <Compile Include="EventManagerForm\EventTypeDialog.Designer.cs">
       <DependentUpon>EventTypeDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Events\Action.cs" />
     <Compile Include="Events\CoincidenceEG.cs" />
+    <Compile Include="Events\CommandAction.cs" />
     <Compile Include="Events\Event.cs" />
     <Compile Include="Events\EventGenerator.cs" />
     <Compile Include="Events\EventWatcher.cs" />

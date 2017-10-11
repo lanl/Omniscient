@@ -23,11 +23,9 @@ namespace Omniscient.Events
         TimeSpan window;
         TimeSpan minDifference;
 
-        public CoincidenceEG(string newName)
+        public CoincidenceEG(string newName) : base(newName)
         {
-            name = newName;
             eventGeneratorType = "Coincidence";
-            events = new List<Event>();
             coincidenceType = CoincidenceType.A_THEN_B;
             timingType = TimingType.START_TO_END;
             eventGeneratorA = null;
@@ -36,11 +34,9 @@ namespace Omniscient.Events
             minDifference = TimeSpan.FromTicks(0);
         }
 
-        public CoincidenceEG(string newName, CoincidenceType newCoincidenceType, TimingType newTimingType)
+        public CoincidenceEG(string newName, CoincidenceType newCoincidenceType, TimingType newTimingType) : base(newName)
         {
-            name = newName;
             eventGeneratorType = "Coincidence";
-            events = new List<Event>();
             coincidenceType = newCoincidenceType;
             timingType = newTimingType;
             eventGeneratorA = null;
