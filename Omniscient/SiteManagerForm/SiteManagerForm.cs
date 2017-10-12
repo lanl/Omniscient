@@ -412,6 +412,8 @@ namespace Omniscient
             TreeNode node = SitesTreeView.SelectedNode;
             string nodeName = node.Name;
 
+            VirtualChannel virtualChan = null;
+
             if (node.Tag is Site)
             {
                 Site site = (Site)node.Tag;
@@ -461,6 +463,7 @@ namespace Omniscient
                     if (chan.GetName() == VirtualChannelsComboBox.Text)
                     {
                         SaveVirtualChannel(inst, chan);
+                        virtualChan = chan;
                         break;
                     }
                 }
@@ -475,6 +478,10 @@ namespace Omniscient
             UpdateSitesTree();
             siteManChanged = true;
             SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(nodeName, true)[0];
+            if(virtualChan!=null)
+            {
+                VirtualChannelsComboBox.Text = virtualChan.GetName();
+            }
         }
 
         private void RemoveButton_Click(object sender, EventArgs e)
