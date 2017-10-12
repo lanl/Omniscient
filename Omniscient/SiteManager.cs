@@ -39,8 +39,12 @@ namespace Omniscient
                             foreach(Channel chan in inst.GetChannels())
                                 if (chan.GetName() == name) return true;
                         }
-                        foreach(EventGenerator eventGenerator in sys.GetEventGenerators())
+                        foreach (EventGenerator eventGenerator in sys.GetEventGenerators())
+                        {
                             if (eventGenerator.GetName() == name) return true;
+                            foreach (Events.Action action in eventGenerator.GetActions())
+                                if (action.GetName() == name) return true;
+                        }
                     }
                 }
             }

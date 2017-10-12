@@ -242,6 +242,7 @@ namespace Omniscient
                 DirectoryTextBox.Text = inst.GetDataFolder();
 
                 VirtualChannelsComboBox.Items.Clear();
+                VirtualChannelsComboBox.Text = "";
                 if (inst.GetVirtualChannels().Count > 0)
                 {
                     foreach (VirtualChannel vc in inst.GetVirtualChannels())

@@ -111,6 +111,23 @@ namespace Omniscient
             }
         }
 
+        public void SetupActionGroupBox()
+        {
+            EventGenerator eg = (EventGenerator)SitesTreeView.SelectedNode.Tag;
+            Events.Action action = null;
+            foreach(Events.Action otherAction in eg.GetActions())
+            {
+                if (otherAction.GetName() == ActionsComboBox.Text)
+                    action = otherAction;
+            }
+            ActionNameTextBox.Text = action.GetName();
+            if (action is CommandAction)
+            {
+                ActionTypeComboBox.Text = "Command";
+                ActionCommandTextBox.Text = ((CommandAction)action).GetCommand();
+            }
+        }
+
         public void ResetFields()
         {
             TreeNode node = SitesTreeView.SelectedNode;
@@ -268,6 +285,20 @@ namespace Omniscient
                     CoincidencePanel.Visible = true;
                 }
 
+                ActionPanel.Visible = true;
+                ActionsComboBox.Items.Clear();
+                ActionsComboBox.Text = "";
+                if (eg.GetActions().Count > 0)
+                {
+                    foreach (Events.Action action in eg.GetActions())
+                        ActionsComboBox.Items.Add(action.GetName());
+                    ActionsComboBox.Text = eg.GetActions()[0].GetName();
+                    SetupActionGroupBox();
+                    ActionGroupBox.Visible = true;
+                }
+                else
+                    ActionGroupBox.Visible = false;
+
                 UpButton.Enabled = true;
                 DownButton.Enabled = true;
                 AddButton.Enabled = true;
@@ -278,16 +309,10 @@ namespace Omniscient
             {
                 NameTextBox.Text = "";
                 NameTextBox.Enabled = false;
-                ChannelComboBox.Text = "";
-                ChannelComboBox.Enabled = false;
-                ThresholdTextBox.Text = "";
-                ThresholdTextBox.Enabled = false;
-                DebounceTextBox.Text = "";
-                DebounceTextBox.Enabled = false;
-                DebounceComboBox.Enabled = false;
 
                 ThresholdPanel.Visible = false;
                 CoincidencePanel.Visible = false;
+                ActionPanel.Visible = false;
 
                 UpButton.Enabled = false;
                 DownButton.Enabled = false;
@@ -299,16 +324,10 @@ namespace Omniscient
             {
                 NameTextBox.Text = "";
                 NameTextBox.Enabled = false;
-                ChannelComboBox.Text = "";
-                ChannelComboBox.Enabled = false;
-                ThresholdTextBox.Text = "";
-                ThresholdTextBox.Enabled = false;
-                DebounceTextBox.Text = "";
-                DebounceTextBox.Enabled = false;
-                DebounceComboBox.Enabled = false;
 
                 ThresholdPanel.Visible = false;
                 CoincidencePanel.Visible = false;
+                ActionPanel.Visible = false;
 
                 UpButton.Enabled = false;
                 DownButton.Enabled = false;
@@ -481,9 +500,29 @@ namespace Omniscient
             SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(eg.GetName(), true)[0];
         }
 
+        private void SaveAction(EventGenerator eg, Events.Action action)
+        {
+            if (action.GetName() != ActionsComboBox.Text && siteMan.ContainsName(ActionsComboBox.Text))
+            {
+                MessageBox.Show("All items in the Site Manager require a unique name!");
+                return;
+            }
+            action.SetName(ActionNameTextBox.Text);
+            switch (ActionTypeComboBox.Text)
+            {
+                case "Command":
+                    ((CommandAction)action).SetCommand(ActionCommandTextBox.Text);
+                    break;
+                default:
+                    MessageBox.Show("Invalid action type!");
+                    return;
+            }
+        }
+
         private void SaveButton_Click(object sender, EventArgs e)
         {
             TreeNode node = SitesTreeView.SelectedNode;
+            Events.Action act = null;
             if (node.Tag is EventGenerator)
             {
                 EventWatcher eventWatcher = (EventWatcher)node.Parent.Tag;
@@ -651,11 +690,68 @@ namespace Omniscient
                     coinkEG.SetMinDifference(minDiff);
                 }
 
+                foreach(Events.Action action in eg.GetActions())
+                {
+                    if(action.GetName() == ActionsComboBox.Text)
+                    {
+                        SaveAction(eg, action);
+                        act = action;
+                        break;
+                    }
+                }
+
                 siteMan.Save();
                 UpdateSitesTree();
                 siteManChanged = true;
                 SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(eg.GetName(), true)[0];
+                if(act!=null)
+                {
+                    ActionsComboBox.Text = act.GetName();
+                }
             }
+        }
+
+        private void AddActionButton_Click(object sender, EventArgs e)
+        {
+            EventGenerator eg = (EventGenerator)SitesTreeView.SelectedNode.Tag;
+            int iteration = 0;
+            bool uniqueName = false;
+            string name = "";
+            while (!uniqueName)
+            {
+                iteration++;
+                name = "New-Action-" + iteration.ToString();
+                uniqueName = !siteMan.ContainsName(name);
+            }
+            CommandAction action = new CommandAction(name);
+            eg.GetActions().Add(action);
+            siteMan.Save();
+            UpdateSitesTree();
+            siteManChanged = true;
+            SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(eg.GetName(), true)[0];
+            ActionsComboBox.Text = name;
+        }
+
+        private void ActionsComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SetupActionGroupBox();
+        }
+
+        private void RemoveActionButton_Click(object sender, EventArgs e)
+        {
+            EventGenerator eg = (EventGenerator)SitesTreeView.SelectedNode.Tag;
+            Events.Action action = null;
+            foreach (Events.Action otherAction in eg.GetActions())
+            {
+                if (otherAction.GetName() == ActionsComboBox.Text)
+                    action = otherAction;
+            }
+            eg.GetActions().Remove(action);
+            siteMan.Save();
+            UpdateSitesTree();
+            siteManChanged = true;
+            SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(eg.GetName(), true)[0];
+            ResetFields();
         }
     }
 }

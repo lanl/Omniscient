@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EventManagerForm));
             this.LeftPanel = new System.Windows.Forms.Panel();
             this.SitesTreeView = new System.Windows.Forms.TreeView();
             this.RightPanel = new System.Windows.Forms.Panel();
@@ -67,6 +68,18 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
             this.ExitButton = new System.Windows.Forms.Button();
+            this.ActionPanel = new System.Windows.Forms.Panel();
+            this.RemoveActionButton = new System.Windows.Forms.Button();
+            this.AddActionButton = new System.Windows.Forms.Button();
+            this.label11 = new System.Windows.Forms.Label();
+            this.ActionsComboBox = new System.Windows.Forms.ComboBox();
+            this.ActionGroupBox = new System.Windows.Forms.GroupBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.ActionNameTextBox = new System.Windows.Forms.TextBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.ActionTypeComboBox = new System.Windows.Forms.ComboBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.ActionCommandTextBox = new System.Windows.Forms.TextBox();
             this.LeftPanel.SuspendLayout();
             this.RightPanel.SuspendLayout();
             this.InnerRightPanel.SuspendLayout();
@@ -75,6 +88,8 @@
             this.NamePanel.SuspendLayout();
             this.LeftRightPanel.SuspendLayout();
             this.panel3.SuspendLayout();
+            this.ActionPanel.SuspendLayout();
+            this.ActionGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // LeftPanel
@@ -106,19 +121,19 @@
             this.RightPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.RightPanel.Location = new System.Drawing.Point(400, 0);
             this.RightPanel.Name = "RightPanel";
-            this.RightPanel.Size = new System.Drawing.Size(346, 581);
+            this.RightPanel.Size = new System.Drawing.Size(390, 581);
             this.RightPanel.TabIndex = 14;
             // 
             // InnerRightPanel
             // 
+            this.InnerRightPanel.Controls.Add(this.ActionPanel);
             this.InnerRightPanel.Controls.Add(this.ThresholdPanel);
-            this.InnerRightPanel.Controls.Add(this.SaveButton);
             this.InnerRightPanel.Controls.Add(this.CoincidencePanel);
             this.InnerRightPanel.Controls.Add(this.NamePanel);
             this.InnerRightPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.InnerRightPanel.Location = new System.Drawing.Point(46, 29);
             this.InnerRightPanel.Name = "InnerRightPanel";
-            this.InnerRightPanel.Size = new System.Drawing.Size(300, 523);
+            this.InnerRightPanel.Size = new System.Drawing.Size(344, 523);
             this.InnerRightPanel.TabIndex = 34;
             // 
             // ThresholdPanel
@@ -131,9 +146,9 @@
             this.ThresholdPanel.Controls.Add(this.ThresholdTextBox);
             this.ThresholdPanel.Controls.Add(this.label2);
             this.ThresholdPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.ThresholdPanel.Location = new System.Drawing.Point(0, 229);
+            this.ThresholdPanel.Location = new System.Drawing.Point(0, 193);
             this.ThresholdPanel.Name = "ThresholdPanel";
-            this.ThresholdPanel.Size = new System.Drawing.Size(300, 200);
+            this.ThresholdPanel.Size = new System.Drawing.Size(344, 104);
             this.ThresholdPanel.TabIndex = 25;
             // 
             // DebounceComboBox
@@ -144,14 +159,14 @@
             "Minutes",
             "Hours",
             "Days"});
-            this.DebounceComboBox.Location = new System.Drawing.Point(178, 68);
+            this.DebounceComboBox.Location = new System.Drawing.Point(163, 64);
             this.DebounceComboBox.Name = "DebounceComboBox";
             this.DebounceComboBox.Size = new System.Drawing.Size(114, 21);
             this.DebounceComboBox.TabIndex = 31;
             // 
             // DebounceTextBox
             // 
-            this.DebounceTextBox.Location = new System.Drawing.Point(120, 68);
+            this.DebounceTextBox.Location = new System.Drawing.Point(105, 64);
             this.DebounceTextBox.Name = "DebounceTextBox";
             this.DebounceTextBox.Size = new System.Drawing.Size(52, 20);
             this.DebounceTextBox.TabIndex = 30;
@@ -159,7 +174,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(32, 72);
+            this.label4.Location = new System.Drawing.Point(17, 68);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(83, 13);
             this.label4.TabIndex = 29;
@@ -168,7 +183,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(61, 43);
+            this.label3.Location = new System.Drawing.Point(46, 39);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(54, 13);
             this.label3.TabIndex = 28;
@@ -177,14 +192,14 @@
             // ChannelComboBox
             // 
             this.ChannelComboBox.FormattingEnabled = true;
-            this.ChannelComboBox.Location = new System.Drawing.Point(120, 10);
+            this.ChannelComboBox.Location = new System.Drawing.Point(105, 6);
             this.ChannelComboBox.Name = "ChannelComboBox";
             this.ChannelComboBox.Size = new System.Drawing.Size(172, 21);
             this.ChannelComboBox.TabIndex = 27;
             // 
             // ThresholdTextBox
             // 
-            this.ThresholdTextBox.Location = new System.Drawing.Point(120, 39);
+            this.ThresholdTextBox.Location = new System.Drawing.Point(105, 35);
             this.ThresholdTextBox.Name = "ThresholdTextBox";
             this.ThresholdTextBox.Size = new System.Drawing.Size(172, 20);
             this.ThresholdTextBox.TabIndex = 26;
@@ -192,7 +207,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(69, 14);
+            this.label2.Location = new System.Drawing.Point(54, 10);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(46, 13);
             this.label2.TabIndex = 25;
@@ -200,9 +215,9 @@
             // 
             // SaveButton
             // 
-            this.SaveButton.Location = new System.Drawing.Point(204, 232);
+            this.SaveButton.Location = new System.Drawing.Point(237, 3);
             this.SaveButton.Name = "SaveButton";
-            this.SaveButton.Size = new System.Drawing.Size(75, 29);
+            this.SaveButton.Size = new System.Drawing.Size(75, 23);
             this.SaveButton.TabIndex = 24;
             this.SaveButton.Text = "Save";
             this.SaveButton.UseVisualStyleBackColor = true;
@@ -227,7 +242,7 @@
             this.CoincidencePanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.CoincidencePanel.Location = new System.Drawing.Point(0, 29);
             this.CoincidencePanel.Name = "CoincidencePanel";
-            this.CoincidencePanel.Size = new System.Drawing.Size(300, 200);
+            this.CoincidencePanel.Size = new System.Drawing.Size(344, 164);
             this.CoincidencePanel.TabIndex = 32;
             // 
             // MinDifferenceComboBox
@@ -238,14 +253,14 @@
             "Minutes",
             "Hours",
             "Days"});
-            this.MinDifferenceComboBox.Location = new System.Drawing.Point(178, 135);
+            this.MinDifferenceComboBox.Location = new System.Drawing.Point(163, 135);
             this.MinDifferenceComboBox.Name = "MinDifferenceComboBox";
             this.MinDifferenceComboBox.Size = new System.Drawing.Size(114, 21);
             this.MinDifferenceComboBox.TabIndex = 40;
             // 
             // MinDifferenceTextBox
             // 
-            this.MinDifferenceTextBox.Location = new System.Drawing.Point(120, 135);
+            this.MinDifferenceTextBox.Location = new System.Drawing.Point(105, 135);
             this.MinDifferenceTextBox.Name = "MinDifferenceTextBox";
             this.MinDifferenceTextBox.Size = new System.Drawing.Size(52, 20);
             this.MinDifferenceTextBox.TabIndex = 39;
@@ -253,7 +268,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(39, 139);
+            this.label6.Location = new System.Drawing.Point(24, 139);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(76, 13);
             this.label6.TabIndex = 38;
@@ -268,7 +283,7 @@
             "End to Start",
             "End to End",
             "Max to Max"});
-            this.TimingTypeComboBox.Location = new System.Drawing.Point(120, 81);
+            this.TimingTypeComboBox.Location = new System.Drawing.Point(105, 81);
             this.TimingTypeComboBox.Name = "TimingTypeComboBox";
             this.TimingTypeComboBox.Size = new System.Drawing.Size(172, 21);
             this.TimingTypeComboBox.TabIndex = 37;
@@ -276,7 +291,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(50, 85);
+            this.label10.Location = new System.Drawing.Point(35, 85);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(65, 13);
             this.label10.TabIndex = 36;
@@ -285,7 +300,7 @@
             // EventGeneratorBComboBox
             // 
             this.EventGeneratorBComboBox.FormattingEnabled = true;
-            this.EventGeneratorBComboBox.Location = new System.Drawing.Point(120, 30);
+            this.EventGeneratorBComboBox.Location = new System.Drawing.Point(105, 30);
             this.EventGeneratorBComboBox.Name = "EventGeneratorBComboBox";
             this.EventGeneratorBComboBox.Size = new System.Drawing.Size(172, 21);
             this.EventGeneratorBComboBox.TabIndex = 35;
@@ -293,7 +308,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(20, 34);
+            this.label9.Location = new System.Drawing.Point(5, 34);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(95, 13);
             this.label9.TabIndex = 34;
@@ -302,7 +317,7 @@
             // EventGeneratorAComboBox
             // 
             this.EventGeneratorAComboBox.FormattingEnabled = true;
-            this.EventGeneratorAComboBox.Location = new System.Drawing.Point(120, 3);
+            this.EventGeneratorAComboBox.Location = new System.Drawing.Point(105, 3);
             this.EventGeneratorAComboBox.Name = "EventGeneratorAComboBox";
             this.EventGeneratorAComboBox.Size = new System.Drawing.Size(172, 21);
             this.EventGeneratorAComboBox.TabIndex = 33;
@@ -310,7 +325,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(20, 7);
+            this.label8.Location = new System.Drawing.Point(5, 7);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(95, 13);
             this.label8.TabIndex = 32;
@@ -324,14 +339,14 @@
             "Minutes",
             "Hours",
             "Days"});
-            this.WindowComboBox.Location = new System.Drawing.Point(178, 108);
+            this.WindowComboBox.Location = new System.Drawing.Point(163, 108);
             this.WindowComboBox.Name = "WindowComboBox";
             this.WindowComboBox.Size = new System.Drawing.Size(114, 21);
             this.WindowComboBox.TabIndex = 31;
             // 
             // WindowTextBox
             // 
-            this.WindowTextBox.Location = new System.Drawing.Point(120, 108);
+            this.WindowTextBox.Location = new System.Drawing.Point(105, 108);
             this.WindowTextBox.Name = "WindowTextBox";
             this.WindowTextBox.Size = new System.Drawing.Size(52, 20);
             this.WindowTextBox.TabIndex = 30;
@@ -339,7 +354,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(69, 112);
+            this.label5.Location = new System.Drawing.Point(54, 112);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(46, 13);
             this.label5.TabIndex = 29;
@@ -352,7 +367,7 @@
             "A then B",
             "B then A",
             "Either order"});
-            this.CoincidenceTypeComboBox.Location = new System.Drawing.Point(120, 57);
+            this.CoincidenceTypeComboBox.Location = new System.Drawing.Point(105, 57);
             this.CoincidenceTypeComboBox.Name = "CoincidenceTypeComboBox";
             this.CoincidenceTypeComboBox.Size = new System.Drawing.Size(172, 21);
             this.CoincidenceTypeComboBox.TabIndex = 27;
@@ -360,7 +375,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(22, 61);
+            this.label7.Location = new System.Drawing.Point(7, 61);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(93, 13);
             this.label7.TabIndex = 25;
@@ -373,13 +388,13 @@
             this.NamePanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.NamePanel.Location = new System.Drawing.Point(0, 0);
             this.NamePanel.Name = "NamePanel";
-            this.NamePanel.Size = new System.Drawing.Size(300, 29);
+            this.NamePanel.Size = new System.Drawing.Size(344, 29);
             this.NamePanel.TabIndex = 33;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(80, 7);
+            this.label1.Location = new System.Drawing.Point(65, 9);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(35, 13);
             this.label1.TabIndex = 26;
@@ -387,7 +402,7 @@
             // 
             // NameTextBox
             // 
-            this.NameTextBox.Location = new System.Drawing.Point(120, 4);
+            this.NameTextBox.Location = new System.Drawing.Point(105, 6);
             this.NameTextBox.Name = "NameTextBox";
             this.NameTextBox.Size = new System.Drawing.Size(172, 20);
             this.NameTextBox.TabIndex = 25;
@@ -449,21 +464,22 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(346, 29);
+            this.panel1.Size = new System.Drawing.Size(390, 29);
             this.panel1.TabIndex = 23;
             // 
             // panel3
             // 
+            this.panel3.Controls.Add(this.SaveButton);
             this.panel3.Controls.Add(this.ExitButton);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel3.Location = new System.Drawing.Point(0, 552);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(346, 29);
+            this.panel3.Size = new System.Drawing.Size(390, 29);
             this.panel3.TabIndex = 12;
             // 
             // ExitButton
             // 
-            this.ExitButton.Location = new System.Drawing.Point(244, 0);
+            this.ExitButton.Location = new System.Drawing.Point(318, 3);
             this.ExitButton.Name = "ExitButton";
             this.ExitButton.Size = new System.Drawing.Size(66, 23);
             this.ExitButton.TabIndex = 1;
@@ -471,11 +487,128 @@
             this.ExitButton.UseVisualStyleBackColor = true;
             this.ExitButton.Click += new System.EventHandler(this.ExitButton_Click);
             // 
+            // ActionPanel
+            // 
+            this.ActionPanel.Controls.Add(this.ActionGroupBox);
+            this.ActionPanel.Controls.Add(this.RemoveActionButton);
+            this.ActionPanel.Controls.Add(this.AddActionButton);
+            this.ActionPanel.Controls.Add(this.label11);
+            this.ActionPanel.Controls.Add(this.ActionsComboBox);
+            this.ActionPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.ActionPanel.Location = new System.Drawing.Point(0, 297);
+            this.ActionPanel.Name = "ActionPanel";
+            this.ActionPanel.Size = new System.Drawing.Size(344, 220);
+            this.ActionPanel.TabIndex = 34;
+            // 
+            // RemoveActionButton
+            // 
+            this.RemoveActionButton.Image = ((System.Drawing.Image)(resources.GetObject("RemoveActionButton.Image")));
+            this.RemoveActionButton.Location = new System.Drawing.Point(310, 3);
+            this.RemoveActionButton.Name = "RemoveActionButton";
+            this.RemoveActionButton.Size = new System.Drawing.Size(28, 28);
+            this.RemoveActionButton.TabIndex = 24;
+            this.RemoveActionButton.UseVisualStyleBackColor = true;
+            this.RemoveActionButton.Click += new System.EventHandler(this.RemoveActionButton_Click);
+            // 
+            // AddActionButton
+            // 
+            this.AddActionButton.Image = ((System.Drawing.Image)(resources.GetObject("AddActionButton.Image")));
+            this.AddActionButton.Location = new System.Drawing.Point(279, 3);
+            this.AddActionButton.Name = "AddActionButton";
+            this.AddActionButton.Size = new System.Drawing.Size(28, 28);
+            this.AddActionButton.TabIndex = 23;
+            this.AddActionButton.UseVisualStyleBackColor = true;
+            this.AddActionButton.Click += new System.EventHandler(this.AddActionButton_Click);
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(54, 11);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(42, 13);
+            this.label11.TabIndex = 22;
+            this.label11.Text = "Actions";
+            // 
+            // ActionsComboBox
+            // 
+            this.ActionsComboBox.FormattingEnabled = true;
+            this.ActionsComboBox.Location = new System.Drawing.Point(105, 7);
+            this.ActionsComboBox.Name = "ActionsComboBox";
+            this.ActionsComboBox.Size = new System.Drawing.Size(172, 21);
+            this.ActionsComboBox.TabIndex = 21;
+            this.ActionsComboBox.SelectedIndexChanged += new System.EventHandler(this.ActionsComboBox_SelectedIndexChanged);
+            // 
+            // ActionGroupBox
+            // 
+            this.ActionGroupBox.Controls.Add(this.ActionCommandTextBox);
+            this.ActionGroupBox.Controls.Add(this.label14);
+            this.ActionGroupBox.Controls.Add(this.label13);
+            this.ActionGroupBox.Controls.Add(this.ActionTypeComboBox);
+            this.ActionGroupBox.Controls.Add(this.label12);
+            this.ActionGroupBox.Controls.Add(this.ActionNameTextBox);
+            this.ActionGroupBox.Location = new System.Drawing.Point(5, 37);
+            this.ActionGroupBox.Name = "ActionGroupBox";
+            this.ActionGroupBox.Size = new System.Drawing.Size(334, 112);
+            this.ActionGroupBox.TabIndex = 25;
+            this.ActionGroupBox.TabStop = false;
+            this.ActionGroupBox.Text = "Action";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(60, 22);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(35, 13);
+            this.label12.TabIndex = 28;
+            this.label12.Text = "Name";
+            // 
+            // ActionNameTextBox
+            // 
+            this.ActionNameTextBox.Location = new System.Drawing.Point(100, 19);
+            this.ActionNameTextBox.Name = "ActionNameTextBox";
+            this.ActionNameTextBox.Size = new System.Drawing.Size(172, 20);
+            this.ActionNameTextBox.TabIndex = 27;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(59, 48);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(31, 13);
+            this.label13.TabIndex = 30;
+            this.label13.Text = "Type";
+            // 
+            // ActionTypeComboBox
+            // 
+            this.ActionTypeComboBox.FormattingEnabled = true;
+            this.ActionTypeComboBox.Items.AddRange(new object[] {
+            "Command"});
+            this.ActionTypeComboBox.Location = new System.Drawing.Point(100, 45);
+            this.ActionTypeComboBox.Name = "ActionTypeComboBox";
+            this.ActionTypeComboBox.Size = new System.Drawing.Size(172, 21);
+            this.ActionTypeComboBox.TabIndex = 29;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(41, 75);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(54, 13);
+            this.label14.TabIndex = 31;
+            this.label14.Text = "Command";
+            // 
+            // ActionCommandTextBox
+            // 
+            this.ActionCommandTextBox.Location = new System.Drawing.Point(100, 72);
+            this.ActionCommandTextBox.Name = "ActionCommandTextBox";
+            this.ActionCommandTextBox.Size = new System.Drawing.Size(227, 20);
+            this.ActionCommandTextBox.TabIndex = 32;
+            // 
             // EventManagerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(746, 581);
+            this.ClientSize = new System.Drawing.Size(790, 581);
             this.ControlBox = false;
             this.Controls.Add(this.RightPanel);
             this.Controls.Add(this.LeftPanel);
@@ -495,6 +628,10 @@
             this.NamePanel.PerformLayout();
             this.LeftRightPanel.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
+            this.ActionPanel.ResumeLayout(false);
+            this.ActionPanel.PerformLayout();
+            this.ActionGroupBox.ResumeLayout(false);
+            this.ActionGroupBox.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -540,5 +677,17 @@
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.ComboBox EventGeneratorAComboBox;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Panel ActionPanel;
+        private System.Windows.Forms.Button RemoveActionButton;
+        private System.Windows.Forms.Button AddActionButton;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.ComboBox ActionsComboBox;
+        private System.Windows.Forms.GroupBox ActionGroupBox;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.TextBox ActionNameTextBox;
+        private System.Windows.Forms.TextBox ActionCommandTextBox;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.ComboBox ActionTypeComboBox;
     }
 }
