@@ -585,7 +585,7 @@
             this.LeftPanel.Dock = System.Windows.Forms.DockStyle.Left;
             this.LeftPanel.Location = new System.Drawing.Point(0, 0);
             this.LeftPanel.Name = "LeftPanel";
-            this.LeftPanel.Padding = new System.Windows.Forms.Padding(10, 10, 10, 10);
+            this.LeftPanel.Padding = new System.Windows.Forms.Padding(10);
             this.LeftPanel.Size = new System.Drawing.Size(400, 641);
             this.LeftPanel.TabIndex = 12;
             // 
@@ -598,7 +598,7 @@
             this.RightPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.RightPanel.Location = new System.Drawing.Point(400, 0);
             this.RightPanel.Name = "RightPanel";
-            this.RightPanel.Padding = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.RightPanel.Padding = new System.Windows.Forms.Padding(5);
             this.RightPanel.Size = new System.Drawing.Size(390, 641);
             this.RightPanel.TabIndex = 13;
             // 
@@ -634,7 +634,7 @@
             this.LeftRightPanel.Dock = System.Windows.Forms.DockStyle.Left;
             this.LeftRightPanel.Location = new System.Drawing.Point(5, 65);
             this.LeftRightPanel.Name = "LeftRightPanel";
-            this.LeftRightPanel.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.LeftRightPanel.Padding = new System.Windows.Forms.Padding(2);
             this.LeftRightPanel.Size = new System.Drawing.Size(46, 511);
             this.LeftRightPanel.TabIndex = 14;
             // 
@@ -655,6 +655,7 @@
             this.DownButton.Size = new System.Drawing.Size(38, 40);
             this.DownButton.TabIndex = 1;
             this.DownButton.UseVisualStyleBackColor = true;
+            this.DownButton.Click += new System.EventHandler(this.DownButton_Click);
             // 
             // UpButton
             // 
@@ -664,6 +665,7 @@
             this.UpButton.Size = new System.Drawing.Size(38, 40);
             this.UpButton.TabIndex = 0;
             this.UpButton.UseVisualStyleBackColor = true;
+            this.UpButton.Click += new System.EventHandler(this.UpButton_Click);
             // 
             // panel4
             // 

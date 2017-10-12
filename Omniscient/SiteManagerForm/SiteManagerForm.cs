@@ -893,5 +893,143 @@ namespace Omniscient
             SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(inst.GetName(), true)[0];
             ResetFields();
         }
+
+        private void UpButton_Click(object sender, EventArgs e)
+        {
+            TreeNode node = SitesTreeView.SelectedNode;
+
+            if (node.Tag is Site)
+            {
+                Site site = (Site)node.Tag;
+                int index = siteMan.GetSites().IndexOf(site);
+                if (index > 0)
+                {
+                    siteMan.GetSites().RemoveAt(index);
+                    siteMan.GetSites().Insert(index - 1, site);
+
+                    siteMan.Save();
+                    UpdateSitesTree();
+                    siteManChanged = true;
+                    SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(site.GetName(), true)[0];
+                }
+            }
+            else if (node.Tag is Facility)
+            {
+                Facility fac = (Facility)node.Tag;
+                Site site = (Site)node.Parent.Tag;
+                int index = site.GetFacilities().IndexOf(fac);
+                if (index > 0)
+                {
+                    site.GetFacilities().RemoveAt(index);
+                    site.GetFacilities().Insert(index - 1, fac);
+
+                    siteMan.Save();
+                    UpdateSitesTree();
+                    siteManChanged = true;
+                    SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(fac.GetName(), true)[0];
+                }
+            }
+            else if (node.Tag is DetectionSystem)
+            {
+                DetectionSystem sys = (DetectionSystem)node.Tag;
+                Facility fac = (Facility)node.Parent.Tag;
+                int index = fac.GetSystems().IndexOf(sys);
+                if (index > 0)
+                {
+                    fac.GetSystems().RemoveAt(index);
+                    fac.GetSystems().Insert(index - 1, sys);
+
+                    siteMan.Save();
+                    UpdateSitesTree();
+                    siteManChanged = true;
+                    SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(sys.GetName(), true)[0];
+                }
+            }
+            else if (node.Tag is Instrument)
+            {
+                Instrument inst = (Instrument)node.Tag;
+                DetectionSystem sys = (DetectionSystem)node.Parent.Tag;
+                int index = sys.GetInstruments().IndexOf(inst);
+                if (index > 0)
+                {
+                    sys.GetInstruments().RemoveAt(index);
+                    sys.GetInstruments().Insert(index - 1, inst);
+
+                    siteMan.Save();
+                    UpdateSitesTree();
+                    siteManChanged = true;
+                    SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(inst.GetName(), true)[0];
+                }
+            }
+        }
+
+        private void DownButton_Click(object sender, EventArgs e)
+        {
+            TreeNode node = SitesTreeView.SelectedNode;
+
+            if (node.Tag is Site)
+            {
+                Site site = (Site)node.Tag;
+                int index = siteMan.GetSites().IndexOf(site);
+                if (index < siteMan.GetSites().Count - 1)
+                {
+                    siteMan.GetSites().RemoveAt(index);
+                    siteMan.GetSites().Insert(index + 1, site);
+
+                    siteMan.Save();
+                    UpdateSitesTree();
+                    siteManChanged = true;
+                    SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(site.GetName(), true)[0];
+                }
+            }
+            else if (node.Tag is Facility)
+            {
+                Facility fac = (Facility)node.Tag;
+                Site site = (Site)node.Parent.Tag;
+                int index = site.GetFacilities().IndexOf(fac);
+                if (index < site.GetFacilities().Count - 1)
+                {
+                    site.GetFacilities().RemoveAt(index);
+                    site.GetFacilities().Insert(index + 1, fac);
+
+                    siteMan.Save();
+                    UpdateSitesTree();
+                    siteManChanged = true;
+                    SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(fac.GetName(), true)[0];
+                }
+            }
+            else if (node.Tag is DetectionSystem)
+            {
+                DetectionSystem sys = (DetectionSystem)node.Tag;
+                Facility fac = (Facility)node.Parent.Tag;
+                int index = fac.GetSystems().IndexOf(sys);
+                if (index < fac.GetSystems().Count - 1)
+                {
+                    fac.GetSystems().RemoveAt(index);
+                    fac.GetSystems().Insert(index + 1, sys);
+
+                    siteMan.Save();
+                    UpdateSitesTree();
+                    siteManChanged = true;
+                    SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(sys.GetName(), true)[0];
+                }
+            }
+            else if (node.Tag is Instrument)
+            {
+                Instrument inst = (Instrument)node.Tag;
+                DetectionSystem sys = (DetectionSystem)node.Parent.Tag;
+                int index = sys.GetInstruments().IndexOf(inst);
+                if (index < sys.GetInstruments().Count - 1)
+                {
+                    sys.GetInstruments().RemoveAt(index);
+                    sys.GetInstruments().Insert(index + 1, inst);
+
+                    siteMan.Save();
+                    UpdateSitesTree();
+                    siteManChanged = true;
+                    SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(inst.GetName(), true)[0];
+                }
+            }
+        }
     }
 }
