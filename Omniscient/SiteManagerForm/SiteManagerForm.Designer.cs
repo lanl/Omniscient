@@ -88,6 +88,8 @@
             this.panel4 = new System.Windows.Forms.Panel();
             this.ExportButton = new System.Windows.Forms.Button();
             this.ImportButton = new System.Windows.Forms.Button();
+            this.VCUpButton = new System.Windows.Forms.Button();
+            this.VCDownButton = new System.Windows.Forms.Button();
             this.InstrumentPanel.SuspendLayout();
             this.VirtualChannelGroupBox.SuspendLayout();
             this.VCChannelConstPanel.SuspendLayout();
@@ -346,6 +348,8 @@
             // 
             // VCTopPanel
             // 
+            this.VCTopPanel.Controls.Add(this.VCDownButton);
+            this.VCTopPanel.Controls.Add(this.VCUpButton);
             this.VCTopPanel.Controls.Add(this.label8);
             this.VCTopPanel.Controls.Add(this.VirtualChannelTypeComboBox);
             this.VCTopPanel.Controls.Add(this.VirtualChannelNameTextBox);
@@ -697,6 +701,26 @@
             this.ImportButton.UseVisualStyleBackColor = true;
             this.ImportButton.Click += new System.EventHandler(this.ImportButton_Click);
             // 
+            // VCUpButton
+            // 
+            this.VCUpButton.Image = ((System.Drawing.Image)(resources.GetObject("VCUpButton.Image")));
+            this.VCUpButton.Location = new System.Drawing.Point(291, 0);
+            this.VCUpButton.Name = "VCUpButton";
+            this.VCUpButton.Size = new System.Drawing.Size(28, 28);
+            this.VCUpButton.TabIndex = 21;
+            this.VCUpButton.UseVisualStyleBackColor = true;
+            this.VCUpButton.Click += new System.EventHandler(this.VCUpButton_Click);
+            // 
+            // VCDownButton
+            // 
+            this.VCDownButton.Image = ((System.Drawing.Image)(resources.GetObject("VCDownButton.Image")));
+            this.VCDownButton.Location = new System.Drawing.Point(291, 30);
+            this.VCDownButton.Name = "VCDownButton";
+            this.VCDownButton.Size = new System.Drawing.Size(28, 28);
+            this.VCDownButton.TabIndex = 22;
+            this.VCDownButton.UseVisualStyleBackColor = true;
+            this.VCDownButton.Click += new System.EventHandler(this.VCDownButton_Click);
+            // 
             // SiteManagerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -795,5 +819,7 @@
         private System.Windows.Forms.ComboBox DelayChannelComboBox;
         private System.Windows.Forms.ComboBox DelayComboBox;
         private System.Windows.Forms.TextBox DelayTextBox;
+        private System.Windows.Forms.Button VCDownButton;
+        private System.Windows.Forms.Button VCUpButton;
     }
 }

@@ -1031,5 +1031,90 @@ namespace Omniscient
                 }
             }
         }
+
+        private void VCUpButton_Click(object sender, EventArgs e)
+        {
+            Instrument inst = (Instrument)SitesTreeView.SelectedNode.Tag;
+            VirtualChannel chan = null;
+            foreach (VirtualChannel otherChan in inst.GetVirtualChannels())
+            {
+                if (otherChan.GetName() == VirtualChannelsComboBox.Text)
+                {
+                    chan = otherChan;
+                    break;
+                }
+            }
+
+            int index = inst.GetVirtualChannels().IndexOf(chan);
+            if (index > 0)
+            {
+                // Check references to early channels don't get messed up
+                if (chan.GetChannelA().Equals(inst.GetVirtualChannels()[index-1]))
+                {
+                    MessageBox.Show("Cannot move channel up: it references the virtual channel above it!");
+                    return;
+                }
+                if ((chan.GetVirtualChannelType() == VirtualChannel.VirtualChannelType.RATIO ||
+                    chan.GetVirtualChannelType() == VirtualChannel.VirtualChannelType.SUM ||
+                    chan.GetVirtualChannelType() == VirtualChannel.VirtualChannelType.DIFFERENCE) && chan.GetChannelB().Equals(inst.GetVirtualChannels()[index - 1]))
+                {
+                    MessageBox.Show("Cannot move channel up: it references the the virtual channel above it!");
+                    return;
+                }
+
+                // Ok, move the channel up
+                    inst.GetVirtualChannels().RemoveAt(index);
+                inst.GetVirtualChannels().Insert(index - 1, chan);
+
+                siteMan.Save();
+                UpdateSitesTree();
+                siteManChanged = true;
+                SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(inst.GetName(), true)[0];
+                VirtualChannelsComboBox.Text = chan.GetName();
+            }
+        }
+
+        private void VCDownButton_Click(object sender, EventArgs e)
+        {
+            Instrument inst = (Instrument)SitesTreeView.SelectedNode.Tag;
+            VirtualChannel chan = null;
+            foreach (VirtualChannel otherChan in inst.GetVirtualChannels())
+            {
+                if (otherChan.GetName() == VirtualChannelsComboBox.Text)
+                {
+                    chan = otherChan;
+                    break;
+                }
+            }
+
+            int index = inst.GetVirtualChannels().IndexOf(chan);
+            if (index < inst.GetVirtualChannels().Count() - 1)
+            {
+                VirtualChannel nextChan = inst.GetVirtualChannels()[index + 1];
+                // Check references to early channels don't get messed up
+                if (chan.Equals(nextChan.GetChannelA()))
+                {
+                    MessageBox.Show("Cannot move channel down: it is referenced by the virtual channel below it!");
+                    return;
+                }
+                if ((nextChan.GetVirtualChannelType() == VirtualChannel.VirtualChannelType.RATIO ||
+                    nextChan.GetVirtualChannelType() == VirtualChannel.VirtualChannelType.SUM ||
+                    nextChan.GetVirtualChannelType() == VirtualChannel.VirtualChannelType.DIFFERENCE) && nextChan.GetChannelB().Equals(chan))
+                {
+                    MessageBox.Show("Cannot move channel down: it is referenced by the virtual channel below it!");
+                    return;
+                }
+
+                // Ok, move the channel up
+                inst.GetVirtualChannels().RemoveAt(index);
+                inst.GetVirtualChannels().Insert(index + 1, chan);
+
+                siteMan.Save();
+                UpdateSitesTree();
+                siteManChanged = true;
+                SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(inst.GetName(), true)[0];
+                VirtualChannelsComboBox.Text = chan.GetName();
+            }
+        }
     }
 }
