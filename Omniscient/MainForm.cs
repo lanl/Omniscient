@@ -1226,5 +1226,11 @@ namespace Omniscient
             EventManagerForm eventManForm = new EventManagerForm(this, siteMan);
             eventManForm.ShowDialog();
         }
+
+        private void launchInspectaclesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Inspectacles inspectacles = new Inspectacles();
+            inspectacles.Show();
+        }
     }
 }

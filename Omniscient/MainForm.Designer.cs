@@ -112,6 +112,7 @@ namespace Omniscient
             this.GenerateEventsButton = new System.Windows.Forms.Button();
             this.ButtonImageList = new System.Windows.Forms.ImageList(this.components);
             this.SitesTreeView = new Omniscient.Controls.ResponsiveTreeView();
+            this.launchInspectaclesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.StripChartControlPanel.SuspendLayout();
             this.StripChartsPanel.SuspendLayout();
             this.StripChartsLayoutPanel.SuspendLayout();
@@ -247,7 +248,8 @@ namespace Omniscient
             this.toolsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.SiteManagerToolStripMenuItem,
             this.EventManagerToolStripMenuItem,
-            this.launchInspectrumToolStripMenuItem});
+            this.launchInspectrumToolStripMenuItem,
+            this.launchInspectaclesToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
@@ -255,21 +257,21 @@ namespace Omniscient
             // SiteManagerToolStripMenuItem
             // 
             this.SiteManagerToolStripMenuItem.Name = "SiteManagerToolStripMenuItem";
-            this.SiteManagerToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.SiteManagerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.SiteManagerToolStripMenuItem.Text = "Site Manager";
             this.SiteManagerToolStripMenuItem.Click += new System.EventHandler(this.SiteManagerToolStripMenuItem_Click);
             // 
             // EventManagerToolStripMenuItem
             // 
             this.EventManagerToolStripMenuItem.Name = "EventManagerToolStripMenuItem";
-            this.EventManagerToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.EventManagerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.EventManagerToolStripMenuItem.Text = "Event Manager";
             this.EventManagerToolStripMenuItem.Click += new System.EventHandler(this.EventManagerToolStripMenuItem_Click);
             // 
             // launchInspectrumToolStripMenuItem
             // 
             this.launchInspectrumToolStripMenuItem.Name = "launchInspectrumToolStripMenuItem";
-            this.launchInspectrumToolStripMenuItem.Size = new System.Drawing.Size(176, 22);
+            this.launchInspectrumToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.launchInspectrumToolStripMenuItem.Text = "Launch Inspectrum";
             this.launchInspectrumToolStripMenuItem.Click += new System.EventHandler(this.launchInspectrumToolStripMenuItem_Click);
             // 
@@ -924,6 +926,13 @@ namespace Omniscient
             this.SitesTreeView.TabIndex = 11;
             this.SitesTreeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.SitesTreeView_AfterCheck);
             // 
+            // launchInspectaclesToolStripMenuItem
+            // 
+            this.launchInspectaclesToolStripMenuItem.Name = "launchInspectaclesToolStripMenuItem";
+            this.launchInspectaclesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.launchInspectaclesToolStripMenuItem.Text = "Launch Inspectacles";
+            this.launchInspectaclesToolStripMenuItem.Click += new System.EventHandler(this.launchInspectaclesToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1065,6 +1074,7 @@ namespace Omniscient
         private DataGridViewTextBoxColumn MaxValue;
         private DataGridViewTextBoxColumn MaxTime;
         private DataGridViewTextBoxColumn Comment;
+        private ToolStripMenuItem launchInspectaclesToolStripMenuItem;
     }
 }
 

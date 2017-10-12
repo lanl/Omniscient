@@ -101,7 +101,6 @@ namespace Omniscient
             {
                 LoadCHNFile(openFileDialog.FileName);
             }
-
         }
 
         private void OpenToolStripButton_Click(object sender, EventArgs e)
