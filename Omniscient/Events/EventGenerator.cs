@@ -30,8 +30,8 @@ namespace Omniscient.Events
 
         public void RunActions()
         {
-            foreach(Action action in actions)
-                foreach(Event eve in events)
+            foreach (Event eve in events)
+                foreach (Action action in actions)
                     action.Execute(eve);
         }
     }
