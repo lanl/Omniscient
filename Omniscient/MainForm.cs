@@ -392,35 +392,76 @@ namespace Omniscient
 
                     List<DateTime> dates = chan.GetTimeStamps();
                     List<double> vals = chan.GetValues();
-
-                    // Load up the chart values
-                    GearedValues<DateTimePoint> chartVals = new GearedValues<DateTimePoint>();
-                    List<DateTimePoint> list = new List<DateTimePoint>();
-                    if (logScale[chartNum])
+                    if (chan.GetChannelType() == Channel.ChannelType.DURATION_VALUE)
                     {
-                        for (int i = 0; i < dates.Count; ++i) //
+                        List<TimeSpan> durations = chan.GetDurations();
+                        ChartValues<DateTimePoint> chartVals = new ChartValues<DateTimePoint>();
+                        List<DateTimePoint> list = new List<DateTimePoint>();
+                        if (logScale[chartNum])
                         {
-                            if (vals[i] > 0 && dates[i] >= start  && dates[i] <= end)
-                                list.Add(new DateTimePoint(dates[i], vals[i]));
+                            for (int i = 0; i < dates.Count; ++i) //
+                            {
+                                if (vals[i] > 0 && dates[i] + durations[i] >= start && dates[i] <= end)
+                                {
+                                    list.Add(new DateTimePoint(dates[i], vals[i]));
+                                    list.Add(new DateTimePoint(dates[i] + durations[i], vals[i]));
+                                    list.Add(new DateTimePoint(dates[i] + durations[i].Add(TimeSpan.FromTicks(1)), double.NaN));
+                                }
+                            }
                         }
+                        else
+                        {
+                            for (int i = 0; i < dates.Count; ++i) //
+                            {
+                                if (dates[i] + durations[i] >= start && dates[i] <= end)
+                                {
+                                    list.Add(new DateTimePoint(dates[i], vals[i]));
+                                    list.Add(new DateTimePoint(dates[i] + durations[i], vals[i]));
+                                    list.Add(new DateTimePoint(dates[i] + durations[i].Add(TimeSpan.FromTicks(1)), double.NaN));
+                                }
+                            }
+                        }
+                        chartVals.AddRange(list);
+                        LineSeries series;
+                        series = new LineSeries()
+                        {
+                            Title = chan.GetName(),
+                            PointGeometry = null,
+                            Values = chartVals
+                        };
+                        seriesColl.Add(series);
                     }
                     else
                     {
-                        for (int i = 0; i < dates.Count; ++i) //
+                        // Load up the chart values
+                        GearedValues<DateTimePoint> chartVals = new GearedValues<DateTimePoint>();
+                        List<DateTimePoint> list = new List<DateTimePoint>();
+                        if (logScale[chartNum])
                         {
-                            if (dates[i] >= start && dates[i] <= end)
-                                list.Add(new DateTimePoint(dates[i], vals[i]));
+                            for (int i = 0; i < dates.Count; ++i) //
+                            {
+                                if (vals[i] > 0 && dates[i] >= start && dates[i] <= end)
+                                    list.Add(new DateTimePoint(dates[i], vals[i]));
+                            }
                         }
+                        else
+                        {
+                            for (int i = 0; i < dates.Count; ++i) //
+                            {
+                                if (dates[i] >= start && dates[i] <= end)
+                                    list.Add(new DateTimePoint(dates[i], vals[i]));
+                            }
+                        }
+                        chartVals = list.AsGearedValues().WithQuality(Quality.Highest);
+                        GStepLineSeries series;
+                        series = new GStepLineSeries()
+                        {
+                            Title = chan.GetName(),
+                            PointGeometry = null,
+                            Values = chartVals
+                        };
+                        seriesColl.Add(series);
                     }
-                    chartVals = list.AsGearedValues().WithQuality(Quality.Highest);
-                    GStepLineSeries series;
-                    series = new GStepLineSeries()
-                    {
-                        Title = chan.GetName(),
-                        PointGeometry = null,
-                        Values = chartVals
-                    };
-                    seriesColl.Add(series);
                 }
             }
             chart.Series = seriesColl;
