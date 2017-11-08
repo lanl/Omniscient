@@ -28,6 +28,8 @@ namespace Omniscient
     public partial class MainForm : Form
     {
         ///////////////////////////////////////////////////////////////////////
+        private const string VERSION = "Demo 15";
+
         private const int N_CHARTS = 4;
         private const int MAX_HIGHLIGHTED_EVENTS = 60;
 
@@ -73,6 +75,7 @@ namespace Omniscient
         /// here because they cause errors when put in the form designer. </remarks>
         private void MainForm_Load(object sender, EventArgs e)
         {
+            this.Text = "Omniscient v. " + VERSION;
             bootingUp = true;
             this.StripChart0.Base.MouseDown += new System.Windows.Input.MouseButtonEventHandler(this.StripChart_MouseClick);
             this.StripChart1.Base.MouseDown += new System.Windows.Input.MouseButtonEventHandler(this.StripChart_MouseClick);
