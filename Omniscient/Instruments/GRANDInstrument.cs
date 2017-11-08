@@ -104,13 +104,13 @@ namespace Omniscient.Instruments
                 for (int r = 0; r < numRecords; ++r)
                 {
                     time = bidParser.BIDTimeToDateTime(bidParser.GetRecord(r).time);
-                    channels[chACountRate].AddDataPoint(time, bidParser.GetRecord(r).chACountRate);
-                    channels[chBCountRate].AddDataPoint(time, bidParser.GetRecord(r).chBCountRate);
-                    channels[chCCountRate].AddDataPoint(time, bidParser.GetRecord(r).chCCountRate);
-                    channels[gamInGamCh1].AddDataPoint(time, bidParser.GetRecord(r).gamInGamCh1);
-                    channels[gamCh1Sigma].AddDataPoint(time, bidParser.GetRecord(r).gamCh1Sigma);
-                    channels[gamInGamCh2].AddDataPoint(time, bidParser.GetRecord(r).gamInGamCh2);
-                    channels[gamCh2Sigma].AddDataPoint(time, bidParser.GetRecord(r).gamCh2Sigma);
+                    channels[chACountRate].AddDataPoint(time, bidParser.GetRecord(r).chACountRate, bidFiles[i]);
+                    channels[chBCountRate].AddDataPoint(time, bidParser.GetRecord(r).chBCountRate, bidFiles[i]);
+                    channels[chCCountRate].AddDataPoint(time, bidParser.GetRecord(r).chCCountRate, bidFiles[i]);
+                    channels[gamInGamCh1].AddDataPoint(time, bidParser.GetRecord(r).gamInGamCh1, bidFiles[i]);
+                    channels[gamCh1Sigma].AddDataPoint(time, bidParser.GetRecord(r).gamCh1Sigma, bidFiles[i]);
+                    channels[gamInGamCh2].AddDataPoint(time, bidParser.GetRecord(r).gamInGamCh2, bidFiles[i]);
+                    channels[gamCh2Sigma].AddDataPoint(time, bidParser.GetRecord(r).gamCh2Sigma, bidFiles[i]);
                 }
             }
             channels[chACountRate].Sort();

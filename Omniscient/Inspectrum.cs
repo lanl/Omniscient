@@ -37,6 +37,7 @@ namespace Omniscient
             calibrationSlope = 1;
             counts = new int[0];
             InitializeComponent();
+            chnParser = new CHNParser();
         }
 
         private void DrawSpectrum()
@@ -50,19 +51,22 @@ namespace Omniscient
             chartVals = list.AsGearedValues().WithQuality(Quality.Highest);
 
             SpecChart.Series = new SeriesCollection()
+            {
+                new GStepLineSeries()
                 {
-                    new GStepLineSeries()
-                    {
-                        Title = "Spectrum",
-                        PointGeometry = null,
-                        Values = chartVals
-                    }
-                };
+                    Title = "Spectrum",
+                    PointGeometry = null,
+                    Values = chartVals
+                }
+            };
 
-            SpecChart.AxisY[0].MinValue = 0;
+            if (SpecChart.AxisY.Count() == 0) SpecChart.AxisY.Add(new Axis() { MinValue = 0 });
+            else SpecChart.AxisY[0].MinValue = 0;
+            if (SpecChart.AxisX.Count() == 0) SpecChart.AxisX.Add(new Axis() { MinValue = 0 });
+            else SpecChart.AxisX[0].MinValue = 0;
         }
 
-        private void LoadCHNFile(string fileName)
+        public void LoadCHNFile(string fileName)
         {
             if (chnParser.ParseFile(fileName) == ReturnCode.SUCCESS)
             {
@@ -110,7 +114,6 @@ namespace Omniscient
 
         private void Inspectrum_Load(object sender, EventArgs e)
         {
-            chnParser = new CHNParser();
 
             SpecChart.DisableAnimations = true;
             SpecChart.Hoverable = false;
@@ -119,6 +122,7 @@ namespace Omniscient
             SeriesCollection seriesCollection = new SeriesCollection();
             SpecChart.Series = seriesCollection;
             SpecChart.Zoom = ZoomingOptions.X;
+            if (fileLoaded) DrawSpectrum();
         }
 
         private void UpdateCalibration()
@@ -169,6 +173,8 @@ namespace Omniscient
             {
                 calibrationZero = chnParser.GetCalibrationZero();
                 calibrationSlope = chnParser.GetCalibrationSlope();
+                CalZeroTextBox.Text = string.Format("{0:F3}", chnParser.GetCalibrationZero());
+                CalSlopeTextBox.Text = string.Format("{0:F4}", chnParser.GetCalibrationSlope());
                 DrawSpectrum();
             }
         }

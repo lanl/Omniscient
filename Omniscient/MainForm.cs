@@ -45,7 +45,10 @@ namespace Omniscient
         private bool[] logScale;
 
         // The following are used to show a time marker when a user clicks a chart
+        LiveCharts.WinForms.CartesianChart activeChart;
         double mouseX = 0;
+        double mouseY = 0;
+        DateTime mouseTime;
         private bool showMarker = false;
         private double markerValue = 0;
 
@@ -1031,16 +1034,88 @@ namespace Omniscient
             Cursor.Current = Cursors.Default;
         }
 
+        private void CreateChartContextMenu()
+        {
+            ContextMenu chartMenu = new ContextMenu();
+
+            // ID the active chart
+            int chartNum = 0;
+            for (int i = 0; i < N_CHARTS; i++)
+                if (activeChart == GetChart(i)) chartNum = i;
+
+            // Determine which MCAInstruments are being plotted on the chart
+            foreach (ChannelPanel chanPan in chPanels)
+            {
+                Channel chan = chanPan.GetChannel();
+                if (chan.GetInstrument() is MCAInstrument)
+                {
+                    bool plotChan = false;
+                    switch (chartNum)
+                    {
+                        case 0:
+                            if (chanPan.Chart1CheckBox.Checked)
+                                plotChan = true;
+                            break;
+                        case 1:
+                            if (chanPan.Chart2CheckBox.Checked)
+                                plotChan = true;
+                            break;
+                        case 2:
+                            if (chanPan.Chart3CheckBox.Checked)
+                                plotChan = true;
+                            break;
+                        case 3:
+                            if (chanPan.Chart4CheckBox.Checked)
+                                plotChan = true;
+                            break;
+                    }
+                    if (plotChan)
+                    {
+                        // Determine whether the user clicked within a measurement
+                        List<DateTime> timeStamps = chan.GetTimeStamps();
+                        List<TimeSpan> durations = chan.GetDurations();
+                        for(int meas = 0; meas < timeStamps.Count(); meas++)
+                        {
+                            if (timeStamps[meas] <= mouseTime && mouseTime <= timeStamps[meas] + durations[meas])
+                            {
+                                MenuItem menuItem = new MenuItem("View " + chan.GetName() + " in Inspectrum");
+                                menuItem.Tag = chan.GetFiles()[meas];
+                                menuItem.Click += PlotSpectrumMenuItem_Click;
+                                chartMenu.MenuItems.Add(menuItem);
+                            }
+                        }
+                    }
+                }
+            }
+            chartMenu.Show(activeChart, new Point((int)mouseX, (int)mouseY));
+        }
+
+        private void PlotSpectrumMenuItem_Click(object sender, EventArgs e)
+        {
+            MenuItem menuItem = (MenuItem)sender;
+            MessageBox.Show(menuItem.Tag.ToString());
+            Inspectrum inspectrum = new Inspectrum();
+            inspectrum.LoadCHNFile(menuItem.Tag.ToString());
+            inspectrum.Show();
+        }
+
         /// <summary>
         /// Called when a user clicks on any of the charts.</summary>
         private void StripChart_MouseClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
-            LiveCharts.Wpf.CartesianChart chartBase = (LiveCharts.Wpf.CartesianChart)sender;
-            DateTime clickTime = new DateTime((long)LiveCharts.ChartFunctions.FromPlotArea(mouseX, AxisOrientation.X, chartBase.Model));
-            markerValue = clickTime.Ticks;
-            showMarker = true;
+            if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed)
+            {
+                LiveCharts.Wpf.CartesianChart chartBase = (LiveCharts.Wpf.CartesianChart)sender;
+                DateTime clickTime = new DateTime((long)LiveCharts.ChartFunctions.FromPlotArea(mouseX, AxisOrientation.X, chartBase.Model));
+                markerValue = clickTime.Ticks;
+                showMarker = true;
 
-            DrawMarker();
+                DrawMarker();
+            }
+            else if (e.RightButton == System.Windows.Input.MouseButtonState.Pressed)
+            {
+                CreateChartContextMenu();
+            }
         }
 
         /// <summary>
@@ -1048,8 +1123,13 @@ namespace Omniscient
         public void StripChart_MouseMoved(object sender, System.Windows.Input.MouseEventArgs e)
         {
             LiveCharts.Wpf.CartesianChart chartBase = (LiveCharts.Wpf.CartesianChart)sender;
+            if (StripChart0.Base == chartBase) activeChart = StripChart0;
+            else if (StripChart1.Base == chartBase) activeChart = StripChart1;
+            else if (StripChart2.Base == chartBase) activeChart = StripChart2;
+            else if (StripChart3.Base == chartBase) activeChart = StripChart3;
             mouseX = e.GetPosition(chartBase).X;
-            DateTime mouseTime = new DateTime((long)LiveCharts.ChartFunctions.FromPlotArea(mouseX, AxisOrientation.X, chartBase.Model));
+            mouseY = e.GetPosition(chartBase).Y;
+            mouseTime = new DateTime((long)LiveCharts.ChartFunctions.FromPlotArea(mouseX, AxisOrientation.X, chartBase.Model));
             MouseTimeToolStripLabel.Text = "Mouse Location: " + mouseTime.ToString("MMM dd, yyyy  HH:mm:ss");
         }
 

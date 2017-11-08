@@ -89,7 +89,7 @@ namespace Omniscient.Instruments
                 {
                     counts += chnParser.GetCounts()[ch];
                 }
-                channels[COUNT_RATE].AddDataPoint(time, counts/chnParser.GetLiveTime(), duration); 
+                channels[COUNT_RATE].AddDataPoint(time, counts/chnParser.GetLiveTime(), duration, chnFiles[i]); 
             }
             channels[COUNT_RATE].Sort();
             LoadVirtualChannels();
