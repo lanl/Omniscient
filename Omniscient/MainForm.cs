@@ -1093,7 +1093,6 @@ namespace Omniscient
         private void PlotSpectrumMenuItem_Click(object sender, EventArgs e)
         {
             MenuItem menuItem = (MenuItem)sender;
-            MessageBox.Show(menuItem.Tag.ToString());
             Inspectrum inspectrum = new Inspectrum();
             inspectrum.LoadCHNFile(menuItem.Tag.ToString());
             inspectrum.Show();
