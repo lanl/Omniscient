@@ -101,6 +101,7 @@
     <Compile Include="Instruments\GRANDInstrument.cs" />
     <Compile Include="Instruments\Instrument.cs" />
     <Compile Include="Instruments\ISRInstrument.cs" />
+    <Compile Include="Instruments\ROIChannel.cs" />
     <Compile Include="Instruments\VirtualChannel.cs" />
     <Compile Include="ROI.cs" />
     <Compile Include="SiteManagerForm\InstrumentTypeDialog.cs">

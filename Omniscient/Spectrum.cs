@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Omniscient
 {
-    class Spectrum
+    public class Spectrum
     {
         double calibrationZero;
         double calibrationSlope;

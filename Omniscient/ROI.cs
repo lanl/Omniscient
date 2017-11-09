@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Omniscient
 {
-    class ROI
+    public class ROI
     {
         public enum BG_TYPE { NONE, FLAT, LINEAR}
 

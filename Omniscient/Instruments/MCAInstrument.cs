@@ -77,6 +77,7 @@ namespace Omniscient.Instruments
 
             DateTime time;
             TimeSpan duration;
+            Spectrum spectrum;
 
             for (int i = startIndex; i <= endIndex; ++i)
             {
@@ -89,7 +90,16 @@ namespace Omniscient.Instruments
                 {
                     counts += chnParser.GetCounts()[ch];
                 }
-                channels[COUNT_RATE].AddDataPoint(time, counts/chnParser.GetLiveTime(), duration, chnFiles[i]); 
+                channels[COUNT_RATE].AddDataPoint(time, counts/chnParser.GetLiveTime(), duration, chnFiles[i]);
+
+                spectrum = chnParser.GetSpectrum();
+                foreach(VirtualChannel chan in virtualChannels)
+                {
+                    if (chan is ROIChannel)
+                    {
+                        ((ROIChannel)chan).AddDataPoint(time, spectrum, chnFiles[i]);
+                    }
+                }
             }
             channels[COUNT_RATE].Sort();
             LoadVirtualChannels();

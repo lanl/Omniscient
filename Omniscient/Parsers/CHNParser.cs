@@ -116,6 +116,11 @@ namespace Omniscient.Parsers
             return ReturnCode.SUCCESS;
         }
 
+        public Spectrum GetSpectrum()
+        {
+            return new Spectrum(zero, keVPerChannel, counts);
+        }
+
         public double GetRealTime() { return realTime; }
         public double GetLiveTime() { return liveTime; }
         public DateTime GetStartDateTime() { return startDateTime; }

@@ -12,9 +12,9 @@ namespace Omniscient.Instruments
     /// corresponding to the same timestamps.</remarks>
     public class VirtualChannel : Channel
     {
-        public enum VirtualChannelType { RATIO, SUM, DIFFERENCE, ADD_CONST, SCALE, DELAY}
+        public enum VirtualChannelType { RATIO, SUM, DIFFERENCE, ADD_CONST, SCALE, DELAY, ROI}
 
-        VirtualChannelType virtualType;
+        protected VirtualChannelType virtualType;
 
         Channel chanA;
         Channel chanB;
@@ -25,7 +25,7 @@ namespace Omniscient.Instruments
         {
         }
 
-        public void CalculateValues()
+        public virtual void CalculateValues()
         {
             double[] arrayVals = new double[chanA.GetValues().Count];
 
