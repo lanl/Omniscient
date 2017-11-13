@@ -28,7 +28,7 @@ namespace Omniscient
     public partial class MainForm : Form
     {
         ///////////////////////////////////////////////////////////////////////
-        private const string VERSION = "Demo 15";
+        private const string VERSION = "Demo 16";
 
         private const int N_CHARTS = 4;
         private const int MAX_HIGHLIGHTED_EVENTS = 60;
@@ -589,6 +589,8 @@ namespace Omniscient
                     {
                         chStart = ch.GetTimeStamps()[0];
                         chEnd = ch.GetTimeStamps()[ch.GetTimeStamps().Count - 1];
+                        if(ch.GetChannelType() == Channel.ChannelType.DURATION_VALUE)
+                            chEnd += ch.GetDurations()[ch.GetDurations().Count - 1];
                         if (chStart < earliest)
                             earliest = chStart;
                         if (chEnd > latest)
