@@ -53,7 +53,24 @@
             this.VirtualChannelChanBComboBox = new System.Windows.Forms.ComboBox();
             this.label9 = new System.Windows.Forms.Label();
             this.VirtualChannelChanAComboBox = new System.Windows.Forms.ComboBox();
+            this.ROIVCPanel = new System.Windows.Forms.Panel();
+            this.label20 = new System.Windows.Forms.Label();
+            this.BG2EndTextBox = new System.Windows.Forms.TextBox();
+            this.BG2StartTextBox = new System.Windows.Forms.TextBox();
+            this.label21 = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
+            this.BG1EndTextBox = new System.Windows.Forms.TextBox();
+            this.BG1StartTextBox = new System.Windows.Forms.TextBox();
+            this.label19 = new System.Windows.Forms.Label();
+            this.label15 = new System.Windows.Forms.Label();
+            this.ROIBackgroundComboBox = new System.Windows.Forms.ComboBox();
+            this.label17 = new System.Windows.Forms.Label();
+            this.ROIEndTextBox = new System.Windows.Forms.TextBox();
+            this.ROIStartTextBox = new System.Windows.Forms.TextBox();
+            this.label16 = new System.Windows.Forms.Label();
             this.VCTopPanel = new System.Windows.Forms.Panel();
+            this.VCDownButton = new System.Windows.Forms.Button();
+            this.VCUpButton = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
             this.VirtualChannelTypeComboBox = new System.Windows.Forms.ComboBox();
             this.VirtualChannelNameTextBox = new System.Windows.Forms.TextBox();
@@ -88,13 +105,12 @@
             this.panel4 = new System.Windows.Forms.Panel();
             this.ExportButton = new System.Windows.Forms.Button();
             this.ImportButton = new System.Windows.Forms.Button();
-            this.VCUpButton = new System.Windows.Forms.Button();
-            this.VCDownButton = new System.Windows.Forms.Button();
             this.InstrumentPanel.SuspendLayout();
             this.VirtualChannelGroupBox.SuspendLayout();
             this.VCChannelConstPanel.SuspendLayout();
             this.VCDelayPanel.SuspendLayout();
             this.VCTwoChannelPanel.SuspendLayout();
+            this.ROIVCPanel.SuspendLayout();
             this.VCTopPanel.SuspendLayout();
             this.NewButtonPanel.SuspendLayout();
             this.BottomRightPanel.SuspendLayout();
@@ -112,7 +128,7 @@
             this.SitesTreeView.Location = new System.Drawing.Point(10, 10);
             this.SitesTreeView.Name = "SitesTreeView";
             this.SitesTreeView.ShowNodeToolTips = true;
-            this.SitesTreeView.Size = new System.Drawing.Size(380, 621);
+            this.SitesTreeView.Size = new System.Drawing.Size(380, 561);
             this.SitesTreeView.TabIndex = 0;
             this.SitesTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.SitesTreeView_AfterSelect);
             // 
@@ -186,6 +202,7 @@
             this.VirtualChannelGroupBox.Controls.Add(this.VCChannelConstPanel);
             this.VirtualChannelGroupBox.Controls.Add(this.VCDelayPanel);
             this.VirtualChannelGroupBox.Controls.Add(this.VCTwoChannelPanel);
+            this.VirtualChannelGroupBox.Controls.Add(this.ROIVCPanel);
             this.VirtualChannelGroupBox.Controls.Add(this.VCTopPanel);
             this.VirtualChannelGroupBox.Location = new System.Drawing.Point(3, 122);
             this.VirtualChannelGroupBox.Name = "VirtualChannelGroupBox";
@@ -201,7 +218,7 @@
             this.VCChannelConstPanel.Controls.Add(this.label12);
             this.VCChannelConstPanel.Controls.Add(this.VirtualChannelChannelComboBox);
             this.VCChannelConstPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.VCChannelConstPanel.Location = new System.Drawing.Point(3, 194);
+            this.VCChannelConstPanel.Location = new System.Drawing.Point(3, 310);
             this.VCChannelConstPanel.Name = "VCChannelConstPanel";
             this.VCChannelConstPanel.Size = new System.Drawing.Size(322, 58);
             this.VCChannelConstPanel.TabIndex = 8;
@@ -248,7 +265,7 @@
             this.VCDelayPanel.Controls.Add(this.label14);
             this.VCDelayPanel.Controls.Add(this.DelayChannelComboBox);
             this.VCDelayPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.VCDelayPanel.Location = new System.Drawing.Point(3, 136);
+            this.VCDelayPanel.Location = new System.Drawing.Point(3, 252);
             this.VCDelayPanel.Name = "VCDelayPanel";
             this.VCDelayPanel.Size = new System.Drawing.Size(322, 58);
             this.VCDelayPanel.TabIndex = 9;
@@ -307,7 +324,7 @@
             this.VCTwoChannelPanel.Controls.Add(this.label9);
             this.VCTwoChannelPanel.Controls.Add(this.VirtualChannelChanAComboBox);
             this.VCTwoChannelPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.VCTwoChannelPanel.Location = new System.Drawing.Point(3, 74);
+            this.VCTwoChannelPanel.Location = new System.Drawing.Point(3, 190);
             this.VCTwoChannelPanel.Name = "VCTwoChannelPanel";
             this.VCTwoChannelPanel.Size = new System.Drawing.Size(322, 62);
             this.VCTwoChannelPanel.TabIndex = 7;
@@ -346,6 +363,145 @@
             this.VirtualChannelChanAComboBox.Size = new System.Drawing.Size(159, 21);
             this.VirtualChannelChanAComboBox.TabIndex = 19;
             // 
+            // ROIVCPanel
+            // 
+            this.ROIVCPanel.Controls.Add(this.label20);
+            this.ROIVCPanel.Controls.Add(this.BG2EndTextBox);
+            this.ROIVCPanel.Controls.Add(this.BG2StartTextBox);
+            this.ROIVCPanel.Controls.Add(this.label21);
+            this.ROIVCPanel.Controls.Add(this.label18);
+            this.ROIVCPanel.Controls.Add(this.BG1EndTextBox);
+            this.ROIVCPanel.Controls.Add(this.BG1StartTextBox);
+            this.ROIVCPanel.Controls.Add(this.label19);
+            this.ROIVCPanel.Controls.Add(this.label15);
+            this.ROIVCPanel.Controls.Add(this.ROIBackgroundComboBox);
+            this.ROIVCPanel.Controls.Add(this.label17);
+            this.ROIVCPanel.Controls.Add(this.ROIEndTextBox);
+            this.ROIVCPanel.Controls.Add(this.ROIStartTextBox);
+            this.ROIVCPanel.Controls.Add(this.label16);
+            this.ROIVCPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.ROIVCPanel.Location = new System.Drawing.Point(3, 74);
+            this.ROIVCPanel.Name = "ROIVCPanel";
+            this.ROIVCPanel.Size = new System.Drawing.Size(322, 116);
+            this.ROIVCPanel.TabIndex = 10;
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(186, 89);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(10, 13);
+            this.label20.TabIndex = 45;
+            this.label20.Text = "-";
+            // 
+            // BG2EndTextBox
+            // 
+            this.BG2EndTextBox.Location = new System.Drawing.Point(202, 85);
+            this.BG2EndTextBox.Name = "BG2EndTextBox";
+            this.BG2EndTextBox.Size = new System.Drawing.Size(52, 20);
+            this.BG2EndTextBox.TabIndex = 44;
+            // 
+            // BG2StartTextBox
+            // 
+            this.BG2StartTextBox.Location = new System.Drawing.Point(128, 85);
+            this.BG2StartTextBox.Name = "BG2StartTextBox";
+            this.BG2StartTextBox.Size = new System.Drawing.Size(52, 20);
+            this.BG2StartTextBox.TabIndex = 43;
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(22, 88);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(98, 13);
+            this.label21.TabIndex = 42;
+            this.label21.Text = "BG 2 Bounds (keV)";
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(186, 63);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(10, 13);
+            this.label18.TabIndex = 41;
+            this.label18.Text = "-";
+            // 
+            // BG1EndTextBox
+            // 
+            this.BG1EndTextBox.Location = new System.Drawing.Point(202, 59);
+            this.BG1EndTextBox.Name = "BG1EndTextBox";
+            this.BG1EndTextBox.Size = new System.Drawing.Size(52, 20);
+            this.BG1EndTextBox.TabIndex = 40;
+            // 
+            // BG1StartTextBox
+            // 
+            this.BG1StartTextBox.Location = new System.Drawing.Point(128, 59);
+            this.BG1StartTextBox.Name = "BG1StartTextBox";
+            this.BG1StartTextBox.Size = new System.Drawing.Size(52, 20);
+            this.BG1StartTextBox.TabIndex = 39;
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(22, 62);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(98, 13);
+            this.label19.TabIndex = 38;
+            this.label19.Text = "BG 1 Bounds (keV)";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(31, 35);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(92, 13);
+            this.label15.TabIndex = 37;
+            this.label15.Text = "Background Type";
+            // 
+            // ROIBackgroundComboBox
+            // 
+            this.ROIBackgroundComboBox.FormattingEnabled = true;
+            this.ROIBackgroundComboBox.Items.AddRange(new object[] {
+            "None",
+            "Flat",
+            "Linear"});
+            this.ROIBackgroundComboBox.Location = new System.Drawing.Point(128, 32);
+            this.ROIBackgroundComboBox.Name = "ROIBackgroundComboBox";
+            this.ROIBackgroundComboBox.Size = new System.Drawing.Size(127, 21);
+            this.ROIBackgroundComboBox.TabIndex = 36;
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(186, 10);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(10, 13);
+            this.label17.TabIndex = 35;
+            this.label17.Text = "-";
+            // 
+            // ROIEndTextBox
+            // 
+            this.ROIEndTextBox.Location = new System.Drawing.Point(202, 6);
+            this.ROIEndTextBox.Name = "ROIEndTextBox";
+            this.ROIEndTextBox.Size = new System.Drawing.Size(52, 20);
+            this.ROIEndTextBox.TabIndex = 34;
+            // 
+            // ROIStartTextBox
+            // 
+            this.ROIStartTextBox.Location = new System.Drawing.Point(128, 6);
+            this.ROIStartTextBox.Name = "ROIStartTextBox";
+            this.ROIStartTextBox.Size = new System.Drawing.Size(52, 20);
+            this.ROIStartTextBox.TabIndex = 33;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(30, 9);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(93, 13);
+            this.label16.TabIndex = 20;
+            this.label16.Text = "ROI Bounds (keV)";
+            // 
             // VCTopPanel
             // 
             this.VCTopPanel.Controls.Add(this.VCDownButton);
@@ -359,6 +515,26 @@
             this.VCTopPanel.Name = "VCTopPanel";
             this.VCTopPanel.Size = new System.Drawing.Size(322, 58);
             this.VCTopPanel.TabIndex = 6;
+            // 
+            // VCDownButton
+            // 
+            this.VCDownButton.Image = ((System.Drawing.Image)(resources.GetObject("VCDownButton.Image")));
+            this.VCDownButton.Location = new System.Drawing.Point(291, 30);
+            this.VCDownButton.Name = "VCDownButton";
+            this.VCDownButton.Size = new System.Drawing.Size(28, 28);
+            this.VCDownButton.TabIndex = 22;
+            this.VCDownButton.UseVisualStyleBackColor = true;
+            this.VCDownButton.Click += new System.EventHandler(this.VCDownButton_Click);
+            // 
+            // VCUpButton
+            // 
+            this.VCUpButton.Image = ((System.Drawing.Image)(resources.GetObject("VCUpButton.Image")));
+            this.VCUpButton.Location = new System.Drawing.Point(291, 0);
+            this.VCUpButton.Name = "VCUpButton";
+            this.VCUpButton.Size = new System.Drawing.Size(28, 28);
+            this.VCUpButton.TabIndex = 21;
+            this.VCUpButton.UseVisualStyleBackColor = true;
+            this.VCUpButton.Click += new System.EventHandler(this.VCUpButton_Click);
             // 
             // label8
             // 
@@ -548,7 +724,7 @@
             this.BottomRightPanel.Controls.Add(this.SaveButton);
             this.BottomRightPanel.Controls.Add(this.ExitButton);
             this.BottomRightPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.BottomRightPanel.Location = new System.Drawing.Point(5, 576);
+            this.BottomRightPanel.Location = new System.Drawing.Point(5, 516);
             this.BottomRightPanel.Name = "BottomRightPanel";
             this.BottomRightPanel.Size = new System.Drawing.Size(380, 60);
             this.BottomRightPanel.TabIndex = 11;
@@ -590,7 +766,7 @@
             this.LeftPanel.Location = new System.Drawing.Point(0, 0);
             this.LeftPanel.Name = "LeftPanel";
             this.LeftPanel.Padding = new System.Windows.Forms.Padding(10);
-            this.LeftPanel.Size = new System.Drawing.Size(400, 641);
+            this.LeftPanel.Size = new System.Drawing.Size(400, 581);
             this.LeftPanel.TabIndex = 12;
             // 
             // RightPanel
@@ -603,7 +779,7 @@
             this.RightPanel.Location = new System.Drawing.Point(400, 0);
             this.RightPanel.Name = "RightPanel";
             this.RightPanel.Padding = new System.Windows.Forms.Padding(5);
-            this.RightPanel.Size = new System.Drawing.Size(390, 641);
+            this.RightPanel.Size = new System.Drawing.Size(390, 581);
             this.RightPanel.TabIndex = 13;
             // 
             // InnerRightPanel
@@ -614,7 +790,7 @@
             this.InnerRightPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.InnerRightPanel.Location = new System.Drawing.Point(51, 65);
             this.InnerRightPanel.Name = "InnerRightPanel";
-            this.InnerRightPanel.Size = new System.Drawing.Size(334, 511);
+            this.InnerRightPanel.Size = new System.Drawing.Size(334, 451);
             this.InnerRightPanel.TabIndex = 13;
             // 
             // NamePanel
@@ -639,7 +815,7 @@
             this.LeftRightPanel.Location = new System.Drawing.Point(5, 65);
             this.LeftRightPanel.Name = "LeftRightPanel";
             this.LeftRightPanel.Padding = new System.Windows.Forms.Padding(2);
-            this.LeftRightPanel.Size = new System.Drawing.Size(46, 511);
+            this.LeftRightPanel.Size = new System.Drawing.Size(46, 451);
             this.LeftRightPanel.TabIndex = 14;
             // 
             // RemoveButton
@@ -654,7 +830,7 @@
             // DownButton
             // 
             this.DownButton.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.DownButton.Location = new System.Drawing.Point(2, 465);
+            this.DownButton.Location = new System.Drawing.Point(2, 405);
             this.DownButton.Name = "DownButton";
             this.DownButton.Size = new System.Drawing.Size(38, 40);
             this.DownButton.TabIndex = 1;
@@ -701,31 +877,11 @@
             this.ImportButton.UseVisualStyleBackColor = true;
             this.ImportButton.Click += new System.EventHandler(this.ImportButton_Click);
             // 
-            // VCUpButton
-            // 
-            this.VCUpButton.Image = ((System.Drawing.Image)(resources.GetObject("VCUpButton.Image")));
-            this.VCUpButton.Location = new System.Drawing.Point(291, 0);
-            this.VCUpButton.Name = "VCUpButton";
-            this.VCUpButton.Size = new System.Drawing.Size(28, 28);
-            this.VCUpButton.TabIndex = 21;
-            this.VCUpButton.UseVisualStyleBackColor = true;
-            this.VCUpButton.Click += new System.EventHandler(this.VCUpButton_Click);
-            // 
-            // VCDownButton
-            // 
-            this.VCDownButton.Image = ((System.Drawing.Image)(resources.GetObject("VCDownButton.Image")));
-            this.VCDownButton.Location = new System.Drawing.Point(291, 30);
-            this.VCDownButton.Name = "VCDownButton";
-            this.VCDownButton.Size = new System.Drawing.Size(28, 28);
-            this.VCDownButton.TabIndex = 22;
-            this.VCDownButton.UseVisualStyleBackColor = true;
-            this.VCDownButton.Click += new System.EventHandler(this.VCDownButton_Click);
-            // 
             // SiteManagerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(790, 641);
+            this.ClientSize = new System.Drawing.Size(790, 581);
             this.ControlBox = false;
             this.Controls.Add(this.RightPanel);
             this.Controls.Add(this.LeftPanel);
@@ -743,6 +899,8 @@
             this.VCDelayPanel.PerformLayout();
             this.VCTwoChannelPanel.ResumeLayout(false);
             this.VCTwoChannelPanel.PerformLayout();
+            this.ROIVCPanel.ResumeLayout(false);
+            this.ROIVCPanel.PerformLayout();
             this.VCTopPanel.ResumeLayout(false);
             this.VCTopPanel.PerformLayout();
             this.NewButtonPanel.ResumeLayout(false);
@@ -821,5 +979,20 @@
         private System.Windows.Forms.TextBox DelayTextBox;
         private System.Windows.Forms.Button VCDownButton;
         private System.Windows.Forms.Button VCUpButton;
+        private System.Windows.Forms.Panel ROIVCPanel;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.ComboBox ROIBackgroundComboBox;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.TextBox ROIEndTextBox;
+        private System.Windows.Forms.TextBox ROIStartTextBox;
+        private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Label label20;
+        private System.Windows.Forms.TextBox BG2EndTextBox;
+        private System.Windows.Forms.TextBox BG2StartTextBox;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.TextBox BG1EndTextBox;
+        private System.Windows.Forms.TextBox BG1StartTextBox;
+        private System.Windows.Forms.Label label19;
     }
 }

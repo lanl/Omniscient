@@ -16,10 +16,11 @@ namespace Omniscient.Instruments
             roi = new ROI();
         }
 
-        public void AddDataPoint(DateTime time, Spectrum spectrum, string file)
+        public void AddDataPoint(DateTime time, Spectrum spectrum, TimeSpan duration, string file)
         {
             timeStamps.Add(time);
-            values.Add(roi.GetROICounts(spectrum));
+            values.Add(roi.GetROICountRate(spectrum));
+            durations.Add(duration);
             files.Add(file);
         }
 

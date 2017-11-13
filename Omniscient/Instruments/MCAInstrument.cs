@@ -97,7 +97,7 @@ namespace Omniscient.Instruments
                 {
                     if (chan is ROIChannel)
                     {
-                        ((ROIChannel)chan).AddDataPoint(time, spectrum, chnFiles[i]);
+                        ((ROIChannel)chan).AddDataPoint(time, spectrum, duration, chnFiles[i]);
                     }
                 }
             }

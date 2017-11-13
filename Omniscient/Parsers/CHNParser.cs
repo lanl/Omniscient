@@ -118,7 +118,10 @@ namespace Omniscient.Parsers
 
         public Spectrum GetSpectrum()
         {
-            return new Spectrum(zero, keVPerChannel, counts);
+            Spectrum spec = new Spectrum(zero, keVPerChannel, counts);
+            spec.SetRealTime(realTime);
+            spec.SetLiveTime(liveTime);
+            return spec;
         }
 
         public double GetRealTime() { return realTime; }

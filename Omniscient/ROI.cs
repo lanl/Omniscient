@@ -8,7 +8,21 @@ namespace Omniscient
 {
     public class ROI
     {
-        public enum BG_TYPE { NONE, FLAT, LINEAR}
+        public enum BG_Type { NONE, FLAT, LINEAR}
+
+        public static string BGTypeToString(BG_Type type)
+        {
+            switch (type)
+            {
+                case BG_Type.NONE:
+                    return "None";
+                case BG_Type.FLAT:
+                    return "Flat";
+                case BG_Type.LINEAR:
+                    return "Linear";
+            }
+            return "Weird things are happening...";
+        }
 
         double roiStart;    // keV
         double roiEnd;      // keV
@@ -18,7 +32,7 @@ namespace Omniscient
         double bg2Start;
         double bg2End;
 
-        BG_TYPE bgType;
+        BG_Type bgType;
 
         public ROI()
         {
@@ -28,7 +42,7 @@ namespace Omniscient
             bg1End = 0;
             bg2Start = 0;
             bg2End = 0;
-            bgType = BG_TYPE.NONE;
+            bgType = BG_Type.NONE;
         }
 
         public double GetROICounts(Spectrum spec)
@@ -61,15 +75,20 @@ namespace Omniscient
             }
             switch (bgType)
             {
-                case BG_TYPE.NONE:
+                case BG_Type.NONE:
                     return totalCounts;
-                case BG_TYPE.FLAT:
+                case BG_Type.FLAT:
                     return totalCounts - (bg1Counts * roiBins / bg1Bins);
-                case BG_TYPE.LINEAR:
+                case BG_Type.LINEAR:
                     return totalCounts - roiBins * ((bg1Counts / bg1Bins) + (bg2Counts / bg2Bins)) / 2;
             }
 
             return 0;
+        }
+
+        public double GetROICountRate(Spectrum spec)
+        {
+            return GetROICounts(spec) / spec.GetLiveTime();
         }
 
         public double GetROIStart() { return roiStart; }
@@ -78,6 +97,7 @@ namespace Omniscient
         public double GetBG1End() { return bg1End; }
         public double GetBG2Start() { return bg2Start; }
         public double GetBG2End() { return bg2End; }
+        public BG_Type GetBGType() { return bgType; }
 
         public void SetROIStart(double newStart) { roiStart = newStart; }
         public void SetROIEnd(double newEnd) { roiEnd = newEnd; }
@@ -85,5 +105,6 @@ namespace Omniscient
         public void SetBG1End(double newEnd) { bg1End = newEnd; }
         public void SetBG2Start(double newStart) { bg2Start = newStart; }
         public void SetBG2End(double newEnd) { bg2End = newEnd; }
+        public void SetBGType(BG_Type newType) { bgType = newType; }
     }
 }

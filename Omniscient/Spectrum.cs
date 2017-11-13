@@ -10,12 +10,16 @@ namespace Omniscient
     {
         double calibrationZero;
         double calibrationSlope;
+        private double realTime;
+        private double liveTime;
         int[] counts;
         
         public Spectrum()
         {
             calibrationZero = 0.0;
             calibrationSlope = 1.0;
+            realTime = 1.0;
+            liveTime = 1.0;
             counts = new int[0];
         }
 
@@ -30,16 +34,20 @@ namespace Omniscient
         {
             double[] bins = new double[counts.Length];
             for (int i = 0; i < bins.Length; i++)
-                bins[i] = calibrationZero + calibrationSlope;
+                bins[i] = calibrationZero + calibrationSlope*i;
             return bins;
         }
 
         public double GetCalibrationZero() { return calibrationZero; }
         public double GetCalibrationSlope() { return calibrationSlope; }
+        public double GetRealTime() { return realTime; }
+        public double GetLiveTime() { return liveTime; }
         public int[] GetCounts() { return counts; }
 
         public void SetCalibrationZero(double zero) { calibrationZero = zero; }
         public void SetCalibrationSlope(double slope) { calibrationSlope = slope; }
+        public void SetRealTime(double newTime) { realTime = newTime; }
+        public void SetLiveTime(double newTime) { liveTime = newTime; }
         public void SetCounts(int[] newCounts) { counts = newCounts; }
     }
 }

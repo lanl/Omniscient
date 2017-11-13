@@ -15,6 +15,8 @@ namespace Omniscient
 {
     public partial class SiteManagerForm : Form
     {
+        string[] DEFAULT_VIRTUAL_CHANNEL_TYPES = {"Ratio", "Sum", "Difference", "Add Constant", "Scale", "Delay"};
+
         MainForm main;
         SiteManager siteMan;
 
@@ -98,6 +100,28 @@ namespace Omniscient
             }
         }
 
+        public string VCTypeToString(VirtualChannel.VirtualChannelType vcType)
+        {
+            switch (vcType)
+            {
+                case VirtualChannel.VirtualChannelType.RATIO:
+                    return "Ratio";
+                case VirtualChannel.VirtualChannelType.SUM:
+                    return "Sum";
+                case VirtualChannel.VirtualChannelType.DIFFERENCE:
+                    return "Difference";
+                case VirtualChannel.VirtualChannelType.ADD_CONST:
+                    return "Add Constant";
+                case VirtualChannel.VirtualChannelType.SCALE:
+                    return "Scale";
+                case VirtualChannel.VirtualChannelType.DELAY:
+                    return "Delay";
+                case VirtualChannel.VirtualChannelType.ROI:
+                    return "ROI";
+            }
+            return "Weird Things Are Happening";
+        }
+
         private void SetupVirtualChannelGroupBox()
         {
             Instrument inst = (Instrument)SitesTreeView.SelectedNode.Tag;
@@ -118,30 +142,17 @@ namespace Omniscient
                 }
             }
             VirtualChannelNameTextBox.Text = chan.GetName();
-            switch(chan.GetVirtualChannelType())
+            VirtualChannelTypeComboBox.Items.Clear();
+            VirtualChannelTypeComboBox.Items.AddRange(DEFAULT_VIRTUAL_CHANNEL_TYPES);
+            if (inst is MCAInstrument)
+                VirtualChannelTypeComboBox.Items.Add("ROI");
+            VirtualChannelTypeComboBox.Text = VCTypeToString(chan.GetVirtualChannelType());
+            if (chan.GetVirtualChannelType() == VirtualChannel.VirtualChannelType.RATIO)
             {
-                case VirtualChannel.VirtualChannelType.RATIO:
-                    VirtualChannelTypeComboBox.Text = "Ratio";
-                    VCTwoChannelPanel.Visible = true;
-                    VCChannelConstPanel.Visible = false;
-
-                    break;
-                case VirtualChannel.VirtualChannelType.SUM:
-                    VirtualChannelTypeComboBox.Text = "Sum";
-                    break;
-                case VirtualChannel.VirtualChannelType.DIFFERENCE:
-                    VirtualChannelTypeComboBox.Text = "Difference";
-                    break;
-                case VirtualChannel.VirtualChannelType.ADD_CONST:
-                    VirtualChannelTypeComboBox.Text = "Add Constant";
-                    break;
-                case VirtualChannel.VirtualChannelType.SCALE:
-                    VirtualChannelTypeComboBox.Text = "Scale";
-                    break;
-                case VirtualChannel.VirtualChannelType.DELAY:
-                    VirtualChannelTypeComboBox.Text = "Delay";
-                    break;
+                VCTwoChannelPanel.Visible = true;
+                VCChannelConstPanel.Visible = false;
             }
+
             switch (chan.GetVirtualChannelType())
             {
                 case VirtualChannel.VirtualChannelType.RATIO:
@@ -153,6 +164,7 @@ namespace Omniscient
                     VCTwoChannelPanel.Visible = true;
                     VCChannelConstPanel.Visible = false;
                     VCDelayPanel.Visible = false;
+                    ROIVCPanel.Visible = false;
                     break;
                 case VirtualChannel.VirtualChannelType.ADD_CONST:
                 case VirtualChannel.VirtualChannelType.SCALE:
@@ -162,6 +174,7 @@ namespace Omniscient
                     VCTwoChannelPanel.Visible = false;
                     VCChannelConstPanel.Visible = true;
                     VCDelayPanel.Visible = false;
+                    ROIVCPanel.Visible = false;
                     break;
                 case VirtualChannel.VirtualChannelType.DELAY:
                     PopulateDelayPanel(chan, inst);
@@ -192,6 +205,13 @@ namespace Omniscient
                         DelayTextBox.Text = delay.TotalSeconds.ToString();
                         DelayComboBox.Text = "Seconds";
                     }
+                    break;
+                case VirtualChannel.VirtualChannelType.ROI:
+                    PopulateROIVCPanel(chan, inst);
+                    VCTwoChannelPanel.Visible = false;
+                    VCChannelConstPanel.Visible = false;
+                    VCDelayPanel.Visible = false;
+                    ROIVCPanel.Visible = true;
                     break;
             }
         }
@@ -281,7 +301,7 @@ namespace Omniscient
             if (siteManChanged)
             {
                 main.ClearPanels();
-                main.siteMan.Reload();
+                if (main.siteMan.Reload() != ReturnCode.SUCCESS) MessageBox.Show("Warning: Bad trouble loading the site manager!");
                 if (main.presetMan.Reload() != ReturnCode.SUCCESS) MessageBox.Show("Warning: Bad trouble loading the preset manager!");
                 main.UpdateSitesTree();
             }
@@ -347,6 +367,9 @@ namespace Omniscient
                 case "Delay":
                     chan.SetVirtualChannelType(VirtualChannel.VirtualChannelType.DELAY);
                     break;
+                case "ROI":
+                    chan.SetVirtualChannelType(VirtualChannel.VirtualChannelType.ROI);
+                    break;
                 default:
                     MessageBox.Show("Invalid virtual channel type!");
                     return;
@@ -401,6 +424,40 @@ namespace Omniscient
                             MessageBox.Show("Invalid delay time unit!");
                             return;
                     }
+                    break;
+                case "ROI":
+                    ROIChannel roiChan = (ROIChannel)chan;
+                    ROI roi = roiChan.GetROI();
+                    try
+                    {
+                        roi.SetROIStart(double.Parse(ROIStartTextBox.Text));
+                        roi.SetROIEnd(double.Parse(ROIEndTextBox.Text));
+                        roi.SetBG1Start(double.Parse(BG1StartTextBox.Text));
+                        roi.SetBG1End(double.Parse(BG1EndTextBox.Text));
+                        roi.SetBG2Start(double.Parse(BG2StartTextBox.Text));
+                        roi.SetBG2End(double.Parse(BG2EndTextBox.Text));
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Invalid ROI or BG bounds!");
+                        return;
+                    }
+                    switch(ROIBackgroundComboBox.Text)
+                    {
+                        case "None":
+                            roi.SetBGType(ROI.BG_Type.NONE);
+                            break;
+                        case "Flat":
+                            roi.SetBGType(ROI.BG_Type.FLAT);
+                            break;
+                        case "Linear":
+                            roi.SetBGType(ROI.BG_Type.LINEAR);
+                            break;
+                        default:
+                            MessageBox.Show("Invalid background type!");
+                            return;
+                    }
+                    roiChan.SetROI(roi);
                     break;
                 default:
                     MessageBox.Show("Invalid virtual channel type!");
@@ -475,7 +532,7 @@ namespace Omniscient
                 MessageBox.Show("Use the Event Manager to edit events.");
                 return;
             }
-            siteMan.Save();
+            if (siteMan.Save() != ReturnCode.SUCCESS) MessageBox.Show("Bad trouble saving the site manager!");
             UpdateSitesTree();
             siteManChanged = true;
             SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(nodeName, true)[0];
@@ -842,6 +899,33 @@ namespace Omniscient
 
         }
 
+        private void PopulateROIVCPanel(VirtualChannel chan, Instrument inst)
+        {
+            ROIChannel roiChan = (ROIChannel)chan;
+            ROI roi = roiChan.GetROI();
+            ROIStartTextBox.Text = roi.GetROIStart().ToString();
+            ROIEndTextBox.Text = roi.GetROIEnd().ToString();
+            
+            switch(roiChan.GetROI().GetBGType())
+            {
+                case ROI.BG_Type.NONE:
+                    ROIBackgroundComboBox.Text = "None";
+                    break;
+                case ROI.BG_Type.FLAT:
+                    ROIBackgroundComboBox.Text = "Flat";
+                    break;
+                case ROI.BG_Type.LINEAR:
+                    ROIBackgroundComboBox.Text = "Linear";
+                    break;
+            }
+
+            BG1StartTextBox.Text = roi.GetBG1Start().ToString();
+            BG1EndTextBox.Text = roi.GetBG1End().ToString();
+            BG2StartTextBox.Text = roi.GetBG2Start().ToString();
+            BG2EndTextBox.Text = roi.GetBG2End().ToString();
+            
+        }
+
         private void VirtualChannelTypeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             Instrument inst = (Instrument)SitesTreeView.SelectedNode.Tag;
@@ -860,6 +944,7 @@ namespace Omniscient
                     VCTwoChannelPanel.Visible = true;
                     VCChannelConstPanel.Visible = false;
                     VCDelayPanel.Visible = false;
+                    ROIVCPanel.Visible = false;
                     break;
                 case "Add Constant":
                 case "Scale":
@@ -867,12 +952,34 @@ namespace Omniscient
                     VCTwoChannelPanel.Visible = false;
                     VCChannelConstPanel.Visible = true;
                     VCDelayPanel.Visible = false;
+                    ROIVCPanel.Visible = false;
                     break;
                 case "Delay":
                     PopulateDelayPanel(chan, inst);
                     VCTwoChannelPanel.Visible = false;
                     VCChannelConstPanel.Visible = false;
                     VCDelayPanel.Visible = true;
+                    ROIVCPanel.Visible = false;
+                    break;
+                case "ROI":
+                    if (!(chan is ROIChannel))
+                    {
+                        DialogResult dialogResult = MessageBox.Show("Are you sure you want to switch virtual channel to a ROI?\nThis will overwrite the current virutal channel.", "Switch to ROI", MessageBoxButtons.YesNo);
+                        if (dialogResult == DialogResult.No)
+                        {
+                            VirtualChannelTypeComboBox.Text = VCTypeToString(chan.GetVirtualChannelType());
+                            return;
+                        }
+                        inst.GetVirtualChannels().Remove(chan);
+                        ROIChannel roiChannel = new ROIChannel(chan.GetName(), (MCAInstrument)inst, Channel.ChannelType.DURATION_VALUE);
+                        inst.GetVirtualChannels().Add(roiChannel);
+                        chan = roiChannel;
+                    }
+                    PopulateROIVCPanel(chan, inst);
+                    VCTwoChannelPanel.Visible = false;
+                    VCChannelConstPanel.Visible = false;
+                    VCDelayPanel.Visible = false;
+                    ROIVCPanel.Visible = true;
                     break;
                 default:
                     MessageBox.Show("Invalid virtual channel type!");
