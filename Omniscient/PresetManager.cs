@@ -158,13 +158,13 @@ namespace Omniscient
                             }
                             foreach (EventGenerator eventGenerator in sys.GetEventGenerators())
                             {
-                                xmlWriter.WriteStartElement("EventGenerator");
-                                xmlWriter.WriteAttributeString("name", eventGenerator.GetName());
                                 if (preset.GetActiveEventGenerators().Contains(eventGenerator))
                                 {
+                                    xmlWriter.WriteStartElement("EventGenerator");
+                                    xmlWriter.WriteAttributeString("name", eventGenerator.GetName());
                                     xmlWriter.WriteAttributeString("checked", "true");
+                                    xmlWriter.WriteEndElement();
                                 }
-                                xmlWriter.WriteEndElement();
                             }
                             xmlWriter.WriteEndElement();
                         }
