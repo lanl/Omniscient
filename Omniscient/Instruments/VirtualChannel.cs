@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Omniscient.Instruments
+namespace Omniscient
 {
     /// <summary>
     /// Creates a channel using data from other channels.</summary>

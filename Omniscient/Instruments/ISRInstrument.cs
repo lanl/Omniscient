@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.IO;
 using Omniscient.Parsers;
 
-namespace Omniscient.Instruments
+namespace Omniscient
 {
     public class ISRInstrument : Instrument
     {

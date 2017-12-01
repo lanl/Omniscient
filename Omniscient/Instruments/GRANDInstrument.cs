@@ -7,7 +7,7 @@ using System.IO;
 
 using Omniscient.Parsers;
 
-namespace Omniscient.Instruments
+namespace Omniscient
 {
     class GRANDInstrument : Instrument
     {

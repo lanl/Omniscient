@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Omniscient.Events
+namespace Omniscient
 {
     /// <summary>
     /// Generates events when events it watches for occur in coincidence.

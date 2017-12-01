@@ -4,9 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using Omniscient.Instruments;
-using Omniscient.Events;
-
 namespace Omniscient
 {
     public class Preset

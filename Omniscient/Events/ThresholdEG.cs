@@ -4,9 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using Omniscient.Instruments;
-
-namespace Omniscient.Events
+namespace Omniscient
 {
     /// <summary>
     /// Generates events during which the channel value is at or above the threshold.
@@ -109,7 +107,7 @@ namespace Omniscient.Events
         public Channel GetChannel() { return channel; }
         public double GetThreshold() { return threshold; }
         public TimeSpan GetDebounceTime() { return debounceTime; }
-        public List<Event> GetEvents() { return events; }
+        new public List<Event> GetEvents() { return events; }
 
         public override string GetName()
         {

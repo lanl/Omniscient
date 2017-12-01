@@ -17,8 +17,6 @@ using LiveCharts.Geared;
 using LiveCharts.Configurations;
 
 using Omniscient.Parsers;
-using Omniscient.Instruments;
-using Omniscient.Events;
 
 namespace Omniscient
 {
@@ -238,16 +236,12 @@ namespace Omniscient
             {
                 case 0:
                     return StripChart0;
-                    break;
                 case 1:
                     return StripChart1;
-                    break;
                 case 2:
                     return StripChart2;
-                    break;
                 default:
                     return StripChart3;
-                    break;
             }
         }
 

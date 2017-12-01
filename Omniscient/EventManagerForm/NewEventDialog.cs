@@ -8,8 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-using Omniscient.Instruments;
-
 namespace Omniscient
 {
     public partial class NewEventDialog : Form

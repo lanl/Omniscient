@@ -4,9 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using Omniscient.Instruments;
-
-namespace Omniscient.Events
+namespace Omniscient
 {
     public class Event
     {

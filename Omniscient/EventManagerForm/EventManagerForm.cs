@@ -8,9 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-using Omniscient.Instruments;
-using Omniscient.Events;
-
 namespace Omniscient
 {
     public partial class EventManagerForm : Form
@@ -114,8 +111,8 @@ namespace Omniscient
         public void SetupActionGroupBox()
         {
             EventGenerator eg = (EventGenerator)SitesTreeView.SelectedNode.Tag;
-            Events.Action action = null;
-            foreach(Events.Action otherAction in eg.GetActions())
+            Action action = null;
+            foreach(Action otherAction in eg.GetActions())
             {
                 if (otherAction.GetName() == ActionsComboBox.Text)
                     action = otherAction;
@@ -290,7 +287,7 @@ namespace Omniscient
                 ActionsComboBox.Text = "";
                 if (eg.GetActions().Count > 0)
                 {
-                    foreach (Events.Action action in eg.GetActions())
+                    foreach (Action action in eg.GetActions())
                         ActionsComboBox.Items.Add(action.GetName());
                     ActionsComboBox.Text = eg.GetActions()[0].GetName();
                     SetupActionGroupBox();
@@ -500,7 +497,7 @@ namespace Omniscient
             SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(eg.GetName(), true)[0];
         }
 
-        private void SaveAction(EventGenerator eg, Events.Action action)
+        private void SaveAction(EventGenerator eg, Action action)
         {
             if (action.GetName() != ActionsComboBox.Text && siteMan.ContainsName(ActionsComboBox.Text))
             {
@@ -522,7 +519,7 @@ namespace Omniscient
         private void SaveButton_Click(object sender, EventArgs e)
         {
             TreeNode node = SitesTreeView.SelectedNode;
-            Events.Action act = null;
+            Action act = null;
             if (node.Tag is EventGenerator)
             {
                 EventWatcher eventWatcher = (EventWatcher)node.Parent.Tag;
@@ -690,7 +687,7 @@ namespace Omniscient
                     coinkEG.SetMinDifference(minDiff);
                 }
 
-                foreach(Events.Action action in eg.GetActions())
+                foreach(Action action in eg.GetActions())
                 {
                     if(action.GetName() == ActionsComboBox.Text)
                     {
@@ -740,8 +737,8 @@ namespace Omniscient
         private void RemoveActionButton_Click(object sender, EventArgs e)
         {
             EventGenerator eg = (EventGenerator)SitesTreeView.SelectedNode.Tag;
-            Events.Action action = null;
-            foreach (Events.Action otherAction in eg.GetActions())
+            Action action = null;
+            foreach (Action otherAction in eg.GetActions())
             {
                 if (otherAction.GetName() == ActionsComboBox.Text)
                     action = otherAction;

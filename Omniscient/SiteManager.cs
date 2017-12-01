@@ -6,9 +6,6 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.Windows.Forms;
 
-using Omniscient.Instruments;
-using Omniscient.Events;
-
 namespace Omniscient
 {
     public class SiteManager
@@ -42,7 +39,7 @@ namespace Omniscient
                         foreach (EventGenerator eventGenerator in sys.GetEventGenerators())
                         {
                             if (eventGenerator.GetName() == name) return true;
-                            foreach (Events.Action action in eventGenerator.GetActions())
+                            foreach (Action action in eventGenerator.GetActions())
                                 if (action.GetName() == name) return true;
                         }
                     }
@@ -96,7 +93,6 @@ namespace Omniscient
                                         break;
                                     default:
                                         return ReturnCode.CORRUPTED_FILE;
-                                        break;
                                 }
                                 if (!newInstrument.Equals(null))
                                 {
@@ -289,7 +285,7 @@ namespace Omniscient
                                 foreach (XmlNode actionNode in eventNode.ChildNodes)
                                 {
                                     if (actionNode.Name != "Action") return ReturnCode.CORRUPTED_FILE;
-                                    Events.Action action;
+                                    Action action;
                                     switch(actionNode.Attributes["type"]?.InnerText)
                                     {
                                         case "command":
@@ -430,7 +426,7 @@ namespace Omniscient
                                 xmlWriter.WriteAttributeString("window", coinkEg.GetWindow().TotalSeconds.ToString());
                                 xmlWriter.WriteAttributeString("min_difference", coinkEg.GetMinDifference().TotalSeconds.ToString());
                             }
-                            foreach(Events.Action action in eg.GetActions())
+                            foreach(Action action in eg.GetActions())
                             {
                                 xmlWriter.WriteStartElement("Action");
                                 xmlWriter.WriteAttributeString("name", action.GetName());

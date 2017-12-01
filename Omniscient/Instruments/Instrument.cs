@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 
 
-namespace Omniscient.Instruments
+namespace Omniscient
 {
     public abstract class Instrument
     {

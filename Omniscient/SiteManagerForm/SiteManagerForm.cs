@@ -8,9 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-using Omniscient.Instruments;
-using Omniscient.Events;
-
 namespace Omniscient
 {
     public partial class SiteManagerForm : Form

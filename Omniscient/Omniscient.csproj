@@ -62,6 +62,11 @@
     <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Analysis\Analysis.cs" />
+    <Compile Include="Analysis\AnalysisAction.cs" />
+    <Compile Include="Analysis\AnalysisResult.cs" />
+    <Compile Include="Analysis\DataCompiler.cs" />
+    <Compile Include="Analysis\ResultParser.cs" />
     <Compile Include="Controls\ResponsiveTreeView.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -103,6 +108,7 @@
     <Compile Include="Instruments\ISRInstrument.cs" />
     <Compile Include="Instruments\ROIChannel.cs" />
     <Compile Include="Instruments\VirtualChannel.cs" />
+    <Compile Include="NuclearComposition.cs" />
     <Compile Include="ROI.cs" />
     <Compile Include="SiteManagerForm\InstrumentTypeDialog.cs">
       <SubType>Form</SubType>
