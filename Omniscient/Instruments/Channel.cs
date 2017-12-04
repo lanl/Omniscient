@@ -73,6 +73,19 @@ namespace Omniscient
             files = fileArray.ToList();
         }
 
+        public List<string> GetFiles(DateTime start, DateTime end)
+        {
+            List<string> outFiles = new List<string>();
+            for(int i=0; i<files.Count(); i++)
+            {
+                if(timeStamps[i] >= start && timeStamps[i] <= end)
+                {
+                    if (!outFiles.Contains(files[i])) outFiles.Add(files[i]);
+                }
+            }
+            return outFiles;
+        }
+
         public void SetName(string newName)
         {
             name = newName;

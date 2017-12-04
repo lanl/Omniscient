@@ -10,13 +10,12 @@ namespace Omniscient
     {
         string name;
         string command;
-        List<string> inputFiles;
         string resultsFile;
         ResultParser resultParser;
 
         List<AnalysisResult> results;
 
-        public void Run()
+        public void Run(List<string> inputsFiles)
         {
 
         }

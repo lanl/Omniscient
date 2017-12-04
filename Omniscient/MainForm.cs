@@ -16,8 +16,6 @@ using LiveCharts.Defaults;
 using LiveCharts.Geared;
 using LiveCharts.Configurations;
 
-using Omniscient.Parsers;
-
 namespace Omniscient
 {
     /// <summary>

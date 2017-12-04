@@ -8,9 +8,12 @@ namespace Omniscient
 {
     public class Event
     {
+        List<AnalysisResult> analysisResults;
+
         public Event(EventGenerator myGenerator)
         {
             eventGenerator = myGenerator;
+            analysisResults = new List<AnalysisResult>();
         }
 
         public Event(EventGenerator myGenerator, DateTime start, DateTime end)
@@ -29,6 +32,9 @@ namespace Omniscient
 
         string comment;
 
+        public void AddAnalysisResult(AnalysisResult result) { analysisResults.Add(result); }
+        public void AddAnalysisResults(List<AnalysisResult> results) { analysisResults.AddRange(results); }
+
         public TimeSpan GetDuration() { return EndTime - StartTime; }
 
         public void SetStartTime(DateTime start) { StartTime = start; }
@@ -43,5 +49,6 @@ namespace Omniscient
         public double GetMaxValue() { return maxValue; }
         public string GetComment() { return comment; }
         public EventGenerator GetEventGenerator() { return eventGenerator; }
+        public List<AnalysisResult> GetAnalysisResults() { return analysisResults; }
     }
 }

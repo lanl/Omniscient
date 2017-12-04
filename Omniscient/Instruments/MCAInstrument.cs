@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
-using Omniscient.Parsers;
 
 namespace Omniscient
 {
@@ -48,7 +47,7 @@ namespace Omniscient
                 string fileAbrev = file.Substring(file.LastIndexOf('\\') + 1);
                 if (fileAbrev.Substring(fileAbrev.Length - 4).ToLower() == ".chn" && fileAbrev.ToLower().StartsWith(filePrefix.ToLower()))
                 {
-                    if (chnParser.ParseFile(file) == ReturnCode.SUCCESS)
+                    if (chnParser.ParseSpectrumFile(file) == ReturnCode.SUCCESS)
                     {
                         chnFileList.Add(file);
                         chnDateList.Add(chnParser.GetStartDateTime());
@@ -81,7 +80,7 @@ namespace Omniscient
 
             for (int i = startIndex; i <= endIndex; ++i)
             {
-                returnCode = chnParser.ParseFile(chnFiles[i]);
+                returnCode = chnParser.ParseSpectrumFile(chnFiles[i]);
                 time = chnParser.GetStartDateTime();
                 duration = TimeSpan.FromSeconds(chnParser.GetRealTime());
 

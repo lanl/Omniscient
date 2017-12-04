@@ -14,8 +14,6 @@ using LiveCharts.WinForms;
 using LiveCharts.Defaults;
 using LiveCharts.Geared;
 
-using Omniscient.Parsers;
-
 namespace Omniscient
 {
     public partial class Inspectrum : Form
@@ -68,7 +66,7 @@ namespace Omniscient
 
         public void LoadCHNFile(string fileName)
         {
-            if (chnParser.ParseFile(fileName) == ReturnCode.SUCCESS)
+            if (chnParser.ParseSpectrumFile(fileName) == ReturnCode.SUCCESS)
             {
                 // Populate text fields
                 FileNameTextBox.Text = fileName;

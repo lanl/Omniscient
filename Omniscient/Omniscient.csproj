@@ -67,6 +67,7 @@
     <Compile Include="Analysis\AnalysisResult.cs" />
     <Compile Include="Analysis\DataCompiler.cs" />
     <Compile Include="Analysis\ResultParser.cs" />
+    <Compile Include="Analysis\SpectrumCompiler.cs" />
     <Compile Include="Controls\ResponsiveTreeView.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -109,6 +110,9 @@
     <Compile Include="Instruments\ROIChannel.cs" />
     <Compile Include="Instruments\VirtualChannel.cs" />
     <Compile Include="NuclearComposition.cs" />
+    <Compile Include="Parsers\CHNWriter.cs" />
+    <Compile Include="Parsers\SpectrumParser.cs" />
+    <Compile Include="Parsers\SpectrumWriter.cs" />
     <Compile Include="ROI.cs" />
     <Compile Include="SiteManagerForm\InstrumentTypeDialog.cs">
       <SubType>Form</SubType>

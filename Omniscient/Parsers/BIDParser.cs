@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Globalization;
 
-namespace Omniscient.Parsers
+namespace Omniscient
 {
     public struct BIDRecord
     {

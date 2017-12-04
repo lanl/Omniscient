@@ -38,6 +38,21 @@ namespace Omniscient
             return bins;
         }
 
+        public ReturnCode Add(Spectrum spectrum)
+        {
+            if (spectrum.GetNChannels() != counts.Length) return ReturnCode.FAIL;
+            int[] otherCounts = spectrum.GetCounts();
+            for(int i=0; i<counts.Length; i++)
+            {
+                counts[i] += otherCounts[i];
+            }
+            realTime += spectrum.GetRealTime();
+            liveTime += spectrum.GetLiveTime();
+            return ReturnCode.SUCCESS;
+        }
+
+        public int GetNChannels() { return counts.Length; }
+
         public double GetCalibrationZero() { return calibrationZero; }
         public double GetCalibrationSlope() { return calibrationSlope; }
         public double GetRealTime() { return realTime; }

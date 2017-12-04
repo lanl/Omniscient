@@ -8,11 +8,13 @@ namespace Omniscient
 {
     public abstract class DataCompiler
     {
-        DateTime startTime;
-        DateTime endTime;
-        string targetFileName;
-        List<string> sourceFiles;
+        string name;
 
-        public abstract void Compile();
+        public DataCompiler(string newName) { name = newName; }
+
+        public abstract ReturnCode Compile(List<string> sourceFiles, DateTime start, DateTime end, string targetFileName);
+        
+        public void SetName(string newName) { name = newName; }
+        public string GetName() { return name; }
     }
 }

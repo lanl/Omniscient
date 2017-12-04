@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Globalization;
 
-namespace Omniscient.Parsers
+namespace Omniscient
 {
-    public class CHNParser
+    public class CHNParser : SpectrumParser
     {
         private string fileName;
         private Int16 fileTypeCheck;
@@ -51,7 +51,7 @@ namespace Omniscient.Parsers
             sampleDesc = "";
         }
 
-        public ReturnCode ParseFile(string newFileName)
+        public override ReturnCode ParseSpectrumFile(string newFileName)
         {
             fileName = newFileName;
             FileStream readStream;
@@ -116,7 +116,7 @@ namespace Omniscient.Parsers
             return ReturnCode.SUCCESS;
         }
 
-        public Spectrum GetSpectrum()
+        public override Spectrum GetSpectrum()
         {
             Spectrum spec = new Spectrum(zero, keVPerChannel, counts);
             spec.SetRealTime(realTime);
