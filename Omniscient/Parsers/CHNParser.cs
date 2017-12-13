@@ -121,6 +121,7 @@ namespace Omniscient
             Spectrum spec = new Spectrum(zero, keVPerChannel, counts);
             spec.SetRealTime(realTime);
             spec.SetLiveTime(liveTime);
+            spec.SetStartTime(startDateTime);
             return spec;
         }
 

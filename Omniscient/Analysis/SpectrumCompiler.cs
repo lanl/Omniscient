@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Omniscient
 {
-    class SpectrumCompiler : DataCompiler
+    public class SpectrumCompiler : DataCompiler
     {
         SpectrumParser spectrumParser;
         SpectrumWriter spectrumWriter;
@@ -27,8 +27,7 @@ namespace Omniscient
                 spectrumParser.ParseSpectrumFile(sourceFiles[f]);
                 result.Add(spectrumParser.GetSpectrum());
             };
-
-            spectrumWriter.SetDateTime(start);
+            result.SetStartTime(start);
             spectrumWriter.SetSpectrum(result);
             spectrumWriter.WriteSpectrumFile(targetFileName);
             return ReturnCode.SUCCESS;

@@ -8,12 +8,10 @@ namespace Omniscient
 {
     public abstract class SpectrumWriter
     {
-        Spectrum spectrum;
-        DateTime dateTime;
+        protected Spectrum spectrum;
 
         public abstract ReturnCode WriteSpectrumFile(string fileName);
 
         public void SetSpectrum(Spectrum spec) { spectrum = spec; }
-        public void SetDateTime(DateTime specTime) { dateTime = specTime; }
     }
 }

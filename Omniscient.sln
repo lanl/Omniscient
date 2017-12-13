@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.26730.10
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Omniscient", "Omniscient\Omniscient.csproj", "{BA230584-CA0C-4A1A-B108-55FA18C8BE61}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OmniscientTests", "OmniscientTests\OmniscientTests.csproj", "{98CA5C2D-84F2-4B28-A7D2-5BE24ECF87B0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{BA230584-CA0C-4A1A-B108-55FA18C8BE61}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BA230584-CA0C-4A1A-B108-55FA18C8BE61}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BA230584-CA0C-4A1A-B108-55FA18C8BE61}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98CA5C2D-84F2-4B28-A7D2-5BE24ECF87B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98CA5C2D-84F2-4B28-A7D2-5BE24ECF87B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98CA5C2D-84F2-4B28-A7D2-5BE24ECF87B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98CA5C2D-84F2-4B28-A7D2-5BE24ECF87B0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -8,6 +8,7 @@ namespace Omniscient
 {
     public class Spectrum
     {
+        DateTime startTime;
         double calibrationZero;
         double calibrationSlope;
         private double realTime;
@@ -58,11 +59,13 @@ namespace Omniscient
         public double GetRealTime() { return realTime; }
         public double GetLiveTime() { return liveTime; }
         public int[] GetCounts() { return counts; }
+        public DateTime GetStartTime() { return startTime; }
 
         public void SetCalibrationZero(double zero) { calibrationZero = zero; }
         public void SetCalibrationSlope(double slope) { calibrationSlope = slope; }
         public void SetRealTime(double newTime) { realTime = newTime; }
         public void SetLiveTime(double newTime) { liveTime = newTime; }
         public void SetCounts(int[] newCounts) { counts = newCounts; }
+        public void SetStartTime(DateTime dateTime) { startTime = dateTime; }
     }
 }
