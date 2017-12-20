@@ -1318,16 +1318,17 @@ namespace Omniscient
             events.Sort((x, y) => x.GetStartTime().CompareTo(y.GetStartTime()));
 
             EventGridView.Rows.Clear();
-            foreach (Event eve in events)
+            for (int i=0; i < events.Count(); i++)
             {
                 EventGridView.Rows.Add(
-                    eve.GetEventGenerator().GetName(),
-                    eve.GetStartTime().ToString("MM/dd/yy HH:mm:ss"),
-                    eve.GetEndTime().ToString("MM/dd/yy HH:mm:ss"),
-                    eve.GetDuration().TotalSeconds,
-                    eve.GetMaxValue(),
-                    eve.GetMaxTime().ToString("MM/dd/yy HH:mm:ss"),
-                    eve.GetComment());
+                    events[i].GetEventGenerator().GetName(),
+                    events[i].GetStartTime().ToString("MM/dd/yy HH:mm:ss"),
+                    events[i].GetEndTime().ToString("MM/dd/yy HH:mm:ss"),
+                    events[i].GetDuration().TotalSeconds,
+                    events[i].GetMaxValue(),
+                    events[i].GetMaxTime().ToString("MM/dd/yy HH:mm:ss"),
+                    events[i].GetComment());
+                EventGridView.Rows[i].Tag = events[i];
             }
             if (HighlightEventsCheckBox.Checked)
                 DrawSections();
@@ -1348,6 +1349,15 @@ namespace Omniscient
         {
             Inspectacles inspectacles = new Inspectacles();
             inspectacles.Show();
+        }
+
+        private void EventGridView_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (EventGridView.Rows[e.RowIndex].Tag is Event)
+            {
+                EventViewerForm eventViewerForm = new EventViewerForm((Event)EventGridView.Rows[e.RowIndex].Tag);
+                eventViewerForm.Show();
+            }
         }
     }
 }

@@ -90,6 +90,12 @@
     <Compile Include="Events\EventGenerator.cs" />
     <Compile Include="Events\EventWatcher.cs" />
     <Compile Include="Events\ThresholdEG.cs" />
+    <Compile Include="EventViewerForm\EventViewerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="EventViewerForm\EventViewerForm.Designer.cs">
+      <DependentUpon>EventViewerForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Facility.cs" />
     <Compile Include="Inspectacles.cs">
       <SubType>Form</SubType>
@@ -111,6 +117,7 @@
     <Compile Include="Instruments\VirtualChannel.cs" />
     <Compile Include="NuclearComposition.cs" />
     <Compile Include="Parsers\CHNWriter.cs" />
+    <Compile Include="Parsers\FRAMParser.cs" />
     <Compile Include="Parsers\SpectrumParser.cs" />
     <Compile Include="Parsers\SpectrumWriter.cs" />
     <Compile Include="ROI.cs" />
@@ -161,6 +168,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="EventManagerForm\EventTypeDialog.resx">
       <DependentUpon>EventTypeDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EventViewerForm\EventViewerForm.resx">
+      <DependentUpon>EventViewerForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Inspectacles.resx">
       <DependentUpon>Inspectacles.cs</DependentUpon>

@@ -46,6 +46,7 @@ namespace Omniscient
             this.SiteManagerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.EventManagerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.launchInspectrumToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.launchInspectaclesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ChannelsLabelPanel = new System.Windows.Forms.Panel();
             this.label5 = new System.Windows.Forms.Label();
@@ -84,6 +85,7 @@ namespace Omniscient
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.LeftPanel = new System.Windows.Forms.Panel();
+            this.SitesTreeView = new Omniscient.Controls.ResponsiveTreeView();
             this.TreeImageList = new System.Windows.Forms.ImageList(this.components);
             this.TopLeftPanel = new System.Windows.Forms.Panel();
             this.PresetSaveButton = new System.Windows.Forms.Button();
@@ -111,8 +113,6 @@ namespace Omniscient
             this.EventsWarningLabel = new System.Windows.Forms.Label();
             this.GenerateEventsButton = new System.Windows.Forms.Button();
             this.ButtonImageList = new System.Windows.Forms.ImageList(this.components);
-            this.SitesTreeView = new Omniscient.Controls.ResponsiveTreeView();
-            this.launchInspectaclesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.StripChartControlPanel.SuspendLayout();
             this.StripChartsPanel.SuspendLayout();
             this.StripChartsLayoutPanel.SuspendLayout();
@@ -274,6 +274,13 @@ namespace Omniscient
             this.launchInspectrumToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.launchInspectrumToolStripMenuItem.Text = "Launch Inspectrum";
             this.launchInspectrumToolStripMenuItem.Click += new System.EventHandler(this.launchInspectrumToolStripMenuItem_Click);
+            // 
+            // launchInspectaclesToolStripMenuItem
+            // 
+            this.launchInspectaclesToolStripMenuItem.Name = "launchInspectaclesToolStripMenuItem";
+            this.launchInspectaclesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.launchInspectaclesToolStripMenuItem.Text = "Launch Inspectacles";
+            this.launchInspectaclesToolStripMenuItem.Click += new System.EventHandler(this.launchInspectaclesToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
@@ -671,6 +678,20 @@ namespace Omniscient
             this.LeftPanel.Size = new System.Drawing.Size(200, 667);
             this.LeftPanel.TabIndex = 5;
             // 
+            // SitesTreeView
+            // 
+            this.SitesTreeView.CheckBoxes = true;
+            this.SitesTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.SitesTreeView.ImageIndex = 0;
+            this.SitesTreeView.ImageList = this.TreeImageList;
+            this.SitesTreeView.Location = new System.Drawing.Point(5, 68);
+            this.SitesTreeView.Name = "SitesTreeView";
+            this.SitesTreeView.SelectedImageIndex = 0;
+            this.SitesTreeView.ShowNodeToolTips = true;
+            this.SitesTreeView.Size = new System.Drawing.Size(190, 528);
+            this.SitesTreeView.TabIndex = 11;
+            this.SitesTreeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.SitesTreeView_AfterCheck);
+            // 
             // TreeImageList
             // 
             this.TreeImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("TreeImageList.ImageStream")));
@@ -814,6 +835,7 @@ namespace Omniscient
             this.EventGridView.Name = "EventGridView";
             this.EventGridView.Size = new System.Drawing.Size(735, 184);
             this.EventGridView.TabIndex = 2;
+            this.EventGridView.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.EventGridView_CellDoubleClick);
             // 
             // EventGenerator
             // 
@@ -911,27 +933,6 @@ namespace Omniscient
             this.ButtonImageList.Images.SetKeyName(1, "DownArrow");
             this.ButtonImageList.Images.SetKeyName(2, "Plus");
             this.ButtonImageList.Images.SetKeyName(3, "Delete");
-            // 
-            // SitesTreeView
-            // 
-            this.SitesTreeView.CheckBoxes = true;
-            this.SitesTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SitesTreeView.ImageIndex = 0;
-            this.SitesTreeView.ImageList = this.TreeImageList;
-            this.SitesTreeView.Location = new System.Drawing.Point(5, 68);
-            this.SitesTreeView.Name = "SitesTreeView";
-            this.SitesTreeView.SelectedImageIndex = 0;
-            this.SitesTreeView.ShowNodeToolTips = true;
-            this.SitesTreeView.Size = new System.Drawing.Size(190, 528);
-            this.SitesTreeView.TabIndex = 11;
-            this.SitesTreeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.SitesTreeView_AfterCheck);
-            // 
-            // launchInspectaclesToolStripMenuItem
-            // 
-            this.launchInspectaclesToolStripMenuItem.Name = "launchInspectaclesToolStripMenuItem";
-            this.launchInspectaclesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.launchInspectaclesToolStripMenuItem.Text = "Launch Inspectacles";
-            this.launchInspectaclesToolStripMenuItem.Click += new System.EventHandler(this.launchInspectaclesToolStripMenuItem_Click);
             // 
             // MainForm
             // 
