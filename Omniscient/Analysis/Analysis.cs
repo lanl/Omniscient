@@ -28,6 +28,8 @@ namespace Omniscient
 
         public ReturnCode Run(List<string> inputFiles)
         {
+            results.Clear();
+
             // Replace variables in the command string with values
             string fullCommand = command;
             string symbol;
@@ -50,13 +52,20 @@ namespace Omniscient
             process.WaitForExit();
             process.Close();
 
+            // Get results
+            results.Add(resultParser.Parse(resultsFile));
+
             return ReturnCode.SUCCESS;
         }
 
         public List<AnalysisResult> GetResults() { return results; }
 
         public void SetCommand(string newCommand) { command = newCommand; }
+        public void SetResultsFile(string newFile) { resultsFile = newFile; }
+        public void SetResultParser(ResultParser newResultParser) { resultParser = newResultParser; }
 
         public string GetCommand() { return command; }
+        public string GetResultsFile() { return resultsFile; }
+        public ResultParser GetResultParser() { return resultParser; }
     }
 }

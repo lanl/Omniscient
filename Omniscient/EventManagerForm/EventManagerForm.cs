@@ -532,6 +532,7 @@ namespace Omniscient
                         }
                     }
                     analysisAction.GetAnalysis().SetCommand(AnalysisCommandTextBox.Text);
+                    analysisAction.GetAnalysis().SetResultsFile(ResultFileTextBox.Text);
                     break;
                 case "Command":
                     ((CommandAction)action).SetCommand(ActionCommandTextBox.Text);
@@ -801,6 +802,7 @@ namespace Omniscient
             PopulateAnalysisChannelCombo((DetectionSystem)node.Parent.Tag);
             AnalysisChannelComboBox.Text = action.GetChannels()[0].GetName();
             AnalysisCommandTextBox.Text = action.GetAnalysis().GetCommand();
+            ResultFileTextBox.Text = action.GetAnalysis().GetResultsFile();
         }
 
 
@@ -830,6 +832,7 @@ namespace Omniscient
                         AnalysisAction analysisAction = new AnalysisAction(action.GetName());
                         analysisAction.AddChannel(((DetectionSystem)eventWatcher).GetInstruments()[0].GetChannels()[0]);
                         analysisAction.GetDataCompilers().Add(new SpectrumCompiler("", new CHNParser(), new CHNWriter()));
+                        analysisAction.GetAnalysis().SetResultParser(new FRAMPlutoniumResultParser());
 
                         eg.GetActions().Add(analysisAction);
                         action = analysisAction;

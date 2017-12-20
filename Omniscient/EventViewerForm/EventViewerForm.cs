@@ -29,6 +29,14 @@ namespace Omniscient
             MaxValueTextBox.Text = eve.GetMaxValue().ToString();
             MaxTimeTextBox.Text = eve.GetMaxTime().ToString("MM/dd/yy HH:mm:ss");
             CommentTextBox.Text = eve.GetComment();
+
+            if(eve.GetAnalysisResults().Count() > 0)
+            {
+                NuclearCompositionPanel nuclearCompositionPanel = new NuclearCompositionPanel();
+                nuclearCompositionPanel.Composition = eve.GetAnalysisResults()[0].Composition;
+                ResultsPanel.Controls.Add(nuclearCompositionPanel);
+                nuclearCompositionPanel.UpdateFields();
+            }
         }
     }
 }

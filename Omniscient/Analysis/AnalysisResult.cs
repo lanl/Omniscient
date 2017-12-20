@@ -8,10 +8,14 @@ namespace Omniscient
 {
     public class AnalysisResult
     {
-        string description;
-        DateTime analysisDate;
-        NuclearComposition composition;
-        DateTime dataStart;
-        DateTime dataEnd;
+        public string Description { get; set; }
+        public DateTime AnalysisDate { get; set; }
+        public NuclearComposition Composition { get; set; }
+        public DateTime DataStart { get; set; }
+        public DateTime DataEnd { get; set; }
+
+        public AnalysisResult()
+        {
+        }
     }
 }

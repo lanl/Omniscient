@@ -42,6 +42,7 @@
             this.MaxValueTextBox = new System.Windows.Forms.TextBox();
             this.MaxTimeTextBox = new System.Windows.Forms.TextBox();
             this.CommentTextBox = new System.Windows.Forms.TextBox();
+            this.ResultsPanel = new System.Windows.Forms.Panel();
             this.SuspendLayout();
             // 
             // label1
@@ -112,7 +113,7 @@
             this.EventGeneratorTextBox.Location = new System.Drawing.Point(108, 21);
             this.EventGeneratorTextBox.Name = "EventGeneratorTextBox";
             this.EventGeneratorTextBox.ReadOnly = true;
-            this.EventGeneratorTextBox.Size = new System.Drawing.Size(286, 20);
+            this.EventGeneratorTextBox.Size = new System.Drawing.Size(250, 20);
             this.EventGeneratorTextBox.TabIndex = 7;
             // 
             // StartTimeTextBox
@@ -120,7 +121,7 @@
             this.StartTimeTextBox.Location = new System.Drawing.Point(107, 52);
             this.StartTimeTextBox.Name = "StartTimeTextBox";
             this.StartTimeTextBox.ReadOnly = true;
-            this.StartTimeTextBox.Size = new System.Drawing.Size(286, 20);
+            this.StartTimeTextBox.Size = new System.Drawing.Size(250, 20);
             this.StartTimeTextBox.TabIndex = 8;
             // 
             // EndTimeTextBox
@@ -128,7 +129,7 @@
             this.EndTimeTextBox.Location = new System.Drawing.Point(107, 83);
             this.EndTimeTextBox.Name = "EndTimeTextBox";
             this.EndTimeTextBox.ReadOnly = true;
-            this.EndTimeTextBox.Size = new System.Drawing.Size(286, 20);
+            this.EndTimeTextBox.Size = new System.Drawing.Size(250, 20);
             this.EndTimeTextBox.TabIndex = 9;
             // 
             // DurationTextBox
@@ -136,7 +137,7 @@
             this.DurationTextBox.Location = new System.Drawing.Point(107, 114);
             this.DurationTextBox.Name = "DurationTextBox";
             this.DurationTextBox.ReadOnly = true;
-            this.DurationTextBox.Size = new System.Drawing.Size(286, 20);
+            this.DurationTextBox.Size = new System.Drawing.Size(250, 20);
             this.DurationTextBox.TabIndex = 10;
             // 
             // MaxValueTextBox
@@ -144,7 +145,7 @@
             this.MaxValueTextBox.Location = new System.Drawing.Point(107, 145);
             this.MaxValueTextBox.Name = "MaxValueTextBox";
             this.MaxValueTextBox.ReadOnly = true;
-            this.MaxValueTextBox.Size = new System.Drawing.Size(286, 20);
+            this.MaxValueTextBox.Size = new System.Drawing.Size(250, 20);
             this.MaxValueTextBox.TabIndex = 11;
             // 
             // MaxTimeTextBox
@@ -152,7 +153,7 @@
             this.MaxTimeTextBox.Location = new System.Drawing.Point(108, 176);
             this.MaxTimeTextBox.Name = "MaxTimeTextBox";
             this.MaxTimeTextBox.ReadOnly = true;
-            this.MaxTimeTextBox.Size = new System.Drawing.Size(286, 20);
+            this.MaxTimeTextBox.Size = new System.Drawing.Size(250, 20);
             this.MaxTimeTextBox.TabIndex = 12;
             // 
             // CommentTextBox
@@ -160,14 +161,22 @@
             this.CommentTextBox.Location = new System.Drawing.Point(107, 207);
             this.CommentTextBox.Name = "CommentTextBox";
             this.CommentTextBox.ReadOnly = true;
-            this.CommentTextBox.Size = new System.Drawing.Size(286, 20);
+            this.CommentTextBox.Size = new System.Drawing.Size(250, 20);
             this.CommentTextBox.TabIndex = 13;
+            // 
+            // ResultsPanel
+            // 
+            this.ResultsPanel.Location = new System.Drawing.Point(47, 249);
+            this.ResultsPanel.Name = "ResultsPanel";
+            this.ResultsPanel.Size = new System.Drawing.Size(557, 365);
+            this.ResultsPanel.TabIndex = 14;
             // 
             // EventViewerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(405, 261);
+            this.ClientSize = new System.Drawing.Size(647, 646);
+            this.Controls.Add(this.ResultsPanel);
             this.Controls.Add(this.CommentTextBox);
             this.Controls.Add(this.MaxTimeTextBox);
             this.Controls.Add(this.MaxValueTextBox);
@@ -206,5 +215,6 @@
         private System.Windows.Forms.TextBox MaxValueTextBox;
         private System.Windows.Forms.TextBox MaxTimeTextBox;
         private System.Windows.Forms.TextBox CommentTextBox;
+        private System.Windows.Forms.Panel ResultsPanel;
     }
 }

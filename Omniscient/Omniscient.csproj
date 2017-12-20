@@ -66,6 +66,7 @@
     <Compile Include="Analysis\AnalysisAction.cs" />
     <Compile Include="Analysis\AnalysisResult.cs" />
     <Compile Include="Analysis\DataCompiler.cs" />
+    <Compile Include="Analysis\FRAMPlutoniumResultParser.cs" />
     <Compile Include="Analysis\ResultParser.cs" />
     <Compile Include="Analysis\SpectrumCompiler.cs" />
     <Compile Include="Controls\ResponsiveTreeView.cs">
@@ -95,6 +96,12 @@
     </Compile>
     <Compile Include="EventViewerForm\EventViewerForm.Designer.cs">
       <DependentUpon>EventViewerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="EventViewerForm\NuclearCompositionPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EventViewerForm\NuclearCompositionPanel.Designer.cs">
+      <DependentUpon>NuclearCompositionPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="Facility.cs" />
     <Compile Include="Inspectacles.cs">
@@ -171,6 +178,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="EventViewerForm\EventViewerForm.resx">
       <DependentUpon>EventViewerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EventViewerForm\NuclearCompositionPanel.resx">
+      <DependentUpon>NuclearCompositionPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Inspectacles.resx">
       <DependentUpon>Inspectacles.cs</DependentUpon>

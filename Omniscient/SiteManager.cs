@@ -289,17 +289,20 @@ namespace Omniscient
                                     switch(actionNode.Attributes["type"]?.InnerText)
                                     {
                                         case "Analysis":
-                                            action = new AnalysisAction(actionNode.Attributes["name"]?.InnerText);
-                                            ((AnalysisAction)action).GetAnalysis().SetCommand(actionNode.Attributes["command"]?.InnerText);
+                                            AnalysisAction analysisAction = new AnalysisAction(actionNode.Attributes["name"]?.InnerText);
+                                            analysisAction.GetAnalysis().SetCommand(actionNode.Attributes["command"]?.InnerText);
                                             foreach (Instrument inst in newSystem.GetInstruments())
                                             {
                                                 foreach (Channel ch in inst.GetChannels())
                                                 {
                                                     if (ch.GetName() == actionNode.Attributes["channel"]?.InnerText)
-                                                        ((AnalysisAction)action).AddChannel(ch);
+                                                        analysisAction.AddChannel(ch);
                                                 }
                                             }
-                                            ((AnalysisAction)action).GetDataCompilers().Add(new SpectrumCompiler("", new CHNParser(), new CHNWriter()));
+                                            analysisAction.GetAnalysis().SetResultsFile(actionNode.Attributes["result_file"]?.InnerText);
+                                            analysisAction.GetDataCompilers().Add(new SpectrumCompiler("", new CHNParser(), new CHNWriter()));
+                                            analysisAction.GetAnalysis().SetResultParser(new FRAMPlutoniumResultParser());
+                                            action = analysisAction;
                                             break;
                                         case "Command":
                                             action = new CommandAction(actionNode.Attributes["name"]?.InnerText);
@@ -448,6 +451,7 @@ namespace Omniscient
                                 {
                                     xmlWriter.WriteAttributeString("command", ((AnalysisAction)action).GetAnalysis().GetCommand());
                                     xmlWriter.WriteAttributeString("channel", ((AnalysisAction)action).GetChannels()[0].GetName());
+                                    xmlWriter.WriteAttributeString("result_file", ((AnalysisAction)action).GetAnalysis().GetResultsFile());
                                 }
                                 else if (action is CommandAction)
                                 {

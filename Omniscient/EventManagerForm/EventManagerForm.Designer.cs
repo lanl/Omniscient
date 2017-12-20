@@ -35,12 +35,18 @@
             this.InnerRightPanel = new System.Windows.Forms.Panel();
             this.ActionPanel = new System.Windows.Forms.Panel();
             this.ActionGroupBox = new System.Windows.Forms.GroupBox();
-            this.AnalysisPanel = new System.Windows.Forms.Panel();
-            this.AnalysisChannelComboBox = new System.Windows.Forms.ComboBox();
-            this.label15 = new System.Windows.Forms.Label();
             this.CommandPanel = new System.Windows.Forms.Panel();
             this.ActionCommandTextBox = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
+            this.AnalysisPanel = new System.Windows.Forms.Panel();
+            this.AnalysisTabControl = new System.Windows.Forms.TabControl();
+            this.DataTabPage = new System.Windows.Forms.TabPage();
+            this.AnalysisChannelComboBox = new System.Windows.Forms.ComboBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.AnalysisTabPage = new System.Windows.Forms.TabPage();
+            this.AnalysisCommandTextBox = new System.Windows.Forms.TextBox();
+            this.label16 = new System.Windows.Forms.Label();
+            this.ResultsTabPage = new System.Windows.Forms.TabPage();
             this.ActionSubPanel = new System.Windows.Forms.Panel();
             this.label12 = new System.Windows.Forms.Label();
             this.ActionNameTextBox = new System.Windows.Forms.TextBox();
@@ -85,28 +91,25 @@
             this.panel3 = new System.Windows.Forms.Panel();
             this.SaveButton = new System.Windows.Forms.Button();
             this.ExitButton = new System.Windows.Forms.Button();
-            this.AnalysisTabControl = new System.Windows.Forms.TabControl();
-            this.DataTabPage = new System.Windows.Forms.TabPage();
-            this.AnalysisTabPage = new System.Windows.Forms.TabPage();
-            this.ResultsTabPage = new System.Windows.Forms.TabPage();
-            this.AnalysisCommandTextBox = new System.Windows.Forms.TextBox();
-            this.label16 = new System.Windows.Forms.Label();
+            this.ResultFileTextBox = new System.Windows.Forms.TextBox();
+            this.label17 = new System.Windows.Forms.Label();
             this.LeftPanel.SuspendLayout();
             this.RightPanel.SuspendLayout();
             this.InnerRightPanel.SuspendLayout();
             this.ActionPanel.SuspendLayout();
             this.ActionGroupBox.SuspendLayout();
-            this.AnalysisPanel.SuspendLayout();
             this.CommandPanel.SuspendLayout();
+            this.AnalysisPanel.SuspendLayout();
+            this.AnalysisTabControl.SuspendLayout();
+            this.DataTabPage.SuspendLayout();
+            this.AnalysisTabPage.SuspendLayout();
+            this.ResultsTabPage.SuspendLayout();
             this.ActionSubPanel.SuspendLayout();
             this.ThresholdPanel.SuspendLayout();
             this.CoincidencePanel.SuspendLayout();
             this.NamePanel.SuspendLayout();
             this.LeftRightPanel.SuspendLayout();
             this.panel3.SuspendLayout();
-            this.AnalysisTabControl.SuspendLayout();
-            this.DataTabPage.SuspendLayout();
-            this.AnalysisTabPage.SuspendLayout();
             this.SuspendLayout();
             // 
             // LeftPanel
@@ -178,32 +181,6 @@
             this.ActionGroupBox.TabStop = false;
             this.ActionGroupBox.Text = "Action";
             // 
-            // AnalysisPanel
-            // 
-            this.AnalysisPanel.Controls.Add(this.AnalysisTabControl);
-            this.AnalysisPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.AnalysisPanel.Location = new System.Drawing.Point(3, 71);
-            this.AnalysisPanel.Name = "AnalysisPanel";
-            this.AnalysisPanel.Size = new System.Drawing.Size(328, 103);
-            this.AnalysisPanel.TabIndex = 35;
-            // 
-            // AnalysisChannelComboBox
-            // 
-            this.AnalysisChannelComboBox.FormattingEnabled = true;
-            this.AnalysisChannelComboBox.Location = new System.Drawing.Point(56, 6);
-            this.AnalysisChannelComboBox.Name = "AnalysisChannelComboBox";
-            this.AnalysisChannelComboBox.Size = new System.Drawing.Size(172, 21);
-            this.AnalysisChannelComboBox.TabIndex = 29;
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(5, 10);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(46, 13);
-            this.label15.TabIndex = 28;
-            this.label15.Text = "Channel";
-            // 
             // CommandPanel
             // 
             this.CommandPanel.Controls.Add(this.ActionCommandTextBox);
@@ -229,6 +206,95 @@
             this.label14.Size = new System.Drawing.Size(54, 13);
             this.label14.TabIndex = 31;
             this.label14.Text = "Command";
+            // 
+            // AnalysisPanel
+            // 
+            this.AnalysisPanel.Controls.Add(this.AnalysisTabControl);
+            this.AnalysisPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.AnalysisPanel.Location = new System.Drawing.Point(3, 71);
+            this.AnalysisPanel.Name = "AnalysisPanel";
+            this.AnalysisPanel.Size = new System.Drawing.Size(328, 103);
+            this.AnalysisPanel.TabIndex = 35;
+            // 
+            // AnalysisTabControl
+            // 
+            this.AnalysisTabControl.Controls.Add(this.DataTabPage);
+            this.AnalysisTabControl.Controls.Add(this.AnalysisTabPage);
+            this.AnalysisTabControl.Controls.Add(this.ResultsTabPage);
+            this.AnalysisTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.AnalysisTabControl.Location = new System.Drawing.Point(0, 0);
+            this.AnalysisTabControl.Name = "AnalysisTabControl";
+            this.AnalysisTabControl.SelectedIndex = 0;
+            this.AnalysisTabControl.Size = new System.Drawing.Size(328, 103);
+            this.AnalysisTabControl.TabIndex = 0;
+            // 
+            // DataTabPage
+            // 
+            this.DataTabPage.Controls.Add(this.AnalysisChannelComboBox);
+            this.DataTabPage.Controls.Add(this.label15);
+            this.DataTabPage.Location = new System.Drawing.Point(4, 22);
+            this.DataTabPage.Name = "DataTabPage";
+            this.DataTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.DataTabPage.Size = new System.Drawing.Size(320, 77);
+            this.DataTabPage.TabIndex = 0;
+            this.DataTabPage.Text = "Data";
+            this.DataTabPage.UseVisualStyleBackColor = true;
+            // 
+            // AnalysisChannelComboBox
+            // 
+            this.AnalysisChannelComboBox.FormattingEnabled = true;
+            this.AnalysisChannelComboBox.Location = new System.Drawing.Point(56, 6);
+            this.AnalysisChannelComboBox.Name = "AnalysisChannelComboBox";
+            this.AnalysisChannelComboBox.Size = new System.Drawing.Size(172, 21);
+            this.AnalysisChannelComboBox.TabIndex = 29;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(5, 10);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(46, 13);
+            this.label15.TabIndex = 28;
+            this.label15.Text = "Channel";
+            // 
+            // AnalysisTabPage
+            // 
+            this.AnalysisTabPage.Controls.Add(this.AnalysisCommandTextBox);
+            this.AnalysisTabPage.Controls.Add(this.label16);
+            this.AnalysisTabPage.Location = new System.Drawing.Point(4, 22);
+            this.AnalysisTabPage.Name = "AnalysisTabPage";
+            this.AnalysisTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.AnalysisTabPage.Size = new System.Drawing.Size(320, 77);
+            this.AnalysisTabPage.TabIndex = 1;
+            this.AnalysisTabPage.Text = "Analysis";
+            this.AnalysisTabPage.UseVisualStyleBackColor = true;
+            // 
+            // AnalysisCommandTextBox
+            // 
+            this.AnalysisCommandTextBox.Location = new System.Drawing.Point(68, 6);
+            this.AnalysisCommandTextBox.Name = "AnalysisCommandTextBox";
+            this.AnalysisCommandTextBox.Size = new System.Drawing.Size(227, 20);
+            this.AnalysisCommandTextBox.TabIndex = 34;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(9, 9);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(54, 13);
+            this.label16.TabIndex = 33;
+            this.label16.Text = "Command";
+            // 
+            // ResultsTabPage
+            // 
+            this.ResultsTabPage.Controls.Add(this.ResultFileTextBox);
+            this.ResultsTabPage.Controls.Add(this.label17);
+            this.ResultsTabPage.Location = new System.Drawing.Point(4, 22);
+            this.ResultsTabPage.Name = "ResultsTabPage";
+            this.ResultsTabPage.Size = new System.Drawing.Size(320, 77);
+            this.ResultsTabPage.TabIndex = 2;
+            this.ResultsTabPage.Text = "Results";
+            this.ResultsTabPage.UseVisualStyleBackColor = true;
             // 
             // ActionSubPanel
             // 
@@ -668,66 +734,21 @@
             this.ExitButton.UseVisualStyleBackColor = true;
             this.ExitButton.Click += new System.EventHandler(this.ExitButton_Click);
             // 
-            // AnalysisTabControl
+            // ResultFileTextBox
             // 
-            this.AnalysisTabControl.Controls.Add(this.DataTabPage);
-            this.AnalysisTabControl.Controls.Add(this.AnalysisTabPage);
-            this.AnalysisTabControl.Controls.Add(this.ResultsTabPage);
-            this.AnalysisTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.AnalysisTabControl.Location = new System.Drawing.Point(0, 0);
-            this.AnalysisTabControl.Name = "AnalysisTabControl";
-            this.AnalysisTabControl.SelectedIndex = 0;
-            this.AnalysisTabControl.Size = new System.Drawing.Size(328, 103);
-            this.AnalysisTabControl.TabIndex = 0;
+            this.ResultFileTextBox.Location = new System.Drawing.Point(68, 3);
+            this.ResultFileTextBox.Name = "ResultFileTextBox";
+            this.ResultFileTextBox.Size = new System.Drawing.Size(227, 20);
+            this.ResultFileTextBox.TabIndex = 36;
             // 
-            // DataTabPage
+            // label17
             // 
-            this.DataTabPage.Controls.Add(this.AnalysisChannelComboBox);
-            this.DataTabPage.Controls.Add(this.label15);
-            this.DataTabPage.Location = new System.Drawing.Point(4, 22);
-            this.DataTabPage.Name = "DataTabPage";
-            this.DataTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.DataTabPage.Size = new System.Drawing.Size(320, 77);
-            this.DataTabPage.TabIndex = 0;
-            this.DataTabPage.Text = "Data";
-            this.DataTabPage.UseVisualStyleBackColor = true;
-            // 
-            // AnalysisTabPage
-            // 
-            this.AnalysisTabPage.Controls.Add(this.AnalysisCommandTextBox);
-            this.AnalysisTabPage.Controls.Add(this.label16);
-            this.AnalysisTabPage.Location = new System.Drawing.Point(4, 22);
-            this.AnalysisTabPage.Name = "AnalysisTabPage";
-            this.AnalysisTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.AnalysisTabPage.Size = new System.Drawing.Size(320, 77);
-            this.AnalysisTabPage.TabIndex = 1;
-            this.AnalysisTabPage.Text = "Analysis";
-            this.AnalysisTabPage.UseVisualStyleBackColor = true;
-            // 
-            // ResultsTabPage
-            // 
-            this.ResultsTabPage.Location = new System.Drawing.Point(4, 22);
-            this.ResultsTabPage.Name = "ResultsTabPage";
-            this.ResultsTabPage.Size = new System.Drawing.Size(320, 77);
-            this.ResultsTabPage.TabIndex = 2;
-            this.ResultsTabPage.Text = "Results";
-            this.ResultsTabPage.UseVisualStyleBackColor = true;
-            // 
-            // AnalysisCommandTextBox
-            // 
-            this.AnalysisCommandTextBox.Location = new System.Drawing.Point(68, 6);
-            this.AnalysisCommandTextBox.Name = "AnalysisCommandTextBox";
-            this.AnalysisCommandTextBox.Size = new System.Drawing.Size(227, 20);
-            this.AnalysisCommandTextBox.TabIndex = 34;
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(9, 9);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(54, 13);
-            this.label16.TabIndex = 33;
-            this.label16.Text = "Command";
+            this.label17.AutoSize = true;
+            this.label17.Location = new System.Drawing.Point(9, 6);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(56, 13);
+            this.label17.TabIndex = 35;
+            this.label17.Text = "Result File";
             // 
             // EventManagerForm
             // 
@@ -748,9 +769,16 @@
             this.ActionPanel.ResumeLayout(false);
             this.ActionPanel.PerformLayout();
             this.ActionGroupBox.ResumeLayout(false);
-            this.AnalysisPanel.ResumeLayout(false);
             this.CommandPanel.ResumeLayout(false);
             this.CommandPanel.PerformLayout();
+            this.AnalysisPanel.ResumeLayout(false);
+            this.AnalysisTabControl.ResumeLayout(false);
+            this.DataTabPage.ResumeLayout(false);
+            this.DataTabPage.PerformLayout();
+            this.AnalysisTabPage.ResumeLayout(false);
+            this.AnalysisTabPage.PerformLayout();
+            this.ResultsTabPage.ResumeLayout(false);
+            this.ResultsTabPage.PerformLayout();
             this.ActionSubPanel.ResumeLayout(false);
             this.ActionSubPanel.PerformLayout();
             this.ThresholdPanel.ResumeLayout(false);
@@ -761,11 +789,6 @@
             this.NamePanel.PerformLayout();
             this.LeftRightPanel.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
-            this.AnalysisTabControl.ResumeLayout(false);
-            this.DataTabPage.ResumeLayout(false);
-            this.DataTabPage.PerformLayout();
-            this.AnalysisTabPage.ResumeLayout(false);
-            this.AnalysisTabPage.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -834,5 +857,7 @@
         private System.Windows.Forms.TabPage ResultsTabPage;
         private System.Windows.Forms.TextBox AnalysisCommandTextBox;
         private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.TextBox ResultFileTextBox;
+        private System.Windows.Forms.Label label17;
     }
 }

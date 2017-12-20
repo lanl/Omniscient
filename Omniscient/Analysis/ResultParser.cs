@@ -8,8 +8,6 @@ namespace Omniscient
 {
     public abstract class ResultParser
     {
-        string targetFileName;
-
-        public abstract AnalysisResult Parse();
+        public abstract AnalysisResult Parse(string resultsFile);
     }
 }
