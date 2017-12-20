@@ -8,6 +8,8 @@ namespace Omniscient
 {
     public class Analysis
     {
+        const string DELIMETER = "||";
+
         string name;
         string command;
         string resultsFile;
@@ -15,11 +17,46 @@ namespace Omniscient
 
         List<AnalysisResult> results;
 
-        public void Run(List<string> inputsFiles)
+        public Analysis()
         {
+            name = "";
+            command = "";
+            resultsFile = "";
+            resultParser = null;
+            results = new List<AnalysisResult>();
+        }
 
+        public ReturnCode Run(List<string> inputFiles)
+        {
+            // Replace variables in the command string with values
+            string fullCommand = command;
+            string symbol;
+            for (int input = 0; input < inputFiles.Count(); input++)
+            {
+                symbol = DELIMETER + (input+1).ToString() + DELIMETER;
+                if (!fullCommand.Contains(symbol))
+                    return ReturnCode.BAD_INPUT;
+                fullCommand = fullCommand.Replace(symbol, inputFiles[input]);
+            }
+
+            // Run command
+            System.Diagnostics.Process process = new System.Diagnostics.Process();
+            System.Diagnostics.ProcessStartInfo startInfo = new System.Diagnostics.ProcessStartInfo();
+            startInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
+            startInfo.FileName = "cmd.exe";
+            startInfo.Arguments = "/C " + fullCommand;
+            process.StartInfo = startInfo;
+            process.Start();
+            process.WaitForExit();
+            process.Close();
+
+            return ReturnCode.SUCCESS;
         }
 
         public List<AnalysisResult> GetResults() { return results; }
+
+        public void SetCommand(string newCommand) { command = newCommand; }
+
+        public string GetCommand() { return command; }
     }
 }

@@ -14,8 +14,9 @@ namespace Omniscient
 
         public AnalysisAction(string newName) : base(newName)
         {
+            actionType = "Analysis";
             dataCompilers = new List<DataCompiler>();
-            analysis = null;
+            analysis = new Analysis();
             channels = new List<Channel>();
         }
 
@@ -26,7 +27,7 @@ namespace Omniscient
             for (int dc = 0; dc < dataCompilers.Count(); dc++)
             {
                 rawFiles = channels[dc].GetFiles(eve.GetStartTime(), eve.GetEndTime());
-                targetFiles.Add("compiled-" + dc.ToString());   // <-- Make this more sensible (do we want to keep these files?)
+                targetFiles.Add("C:\\temp\\compiled-" + dc.ToString() + ".chn");   // <-- Make this more sensible (do we want to keep these files?)
                 if (dataCompilers[dc] != null)
                 {
                     dataCompilers[dc].Compile(rawFiles, eve.GetStartTime(), eve.GetEndTime(), targetFiles[dc]);

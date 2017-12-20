@@ -12,7 +12,7 @@ namespace Omniscient
 
         public CommandAction(string newName) : base(newName)
         {
-            actionType = "command";
+            actionType = "Command";
             command = "";
         }
 

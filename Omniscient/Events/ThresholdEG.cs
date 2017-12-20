@@ -35,6 +35,9 @@ namespace Omniscient
         {
             List<DateTime> times = channel.GetTimeStamps();
             List<double> vals = channel.GetValues();
+            List<TimeSpan> durations = null;
+            if(channel.GetChannelType() == Channel.ChannelType.DURATION_VALUE)
+                durations = channel.GetDurations();
             events = new List<Event>();
             Event eve = new Event(this);        // Really shouldn't need to make an event here but visual studio freaks out without it
             DateTime maxTime = new DateTime();
@@ -47,6 +50,7 @@ namespace Omniscient
             {
                 if (!inEvent)
                 {
+                    // New event
                     if (vals[i] >= threshold)
                     {
                         eve = new Event(this);
@@ -60,14 +64,47 @@ namespace Omniscient
                 }
                 else
                 {
-                    if (vals[i] < threshold)
+                    // Event ended and new one created by exceeding debounce time between data points
+                    TimeSpan deltaT;
+                    if (durations != null)
+                        deltaT = times[i] - (times[i - 1] + durations[i - 1]);
+                    else
+                        deltaT = times[i] - times[i - 1];
+                    if (deltaT >= debounceTime)
+                    {
+                        if (durations != null)
+                            eve.SetEndTime(times[i - 1] + durations[i - 1]);
+                        else
+                            eve.SetEndTime(times[i - 1]);
+                        eve.SetMaxValue(maxValue);
+                        eve.SetMaxTime(maxTime);
+                        events.Add(eve);
+                        inEvent = false;
+                        onTheDrop = false;
+
+                        if (vals[i] >= threshold)
+                        {
+                            eve = new Event(this);
+                            eve.SetStartTime(times[i]);
+                            eve.SetComment(channel.GetName() + " is above threshold.");
+                            maxValue = vals[i];
+                            maxTime = times[i];
+                            inEvent = true;
+                            onTheDrop = false;
+                        }
+                    }
+                    else if (vals[i] < threshold)
                     {
                         if (!onTheDrop)
                         {
-                            lastDrop = times[i];
+                            if (durations != null)
+                                lastDrop = times[i] + durations[i];
+                            else
+                                lastDrop = times[i];
                             onTheDrop = true;
                         }
 
+                        // Event ended by dropping below threshold
                         if (times[i] - lastDrop >= debounceTime)
                         {
                             eve.SetEndTime(lastDrop);
@@ -80,7 +117,8 @@ namespace Omniscient
                     }
                     else
                     {
-                        if(vals[i] > maxValue)
+                        // In event
+                        if (vals[i] > maxValue)
                         {
                             maxValue = vals[i];
                             maxTime = times[i];

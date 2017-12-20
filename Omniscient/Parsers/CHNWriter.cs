@@ -54,7 +54,6 @@ namespace Omniscient
             binaryWriter.Write(RESERVED);
             binaryWriter.Write((float)spectrum.GetCalibrationZero());
             binaryWriter.Write((float)spectrum.GetCalibrationSlope());
-            binaryWriter.Write((float)spectrum.GetCalibrationSlope());
             binaryWriter.Write((float)0);       // Quadratic calibration term
             binaryWriter.Write((float)0);       // Peak shape 0
             binaryWriter.Write((float)0);       // Peak shape slope

@@ -288,7 +288,20 @@ namespace Omniscient
                                     Action action;
                                     switch(actionNode.Attributes["type"]?.InnerText)
                                     {
-                                        case "command":
+                                        case "Analysis":
+                                            action = new AnalysisAction(actionNode.Attributes["name"]?.InnerText);
+                                            ((AnalysisAction)action).GetAnalysis().SetCommand(actionNode.Attributes["command"]?.InnerText);
+                                            foreach (Instrument inst in newSystem.GetInstruments())
+                                            {
+                                                foreach (Channel ch in inst.GetChannels())
+                                                {
+                                                    if (ch.GetName() == actionNode.Attributes["channel"]?.InnerText)
+                                                        ((AnalysisAction)action).AddChannel(ch);
+                                                }
+                                            }
+                                            ((AnalysisAction)action).GetDataCompilers().Add(new SpectrumCompiler("", new CHNParser(), new CHNWriter()));
+                                            break;
+                                        case "Command":
                                             action = new CommandAction(actionNode.Attributes["name"]?.InnerText);
                                             ((CommandAction)action).SetCommand(actionNode.Attributes["command"]?.InnerText);
                                             break;
@@ -431,7 +444,12 @@ namespace Omniscient
                                 xmlWriter.WriteStartElement("Action");
                                 xmlWriter.WriteAttributeString("name", action.GetName());
                                 xmlWriter.WriteAttributeString("type", action.GetActionType());
-                                if (action is CommandAction)
+                                if (action is AnalysisAction)
+                                {
+                                    xmlWriter.WriteAttributeString("command", ((AnalysisAction)action).GetAnalysis().GetCommand());
+                                    xmlWriter.WriteAttributeString("channel", ((AnalysisAction)action).GetChannels()[0].GetName());
+                                }
+                                else if (action is CommandAction)
                                 {
                                     xmlWriter.WriteAttributeString("command", ((CommandAction)action).GetCommand());
                                 }

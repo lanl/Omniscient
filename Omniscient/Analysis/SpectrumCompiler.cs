@@ -15,6 +15,12 @@ namespace Omniscient
         {
         }
 
+        public SpectrumCompiler(string newName, SpectrumParser parser, SpectrumWriter writer) : base(newName)
+        {
+            spectrumParser = parser;
+            spectrumWriter = writer;
+        }
+
         public override ReturnCode Compile(List<string> sourceFiles, DateTime start, DateTime end, string targetFileName)
         {
             if (sourceFiles.Count() == 0) return ReturnCode.FAIL;

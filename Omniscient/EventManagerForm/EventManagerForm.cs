@@ -118,11 +118,17 @@ namespace Omniscient
                     action = otherAction;
             }
             ActionNameTextBox.Text = action.GetName();
-            if (action is CommandAction)
+            if(action is AnalysisAction)
+            {
+                ActionTypeComboBox.Text = "Analysis";
+                PopulateAnalysisPanels((AnalysisAction)action, eg);
+            }
+            else if (action is CommandAction)
             {
                 ActionTypeComboBox.Text = "Command";
-                ActionCommandTextBox.Text = ((CommandAction)action).GetCommand();
+                PopulateCommandPanels((CommandAction)action, eg);
             }
+            
         }
 
         public void ResetFields()
@@ -344,7 +350,7 @@ namespace Omniscient
             if (siteManChanged)
             {
                 main.ClearPanels();
-                main.siteMan.Reload();
+                if (main.siteMan.Reload() != ReturnCode.SUCCESS) MessageBox.Show("Warning: Bad trouble loading the site manager!");
                 if (main.presetMan.Reload() != ReturnCode.SUCCESS) MessageBox.Show("Warning: Bad trouble loading the preset manager!");
                 main.UpdateSitesTree();
             }
@@ -499,6 +505,10 @@ namespace Omniscient
 
         private void SaveAction(EventGenerator eg, Action action)
         {
+            TreeNode node = SitesTreeView.SelectedNode;
+            EventWatcher eventWatcher = (EventWatcher)node.Parent.Tag;
+            DetectionSystem sys = (DetectionSystem)eventWatcher;
+
             if (action.GetName() != ActionsComboBox.Text && siteMan.ContainsName(ActionsComboBox.Text))
             {
                 MessageBox.Show("All items in the Site Manager require a unique name!");
@@ -507,6 +517,22 @@ namespace Omniscient
             action.SetName(ActionNameTextBox.Text);
             switch (ActionTypeComboBox.Text)
             {
+                case "Analysis":
+                    AnalysisAction analysisAction = (AnalysisAction)action;
+                    analysisAction.GetChannels().Clear();
+                    foreach (Instrument inst in sys.GetInstruments())
+                    {
+                        foreach (Channel ch in inst.GetChannels())
+                        {
+                            if (ch.GetName() == ChannelComboBox.Text)
+                            {
+                                analysisAction.AddChannel(ch);
+                                break;
+                            }
+                        }
+                    }
+                    analysisAction.GetAnalysis().SetCommand(AnalysisCommandTextBox.Text);
+                    break;
                 case "Command":
                     ((CommandAction)action).SetCommand(ActionCommandTextBox.Text);
                     break;
@@ -749,6 +775,92 @@ namespace Omniscient
             siteManChanged = true;
             SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(eg.GetName(), true)[0];
             ResetFields();
+        }
+
+        private void PopulateCommandPanels(CommandAction action, EventGenerator eg)
+        {
+            ActionCommandTextBox.Text = action.GetCommand();
+        }
+
+
+        public void PopulateAnalysisChannelCombo(DetectionSystem sys)
+        {
+            AnalysisChannelComboBox.Items.Clear();
+            foreach (Instrument inst in sys.GetInstruments())
+            {
+                foreach (Channel ch in inst.GetChannels())
+                {
+                    AnalysisChannelComboBox.Items.Add(ch.GetName());
+                }
+            }
+        }
+
+        private void PopulateAnalysisPanels(AnalysisAction action, EventGenerator eg)
+        {
+            TreeNode node = SitesTreeView.SelectedNode;
+            PopulateAnalysisChannelCombo((DetectionSystem)node.Parent.Tag);
+            AnalysisChannelComboBox.Text = action.GetChannels()[0].GetName();
+            AnalysisCommandTextBox.Text = action.GetAnalysis().GetCommand();
+        }
+
+
+        private void ActionTypeComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            EventGenerator eg = (EventGenerator)SitesTreeView.SelectedNode.Tag;
+            EventWatcher eventWatcher = (EventWatcher)SitesTreeView.SelectedNode.Parent.Tag;
+            Action action = null;
+            foreach(Action otherAction in eg.GetActions())
+            {
+                if (otherAction.GetName() == ActionsComboBox.Text)
+                    action = otherAction;
+            }
+            switch (ActionTypeComboBox.Text)
+            {
+                case "Analysis":
+                    if (!(action is AnalysisAction))
+                    {
+                        DialogResult dialogResult = MessageBox.Show("Are you sure you want to switch action to a Analysis?\nThis will overwrite the current action.", "Switch to Analysis", MessageBoxButtons.YesNo);
+                        if (dialogResult == DialogResult.No)
+                        {
+                            ActionTypeComboBox.Text = action.GetActionType();
+                            return;
+                        }
+                        eg.GetActions().Remove(action);
+
+                        AnalysisAction analysisAction = new AnalysisAction(action.GetName());
+                        analysisAction.AddChannel(((DetectionSystem)eventWatcher).GetInstruments()[0].GetChannels()[0]);
+                        analysisAction.GetDataCompilers().Add(new SpectrumCompiler("", new CHNParser(), new CHNWriter()));
+
+                        eg.GetActions().Add(analysisAction);
+                        action = analysisAction;
+                    }
+                    PopulateAnalysisPanels((AnalysisAction)action, eg);
+                    AnalysisPanel.Visible = true;
+                    CommandPanel.Visible = false;
+                    break;
+                case "Command":
+                    if (!(action is CommandAction))
+                    {
+                        DialogResult dialogResult = MessageBox.Show("Are you sure you want to switch action to a Command?\nThis will overwrite the current action.", "Switch to Command", MessageBoxButtons.YesNo);
+                        if (dialogResult == DialogResult.No)
+                        {
+                            ActionTypeComboBox.Text = action.GetActionType();
+                            return;
+                        }
+                        eg.GetActions().Remove(action);
+                        CommandAction analysisAction = new CommandAction(action.GetName());
+                        eg.GetActions().Add(analysisAction);
+                        action = analysisAction;
+                    }
+                    PopulateCommandPanels((CommandAction)action, eg);
+                    AnalysisPanel.Visible = false;
+                    CommandPanel.Visible = true;
+                    break;
+                default:
+                    MessageBox.Show("Invalid action type!");
+                    return;
+            }
+
         }
     }
 }
