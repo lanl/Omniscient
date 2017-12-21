@@ -537,7 +537,7 @@ namespace Omniscient
                     {
                         foreach (Channel ch in inst.GetChannels())
                         {
-                            if (ch.GetName() == ChannelComboBox.Text)
+                            if (ch.GetName() == AnalysisChannelComboBox.Text)
                             {
                                 analysisAction.AddChannel(ch);
                                 break;
