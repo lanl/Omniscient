@@ -15,7 +15,7 @@ namespace Omniscient
         double threshold;
         TimeSpan debounceTime;
 
-        public ThresholdEG(string newName, Channel newChannel, double newThreshold, TimeSpan newDebounceTime) : base(newName)
+        public ThresholdEG(EventWatcher parent, string newName, Channel newChannel, double newThreshold, TimeSpan newDebounceTime) : base(parent, newName)
         {
             eventGeneratorType = "Threshold";
             channel = newChannel;
@@ -23,7 +23,7 @@ namespace Omniscient
             debounceTime = newDebounceTime;
         }
 
-        public ThresholdEG(string newName, Channel newChannel, double newThreshold) : base(newName)
+        public ThresholdEG(EventWatcher parent, string newName, Channel newChannel, double newThreshold) : base(parent, newName)
         {
             eventGeneratorType = "Threshold";
             channel = newChannel;

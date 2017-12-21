@@ -9,6 +9,8 @@ namespace Omniscient
 {
     public class CHNWriter : SpectrumWriter
     {
+        const string WRITER_TYPE = "CHN";
+
         private const short FILE_HEADER_CHECK = -1;
         private const short MCA_NUMBER = 777;
         private const short SEG_NUMBER = 1;
@@ -18,6 +20,10 @@ namespace Omniscient
         private const short RESERVED = 0;
         private const string DETECTOR = "Omniscient";
         private const string SAMPLE = "Sample";
+
+        public CHNWriter() : base(WRITER_TYPE)
+        {
+        }
 
         public override ReturnCode WriteSpectrumFile(string fileName)
         {

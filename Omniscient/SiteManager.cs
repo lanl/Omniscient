@@ -216,7 +216,7 @@ namespace Omniscient
                                         if (channel is null) return ReturnCode.CORRUPTED_FILE;
                                         try
                                         {
-                                            eg = new ThresholdEG(eventNode.Attributes["name"]?.InnerText, channel, double.Parse(instrumentNode.Attributes["threshold"]?.InnerText));
+                                            eg = new ThresholdEG(newSystem, eventNode.Attributes["name"]?.InnerText, channel, double.Parse(instrumentNode.Attributes["threshold"]?.InnerText));
                                             if (eventNode.Attributes["debounce_time"] != null)
                                                 ((ThresholdEG)eg).SetDebounceTime(TimeSpan.FromSeconds(double.Parse(eventNode.Attributes["debounce_time"]?.InnerText)));
                                         }
@@ -228,7 +228,7 @@ namespace Omniscient
                                     case "Coincidence":
                                         try
                                         {
-                                            eg = new CoincidenceEG(eventNode.Attributes["name"]?.InnerText);
+                                            eg = new CoincidenceEG(newSystem, eventNode.Attributes["name"]?.InnerText);
                                             CoincidenceEG coinkEG = (CoincidenceEG)eg;
                                             switch (eventNode.Attributes["coincidence_type"]?.InnerText)
                                             {
@@ -289,7 +289,7 @@ namespace Omniscient
                                     switch(actionNode.Attributes["type"]?.InnerText)
                                     {
                                         case "Analysis":
-                                            AnalysisAction analysisAction = new AnalysisAction(actionNode.Attributes["name"]?.InnerText);
+                                            AnalysisAction analysisAction = new AnalysisAction(eg, actionNode.Attributes["name"]?.InnerText);
                                             analysisAction.GetAnalysis().SetCommand(actionNode.Attributes["command"]?.InnerText);
                                             foreach (Instrument inst in newSystem.GetInstruments())
                                             {
@@ -300,12 +300,43 @@ namespace Omniscient
                                                 }
                                             }
                                             analysisAction.GetAnalysis().SetResultsFile(actionNode.Attributes["result_file"]?.InnerText);
-                                            analysisAction.GetDataCompilers().Add(new SpectrumCompiler("", new CHNParser(), new CHNWriter()));
                                             analysisAction.GetAnalysis().SetResultParser(new FRAMPlutoniumResultParser());
+                                            foreach (XmlNode dataCompilerNode in actionNode.ChildNodes)
+                                            {
+                                                if (dataCompilerNode.Name != "DataCompiler") return ReturnCode.CORRUPTED_FILE;
+                                                switch (dataCompilerNode.Attributes["type"]?.InnerText)
+                                                {
+                                                    case "SpectrumCompiler":
+                                                        SpectrumCompiler spectrumCompiler = new SpectrumCompiler("");
+                                                        switch(dataCompilerNode.Attributes["parser"]?.InnerText)
+                                                        {
+                                                            case "CHN":
+                                                                spectrumCompiler.SetSpectrumParser(new CHNParser());
+                                                                break;
+                                                            default:
+                                                                return ReturnCode.CORRUPTED_FILE;
+                                                        }
+                                                        switch(dataCompilerNode.Attributes["writer"]?.InnerText)
+                                                        {
+                                                            case "CHN":
+                                                                spectrumCompiler.SetSpectrumWriter(new CHNWriter());
+                                                                break;
+                                                            default:
+                                                                return ReturnCode.CORRUPTED_FILE;
+                                                        }
+                                                        analysisAction.GetDataCompilers().Add(spectrumCompiler);
+                                                        break;
+                                                    case "FileListCompiler":
+                                                        analysisAction.GetDataCompilers().Add(new FileListCompiler(""));
+                                                        break;
+                                                    default:
+                                                        return ReturnCode.CORRUPTED_FILE;
+                                                }
+                                            }
                                             action = analysisAction;
                                             break;
                                         case "Command":
-                                            action = new CommandAction(actionNode.Attributes["name"]?.InnerText);
+                                            action = new CommandAction(eg, actionNode.Attributes["name"]?.InnerText);
                                             ((CommandAction)action).SetCommand(actionNode.Attributes["command"]?.InnerText);
                                             break;
                                         default:
@@ -452,6 +483,21 @@ namespace Omniscient
                                     xmlWriter.WriteAttributeString("command", ((AnalysisAction)action).GetAnalysis().GetCommand());
                                     xmlWriter.WriteAttributeString("channel", ((AnalysisAction)action).GetChannels()[0].GetName());
                                     xmlWriter.WriteAttributeString("result_file", ((AnalysisAction)action).GetAnalysis().GetResultsFile());
+                                    foreach(DataCompiler dataCompiler in ((AnalysisAction)action).GetDataCompilers())
+                                    {
+                                        xmlWriter.WriteStartElement("DataCompiler");
+                                        if(dataCompiler is SpectrumCompiler)
+                                        {
+                                            xmlWriter.WriteAttributeString("type", "SpectrumCompiler");
+                                            xmlWriter.WriteAttributeString("parser", ((SpectrumCompiler)dataCompiler).GetSpectrumParser().GetParserType());
+                                            xmlWriter.WriteAttributeString("writer", ((SpectrumCompiler)dataCompiler).GetSpectrumWriter().GetWriterType());
+                                        }
+                                        else if(dataCompiler is FileListCompiler)
+                                        {
+                                            xmlWriter.WriteAttributeString("type", "FileListCompiler");
+                                        }
+                                        xmlWriter.WriteEndElement();
+                                    }
                                 }
                                 else if (action is CommandAction)
                                 {

@@ -66,6 +66,7 @@
     <Compile Include="Analysis\AnalysisAction.cs" />
     <Compile Include="Analysis\AnalysisResult.cs" />
     <Compile Include="Analysis\DataCompiler.cs" />
+    <Compile Include="Analysis\FileListCompiler.cs" />
     <Compile Include="Analysis\FRAMPlutoniumResultParser.cs" />
     <Compile Include="Analysis\ResultParser.cs" />
     <Compile Include="Analysis\SpectrumCompiler.cs" />

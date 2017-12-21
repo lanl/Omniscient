@@ -8,13 +8,15 @@ namespace Omniscient
 {
     public abstract class EventGenerator
     {
+        EventWatcher eventWatcher;
         protected string name;
         protected string eventGeneratorType;
         protected List<Event> events;
         protected List<Action> actions;
 
-        public EventGenerator(string newName)
+        public EventGenerator(EventWatcher parent, string newName)
         {
+            eventWatcher = parent;
             name = newName;
             events = new List<Event>();
             actions = new List<Action>();
@@ -34,5 +36,7 @@ namespace Omniscient
                 foreach (Action action in actions)
                     action.Execute(eve);
         }
+
+        public EventWatcher GetEventWatcher() { return eventWatcher; }
     }
 }

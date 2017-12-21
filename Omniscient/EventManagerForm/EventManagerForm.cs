@@ -12,6 +12,16 @@ namespace Omniscient
 {
     public partial class EventManagerForm : Form
     {
+        // SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
+        // State -- This is a little bit of an experiment in coding style.
+        //          If this works better than the current (clearly bad) system,
+        //          it should be implemented on all "state-like" parameters on
+        //          the form -- be sure to delete this comment at the end of
+        //          the experiment!
+        Action selectedAction;
+        Channel selectedActionChannel;
+        // SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
+
         MainForm main;
         SiteManager siteMan;
 
@@ -117,6 +127,7 @@ namespace Omniscient
                 if (otherAction.GetName() == ActionsComboBox.Text)
                     action = otherAction;
             }
+            selectedAction = action;
             ActionNameTextBox.Text = action.GetName();
             if(action is AnalysisAction)
             {
@@ -128,11 +139,12 @@ namespace Omniscient
                 ActionTypeComboBox.Text = "Command";
                 PopulateCommandPanels((CommandAction)action, eg);
             }
-            
         }
 
         public void ResetFields()
         {
+            selectedAction = null;
+            selectedActionChannel = null;
             TreeNode node = SitesTreeView.SelectedNode;
 
             if (node.Tag is EventGenerator)
@@ -296,6 +308,7 @@ namespace Omniscient
                     foreach (Action action in eg.GetActions())
                         ActionsComboBox.Items.Add(action.GetName());
                     ActionsComboBox.Text = eg.GetActions()[0].GetName();
+                    selectedAction = eg.GetActions()[0];
                     SetupActionGroupBox();
                     ActionGroupBox.Visible = true;
                 }
@@ -461,7 +474,7 @@ namespace Omniscient
                         name = "New-ThresholdEG-" + iteration.ToString();
                         uniqueName = !siteMan.ContainsName(name);
                     }
-                    eg = new ThresholdEG(name, ((DetectionSystem)eventWatcher).GetInstruments()[0].GetChannels()[0], 0);
+                    eg = new ThresholdEG(eventWatcher, name, ((DetectionSystem)eventWatcher).GetInstruments()[0].GetChannels()[0], 0);
                     break;
                 case "Coincidence":
                     if(eventWatcher.GetEventGenerators().Count == 0)
@@ -475,7 +488,7 @@ namespace Omniscient
                         name = "New-CoincidenceEG-" + iteration.ToString();
                         uniqueName = !siteMan.ContainsName(name);
                     }
-                    eg = new CoincidenceEG(name);
+                    eg = new CoincidenceEG(eventWatcher, name);
                     ((CoincidenceEG)eg).SetEventGeneratorA(eventWatcher.GetEventGenerators()[0]);
                     ((CoincidenceEG)eg).SetEventGeneratorB(eventWatcher.GetEventGenerators()[0]);
                     break;
@@ -530,6 +543,19 @@ namespace Omniscient
                                 break;
                             }
                         }
+                    }
+                    analysisAction.GetDataCompilers().Clear();
+                    switch (DataCompilersComboBox.Text)
+                    {
+                        case "Spectrum Compiler":
+                            analysisAction.GetDataCompilers().Add(new SpectrumCompiler("", new CHNParser(), new CHNWriter()));
+                            break;
+                        case "File List":
+                            analysisAction.GetDataCompilers().Add(new FileListCompiler(""));
+                            break;
+                        default:
+                            MessageBox.Show("Invalid data compiler type!");
+                            return;
                     }
                     analysisAction.GetAnalysis().SetCommand(AnalysisCommandTextBox.Text);
                     analysisAction.GetAnalysis().SetResultsFile(ResultFileTextBox.Text);
@@ -747,13 +773,14 @@ namespace Omniscient
                 name = "New-Action-" + iteration.ToString();
                 uniqueName = !siteMan.ContainsName(name);
             }
-            CommandAction action = new CommandAction(name);
+            CommandAction action = new CommandAction(eg, name);
             eg.GetActions().Add(action);
             siteMan.Save();
             UpdateSitesTree();
             siteManChanged = true;
             SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(eg.GetName(), true)[0];
             ActionsComboBox.Text = name;
+            selectedAction = action;
         }
 
         private void ActionsComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -799,6 +826,7 @@ namespace Omniscient
         private void PopulateAnalysisPanels(AnalysisAction action, EventGenerator eg)
         {
             TreeNode node = SitesTreeView.SelectedNode;
+            selectedActionChannel = action.GetChannels()[0];
             PopulateAnalysisChannelCombo((DetectionSystem)node.Parent.Tag);
             AnalysisChannelComboBox.Text = action.GetChannels()[0].GetName();
             AnalysisCommandTextBox.Text = action.GetAnalysis().GetCommand();
@@ -816,6 +844,7 @@ namespace Omniscient
                 if (otherAction.GetName() == ActionsComboBox.Text)
                     action = otherAction;
             }
+            selectedAction = action;
             switch (ActionTypeComboBox.Text)
             {
                 case "Analysis":
@@ -829,7 +858,7 @@ namespace Omniscient
                         }
                         eg.GetActions().Remove(action);
 
-                        AnalysisAction analysisAction = new AnalysisAction(action.GetName());
+                        AnalysisAction analysisAction = new AnalysisAction(eg, action.GetName());
                         analysisAction.AddChannel(((DetectionSystem)eventWatcher).GetInstruments()[0].GetChannels()[0]);
                         analysisAction.GetDataCompilers().Add(new SpectrumCompiler("", new CHNParser(), new CHNWriter()));
                         analysisAction.GetAnalysis().SetResultParser(new FRAMPlutoniumResultParser());
@@ -851,7 +880,7 @@ namespace Omniscient
                             return;
                         }
                         eg.GetActions().Remove(action);
-                        CommandAction analysisAction = new CommandAction(action.GetName());
+                        CommandAction analysisAction = new CommandAction(eg, action.GetName());
                         eg.GetActions().Add(analysisAction);
                         action = analysisAction;
                     }
@@ -864,6 +893,51 @@ namespace Omniscient
                     return;
             }
 
+        }
+
+        private void UpdateDataCompilers()
+        {
+            if (selectedActionChannel.GetInstrument() is MCAInstrument)
+            {
+                DataCompilersComboBox.Items.Clear();
+                DataCompilersComboBox.Items.Add("File List");
+                DataCompilersComboBox.Items.Add("Spectrum Compiler");
+            }
+            else
+            {
+                DataCompilersComboBox.Items.Clear();
+                DataCompilersComboBox.Items.Add("File List");
+            }
+
+            if (((AnalysisAction)selectedAction).GetDataCompilers()[0] is SpectrumCompiler)
+            {
+                if (DataCompilersComboBox.Items.Contains("Spectrum Compiler"))
+                    DataCompilersComboBox.Text = "Spectrum Compiler";
+            }
+            else if (((AnalysisAction)selectedAction).GetDataCompilers()[0] is FileListCompiler)
+            {
+                if (DataCompilersComboBox.Items.Contains("File List"))
+                    DataCompilersComboBox.Text = "File List";
+            }
+        }
+
+        private void AnalysisChannelComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            bool breakout = false;
+            foreach(Instrument inst in ((DetectionSystem) selectedAction.GetEventGenerator().GetEventWatcher()).GetInstruments())
+            {
+                foreach(Channel chan in inst.GetChannels())
+                {
+                    if (chan.GetName() == AnalysisChannelComboBox.Text)
+                    {
+                        selectedActionChannel = chan;
+                        breakout = true;
+                        break;
+                    }
+                }
+                if (breakout) break;
+            }
+            UpdateDataCompilers();
         }
     }
 }

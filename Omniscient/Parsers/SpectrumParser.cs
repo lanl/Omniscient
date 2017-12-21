@@ -8,7 +8,13 @@ namespace Omniscient
 {
     public abstract class SpectrumParser
     {
+        string parserType;
+
+        public SpectrumParser(string type) { parserType = type; }
+
         abstract public ReturnCode ParseSpectrumFile(string newFileName);
         abstract public Spectrum GetSpectrum();
+
+        public string GetParserType() { return parserType; }
     }
 }

@@ -10,9 +10,11 @@ namespace Omniscient
     {
         protected string name;
         protected string actionType;
+        protected EventGenerator eventGenerator;
 
-        public Action(string newName)
+        public Action(EventGenerator parent, string newName)
         {
+            eventGenerator = parent;
             name = newName;
         }
 
@@ -22,5 +24,6 @@ namespace Omniscient
 
         public string GetName() { return name; }
         public string GetActionType() { return actionType; }
+        public EventGenerator GetEventGenerator() { return eventGenerator; }
     }
 }

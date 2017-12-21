@@ -12,7 +12,7 @@ namespace Omniscient
         Analysis analysis;
         List<Channel> channels;
 
-        public AnalysisAction(string newName) : base(newName)
+        public AnalysisAction(EventGenerator parent, string newName) : base(parent, newName)
         {
             actionType = "Analysis";
             dataCompilers = new List<DataCompiler>();

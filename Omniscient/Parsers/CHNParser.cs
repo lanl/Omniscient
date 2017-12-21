@@ -10,6 +10,8 @@ namespace Omniscient
 {
     public class CHNParser : SpectrumParser
     {
+        const string PARSER_TYPE = "CHN";
+
         private string fileName;
         private Int16 fileTypeCheck;
         private Int16 MCANumber;
@@ -30,7 +32,7 @@ namespace Omniscient
         private string detectorDesc;
         private string sampleDesc;
 
-        public CHNParser()
+        public CHNParser() : base(PARSER_TYPE)
         {
             fileName = "";
             fileTypeCheck = -999;
