@@ -11,6 +11,7 @@ namespace Omniscient
         List<DataCompiler> dataCompilers;
         Analysis analysis;
         List<Channel> channels;
+        string compiledFileName;
 
         public AnalysisAction(EventGenerator parent, string newName) : base(parent, newName)
         {
@@ -18,16 +19,20 @@ namespace Omniscient
             dataCompilers = new List<DataCompiler>();
             analysis = new Analysis();
             channels = new List<Channel>();
+            compiledFileName = "";
         }
 
         public override void Execute(Event eve)
         {
             List<string> rawFiles;
+            string targetFile;
             List<string> targetFiles = new List<string>();
             for (int dc = 0; dc < dataCompilers.Count(); dc++)
             {
                 rawFiles = channels[dc].GetFiles(eve.GetStartTime(), eve.GetEndTime());
-                targetFiles.Add("C:\\temp\\compiled-" + dc.ToString() + ".chn");   // <-- Make this more sensible (do we want to keep these files?)
+                targetFile = compiledFileName.Replace("||s||", eve.GetStartTime().ToString("yyyy-MM-dd-HH-mm-ss"));
+                targetFile = targetFile.Replace("||#||", dc.ToString());
+                targetFiles.Add(targetFile);
                 if (dataCompilers[dc] != null)
                 {
                     dataCompilers[dc].Compile(rawFiles, eve.GetStartTime(), eve.GetEndTime(), targetFiles[dc]);
@@ -46,9 +51,11 @@ namespace Omniscient
         public void RemoveChannel(Channel chan) { channels.Remove(chan); }
 
         public void SetAnalysis(Analysis ana) { analysis = ana; }
+        public void SetCompiledFileName(string fileName) { compiledFileName = fileName; }
 
         public Analysis GetAnalysis() { return analysis; }
         public List<DataCompiler> GetDataCompilers() { return dataCompilers; }
         public List<Channel> GetChannels() { return channels; }
+        public string GetCompiledFileName() { return compiledFileName; }
     }
 }

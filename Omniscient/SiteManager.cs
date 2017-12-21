@@ -299,6 +299,7 @@ namespace Omniscient
                                                         analysisAction.AddChannel(ch);
                                                 }
                                             }
+                                            analysisAction.SetCompiledFileName(actionNode.Attributes["compiled_file"]?.InnerText);
                                             analysisAction.GetAnalysis().SetResultsFile(actionNode.Attributes["result_file"]?.InnerText);
                                             analysisAction.GetAnalysis().SetResultParser(new FRAMPlutoniumResultParser());
                                             foreach (XmlNode dataCompilerNode in actionNode.ChildNodes)
@@ -482,6 +483,7 @@ namespace Omniscient
                                 {
                                     xmlWriter.WriteAttributeString("command", ((AnalysisAction)action).GetAnalysis().GetCommand());
                                     xmlWriter.WriteAttributeString("channel", ((AnalysisAction)action).GetChannels()[0].GetName());
+                                    xmlWriter.WriteAttributeString("compiled_file", ((AnalysisAction)action).GetCompiledFileName());
                                     xmlWriter.WriteAttributeString("result_file", ((AnalysisAction)action).GetAnalysis().GetResultsFile());
                                     foreach(DataCompiler dataCompiler in ((AnalysisAction)action).GetDataCompilers())
                                     {

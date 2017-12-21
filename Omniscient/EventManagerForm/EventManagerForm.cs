@@ -558,6 +558,7 @@ namespace Omniscient
                             return;
                     }
                     analysisAction.GetAnalysis().SetCommand(AnalysisCommandTextBox.Text);
+                    analysisAction.SetCompiledFileName(CompiledFileTextBox.Text);
                     analysisAction.GetAnalysis().SetResultsFile(ResultFileTextBox.Text);
                     break;
                 case "Command":
@@ -830,6 +831,7 @@ namespace Omniscient
             PopulateAnalysisChannelCombo((DetectionSystem)node.Parent.Tag);
             AnalysisChannelComboBox.Text = action.GetChannels()[0].GetName();
             AnalysisCommandTextBox.Text = action.GetAnalysis().GetCommand();
+            CompiledFileTextBox.Text = action.GetCompiledFileName();
             ResultFileTextBox.Text = action.GetAnalysis().GetResultsFile();
         }
 
