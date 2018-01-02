@@ -30,6 +30,52 @@ namespace Omniscient
             return ReturnCode.SUCCESS;
         }
 
+        public ReturnCode ParseUraniumResults()
+        {
+            // Locate the correct part of the file to parse
+            int targetLine = -1;
+            for (int i = 0; i < lines.Length; i++)
+            {
+                if (lines[i].StartsWith("5Isotopic"))
+                {
+                    targetLine = i;
+                    break;
+                }
+            }
+            if (targetLine < 0 || !lines[targetLine + 3].Contains("U235") || !lines[targetLine + 4].StartsWith("5mass%"))
+                return ReturnCode.CORRUPTED_FILE;
+
+            // Read mass percents
+            string[] tokens = lines[targetLine + 4].Split(new char[] { ' ' }, System.StringSplitOptions.RemoveEmptyEntries);
+            try
+            {
+                nuclearComposition.U234MassPercent.Value = double.Parse(tokens[1]);
+                nuclearComposition.U235MassPercent.Value = double.Parse(tokens[2]);
+                nuclearComposition.U236MassPercent.Value = double.Parse(tokens[3]);
+                nuclearComposition.U238MassPercent.Value = double.Parse(tokens[4]);
+            }
+            catch
+            {
+                return ReturnCode.CORRUPTED_FILE;
+            }
+
+            // Read mass sigmas
+            tokens = lines[targetLine + 5].Split(new char[] { ' ' }, System.StringSplitOptions.RemoveEmptyEntries);
+            try
+            {
+                nuclearComposition.U234MassPercent.Uncertainty = double.Parse(tokens[1]);
+                nuclearComposition.U235MassPercent.Uncertainty = double.Parse(tokens[2]);
+                nuclearComposition.U236MassPercent.Uncertainty = double.Parse(tokens[3]);
+                nuclearComposition.U238MassPercent.Uncertainty = double.Parse(tokens[4]);
+            }
+            catch
+            {
+                return ReturnCode.CORRUPTED_FILE;
+            }
+
+            return ReturnCode.SUCCESS;
+        }
+
         public ReturnCode ParsePlutoniumResults()
         {
             // Locate the correct part of the file to parse

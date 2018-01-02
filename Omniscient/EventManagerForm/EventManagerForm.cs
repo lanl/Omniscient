@@ -559,6 +559,18 @@ namespace Omniscient
                     }
                     analysisAction.GetAnalysis().SetCommand(AnalysisCommandTextBox.Text);
                     analysisAction.SetCompiledFileName(CompiledFileTextBox.Text);
+                    switch (ResultParserComboBox.Text)
+                    {
+                        case "FRAM-Pu":
+                            analysisAction.GetAnalysis().SetResultParser(new FRAMPlutoniumResultParser());
+                            break;
+                        case "FRAM-U":
+                            analysisAction.GetAnalysis().SetResultParser(new FRAMUraniumResultParser());
+                            break;
+                        default:
+                            MessageBox.Show("Invalid result parser type!");
+                            return;
+                    }
                     analysisAction.GetAnalysis().SetResultsFile(ResultFileTextBox.Text);
                     break;
                 case "Command":
@@ -833,6 +845,14 @@ namespace Omniscient
             AnalysisCommandTextBox.Text = action.GetAnalysis().GetCommand();
             CompiledFileTextBox.Text = action.GetCompiledFileName();
             ResultFileTextBox.Text = action.GetAnalysis().GetResultsFile();
+            if(action.GetAnalysis().GetResultParser() is FRAMPlutoniumResultParser)
+            {
+                ResultParserComboBox.Text = "FRAM-Pu";
+            }
+            else if (action.GetAnalysis().GetResultParser() is FRAMUraniumResultParser)
+            {
+                ResultParserComboBox.Text = "FRAM-U";
+            }
         }
 
 

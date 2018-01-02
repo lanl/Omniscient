@@ -301,7 +301,17 @@ namespace Omniscient
                                             }
                                             analysisAction.SetCompiledFileName(actionNode.Attributes["compiled_file"]?.InnerText);
                                             analysisAction.GetAnalysis().SetResultsFile(actionNode.Attributes["result_file"]?.InnerText);
-                                            analysisAction.GetAnalysis().SetResultParser(new FRAMPlutoniumResultParser());
+                                            switch(actionNode.Attributes["result_parser"]?.InnerText)
+                                            {
+                                                case "FRAM-Pu":
+                                                    analysisAction.GetAnalysis().SetResultParser(new FRAMPlutoniumResultParser());
+                                                    break;
+                                                case "FRAM-U":
+                                                    analysisAction.GetAnalysis().SetResultParser(new FRAMUraniumResultParser());
+                                                    break;
+                                                default:
+                                                    return ReturnCode.CORRUPTED_FILE;
+                                            }
                                             foreach (XmlNode dataCompilerNode in actionNode.ChildNodes)
                                             {
                                                 if (dataCompilerNode.Name != "DataCompiler") return ReturnCode.CORRUPTED_FILE;
@@ -485,7 +495,15 @@ namespace Omniscient
                                     xmlWriter.WriteAttributeString("channel", ((AnalysisAction)action).GetChannels()[0].GetName());
                                     xmlWriter.WriteAttributeString("compiled_file", ((AnalysisAction)action).GetCompiledFileName());
                                     xmlWriter.WriteAttributeString("result_file", ((AnalysisAction)action).GetAnalysis().GetResultsFile());
-                                    foreach(DataCompiler dataCompiler in ((AnalysisAction)action).GetDataCompilers())
+                                    if(((AnalysisAction)action).GetAnalysis().GetResultParser() is FRAMPlutoniumResultParser)
+                                    {
+                                        xmlWriter.WriteAttributeString("result_parser", "FRAM-Pu");
+                                    }
+                                    else if (((AnalysisAction)action).GetAnalysis().GetResultParser() is FRAMUraniumResultParser)
+                                    {
+                                        xmlWriter.WriteAttributeString("result_parser", "FRAM-U");
+                                    }
+                                    foreach (DataCompiler dataCompiler in ((AnalysisAction)action).GetDataCompilers())
                                     {
                                         xmlWriter.WriteStartElement("DataCompiler");
                                         if(dataCompiler is SpectrumCompiler)

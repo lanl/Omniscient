@@ -68,6 +68,7 @@
     <Compile Include="Analysis\DataCompiler.cs" />
     <Compile Include="Analysis\FileListCompiler.cs" />
     <Compile Include="Analysis\FRAMPlutoniumResultParser.cs" />
+    <Compile Include="Analysis\FRAMUraniumResultParser.cs" />
     <Compile Include="Analysis\ResultParser.cs" />
     <Compile Include="Analysis\SpectrumCompiler.cs" />
     <Compile Include="Controls\ResponsiveTreeView.cs">

@@ -41,6 +41,8 @@
             this.AnalysisPanel = new System.Windows.Forms.Panel();
             this.AnalysisTabControl = new System.Windows.Forms.TabControl();
             this.DataTabPage = new System.Windows.Forms.TabPage();
+            this.CompiledFileTextBox = new System.Windows.Forms.TextBox();
+            this.label19 = new System.Windows.Forms.Label();
             this.DataCompilersComboBox = new System.Windows.Forms.ComboBox();
             this.label18 = new System.Windows.Forms.Label();
             this.AnalysisChannelComboBox = new System.Windows.Forms.ComboBox();
@@ -95,8 +97,8 @@
             this.panel3 = new System.Windows.Forms.Panel();
             this.SaveButton = new System.Windows.Forms.Button();
             this.ExitButton = new System.Windows.Forms.Button();
-            this.CompiledFileTextBox = new System.Windows.Forms.TextBox();
-            this.label19 = new System.Windows.Forms.Label();
+            this.ResultParserComboBox = new System.Windows.Forms.ComboBox();
+            this.label20 = new System.Windows.Forms.Label();
             this.LeftPanel.SuspendLayout();
             this.RightPanel.SuspendLayout();
             this.InnerRightPanel.SuspendLayout();
@@ -248,6 +250,24 @@
             this.DataTabPage.Text = "Data";
             this.DataTabPage.UseVisualStyleBackColor = true;
             // 
+            // CompiledFileTextBox
+            // 
+            this.CompiledFileTextBox.Location = new System.Drawing.Point(86, 63);
+            this.CompiledFileTextBox.Multiline = true;
+            this.CompiledFileTextBox.Name = "CompiledFileTextBox";
+            this.CompiledFileTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.CompiledFileTextBox.Size = new System.Drawing.Size(227, 80);
+            this.CompiledFileTextBox.TabIndex = 36;
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(24, 66);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(58, 13);
+            this.label19.TabIndex = 35;
+            this.label19.Text = "Output File";
+            // 
             // DataCompilersComboBox
             // 
             this.DataCompilersComboBox.FormattingEnabled = true;
@@ -318,18 +338,20 @@
             // 
             // ResultsTabPage
             // 
+            this.ResultsTabPage.Controls.Add(this.ResultParserComboBox);
+            this.ResultsTabPage.Controls.Add(this.label20);
             this.ResultsTabPage.Controls.Add(this.ResultFileTextBox);
             this.ResultsTabPage.Controls.Add(this.label17);
             this.ResultsTabPage.Location = new System.Drawing.Point(4, 22);
             this.ResultsTabPage.Name = "ResultsTabPage";
-            this.ResultsTabPage.Size = new System.Drawing.Size(320, 94);
+            this.ResultsTabPage.Size = new System.Drawing.Size(320, 174);
             this.ResultsTabPage.TabIndex = 2;
             this.ResultsTabPage.Text = "Results";
             this.ResultsTabPage.UseVisualStyleBackColor = true;
             // 
             // ResultFileTextBox
             // 
-            this.ResultFileTextBox.Location = new System.Drawing.Point(68, 3);
+            this.ResultFileTextBox.Location = new System.Drawing.Point(86, 3);
             this.ResultFileTextBox.Name = "ResultFileTextBox";
             this.ResultFileTextBox.Size = new System.Drawing.Size(227, 20);
             this.ResultFileTextBox.TabIndex = 36;
@@ -337,7 +359,7 @@
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(9, 6);
+            this.label17.Location = new System.Drawing.Point(22, 6);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(56, 13);
             this.label17.TabIndex = 35;
@@ -781,23 +803,25 @@
             this.ExitButton.UseVisualStyleBackColor = true;
             this.ExitButton.Click += new System.EventHandler(this.ExitButton_Click);
             // 
-            // CompiledFileTextBox
+            // ResultParserComboBox
             // 
-            this.CompiledFileTextBox.Location = new System.Drawing.Point(86, 63);
-            this.CompiledFileTextBox.Multiline = true;
-            this.CompiledFileTextBox.Name = "CompiledFileTextBox";
-            this.CompiledFileTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.CompiledFileTextBox.Size = new System.Drawing.Size(227, 80);
-            this.CompiledFileTextBox.TabIndex = 36;
+            this.ResultParserComboBox.FormattingEnabled = true;
+            this.ResultParserComboBox.Items.AddRange(new object[] {
+            "FRAM-Pu",
+            "FRAM-U"});
+            this.ResultParserComboBox.Location = new System.Drawing.Point(86, 29);
+            this.ResultParserComboBox.Name = "ResultParserComboBox";
+            this.ResultParserComboBox.Size = new System.Drawing.Size(227, 21);
+            this.ResultParserComboBox.TabIndex = 38;
             // 
-            // label19
+            // label20
             // 
-            this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(24, 66);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(58, 13);
-            this.label19.TabIndex = 35;
-            this.label19.Text = "Output File";
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(8, 32);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(70, 13);
+            this.label20.TabIndex = 37;
+            this.label20.Text = "Result Parser";
             // 
             // EventManagerForm
             // 
@@ -912,5 +936,7 @@
         private System.Windows.Forms.Label label18;
         private System.Windows.Forms.TextBox CompiledFileTextBox;
         private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.ComboBox ResultParserComboBox;
+        private System.Windows.Forms.Label label20;
     }
 }
