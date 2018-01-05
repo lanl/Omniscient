@@ -127,6 +127,8 @@
     <Compile Include="NuclearComposition.cs" />
     <Compile Include="Parsers\CHNWriter.cs" />
     <Compile Include="Parsers\FRAMParser.cs" />
+    <Compile Include="Parsers\NCCParser.cs" />
+    <Compile Include="Parsers\NCCWriter.cs" />
     <Compile Include="Parsers\SpectrumParser.cs" />
     <Compile Include="Parsers\SpectrumWriter.cs" />
     <Compile Include="ROI.cs" />
