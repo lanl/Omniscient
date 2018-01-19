@@ -126,6 +126,7 @@
     <Compile Include="Instruments\VirtualChannel.cs" />
     <Compile Include="NuclearComposition.cs" />
     <Compile Include="Parsers\CHNWriter.cs" />
+    <Compile Include="Parsers\DECFile.cs" />
     <Compile Include="Parsers\FRAMParser.cs" />
     <Compile Include="Parsers\NCCParser.cs" />
     <Compile Include="Parsers\NCCWriter.cs" />

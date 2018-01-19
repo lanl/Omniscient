@@ -150,5 +150,76 @@ namespace OmniscientTests
                 }
             }
         }
+
+        [TestMethod]
+        public void WrittenDECCanBeParsed()
+        {
+            //Arrange
+            DECFile output = new DECFile();
+            output.Facility = "Lightly Advertised Nuclear Location";
+            output.MBA = "Building-2";
+            output.FromTime = new DateTime(2018, 1, 4, 12, 0, 0);
+            output.ToTime = new DateTime(2018, 1, 4, 13, 0, 0);
+            output.ItemName = "Alfred";
+            output.ItemOriginDate = new DateTime(2017, 7, 17, 8, 0, 0);
+            output.FullName = "Alfred Furgeson";
+            output.Barcode = "0123456789";
+            output.MassDate = new DateTime(2018, 1, 4, 11, 33, 55);
+            output.Mass = 42;
+            output.BatchName = "Stuffs";
+            output.BatchSource = "Operator Declaration";
+            output.Material.AmDate = new DateTime(1942, 12, 2, 15, 25, 0);
+            output.Material.Am241MassPercent.Value = 1;
+            output.Material.Am241MassPercent.Uncertainty = 0.2;
+            output.Material.PuDate = new DateTime(1942, 12, 2, 15, 25, 0);
+            output.Material.Pu238MassPercent.Value = 3;
+            output.Material.Pu238MassPercent.Uncertainty = 1.5;
+            output.Material.Pu239MassPercent.Value = 90;
+            output.Material.Pu239MassPercent.Uncertainty = 0.05;
+            output.Material.Pu240MassPercent.Value = 5;
+            output.Material.Pu240MassPercent.Uncertainty = 0.1;
+            output.Material.Pu241MassPercent.Value = 1.1;
+            output.Material.Pu241MassPercent.Uncertainty = 0.11;
+            output.Material.Pu242MassPercent.Value = 0.9;
+            output.Material.Pu242MassPercent.Uncertainty = 0.12;
+            output.CreationDate = new DateTime(2018, 1, 19, 14, 43, 29);
+            output.ModificationDate = new DateTime(2018, 1, 19, 14, 43, 53);
+            output.Note = "We would like to declare Alfred to be a very good item. Thank you.";
+            DECFile input = new DECFile();
+            string fileName = "test.dec";
+
+            //Act
+            output.WriteDeclarationFile(fileName);
+            input.ParseDeclarationFile(fileName);
+
+            //Assert
+            Assert.IsTrue(input.Facility == output.Facility, "Facility is not equal");
+            Assert.IsTrue(input.MBA == output.MBA, "MBA is not equal");
+            Assert.IsTrue(input.FromTime == output.FromTime, "FromTime is not equal");
+            Assert.IsTrue(input.ItemName == output.ItemName, "ItemName is not equal");
+            Assert.IsTrue(input.ItemOriginDate == output.ItemOriginDate, "ItemOriginDate is not equal");
+            Assert.IsTrue(input.FullName == output.FullName, "FullName is not equal");
+            Assert.IsTrue(input.Barcode == output.Barcode, "Barcode is not equal");
+            Assert.IsTrue(input.MassDate == output.MassDate, "MassDate is not equal");
+            Assert.IsTrue(input.Mass == output.Mass, "Mass is not equal");
+            Assert.IsTrue(input.BatchName == output.BatchName, "BatchName is not equal");
+            Assert.IsTrue(input.Material.AmDate == output.Material.AmDate, "AmDate is not equal");
+            Assert.IsTrue(input.Material.Am241MassPercent.Value == output.Material.Am241MassPercent.Value, "Am241MassPercent.Value is not equal");
+            Assert.IsTrue(input.Material.Am241MassPercent.Uncertainty == output.Material.Am241MassPercent.Uncertainty, "Am241MassPercent.Uncertainty is not equal");
+            Assert.IsTrue(input.Material.PuDate == output.Material.PuDate, "PuDate is not equal");
+            Assert.IsTrue(input.Material.Pu238MassPercent.Value == output.Material.Pu238MassPercent.Value, "Pu238MassPercent.Value is not equal");
+            Assert.IsTrue(input.Material.Pu238MassPercent.Uncertainty == output.Material.Pu238MassPercent.Uncertainty, "Pu238MassPercent.Uncertainty is not equal");
+            Assert.IsTrue(input.Material.Pu239MassPercent.Value == output.Material.Pu239MassPercent.Value, "Pu239MassPercent.Value is not equal");
+            Assert.IsTrue(input.Material.Pu239MassPercent.Uncertainty == output.Material.Pu239MassPercent.Uncertainty, "Pu239MassPercent.Uncertainty is not equal");
+            Assert.IsTrue(input.Material.Pu240MassPercent.Value == output.Material.Pu240MassPercent.Value, "Pu240MassPercent.Value is not equal");
+            Assert.IsTrue(input.Material.Pu240MassPercent.Uncertainty == output.Material.Pu240MassPercent.Uncertainty, "Pu240MassPercent.Uncertainty is not equal");
+            Assert.IsTrue(input.Material.Pu241MassPercent.Value == output.Material.Pu241MassPercent.Value, "Pu241MassPercent.Value is not equal");
+            Assert.IsTrue(input.Material.Pu241MassPercent.Uncertainty == output.Material.Pu241MassPercent.Uncertainty, "Pu241MassPercent.Uncertainty is not equal");
+            Assert.IsTrue(input.Material.Pu242MassPercent.Value == output.Material.Pu242MassPercent.Value, "Pu242MassPercent.Value is not equal");
+            Assert.IsTrue(input.Material.Pu242MassPercent.Uncertainty == output.Material.Pu242MassPercent.Uncertainty, "Pu242MassPercent.Uncertainty is not equal");
+            Assert.IsTrue(input.CreationDate == output.CreationDate, "CreationDate is not equal");
+            Assert.IsTrue(input.ModificationDate == output.ModificationDate, "ModificationDate is not equal");
+            Assert.IsTrue(input.Note == output.Note, "Note is not equal");
+        }
     }
 }

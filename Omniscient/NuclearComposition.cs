@@ -8,7 +8,7 @@ namespace Omniscient
 {
     public class MeasuredValue
     {
-        public const double NOT_SET = double.NaN;
+        public const double NOT_SET = double.MinValue;
 
         double val;
         public double Value
@@ -35,6 +35,12 @@ namespace Omniscient
             val = NOT_SET;
             uncertainty = NOT_SET;
         }
+
+        public bool IsSet()
+        {
+            if (val == NOT_SET) return false;
+            return true;
+        }
     }
 
     public class NuclearComposition
@@ -46,6 +52,8 @@ namespace Omniscient
         public MeasuredValue Pu241MassPercent { get; set; }
         public MeasuredValue Pu242MassPercent { get; set; }
         public MeasuredValue Am241MassPercent { get; set; }
+        public DateTime PuDate { get; set; }
+        public DateTime AmDate { get; set; }
 
         public MeasuredValue UMass { get; set; }
         public MeasuredValue U234MassPercent { get; set; }
