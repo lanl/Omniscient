@@ -59,6 +59,11 @@ namespace Omniscient
                     }
                 }
             }
+
+            decFiles = decFileList.ToArray();
+            decDates = decDateList.ToArray();
+
+            Array.Sort(decDates, decFiles);
         }
 
         public override void LoadData(DateTime startDate, DateTime endDate)
@@ -72,17 +77,19 @@ namespace Omniscient
 
             DateTime time;
             TimeSpan duration;
-
-            for (int i = startIndex; i <= endIndex; ++i)
+            if (startIndex >= 0)
             {
-                returnCode = decParser.ParseDeclarationFile(decFiles[i]);
-                time = decParser.FromTime;
-                duration = decParser.ToTime - decParser.FromTime;
+                for (int i = startIndex; i <= endIndex; ++i)
+                {
+                    returnCode = decParser.ParseDeclarationFile(decFiles[i]);
+                    time = decParser.FromTime;
+                    duration = decParser.ToTime - decParser.FromTime;
 
-                channels[DECLARATION].AddDataPoint(time, 1, duration, decFiles[i]);
+                    channels[DECLARATION].AddDataPoint(time, 1, duration, decFiles[i]);
+                }
+                channels[DECLARATION].Sort();
+                LoadVirtualChannels();
             }
-            channels[DECLARATION].Sort();
-            LoadVirtualChannels();
         }
 
         public override void ClearData()

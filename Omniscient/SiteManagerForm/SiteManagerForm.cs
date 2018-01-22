@@ -14,6 +14,12 @@ namespace Omniscient
     {
         string[] DEFAULT_VIRTUAL_CHANNEL_TYPES = {"Ratio", "Sum", "Difference", "Add Constant", "Scale", "Delay"};
 
+        // SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
+        // State
+        DetectionSystem selectedSystem;
+
+        // SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
+
         MainForm main;
         SiteManager siteMan;
 
@@ -23,6 +29,8 @@ namespace Omniscient
         {
             main = master;
             siteMan = newSiteMan;
+
+            selectedSystem = null;
 
             this.StartPosition = FormStartPosition.CenterParent;
             InitializeComponent();
@@ -68,13 +76,16 @@ namespace Omniscient
                         sysNode.ToolTipText = sysNode.Text;
                         foreach (Instrument inst in sys.GetInstruments())
                         {
-                            TreeNode instNode = new TreeNode(inst.GetName());
-                            instNode.Name = inst.GetName();
-                            instNode.Tag = inst;
-                            instNode.ImageIndex = 3;
-                            instNode.SelectedImageIndex = 3;
-                            instNode.ToolTipText = instNode.Text;
-                            sysNode.Nodes.Add(instNode);
+                            if (!(inst is DeclarationInstrument))
+                            {
+                                TreeNode instNode = new TreeNode(inst.GetName());
+                                instNode.Name = inst.GetName();
+                                instNode.Tag = inst;
+                                instNode.ImageIndex = 3;
+                                instNode.SelectedImageIndex = 3;
+                                instNode.ToolTipText = instNode.Text;
+                                sysNode.Nodes.Add(instNode);
+                            }
                         }
                         foreach (EventGenerator eg in sys.GetEventGenerators())
                         {
@@ -213,8 +224,29 @@ namespace Omniscient
             }
         }
 
+        private void SetupSystemPanel()
+        {
+            if (selectedSystem.HasDeclarationInstrument())
+            {
+                DeclarationCheckBox.Checked = true;
+                DeclarationPrefixTextBox.Enabled = true;
+                DeclarationPrefixTextBox.Text = selectedSystem.GetDeclarationInstrument().GetFilePrefix();
+                DeclarationDirectoryTextBox.Enabled = true;
+                DeclarationDirectoryTextBox.Text = selectedSystem.GetDeclarationInstrument().GetDataFolder();
+            }
+            else
+            {
+                DeclarationCheckBox.Checked = false;
+                DeclarationPrefixTextBox.Enabled = false;
+                DeclarationPrefixTextBox.Text = "";
+                DeclarationDirectoryTextBox.Enabled = false;
+                DeclarationDirectoryTextBox.Text = "";
+            }
+        }
+
         private void ResetFields()
         {
+            selectedSystem = null;
             TreeNode node = SitesTreeView.SelectedNode;
             NameTextBox.Text = node.Text;
 
@@ -223,6 +255,7 @@ namespace Omniscient
                 Site site = (Site)node.Tag;
                 TypeLabel.Text = "Site";
 
+                SystemPanel.Visible = false;
                 InstrumentPanel.Visible = false;
                 NewInstrumentButton.Enabled = false;
                 NewSystemButton.Enabled = false;
@@ -232,6 +265,7 @@ namespace Omniscient
                 Facility fac = (Facility)node.Tag;
                 TypeLabel.Text = "Facility";
 
+                SystemPanel.Visible = false;
                 InstrumentPanel.Visible = false;
                 NewInstrumentButton.Enabled = false;
                 NewSystemButton.Enabled = true;
@@ -239,8 +273,12 @@ namespace Omniscient
             else if (node.Tag is DetectionSystem)
             {
                 DetectionSystem sys = (DetectionSystem)node.Tag;
+                selectedSystem = sys;
                 TypeLabel.Text = "System";
 
+                SetupSystemPanel();
+
+                SystemPanel.Visible = true;
                 InstrumentPanel.Visible = false;
                 NewInstrumentButton.Enabled = true;
                 NewSystemButton.Enabled = true;
@@ -271,7 +309,7 @@ namespace Omniscient
                 else
                     VirtualChannelGroupBox.Visible = false;
 
-
+                SystemPanel.Visible = false;
                 InstrumentPanel.Visible = true;
                 NewInstrumentButton.Enabled = true;
                 NewSystemButton.Enabled = true;
@@ -281,6 +319,7 @@ namespace Omniscient
                 EventGenerator eg = (EventGenerator)node.Tag;
                 TypeLabel.Text = "Event Generator";
 
+                SystemPanel.Visible = false;
                 InstrumentPanel.Visible = false;
                 NewInstrumentButton.Enabled = false;
                 NewSystemButton.Enabled = false;
@@ -501,6 +540,11 @@ namespace Omniscient
                 }
                 sys.SetName(NameTextBox.Text);
                 nodeName = sys.GetName();
+                if(DeclarationCheckBox.Checked)
+                {
+                    selectedSystem.GetDeclarationInstrument().SetFilePrefix(DeclarationPrefixTextBox.Text);
+                    selectedSystem.GetDeclarationInstrument().SetDataFolder(DeclarationDirectoryTextBox.Text);
+                }
             }
             else if (node.Tag is Instrument)
             {
@@ -1226,6 +1270,20 @@ namespace Omniscient
                 siteManChanged = true;
                 SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(inst.GetName(), true)[0];
                 VirtualChannelsComboBox.Text = chan.GetName();
+            }
+        }
+
+        private void DeclarationCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (DeclarationCheckBox.Checked)
+            {
+                selectedSystem.SetDeclarationInstrument(new DeclarationInstrument(selectedSystem.GetName() + "_Declarations"));
+                SetupSystemPanel();
+            }
+            else
+            {
+                selectedSystem.RemoveDeclarationInstrument();
+                SetupSystemPanel();
             }
         }
     }

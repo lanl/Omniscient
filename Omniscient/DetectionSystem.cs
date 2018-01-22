@@ -9,17 +9,22 @@ namespace Omniscient
     public class DetectionSystem : EventWatcher
     {
         List<Instrument> instruments;
+        private DeclarationInstrument declarationInstrument;
         string name;
 
         public DetectionSystem(string newName) : base()
         {
             name = newName;
             instruments = new List<Instrument>();
+            declarationInstrument = null;
         }
 
         public void AddInstrument(Instrument newInstrument)
         {
-            instruments.Add(newInstrument);
+            if (newInstrument is DeclarationInstrument)
+                SetDeclarationInstrument((DeclarationInstrument)newInstrument);
+            else
+                instruments.Add(newInstrument);
         }
 
         public List<Instrument> GetInstruments()
@@ -33,5 +38,32 @@ namespace Omniscient
         }
 
         public string GetName() { return name; }
+
+        public void SetDeclarationInstrument(DeclarationInstrument inst)
+        {
+            if (declarationInstrument != null)
+            {
+                instruments.Remove(declarationInstrument);
+            }
+            declarationInstrument = inst;
+            instruments.Add(inst);
+        }
+
+        public void RemoveDeclarationInstrument()
+        {
+            if (declarationInstrument != null)
+            {
+                instruments.Remove(declarationInstrument);
+            }
+            declarationInstrument = null;
+        }
+
+        public DeclarationInstrument GetDeclarationInstrument() { return declarationInstrument; }
+
+        public bool HasDeclarationInstrument()
+        {
+            if (declarationInstrument == null) return false;
+            return true;
+        }
     }
 }

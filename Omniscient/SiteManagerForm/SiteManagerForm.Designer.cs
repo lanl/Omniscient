@@ -105,6 +105,13 @@
             this.panel4 = new System.Windows.Forms.Panel();
             this.ExportButton = new System.Windows.Forms.Button();
             this.ImportButton = new System.Windows.Forms.Button();
+            this.SystemPanel = new System.Windows.Forms.Panel();
+            this.DeclarationPrefixTextBox = new System.Windows.Forms.TextBox();
+            this.label22 = new System.Windows.Forms.Label();
+            this.DeclarationsDirectoryButton = new System.Windows.Forms.Button();
+            this.DeclarationDirectoryTextBox = new System.Windows.Forms.TextBox();
+            this.label23 = new System.Windows.Forms.Label();
+            this.DeclarationCheckBox = new System.Windows.Forms.CheckBox();
             this.InstrumentPanel.SuspendLayout();
             this.VirtualChannelGroupBox.SuspendLayout();
             this.VCChannelConstPanel.SuspendLayout();
@@ -120,6 +127,7 @@
             this.NamePanel.SuspendLayout();
             this.LeftRightPanel.SuspendLayout();
             this.panel4.SuspendLayout();
+            this.SystemPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // SitesTreeView
@@ -192,7 +200,7 @@
             this.InstrumentPanel.Controls.Add(this.label3);
             this.InstrumentPanel.Controls.Add(this.InstTypeComboBox);
             this.InstrumentPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.InstrumentPanel.Location = new System.Drawing.Point(0, 126);
+            this.InstrumentPanel.Location = new System.Drawing.Point(0, 226);
             this.InstrumentPanel.Name = "InstrumentPanel";
             this.InstrumentPanel.Size = new System.Drawing.Size(334, 368);
             this.InstrumentPanel.TabIndex = 9;
@@ -785,6 +793,7 @@
             // InnerRightPanel
             // 
             this.InnerRightPanel.Controls.Add(this.InstrumentPanel);
+            this.InnerRightPanel.Controls.Add(this.SystemPanel);
             this.InnerRightPanel.Controls.Add(this.NamePanel);
             this.InnerRightPanel.Controls.Add(this.NewButtonPanel);
             this.InnerRightPanel.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -877,6 +886,73 @@
             this.ImportButton.UseVisualStyleBackColor = true;
             this.ImportButton.Click += new System.EventHandler(this.ImportButton_Click);
             // 
+            // SystemPanel
+            // 
+            this.SystemPanel.Controls.Add(this.DeclarationCheckBox);
+            this.SystemPanel.Controls.Add(this.DeclarationsDirectoryButton);
+            this.SystemPanel.Controls.Add(this.DeclarationDirectoryTextBox);
+            this.SystemPanel.Controls.Add(this.label23);
+            this.SystemPanel.Controls.Add(this.DeclarationPrefixTextBox);
+            this.SystemPanel.Controls.Add(this.label22);
+            this.SystemPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.SystemPanel.Location = new System.Drawing.Point(0, 126);
+            this.SystemPanel.Name = "SystemPanel";
+            this.SystemPanel.Size = new System.Drawing.Size(334, 100);
+            this.SystemPanel.TabIndex = 12;
+            // 
+            // DeclarationPrefixTextBox
+            // 
+            this.DeclarationPrefixTextBox.Location = new System.Drawing.Point(102, 35);
+            this.DeclarationPrefixTextBox.Name = "DeclarationPrefixTextBox";
+            this.DeclarationPrefixTextBox.Size = new System.Drawing.Size(160, 20);
+            this.DeclarationPrefixTextBox.TabIndex = 14;
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(44, 34);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(52, 13);
+            this.label22.TabIndex = 13;
+            this.label22.Text = "File Prefix";
+            // 
+            // DeclarationsDirectoryButton
+            // 
+            this.DeclarationsDirectoryButton.Image = ((System.Drawing.Image)(resources.GetObject("DeclarationsDirectoryButton.Image")));
+            this.DeclarationsDirectoryButton.Location = new System.Drawing.Point(267, 59);
+            this.DeclarationsDirectoryButton.Name = "DeclarationsDirectoryButton";
+            this.DeclarationsDirectoryButton.Size = new System.Drawing.Size(28, 28);
+            this.DeclarationsDirectoryButton.TabIndex = 19;
+            this.DeclarationsDirectoryButton.UseVisualStyleBackColor = true;
+            // 
+            // DeclarationDirectoryTextBox
+            // 
+            this.DeclarationDirectoryTextBox.Location = new System.Drawing.Point(102, 63);
+            this.DeclarationDirectoryTextBox.Name = "DeclarationDirectoryTextBox";
+            this.DeclarationDirectoryTextBox.Size = new System.Drawing.Size(160, 20);
+            this.DeclarationDirectoryTextBox.TabIndex = 18;
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(21, 67);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(75, 13);
+            this.label23.TabIndex = 17;
+            this.label23.Text = "Data Directory";
+            // 
+            // DeclarationCheckBox
+            // 
+            this.DeclarationCheckBox.AutoSize = true;
+            this.DeclarationCheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.DeclarationCheckBox.Location = new System.Drawing.Point(9, 9);
+            this.DeclarationCheckBox.Name = "DeclarationCheckBox";
+            this.DeclarationCheckBox.Size = new System.Drawing.Size(107, 17);
+            this.DeclarationCheckBox.TabIndex = 20;
+            this.DeclarationCheckBox.Text = "Has Declarations";
+            this.DeclarationCheckBox.UseVisualStyleBackColor = true;
+            this.DeclarationCheckBox.CheckedChanged += new System.EventHandler(this.DeclarationCheckBox_CheckedChanged);
+            // 
             // SiteManagerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -912,6 +988,8 @@
             this.NamePanel.PerformLayout();
             this.LeftRightPanel.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
+            this.SystemPanel.ResumeLayout(false);
+            this.SystemPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -994,5 +1072,12 @@
         private System.Windows.Forms.TextBox BG1EndTextBox;
         private System.Windows.Forms.TextBox BG1StartTextBox;
         private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.Panel SystemPanel;
+        private System.Windows.Forms.CheckBox DeclarationCheckBox;
+        private System.Windows.Forms.Button DeclarationsDirectoryButton;
+        private System.Windows.Forms.TextBox DeclarationDirectoryTextBox;
+        private System.Windows.Forms.Label label23;
+        private System.Windows.Forms.TextBox DeclarationPrefixTextBox;
+        private System.Windows.Forms.Label label22;
     }
 }
