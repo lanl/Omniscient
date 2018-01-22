@@ -99,10 +99,10 @@
     <Compile Include="EventViewerForm\EventViewerForm.Designer.cs">
       <DependentUpon>EventViewerForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="EventViewerForm\NuclearCompositionPanel.cs">
+    <Compile Include="Controls\NuclearCompositionPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="EventViewerForm\NuclearCompositionPanel.Designer.cs">
+    <Compile Include="Controls\NuclearCompositionPanel.Designer.cs">
       <DependentUpon>NuclearCompositionPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="Facility.cs" />
@@ -185,7 +185,7 @@
     <EmbeddedResource Include="EventViewerForm\EventViewerForm.resx">
       <DependentUpon>EventViewerForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="EventViewerForm\NuclearCompositionPanel.resx">
+    <EmbeddedResource Include="Controls\NuclearCompositionPanel.resx">
       <DependentUpon>NuclearCompositionPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Inspectacles.resx">
