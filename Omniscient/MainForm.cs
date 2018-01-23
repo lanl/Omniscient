@@ -1359,5 +1359,11 @@ namespace Omniscient
                 eventViewerForm.Show();
             }
         }
+
+        private void declarationEditorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            DeclarationEditor declarationEditor = new DeclarationEditor();
+            declarationEditor.Show();
+        }
     }
 }

@@ -113,6 +113,7 @@ namespace Omniscient
             this.EventsWarningLabel = new System.Windows.Forms.Label();
             this.GenerateEventsButton = new System.Windows.Forms.Button();
             this.ButtonImageList = new System.Windows.Forms.ImageList(this.components);
+            this.declarationEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.StripChartControlPanel.SuspendLayout();
             this.StripChartsPanel.SuspendLayout();
             this.StripChartsLayoutPanel.SuspendLayout();
@@ -249,7 +250,8 @@ namespace Omniscient
             this.SiteManagerToolStripMenuItem,
             this.EventManagerToolStripMenuItem,
             this.launchInspectrumToolStripMenuItem,
-            this.launchInspectaclesToolStripMenuItem});
+            this.launchInspectaclesToolStripMenuItem,
+            this.declarationEditorToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(47, 20);
             this.toolsToolStripMenuItem.Text = "Tools";
@@ -934,6 +936,13 @@ namespace Omniscient
             this.ButtonImageList.Images.SetKeyName(2, "Plus");
             this.ButtonImageList.Images.SetKeyName(3, "Delete");
             // 
+            // declarationEditorToolStripMenuItem
+            // 
+            this.declarationEditorToolStripMenuItem.Name = "declarationEditorToolStripMenuItem";
+            this.declarationEditorToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.declarationEditorToolStripMenuItem.Text = "Declaration Editor";
+            this.declarationEditorToolStripMenuItem.Click += new System.EventHandler(this.declarationEditorToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1076,6 +1085,7 @@ namespace Omniscient
         private DataGridViewTextBoxColumn MaxTime;
         private DataGridViewTextBoxColumn Comment;
         private ToolStripMenuItem launchInspectaclesToolStripMenuItem;
+        private ToolStripMenuItem declarationEditorToolStripMenuItem;
     }
 }
 

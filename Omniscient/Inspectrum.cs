@@ -90,7 +90,6 @@ namespace Omniscient
             {
                 MessageBox.Show("Error opening file!");
             }
-
         }
 
         private void OpenFile()
