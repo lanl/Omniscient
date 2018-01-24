@@ -31,6 +31,7 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.CreationTimePicker = new System.Windows.Forms.DateTimePicker();
             this.CreationDatePicker = new System.Windows.Forms.DateTimePicker();
             this.label1 = new System.Windows.Forms.Label();
@@ -38,6 +39,11 @@
             this.ModificationTimePicker = new System.Windows.Forms.DateTimePicker();
             this.ModificationDatePicker = new System.Windows.Forms.DateTimePicker();
             this.ItemGroupBox = new System.Windows.Forms.GroupBox();
+            this.MassDatePicker = new System.Windows.Forms.DateTimePicker();
+            this.label14 = new System.Windows.Forms.Label();
+            this.MassTimePicker = new System.Windows.Forms.DateTimePicker();
+            this.MassTextBox = new System.Windows.Forms.TextBox();
+            this.label13 = new System.Windows.Forms.Label();
             this.BatchGroupBox = new System.Windows.Forms.GroupBox();
             this.BatchSourceTextBox = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
@@ -63,11 +69,6 @@
             this.MBATextBox = new System.Windows.Forms.TextBox();
             this.label10 = new System.Windows.Forms.Label();
             this.MaterialPanel = new Omniscient.NuclearCompositionPanel();
-            this.MassDatePicker = new System.Windows.Forms.DateTimePicker();
-            this.label14 = new System.Windows.Forms.Label();
-            this.MassTimePicker = new System.Windows.Forms.DateTimePicker();
-            this.MassTextBox = new System.Windows.Forms.TextBox();
-            this.label13 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.ItemGroupBox.SuspendLayout();
             this.BatchGroupBox.SuspendLayout();
@@ -86,7 +87,8 @@
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.openToolStripMenuItem});
+            this.openToolStripMenuItem,
+            this.saveToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
@@ -98,11 +100,18 @@
             this.openToolStripMenuItem.Text = "Open";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
+            // saveToolStripMenuItem
+            // 
+            this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.saveToolStripMenuItem.Text = "Save";
+            this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
+            // 
             // CreationTimePicker
             // 
             this.CreationTimePicker.CustomFormat = "MMM dd, yyyy\'";
             this.CreationTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.CreationTimePicker.Location = new System.Drawing.Point(114, 701);
+            this.CreationTimePicker.Location = new System.Drawing.Point(114, 760);
             this.CreationTimePicker.Name = "CreationTimePicker";
             this.CreationTimePicker.ShowUpDown = true;
             this.CreationTimePicker.Size = new System.Drawing.Size(88, 20);
@@ -112,7 +121,7 @@
             // 
             this.CreationDatePicker.CustomFormat = "MMM dd, yyyy\'";
             this.CreationDatePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.CreationDatePicker.Location = new System.Drawing.Point(208, 701);
+            this.CreationDatePicker.Location = new System.Drawing.Point(208, 760);
             this.CreationDatePicker.Name = "CreationDatePicker";
             this.CreationDatePicker.Size = new System.Drawing.Size(103, 20);
             this.CreationDatePicker.TabIndex = 58;
@@ -121,7 +130,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(36, 705);
+            this.label1.Location = new System.Drawing.Point(36, 764);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(72, 13);
             this.label1.TabIndex = 13;
@@ -130,7 +139,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(18, 732);
+            this.label2.Location = new System.Drawing.Point(18, 791);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(90, 13);
             this.label2.TabIndex = 14;
@@ -140,7 +149,7 @@
             // 
             this.ModificationTimePicker.CustomFormat = "MMM dd, yyyy\'";
             this.ModificationTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.ModificationTimePicker.Location = new System.Drawing.Point(114, 728);
+            this.ModificationTimePicker.Location = new System.Drawing.Point(114, 787);
             this.ModificationTimePicker.Name = "ModificationTimePicker";
             this.ModificationTimePicker.ShowUpDown = true;
             this.ModificationTimePicker.Size = new System.Drawing.Size(88, 20);
@@ -150,7 +159,7 @@
             // 
             this.ModificationDatePicker.CustomFormat = "MMM dd, yyyy\'";
             this.ModificationDatePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.ModificationDatePicker.Location = new System.Drawing.Point(208, 728);
+            this.ModificationDatePicker.Location = new System.Drawing.Point(208, 787);
             this.ModificationDatePicker.Name = "ModificationDatePicker";
             this.ModificationDatePicker.Size = new System.Drawing.Size(103, 20);
             this.ModificationDatePicker.TabIndex = 60;
@@ -175,10 +184,55 @@
             this.ItemGroupBox.Controls.Add(this.OriginTimePicker);
             this.ItemGroupBox.Location = new System.Drawing.Point(12, 135);
             this.ItemGroupBox.Name = "ItemGroupBox";
-            this.ItemGroupBox.Size = new System.Drawing.Size(325, 560);
+            this.ItemGroupBox.Size = new System.Drawing.Size(325, 619);
             this.ItemGroupBox.TabIndex = 7;
             this.ItemGroupBox.TabStop = false;
             this.ItemGroupBox.Text = "Item";
+            // 
+            // MassDatePicker
+            // 
+            this.MassDatePicker.CustomFormat = "MMM dd, yyyy\'";
+            this.MassDatePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.MassDatePicker.Location = new System.Drawing.Point(196, 145);
+            this.MassDatePicker.Name = "MassDatePicker";
+            this.MassDatePicker.Size = new System.Drawing.Size(103, 20);
+            this.MassDatePicker.TabIndex = 30;
+            this.MassDatePicker.Value = new System.DateTime(2016, 11, 1, 11, 15, 0, 0);
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(38, 148);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(58, 13);
+            this.label14.TabIndex = 31;
+            this.label14.Text = "Mass Date";
+            // 
+            // MassTimePicker
+            // 
+            this.MassTimePicker.CustomFormat = "MMM dd, yyyy\'";
+            this.MassTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Time;
+            this.MassTimePicker.Location = new System.Drawing.Point(102, 145);
+            this.MassTimePicker.Name = "MassTimePicker";
+            this.MassTimePicker.ShowUpDown = true;
+            this.MassTimePicker.Size = new System.Drawing.Size(88, 20);
+            this.MassTimePicker.TabIndex = 29;
+            // 
+            // MassTextBox
+            // 
+            this.MassTextBox.Location = new System.Drawing.Point(102, 119);
+            this.MassTextBox.Name = "MassTextBox";
+            this.MassTextBox.Size = new System.Drawing.Size(98, 20);
+            this.MassTextBox.TabIndex = 27;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(49, 122);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(47, 13);
+            this.label13.TabIndex = 28;
+            this.label13.Text = "Mass (g)";
             // 
             // BatchGroupBox
             // 
@@ -189,7 +243,7 @@
             this.BatchGroupBox.Controls.Add(this.MaterialPanel);
             this.BatchGroupBox.Location = new System.Drawing.Point(6, 177);
             this.BatchGroupBox.Name = "BatchGroupBox";
-            this.BatchGroupBox.Size = new System.Drawing.Size(313, 377);
+            this.BatchGroupBox.Size = new System.Drawing.Size(313, 436);
             this.BatchGroupBox.TabIndex = 13;
             this.BatchGroupBox.TabStop = false;
             this.BatchGroupBox.Text = "Batch";
@@ -396,61 +450,16 @@
             // MaterialPanel
             // 
             this.MaterialPanel.Composition = null;
-            this.MaterialPanel.Location = new System.Drawing.Point(31, 67);
+            this.MaterialPanel.Location = new System.Drawing.Point(11, 67);
             this.MaterialPanel.Name = "MaterialPanel";
-            this.MaterialPanel.Size = new System.Drawing.Size(262, 309);
+            this.MaterialPanel.Size = new System.Drawing.Size(282, 363);
             this.MaterialPanel.TabIndex = 16;
-            // 
-            // MassDatePicker
-            // 
-            this.MassDatePicker.CustomFormat = "MMM dd, yyyy\'";
-            this.MassDatePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.MassDatePicker.Location = new System.Drawing.Point(196, 145);
-            this.MassDatePicker.Name = "MassDatePicker";
-            this.MassDatePicker.Size = new System.Drawing.Size(103, 20);
-            this.MassDatePicker.TabIndex = 30;
-            this.MassDatePicker.Value = new System.DateTime(2016, 11, 1, 11, 15, 0, 0);
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(38, 148);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(58, 13);
-            this.label14.TabIndex = 31;
-            this.label14.Text = "Mass Date";
-            // 
-            // MassTimePicker
-            // 
-            this.MassTimePicker.CustomFormat = "MMM dd, yyyy\'";
-            this.MassTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Time;
-            this.MassTimePicker.Location = new System.Drawing.Point(102, 145);
-            this.MassTimePicker.Name = "MassTimePicker";
-            this.MassTimePicker.ShowUpDown = true;
-            this.MassTimePicker.Size = new System.Drawing.Size(88, 20);
-            this.MassTimePicker.TabIndex = 29;
-            // 
-            // MassTextBox
-            // 
-            this.MassTextBox.Location = new System.Drawing.Point(102, 119);
-            this.MassTextBox.Name = "MassTextBox";
-            this.MassTextBox.Size = new System.Drawing.Size(98, 20);
-            this.MassTextBox.TabIndex = 27;
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(49, 122);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(47, 13);
-            this.label13.TabIndex = 28;
-            this.label13.Text = "Mass (g)";
             // 
             // DeclarationEditor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(346, 770);
+            this.ClientSize = new System.Drawing.Size(346, 819);
             this.Controls.Add(this.MBATextBox);
             this.Controls.Add(this.label10);
             this.Controls.Add(this.FacilityTextBox);
@@ -524,5 +533,6 @@
         private System.Windows.Forms.DateTimePicker MassTimePicker;
         private System.Windows.Forms.TextBox MassTextBox;
         private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
     }
 }

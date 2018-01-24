@@ -41,6 +41,12 @@ namespace Omniscient
             if (val == NOT_SET) return false;
             return true;
         }
+
+        public void Unset()
+        {
+            val = NOT_SET;
+            uncertainty = NOT_SET;
+        }
     }
 
     public class NuclearComposition
@@ -70,6 +76,8 @@ namespace Omniscient
             Pu241MassPercent = new MeasuredValue();
             Pu242MassPercent = new MeasuredValue();
             Am241MassPercent = new MeasuredValue();
+            PuDate = new DateTime(1776, 7, 4);
+            AmDate = new DateTime(1776, 7, 4);
 
             UMass = new MeasuredValue();
             U234MassPercent = new MeasuredValue();

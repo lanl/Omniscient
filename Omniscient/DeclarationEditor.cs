@@ -54,6 +54,49 @@ namespace Omniscient
             }
         }
 
+        private void SaveDECFile(string fileName)
+        {
+            decFile = new DECFile();
+            ReturnCode returnCode = Scrape();
+            if (returnCode != ReturnCode.SUCCESS) return;
+            if (decFile.WriteDeclarationFile(fileName) != ReturnCode.SUCCESS)
+            {
+                MessageBox.Show("Error writing declaration file. Sorry!");
+            }
+        }
+
+        private ReturnCode Scrape()
+        {
+            decFile.Facility = FacilityTextBox.Text;
+            decFile.MBA = MBATextBox.Text;
+            decFile.FromTime = FromDatePicker.Value.Date.Add(FromTimePicker.Value.TimeOfDay);
+            decFile.ToTime = ToDatePicker.Value.Date.Add(ToTimePicker.Value.TimeOfDay);
+            decFile.ItemName = ItemNameTextBox.Text;
+            decFile.ItemOriginDate = OriginDatePicker.Value.Date.Add(OriginTimePicker.Value.TimeOfDay);
+            decFile.FullName = FullNameTextBox.Text;
+            decFile.Barcode = BarCodeTextBox.Text;
+            try
+            {
+                decFile.Mass = double.Parse(MassTextBox.Text);
+            }
+            catch
+            {
+                MessageBox.Show("Invalid mass!");
+                return ReturnCode.BAD_INPUT;
+            }
+            decFile.MassDate = MassDatePicker.Value.Date.Add(MassTimePicker.Value.TimeOfDay);
+            decFile.BatchName = BatchNameTextBox.Text;
+            decFile.BatchSource = BatchSourceTextBox.Text;
+            MaterialPanel.Composition = new NuclearComposition();
+            ReturnCode returnCode = MaterialPanel.Scrape();
+            if (returnCode != ReturnCode.SUCCESS) return returnCode;
+            decFile.Material = MaterialPanel.Composition;
+            decFile.CreationDate = CreationDatePicker.Value.Date.Add(CreationTimePicker.Value.TimeOfDay);
+            decFile.ModificationDate = DateTime.Now;
+
+            return ReturnCode.SUCCESS;
+        }
+
         private void OpenFile()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -66,9 +109,25 @@ namespace Omniscient
             }
         }
 
+        private void SaveAs()
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "dec files (*.dec)|*.dec|All files (*.*)|*.*";
+            saveFileDialog.ShowDialog();
+            if (saveFileDialog.FileName != "")
+            {
+                SaveDECFile(saveFileDialog.FileName);
+            }
+        }
+
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFile();
+        }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveAs();
         }
     }
 }
