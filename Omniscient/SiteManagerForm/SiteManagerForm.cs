@@ -1286,5 +1286,15 @@ namespace Omniscient
                 SetupSystemPanel();
             }
         }
+
+        private void DeclarationsDirectoryButton_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
+            DialogResult result = folderBrowserDialog.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                DeclarationDirectoryTextBox.Text = folderBrowserDialog.SelectedPath;
+            }
+        }
     }
 }

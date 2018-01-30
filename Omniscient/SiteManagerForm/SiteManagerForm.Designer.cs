@@ -97,6 +97,13 @@
             this.LeftPanel = new System.Windows.Forms.Panel();
             this.RightPanel = new System.Windows.Forms.Panel();
             this.InnerRightPanel = new System.Windows.Forms.Panel();
+            this.SystemPanel = new System.Windows.Forms.Panel();
+            this.DeclarationCheckBox = new System.Windows.Forms.CheckBox();
+            this.DeclarationsDirectoryButton = new System.Windows.Forms.Button();
+            this.DeclarationDirectoryTextBox = new System.Windows.Forms.TextBox();
+            this.label23 = new System.Windows.Forms.Label();
+            this.DeclarationPrefixTextBox = new System.Windows.Forms.TextBox();
+            this.label22 = new System.Windows.Forms.Label();
             this.NamePanel = new System.Windows.Forms.Panel();
             this.LeftRightPanel = new System.Windows.Forms.Panel();
             this.RemoveButton = new System.Windows.Forms.Button();
@@ -105,13 +112,6 @@
             this.panel4 = new System.Windows.Forms.Panel();
             this.ExportButton = new System.Windows.Forms.Button();
             this.ImportButton = new System.Windows.Forms.Button();
-            this.SystemPanel = new System.Windows.Forms.Panel();
-            this.DeclarationPrefixTextBox = new System.Windows.Forms.TextBox();
-            this.label22 = new System.Windows.Forms.Label();
-            this.DeclarationsDirectoryButton = new System.Windows.Forms.Button();
-            this.DeclarationDirectoryTextBox = new System.Windows.Forms.TextBox();
-            this.label23 = new System.Windows.Forms.Label();
-            this.DeclarationCheckBox = new System.Windows.Forms.CheckBox();
             this.InstrumentPanel.SuspendLayout();
             this.VirtualChannelGroupBox.SuspendLayout();
             this.VCChannelConstPanel.SuspendLayout();
@@ -124,10 +124,10 @@
             this.LeftPanel.SuspendLayout();
             this.RightPanel.SuspendLayout();
             this.InnerRightPanel.SuspendLayout();
+            this.SystemPanel.SuspendLayout();
             this.NamePanel.SuspendLayout();
             this.LeftRightPanel.SuspendLayout();
             this.panel4.SuspendLayout();
-            this.SystemPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // SitesTreeView
@@ -802,6 +802,74 @@
             this.InnerRightPanel.Size = new System.Drawing.Size(334, 451);
             this.InnerRightPanel.TabIndex = 13;
             // 
+            // SystemPanel
+            // 
+            this.SystemPanel.Controls.Add(this.DeclarationCheckBox);
+            this.SystemPanel.Controls.Add(this.DeclarationsDirectoryButton);
+            this.SystemPanel.Controls.Add(this.DeclarationDirectoryTextBox);
+            this.SystemPanel.Controls.Add(this.label23);
+            this.SystemPanel.Controls.Add(this.DeclarationPrefixTextBox);
+            this.SystemPanel.Controls.Add(this.label22);
+            this.SystemPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.SystemPanel.Location = new System.Drawing.Point(0, 126);
+            this.SystemPanel.Name = "SystemPanel";
+            this.SystemPanel.Size = new System.Drawing.Size(334, 100);
+            this.SystemPanel.TabIndex = 12;
+            // 
+            // DeclarationCheckBox
+            // 
+            this.DeclarationCheckBox.AutoSize = true;
+            this.DeclarationCheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.DeclarationCheckBox.Location = new System.Drawing.Point(9, 9);
+            this.DeclarationCheckBox.Name = "DeclarationCheckBox";
+            this.DeclarationCheckBox.Size = new System.Drawing.Size(107, 17);
+            this.DeclarationCheckBox.TabIndex = 20;
+            this.DeclarationCheckBox.Text = "Has Declarations";
+            this.DeclarationCheckBox.UseVisualStyleBackColor = true;
+            this.DeclarationCheckBox.CheckedChanged += new System.EventHandler(this.DeclarationCheckBox_CheckedChanged);
+            // 
+            // DeclarationsDirectoryButton
+            // 
+            this.DeclarationsDirectoryButton.Image = ((System.Drawing.Image)(resources.GetObject("DeclarationsDirectoryButton.Image")));
+            this.DeclarationsDirectoryButton.Location = new System.Drawing.Point(267, 59);
+            this.DeclarationsDirectoryButton.Name = "DeclarationsDirectoryButton";
+            this.DeclarationsDirectoryButton.Size = new System.Drawing.Size(28, 28);
+            this.DeclarationsDirectoryButton.TabIndex = 19;
+            this.DeclarationsDirectoryButton.UseVisualStyleBackColor = true;
+            this.DeclarationsDirectoryButton.Click += new System.EventHandler(this.DeclarationsDirectoryButton_Click);
+            // 
+            // DeclarationDirectoryTextBox
+            // 
+            this.DeclarationDirectoryTextBox.Location = new System.Drawing.Point(102, 63);
+            this.DeclarationDirectoryTextBox.Name = "DeclarationDirectoryTextBox";
+            this.DeclarationDirectoryTextBox.Size = new System.Drawing.Size(160, 20);
+            this.DeclarationDirectoryTextBox.TabIndex = 18;
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(21, 67);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(75, 13);
+            this.label23.TabIndex = 17;
+            this.label23.Text = "Data Directory";
+            // 
+            // DeclarationPrefixTextBox
+            // 
+            this.DeclarationPrefixTextBox.Location = new System.Drawing.Point(102, 35);
+            this.DeclarationPrefixTextBox.Name = "DeclarationPrefixTextBox";
+            this.DeclarationPrefixTextBox.Size = new System.Drawing.Size(160, 20);
+            this.DeclarationPrefixTextBox.TabIndex = 14;
+            // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(44, 34);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(52, 13);
+            this.label22.TabIndex = 13;
+            this.label22.Text = "File Prefix";
+            // 
             // NamePanel
             // 
             this.NamePanel.Controls.Add(this.label2);
@@ -886,73 +954,6 @@
             this.ImportButton.UseVisualStyleBackColor = true;
             this.ImportButton.Click += new System.EventHandler(this.ImportButton_Click);
             // 
-            // SystemPanel
-            // 
-            this.SystemPanel.Controls.Add(this.DeclarationCheckBox);
-            this.SystemPanel.Controls.Add(this.DeclarationsDirectoryButton);
-            this.SystemPanel.Controls.Add(this.DeclarationDirectoryTextBox);
-            this.SystemPanel.Controls.Add(this.label23);
-            this.SystemPanel.Controls.Add(this.DeclarationPrefixTextBox);
-            this.SystemPanel.Controls.Add(this.label22);
-            this.SystemPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.SystemPanel.Location = new System.Drawing.Point(0, 126);
-            this.SystemPanel.Name = "SystemPanel";
-            this.SystemPanel.Size = new System.Drawing.Size(334, 100);
-            this.SystemPanel.TabIndex = 12;
-            // 
-            // DeclarationPrefixTextBox
-            // 
-            this.DeclarationPrefixTextBox.Location = new System.Drawing.Point(102, 35);
-            this.DeclarationPrefixTextBox.Name = "DeclarationPrefixTextBox";
-            this.DeclarationPrefixTextBox.Size = new System.Drawing.Size(160, 20);
-            this.DeclarationPrefixTextBox.TabIndex = 14;
-            // 
-            // label22
-            // 
-            this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(44, 34);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(52, 13);
-            this.label22.TabIndex = 13;
-            this.label22.Text = "File Prefix";
-            // 
-            // DeclarationsDirectoryButton
-            // 
-            this.DeclarationsDirectoryButton.Image = ((System.Drawing.Image)(resources.GetObject("DeclarationsDirectoryButton.Image")));
-            this.DeclarationsDirectoryButton.Location = new System.Drawing.Point(267, 59);
-            this.DeclarationsDirectoryButton.Name = "DeclarationsDirectoryButton";
-            this.DeclarationsDirectoryButton.Size = new System.Drawing.Size(28, 28);
-            this.DeclarationsDirectoryButton.TabIndex = 19;
-            this.DeclarationsDirectoryButton.UseVisualStyleBackColor = true;
-            // 
-            // DeclarationDirectoryTextBox
-            // 
-            this.DeclarationDirectoryTextBox.Location = new System.Drawing.Point(102, 63);
-            this.DeclarationDirectoryTextBox.Name = "DeclarationDirectoryTextBox";
-            this.DeclarationDirectoryTextBox.Size = new System.Drawing.Size(160, 20);
-            this.DeclarationDirectoryTextBox.TabIndex = 18;
-            // 
-            // label23
-            // 
-            this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(21, 67);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(75, 13);
-            this.label23.TabIndex = 17;
-            this.label23.Text = "Data Directory";
-            // 
-            // DeclarationCheckBox
-            // 
-            this.DeclarationCheckBox.AutoSize = true;
-            this.DeclarationCheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.DeclarationCheckBox.Location = new System.Drawing.Point(9, 9);
-            this.DeclarationCheckBox.Name = "DeclarationCheckBox";
-            this.DeclarationCheckBox.Size = new System.Drawing.Size(107, 17);
-            this.DeclarationCheckBox.TabIndex = 20;
-            this.DeclarationCheckBox.Text = "Has Declarations";
-            this.DeclarationCheckBox.UseVisualStyleBackColor = true;
-            this.DeclarationCheckBox.CheckedChanged += new System.EventHandler(this.DeclarationCheckBox_CheckedChanged);
-            // 
             // SiteManagerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -984,12 +985,12 @@
             this.LeftPanel.ResumeLayout(false);
             this.RightPanel.ResumeLayout(false);
             this.InnerRightPanel.ResumeLayout(false);
+            this.SystemPanel.ResumeLayout(false);
+            this.SystemPanel.PerformLayout();
             this.NamePanel.ResumeLayout(false);
             this.NamePanel.PerformLayout();
             this.LeftRightPanel.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
-            this.SystemPanel.ResumeLayout(false);
-            this.SystemPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }
