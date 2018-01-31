@@ -1044,7 +1044,8 @@ namespace Omniscient
             foreach (ChannelPanel chanPan in chPanels)
             {
                 Channel chan = chanPan.GetChannel();
-                if (chan.GetInstrument() is MCAInstrument)
+
+                if (chan.GetInstrument() is MCAInstrument || chan.GetInstrument() is DeclarationInstrument)
                 {
                     bool plotChan = false;
                     switch (chartNum)
@@ -1075,16 +1076,34 @@ namespace Omniscient
                         {
                             if (timeStamps[meas] <= mouseTime && mouseTime <= timeStamps[meas] + durations[meas])
                             {
-                                MenuItem menuItem = new MenuItem("View " + chan.GetName() + " in Inspectrum");
-                                menuItem.Tag = chan.GetFiles()[meas];
-                                menuItem.Click += PlotSpectrumMenuItem_Click;
-                                chartMenu.MenuItems.Add(menuItem);
+                                if (chan.GetInstrument() is MCAInstrument)
+                                {
+                                    MenuItem menuItem = new MenuItem("View " + chan.GetName() + " in Inspectrum");
+                                    menuItem.Tag = chan.GetFiles()[meas];
+                                    menuItem.Click += PlotSpectrumMenuItem_Click;
+                                    chartMenu.MenuItems.Add(menuItem);
+                                }
+                                else if(chan.GetInstrument() is DeclarationInstrument)
+                                {
+                                    MenuItem menuItem = new MenuItem("View " + chan.GetName() + " in Declaration Editor");
+                                    menuItem.Tag = chan.GetFiles()[meas];
+                                    menuItem.Click += DeclarationMenuItem_Click;
+                                    chartMenu.MenuItems.Add(menuItem);
+                                }
                             }
                         }
                     }
                 }
             }
             chartMenu.Show(activeChart, new Point((int)mouseX, (int)mouseY));
+        }
+
+        private void DeclarationMenuItem_Click(object sender, EventArgs e)
+        {
+            MenuItem menuItem = (MenuItem)sender;
+            DeclarationEditor declarationEditor = new DeclarationEditor();
+            declarationEditor.LoadDECFile(menuItem.Tag.ToString());
+            declarationEditor.Show();
         }
 
         private void PlotSpectrumMenuItem_Click(object sender, EventArgs e)

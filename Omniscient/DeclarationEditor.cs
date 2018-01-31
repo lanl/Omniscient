@@ -20,7 +20,7 @@ namespace Omniscient
             InitializeComponent();
         }
 
-        private void LoadDECFile(string fileName)
+        public void LoadDECFile(string fileName)
         {
             if (decFile.ParseDeclarationFile(fileName) == ReturnCode.SUCCESS)
             {
