@@ -537,7 +537,7 @@ namespace Omniscient
                     {
                         foreach (Channel ch in inst.GetChannels())
                         {
-                            if (ch.GetName() == AnalysisChannelComboBox.Text)
+                            if (ch.GetName() == DataCompilerPanel1.ChannelComboBox.Text)
                             {
                                 analysisAction.AddChannel(ch);
                                 break;
@@ -545,7 +545,7 @@ namespace Omniscient
                         }
                     }
                     analysisAction.GetDataCompilers().Clear();
-                    switch (DataCompilersComboBox.Text)
+                    switch (DataCompilerPanel1.DataCompilersComboBox.Text)
                     {
                         case "Spectrum Compiler":
                             analysisAction.GetDataCompilers().Add(new SpectrumCompiler("", new CHNParser(), new CHNWriter()));
@@ -558,7 +558,7 @@ namespace Omniscient
                             return;
                     }
                     analysisAction.GetAnalysis().SetCommand(AnalysisCommandTextBox.Text);
-                    analysisAction.SetCompiledFileName(CompiledFileTextBox.Text);
+                    analysisAction.SetCompiledFileName(DataCompilerPanel1.CompiledFileTextBox.Text);
                     switch (ResultParserComboBox.Text)
                     {
                         case "FRAM-Pu":
@@ -823,27 +823,39 @@ namespace Omniscient
             ActionCommandTextBox.Text = action.GetCommand();
         }
 
-
-        public void PopulateAnalysisChannelCombo(DetectionSystem sys)
+        private void PopulateDataSourceTab(AnalysisAction action, int compiler)
         {
-            AnalysisChannelComboBox.Items.Clear();
+            DetectionSystem sys = (DetectionSystem)action.GetEventGenerator().GetEventWatcher();
+            DataSourceTabControl.TabPages.Add("Data Source " + (compiler + 1).ToString());
+            DataCompilerPanel compilerPanel = new DataCompilerPanel();
+            compilerPanel.Dock = DockStyle.Fill;
+            DataSourceTabControl.TabPages[compiler].Controls.Add(compilerPanel);
+
+            compilerPanel.ChannelComboBox.Items.Clear();
             foreach (Instrument inst in sys.GetInstruments())
             {
                 foreach (Channel ch in inst.GetChannels())
                 {
-                    AnalysisChannelComboBox.Items.Add(ch.GetName());
+                    compilerPanel.ChannelComboBox.Items.Add(ch.GetName());
                 }
             }
+            compilerPanel.ChannelComboBox.Text = action.GetChannels()[compiler].GetName();
         }
 
         private void PopulateAnalysisPanels(AnalysisAction action, EventGenerator eg)
         {
             TreeNode node = SitesTreeView.SelectedNode;
+
+            DataSourceTabControl.TabPages.Clear();
+            for (int i =0; i< action.GetDataCompilers().Count; ++i)
+            {
+                PopulateDataSourceTab(action, i);
+            }
+
             selectedActionChannel = action.GetChannels()[0];
-            PopulateAnalysisChannelCombo((DetectionSystem)node.Parent.Tag);
-            AnalysisChannelComboBox.Text = action.GetChannels()[0].GetName();
+            DataCompilerPanel1.ChannelComboBox.Text = action.GetChannels()[0].GetName();
             AnalysisCommandTextBox.Text = action.GetAnalysis().GetCommand();
-            CompiledFileTextBox.Text = action.GetCompiledFileName();
+            DataCompilerPanel1.CompiledFileTextBox.Text = action.GetCompiledFileName();
             ResultFileTextBox.Text = action.GetAnalysis().GetResultsFile();
             if(action.GetAnalysis().GetResultParser() is FRAMPlutoniumResultParser)
             {
@@ -921,25 +933,25 @@ namespace Omniscient
         {
             if (selectedActionChannel.GetInstrument() is MCAInstrument)
             {
-                DataCompilersComboBox.Items.Clear();
-                DataCompilersComboBox.Items.Add("File List");
-                DataCompilersComboBox.Items.Add("Spectrum Compiler");
+                DataCompilerPanel1.DataCompilersComboBox.Items.Clear();
+                DataCompilerPanel1.DataCompilersComboBox.Items.Add("File List");
+                DataCompilerPanel1.DataCompilersComboBox.Items.Add("Spectrum Compiler");
             }
             else
             {
-                DataCompilersComboBox.Items.Clear();
-                DataCompilersComboBox.Items.Add("File List");
+                DataCompilerPanel1.DataCompilersComboBox.Items.Clear();
+                DataCompilerPanel1.DataCompilersComboBox.Items.Add("File List");
             }
 
             if (((AnalysisAction)selectedAction).GetDataCompilers()[0] is SpectrumCompiler)
             {
-                if (DataCompilersComboBox.Items.Contains("Spectrum Compiler"))
-                    DataCompilersComboBox.Text = "Spectrum Compiler";
+                if (DataCompilerPanel1.DataCompilersComboBox.Items.Contains("Spectrum Compiler"))
+                    DataCompilerPanel1.DataCompilersComboBox.Text = "Spectrum Compiler";
             }
             else if (((AnalysisAction)selectedAction).GetDataCompilers()[0] is FileListCompiler)
             {
-                if (DataCompilersComboBox.Items.Contains("File List"))
-                    DataCompilersComboBox.Text = "File List";
+                if (DataCompilerPanel1.DataCompilersComboBox.Items.Contains("File List"))
+                    DataCompilerPanel1.DataCompilersComboBox.Text = "File List";
             }
         }
 
@@ -950,7 +962,7 @@ namespace Omniscient
             {
                 foreach(Channel chan in inst.GetChannels())
                 {
-                    if (chan.GetName() == AnalysisChannelComboBox.Text)
+                    if (chan.GetName() == DataCompilerPanel1.ChannelComboBox.Text)
                     {
                         selectedActionChannel = chan;
                         breakout = true;

@@ -80,6 +80,12 @@
     <Compile Include="DeclarationEditor.Designer.cs">
       <DependentUpon>DeclarationEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="EventManagerForm\DataCompilerPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="EventManagerForm\DataCompilerPanel.Designer.cs">
+      <DependentUpon>DataCompilerPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="EventManagerForm\EventManagerForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -184,6 +190,9 @@
     <Compile Include="Spectrum.cs" />
     <EmbeddedResource Include="DeclarationEditor.resx">
       <DependentUpon>DeclarationEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EventManagerForm\DataCompilerPanel.resx">
+      <DependentUpon>DataCompilerPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="EventManagerForm\EventManagerForm.resx">
       <DependentUpon>EventManagerForm.cs</DependentUpon>
