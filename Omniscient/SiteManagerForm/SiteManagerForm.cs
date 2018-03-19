@@ -288,11 +288,25 @@ namespace Omniscient
                 Instrument inst = (Instrument)node.Tag;
                 TypeLabel.Text = "Instrument";
                 if (inst is MCAInstrument)
+                {
                     InstTypeComboBox.Text = "MCA";
+                    FileExtensionComboBox.Items.Clear();
+                    FileExtensionComboBox.Items.Add("chn");
+                    FileExtensionComboBox.Items.Add("spe");
+                }
                 else if (inst is ISRInstrument)
+                { 
                     InstTypeComboBox.Text = "ISR";
+                    FileExtensionComboBox.Items.Clear();
+                    FileExtensionComboBox.Items.Add("isr");
+                }
                 else if (inst is GRANDInstrument)
+                { 
                     InstTypeComboBox.Text = "GRAND";
+                    FileExtensionComboBox.Items.Clear();
+                    FileExtensionComboBox.Items.Add("bid");
+                }
+                FileExtensionComboBox.Text = inst.FileExtension;
                 PrefixTextBox.Text = inst.GetFilePrefix();
                 DirectoryTextBox.Text = inst.GetDataFolder();
 
@@ -555,6 +569,15 @@ namespace Omniscient
                     return;
                 }
                 inst.SetName(NameTextBox.Text);
+                try
+                {
+                    inst.FileExtension = FileExtensionComboBox.Text;
+                }
+                catch
+                {
+                    MessageBox.Show("Invalid file extension!");
+                    return;
+                }
                 inst.SetFilePrefix(PrefixTextBox.Text);
                 inst.SetDataFolder(DirectoryTextBox.Text);
                 foreach(VirtualChannel chan in inst.GetVirtualChannels())

@@ -9,6 +9,7 @@ namespace Omniscient
 {
     public class ISRInstrument : Instrument
     {
+        private const string FILE_EXTENSION = "isr";
         private const int NUM_CHANNELS = 5;
         private const int TOTALS1 = 0;
         private const int TOTALS2 = 1;
@@ -24,6 +25,7 @@ namespace Omniscient
         public ISRInstrument(string newName) : base(newName)
         {
             instrumentType = "ISR";
+            FileExtension = FILE_EXTENSION;
             filePrefix = "";
             isrFiles = new string[0];
             isrDates = new DateTime[0];

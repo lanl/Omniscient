@@ -112,6 +112,8 @@
             this.panel4 = new System.Windows.Forms.Panel();
             this.ExportButton = new System.Windows.Forms.Button();
             this.ImportButton = new System.Windows.Forms.Button();
+            this.label24 = new System.Windows.Forms.Label();
+            this.FileExtensionComboBox = new System.Windows.Forms.ComboBox();
             this.InstrumentPanel.SuspendLayout();
             this.VirtualChannelGroupBox.SuspendLayout();
             this.VCChannelConstPanel.SuspendLayout();
@@ -179,7 +181,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(13, 7);
+            this.label3.Location = new System.Drawing.Point(13, 10);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(83, 13);
             this.label3.TabIndex = 6;
@@ -187,6 +189,8 @@
             // 
             // InstrumentPanel
             // 
+            this.InstrumentPanel.Controls.Add(this.FileExtensionComboBox);
+            this.InstrumentPanel.Controls.Add(this.label24);
             this.InstrumentPanel.Controls.Add(this.VirtualChannelGroupBox);
             this.InstrumentPanel.Controls.Add(this.RemoveVirtualChannelButton);
             this.InstrumentPanel.Controls.Add(this.AddVirtualChannelButton);
@@ -202,7 +206,7 @@
             this.InstrumentPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.InstrumentPanel.Location = new System.Drawing.Point(0, 226);
             this.InstrumentPanel.Name = "InstrumentPanel";
-            this.InstrumentPanel.Size = new System.Drawing.Size(334, 368);
+            this.InstrumentPanel.Size = new System.Drawing.Size(334, 418);
             this.InstrumentPanel.TabIndex = 9;
             // 
             // VirtualChannelGroupBox
@@ -212,9 +216,9 @@
             this.VirtualChannelGroupBox.Controls.Add(this.VCTwoChannelPanel);
             this.VirtualChannelGroupBox.Controls.Add(this.ROIVCPanel);
             this.VirtualChannelGroupBox.Controls.Add(this.VCTopPanel);
-            this.VirtualChannelGroupBox.Location = new System.Drawing.Point(3, 122);
+            this.VirtualChannelGroupBox.Location = new System.Drawing.Point(3, 152);
             this.VirtualChannelGroupBox.Name = "VirtualChannelGroupBox";
-            this.VirtualChannelGroupBox.Size = new System.Drawing.Size(328, 230);
+            this.VirtualChannelGroupBox.Size = new System.Drawing.Size(328, 150);
             this.VirtualChannelGroupBox.TabIndex = 21;
             this.VirtualChannelGroupBox.TabStop = false;
             this.VirtualChannelGroupBox.Text = "Virtual Channel";
@@ -588,7 +592,7 @@
             // RemoveVirtualChannelButton
             // 
             this.RemoveVirtualChannelButton.Image = ((System.Drawing.Image)(resources.GetObject("RemoveVirtualChannelButton.Image")));
-            this.RemoveVirtualChannelButton.Location = new System.Drawing.Point(301, 88);
+            this.RemoveVirtualChannelButton.Location = new System.Drawing.Point(301, 123);
             this.RemoveVirtualChannelButton.Name = "RemoveVirtualChannelButton";
             this.RemoveVirtualChannelButton.Size = new System.Drawing.Size(28, 28);
             this.RemoveVirtualChannelButton.TabIndex = 20;
@@ -598,7 +602,7 @@
             // AddVirtualChannelButton
             // 
             this.AddVirtualChannelButton.Image = ((System.Drawing.Image)(resources.GetObject("AddVirtualChannelButton.Image")));
-            this.AddVirtualChannelButton.Location = new System.Drawing.Point(267, 88);
+            this.AddVirtualChannelButton.Location = new System.Drawing.Point(267, 123);
             this.AddVirtualChannelButton.Name = "AddVirtualChannelButton";
             this.AddVirtualChannelButton.Size = new System.Drawing.Size(28, 28);
             this.AddVirtualChannelButton.TabIndex = 19;
@@ -608,7 +612,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(13, 96);
+            this.label6.Location = new System.Drawing.Point(13, 131);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(83, 13);
             this.label6.TabIndex = 18;
@@ -617,7 +621,7 @@
             // VirtualChannelsComboBox
             // 
             this.VirtualChannelsComboBox.FormattingEnabled = true;
-            this.VirtualChannelsComboBox.Location = new System.Drawing.Point(102, 93);
+            this.VirtualChannelsComboBox.Location = new System.Drawing.Point(102, 128);
             this.VirtualChannelsComboBox.Name = "VirtualChannelsComboBox";
             this.VirtualChannelsComboBox.Size = new System.Drawing.Size(159, 21);
             this.VirtualChannelsComboBox.TabIndex = 17;
@@ -626,7 +630,7 @@
             // DirectoryButton
             // 
             this.DirectoryButton.Image = ((System.Drawing.Image)(resources.GetObject("DirectoryButton.Image")));
-            this.DirectoryButton.Location = new System.Drawing.Point(267, 59);
+            this.DirectoryButton.Location = new System.Drawing.Point(267, 94);
             this.DirectoryButton.Name = "DirectoryButton";
             this.DirectoryButton.Size = new System.Drawing.Size(28, 28);
             this.DirectoryButton.TabIndex = 16;
@@ -635,7 +639,7 @@
             // 
             // PrefixTextBox
             // 
-            this.PrefixTextBox.Location = new System.Drawing.Point(102, 35);
+            this.PrefixTextBox.Location = new System.Drawing.Point(102, 68);
             this.PrefixTextBox.Name = "PrefixTextBox";
             this.PrefixTextBox.Size = new System.Drawing.Size(160, 20);
             this.PrefixTextBox.TabIndex = 12;
@@ -643,7 +647,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(44, 34);
+            this.label4.Location = new System.Drawing.Point(44, 70);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(52, 13);
             this.label4.TabIndex = 11;
@@ -651,7 +655,7 @@
             // 
             // DirectoryTextBox
             // 
-            this.DirectoryTextBox.Location = new System.Drawing.Point(102, 63);
+            this.DirectoryTextBox.Location = new System.Drawing.Point(102, 98);
             this.DirectoryTextBox.Name = "DirectoryTextBox";
             this.DirectoryTextBox.Size = new System.Drawing.Size(160, 20);
             this.DirectoryTextBox.TabIndex = 10;
@@ -659,7 +663,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(21, 67);
+            this.label5.Location = new System.Drawing.Point(21, 102);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(75, 13);
             this.label5.TabIndex = 9;
@@ -954,6 +958,27 @@
             this.ImportButton.UseVisualStyleBackColor = true;
             this.ImportButton.Click += new System.EventHandler(this.ImportButton_Click);
             // 
+            // label24
+            // 
+            this.label24.AutoSize = true;
+            this.label24.Location = new System.Drawing.Point(23, 41);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(72, 13);
+            this.label24.TabIndex = 22;
+            this.label24.Text = "File Extension";
+            // 
+            // FileExtensionComboBox
+            // 
+            this.FileExtensionComboBox.FormattingEnabled = true;
+            this.FileExtensionComboBox.Items.AddRange(new object[] {
+            "ISR",
+            "GRAND",
+            "MCA"});
+            this.FileExtensionComboBox.Location = new System.Drawing.Point(102, 38);
+            this.FileExtensionComboBox.Name = "FileExtensionComboBox";
+            this.FileExtensionComboBox.Size = new System.Drawing.Size(80, 21);
+            this.FileExtensionComboBox.TabIndex = 23;
+            // 
             // SiteManagerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1080,5 +1105,7 @@
         private System.Windows.Forms.Label label23;
         private System.Windows.Forms.TextBox DeclarationPrefixTextBox;
         private System.Windows.Forms.Label label22;
+        private System.Windows.Forms.ComboBox FileExtensionComboBox;
+        private System.Windows.Forms.Label label24;
     }
 }

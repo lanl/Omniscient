@@ -19,6 +19,8 @@ namespace Omniscient
         protected Channel[] channels;
         protected List<VirtualChannel> virtualChannels;
 
+        public virtual string FileExtension { get; set; }
+
         public Instrument(string newName)
         {
             name = newName;

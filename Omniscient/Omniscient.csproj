@@ -145,6 +145,7 @@
     <Compile Include="Parsers\NCCWriter.cs" />
     <Compile Include="Parsers\SpectrumParser.cs" />
     <Compile Include="Parsers\SpectrumWriter.cs" />
+    <Compile Include="Parsers\SPEParser.cs" />
     <Compile Include="ROI.cs" />
     <Compile Include="SiteManagerForm\InstrumentTypeDialog.cs">
       <SubType>Form</SubType>

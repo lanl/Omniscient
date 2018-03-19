@@ -9,6 +9,8 @@ namespace Omniscient
 {
     class GRANDInstrument : Instrument
     {
+        private const string FILE_EXTENSION = "bid";
+
         private const int NUM_CHANNELS = 7;
         private const int chACountRate = 0;
         private const int chBCountRate = 1;
@@ -26,6 +28,7 @@ namespace Omniscient
         public GRANDInstrument(string newName) : base(newName)
         {
             instrumentType = "GRAND";
+            FileExtension = FILE_EXTENSION;
             filePrefix = "";
             bidFiles = new string[0];
             bidDates = new DateTime[0];

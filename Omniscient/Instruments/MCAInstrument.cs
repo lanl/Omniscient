@@ -9,21 +9,45 @@ namespace Omniscient
 {
     class MCAInstrument : Instrument
     {
+        private const string FILE_EXTENSION = "chn";
         private const int NUM_CHANNELS = 1;
         private const int COUNT_RATE = 0;
 
-        CHNParser chnParser;
+
+        SpectrumParser spectrumParser;
 
         string[] chnFiles;
         DateTime[] chnDates;
 
+        private string fileExtension;
+        public override string FileExtension
+        {
+            get { return fileExtension; }
+            set
+            {
+                if (value == "chn")
+                {
+                    spectrumParser = new CHNParser();
+                    fileExtension = value;
+                }
+                else if (value == "spe")
+                {
+                    spectrumParser = new SPEParser();
+                    fileExtension = value;
+                }
+                else
+                    throw new ArgumentException("File extension must be chn or spe!");   
+            }
+        }
+
         public MCAInstrument(string newName) : base(newName)
         {
             instrumentType = "MCA";
+            FileExtension = FILE_EXTENSION;
             filePrefix = "";
             chnFiles = new string[0];
             chnDates = new DateTime[0];
-            chnParser = new CHNParser();
+            spectrumParser = new CHNParser();
 
             numChannels = NUM_CHANNELS;
             channels = new Channel[numChannels];
@@ -45,12 +69,12 @@ namespace Omniscient
             foreach (string file in filesInDirectory)
             {
                 string fileAbrev = file.Substring(file.LastIndexOf('\\') + 1);
-                if (fileAbrev.Substring(fileAbrev.Length - 4).ToLower() == ".chn" && fileAbrev.ToLower().StartsWith(filePrefix.ToLower()))
+                if (fileAbrev.Substring(fileAbrev.Length - 4).ToLower() == ("." + fileExtension) && fileAbrev.ToLower().StartsWith(filePrefix.ToLower()))
                 {
-                    if (chnParser.ParseSpectrumFile(file) == ReturnCode.SUCCESS)
+                    if (spectrumParser.ParseSpectrumFile(file) == ReturnCode.SUCCESS)
                     {
                         chnFileList.Add(file);
-                        chnDateList.Add(chnParser.GetStartDateTime());
+                        chnDateList.Add(spectrumParser.GetSpectrum().GetStartTime());
                     }
                     else
                     {
@@ -80,18 +104,19 @@ namespace Omniscient
 
             for (int i = startIndex; i <= endIndex; ++i)
             {
-                returnCode = chnParser.ParseSpectrumFile(chnFiles[i]);
-                time = chnParser.GetStartDateTime();
-                duration = TimeSpan.FromSeconds(chnParser.GetRealTime());
+                returnCode = spectrumParser.ParseSpectrumFile(chnFiles[i]);
+                spectrum = spectrumParser.GetSpectrum();
+                time = spectrum.GetStartTime();
+                duration = TimeSpan.FromSeconds(spectrum.GetRealTime());
 
                 int counts = 0;
-                for (int ch=0; ch<chnParser.GetNumChannels();ch++)
+                for (int ch=0; ch< spectrum.GetNChannels();ch++)
                 {
-                    counts += chnParser.GetCounts()[ch];
+                    counts += spectrum.GetCounts()[ch];
                 }
-                channels[COUNT_RATE].AddDataPoint(time, counts/chnParser.GetLiveTime(), duration, chnFiles[i]);
+                channels[COUNT_RATE].AddDataPoint(time, counts/ spectrum.GetLiveTime(), duration, chnFiles[i]);
 
-                spectrum = chnParser.GetSpectrum();
+                
                 foreach(VirtualChannel chan in virtualChannels)
                 {
                     if (chan is ROIChannel)

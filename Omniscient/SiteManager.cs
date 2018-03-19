@@ -99,6 +99,10 @@ namespace Omniscient
                                 }
                                 if (!newInstrument.Equals(null))
                                 {
+                                    if (instrumentNode.Attributes["file_extension"] != null)
+                                    {
+                                        newInstrument.FileExtension = instrumentNode.Attributes["file_extension"].InnerText;
+                                    }
                                     if (instrumentNode.Attributes["file_prefix"] != null)
                                     {
                                         newInstrument.SetFilePrefix(instrumentNode.Attributes["file_prefix"].InnerText);
@@ -399,6 +403,7 @@ namespace Omniscient
                         {
                             xmlWriter.WriteStartElement("Instrument");
                             xmlWriter.WriteAttributeString("name", inst.GetName());
+                            xmlWriter.WriteAttributeString("file_extension", inst.FileExtension);
                             xmlWriter.WriteAttributeString("file_prefix", inst.GetFilePrefix());
                             xmlWriter.WriteAttributeString("type", inst.GetInstrumentType());
                             xmlWriter.WriteAttributeString("directory", inst.GetDataFolder());
