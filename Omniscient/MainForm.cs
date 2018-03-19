@@ -1110,7 +1110,7 @@ namespace Omniscient
         {
             MenuItem menuItem = (MenuItem)sender;
             Inspectrum inspectrum = new Inspectrum();
-            inspectrum.LoadCHNFile(menuItem.Tag.ToString());
+            inspectrum.LoadSpectrumFile(menuItem.Tag.ToString());
             inspectrum.Show();
         }
 

@@ -20,6 +20,7 @@ namespace Omniscient
     {
 
         CHNParser chnParser;
+        SPEParser speParser;
         GearedValues<ObservablePoint> chartVals;
 
         bool calibrationChanged = false;
@@ -36,6 +37,7 @@ namespace Omniscient
             counts = new int[0];
             InitializeComponent();
             chnParser = new CHNParser();
+            speParser = new SPEParser();
         }
 
         private void DrawSpectrum()
@@ -62,6 +64,46 @@ namespace Omniscient
             else SpecChart.AxisY[0].MinValue = 0;
             if (SpecChart.AxisX.Count() == 0) SpecChart.AxisX.Add(new Axis() { MinValue = 0 });
             else SpecChart.AxisX[0].MinValue = 0;
+        }
+
+        public void LoadSpectrumFile(string fileName)
+        {
+            Spectrum spectrum;
+            string fileAbrev = fileName.Substring(fileName.LastIndexOf('\\') + 1);
+            string fileExt = fileAbrev.Substring(fileAbrev.Length - 3).ToLower();
+            if (fileExt == "chn")
+            {
+                chnParser.ParseSpectrumFile(fileName);
+                spectrum = chnParser.GetSpectrum();
+            }
+            else if (fileExt == "spe")
+            {
+                speParser.ParseSpectrumFile(fileName);
+                spectrum = speParser.GetSpectrum();
+            }
+            else
+            {
+                MessageBox.Show("Invalid file type!");
+                return;
+            }
+
+            // Populate text fields
+            FileNameTextBox.Text = fileName;
+            DateTextBox.Text = spectrum.GetStartTime().ToString("dd-MMM-yyyy");
+            TimeTextBox.Text = spectrum.GetStartTime().ToString("HH:mm:ss");
+            CalZeroTextBox.Text = string.Format("{0:F3}", spectrum.GetCalibrationZero());
+            CalSlopeTextBox.Text = string.Format("{0:F4}", spectrum.GetCalibrationSlope());
+
+            LiveTimeTextBox.Text = string.Format("{0:F1} sec", spectrum.GetLiveTime());
+            double deadTimePerc = 100 * (spectrum.GetRealTime() - spectrum.GetLiveTime()) / spectrum.GetRealTime();
+            DeadTimeStripTextBox.Text = string.Format("{0:F2} %", deadTimePerc);
+
+            calibrationZero = spectrum.GetCalibrationZero();
+            calibrationSlope = spectrum.GetCalibrationSlope();
+            counts = spectrum.GetCounts();
+            DrawSpectrum();
+
+            fileLoaded = true;
         }
 
         public void LoadCHNFile(string fileName)
@@ -95,12 +137,12 @@ namespace Omniscient
         private void OpenFile()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "chn files (*.chn)|*.chn|All files (*.*)|*.*";
+            openFileDialog.Filter = "Spectrum Files|*.chn;*.spe|chn files (*.chn)|*.chn|spe files (*.spe)|*.spe|All files (*.*)|*.*";
             openFileDialog.RestoreDirectory = true;
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
-                LoadCHNFile(openFileDialog.FileName);
+                LoadSpectrumFile(openFileDialog.FileName);
             }
         }
 
