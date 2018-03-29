@@ -59,7 +59,7 @@ namespace Omniscient
             foreach(string file in filesInDirectory)
             {
                 string fileAbrev = file.Substring(file.LastIndexOf('\\') + 1);
-                if (fileAbrev.Substring(fileAbrev.Length - 4).ToLower() == ".isr" && fileAbrev.ToLower().StartsWith(filePrefix.ToLower()))
+                if (fileAbrev.Substring(fileAbrev.Length - 4).ToLower() == ("." + FileExtension) && fileAbrev.ToLower().StartsWith(filePrefix.ToLower()))
                 {
                     if (isrParser.ParseHeader(file) == ReturnCode.SUCCESS)
                     {

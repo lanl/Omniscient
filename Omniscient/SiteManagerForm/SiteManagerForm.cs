@@ -299,6 +299,8 @@ namespace Omniscient
                     InstTypeComboBox.Text = "ISR";
                     FileExtensionComboBox.Items.Clear();
                     FileExtensionComboBox.Items.Add("isr");
+                    FileExtensionComboBox.Items.Add("jsr");
+                    FileExtensionComboBox.Items.Add("hmr");
                 }
                 else if (inst is GRANDInstrument)
                 { 
