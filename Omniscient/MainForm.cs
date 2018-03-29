@@ -24,7 +24,7 @@ namespace Omniscient
     public partial class MainForm : Form
     {
         ///////////////////////////////////////////////////////////////////////
-        private const string VERSION = "0.1.17";
+        private const string VERSION = "0.1.18";
 
         private const int N_CHARTS = 4;
         private const int MAX_HIGHLIGHTED_EVENTS = 60;
