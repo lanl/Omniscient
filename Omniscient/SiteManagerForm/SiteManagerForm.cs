@@ -12,7 +12,7 @@ namespace Omniscient
 {
     public partial class SiteManagerForm : Form
     {
-        string[] DEFAULT_VIRTUAL_CHANNEL_TYPES = {"Ratio", "Sum", "Difference", "Add Constant", "Scale", "Delay"};
+        string[] DEFAULT_VIRTUAL_CHANNEL_TYPES = {"Ratio", "Sum", "Difference", "Add Constant", "Scale", "Delay", "Convolve"};
 
         // SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
         // State
@@ -124,6 +124,8 @@ namespace Omniscient
                     return "Scale";
                 case VirtualChannel.VirtualChannelType.DELAY:
                     return "Delay";
+                case VirtualChannel.VirtualChannelType.CONVOLVE:
+                    return "Convolve";
                 case VirtualChannel.VirtualChannelType.ROI:
                     return "ROI";
             }
@@ -419,6 +421,9 @@ namespace Omniscient
                 case "Delay":
                     chan.SetVirtualChannelType(VirtualChannel.VirtualChannelType.DELAY);
                     break;
+                case "Convolve":
+                    chan.SetVirtualChannelType(VirtualChannel.VirtualChannelType.CONVOLVE);
+                    break;
                 case "ROI":
                     chan.SetVirtualChannelType(VirtualChannel.VirtualChannelType.ROI);
                     break;
@@ -476,6 +481,19 @@ namespace Omniscient
                             MessageBox.Show("Invalid delay time unit!");
                             return;
                     }
+                    break;
+                case "Convolve":
+                    foreach (Channel otherChan in inst.GetChannels())
+                    {
+                        if (otherChan.GetName() == ConvolveChannelComboBox.Text)
+                            chan.SetChannelA(otherChan);
+                    }
+                    if (FilterFileTextBox.Text == "")
+                    {
+                        MessageBox.Show("Don't forget your filter file!");
+                        return;
+                    }
+                    chan.SetDataFileName(FilterFileTextBox.Text);
                     break;
                 case "ROI":
                     ROIChannel roiChan = (ROIChannel)chan;
@@ -992,6 +1010,27 @@ namespace Omniscient
             
         }
 
+        private void PopulateConvolvePanel(VirtualChannel chan, Instrument inst)
+        {
+            Channel[] instChannels = inst.GetChannels();
+            int chanIndex = -1;
+            for (int i = 0; i < instChannels.Length; i++)
+            {
+                if (instChannels[i] == chan)
+                {
+                    chanIndex = i;
+                    break;
+                }
+            }
+            ConvolveChannelComboBox.Items.Clear();
+            for (int i = 0; i < chanIndex; i++)
+            {
+                ConvolveChannelComboBox.Items.Add(instChannels[i].GetName());
+            }
+            ConvolveChannelComboBox.Text = chan.GetChannelA().GetName();
+            FilterFileTextBox.Text = chan.GetDataFileName();
+        }
+
         private void VirtualChannelTypeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             Instrument inst = (Instrument)SitesTreeView.SelectedNode.Tag;
@@ -1011,6 +1050,7 @@ namespace Omniscient
                     VCChannelConstPanel.Visible = false;
                     VCDelayPanel.Visible = false;
                     ROIVCPanel.Visible = false;
+                    ConvolvePanel.Visible = false;
                     break;
                 case "Add Constant":
                 case "Scale":
@@ -1019,6 +1059,7 @@ namespace Omniscient
                     VCChannelConstPanel.Visible = true;
                     VCDelayPanel.Visible = false;
                     ROIVCPanel.Visible = false;
+                    ConvolvePanel.Visible = false;
                     break;
                 case "Delay":
                     PopulateDelayPanel(chan, inst);
@@ -1026,6 +1067,15 @@ namespace Omniscient
                     VCChannelConstPanel.Visible = false;
                     VCDelayPanel.Visible = true;
                     ROIVCPanel.Visible = false;
+                    ConvolvePanel.Visible = false;
+                    break;
+                case "Convolve":
+                    PopulateConvolvePanel(chan, inst);
+                    VCTwoChannelPanel.Visible = false;
+                    VCChannelConstPanel.Visible = false;
+                    VCDelayPanel.Visible = false;
+                    ROIVCPanel.Visible = false;
+                    ConvolvePanel.Visible = true;
                     break;
                 case "ROI":
                     if (!(chan is ROIChannel))
@@ -1046,6 +1096,7 @@ namespace Omniscient
                     VCChannelConstPanel.Visible = false;
                     VCDelayPanel.Visible = false;
                     ROIVCPanel.Visible = true;
+                    ConvolvePanel.Visible = false;
                     break;
                 default:
                     MessageBox.Show("Invalid virtual channel type!");
@@ -1319,6 +1370,15 @@ namespace Omniscient
             if (result == DialogResult.OK)
             {
                 DeclarationDirectoryTextBox.Text = folderBrowserDialog.SelectedPath;
+            }
+        }
+
+        private void FilterFileBbutton_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                FilterFileTextBox.Text = dialog.FileName;
             }
         }
     }

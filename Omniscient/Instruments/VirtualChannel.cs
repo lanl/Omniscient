@@ -12,7 +12,7 @@ namespace Omniscient
     /// corresponding to the same timestamps.</remarks>
     public class VirtualChannel : Channel
     {
-        public enum VirtualChannelType { RATIO, SUM, DIFFERENCE, ADD_CONST, SCALE, DELAY, ROI}
+        public enum VirtualChannelType { RATIO, SUM, DIFFERENCE, ADD_CONST, SCALE, DELAY, ROI, CONVOLVE}
 
         protected VirtualChannelType virtualType;
 
@@ -20,6 +20,7 @@ namespace Omniscient
         Channel chanB;
         double constant;
         TimeSpan delay;
+        string dataFileName;
 
         public VirtualChannel(string newName, Instrument parent, ChannelType newType) : base(newName, parent, newType)
         {
@@ -80,6 +81,11 @@ namespace Omniscient
                         arrayTimeStamps[i] = ATime[i].AddSeconds(delay.TotalSeconds);
                     timeStamps = arrayTimeStamps.ToList();
                     break;
+                case VirtualChannelType.CONVOLVE:
+                    timeStamps = chanA.GetTimeStamps();
+                    A = chanA.GetValues();
+                    arrayVals = SignalProcessor.Convolve(A.ToArray(), SignalProcessor.FromFile(dataFileName));
+                    break;
             }
             values = arrayVals.ToList();
         }
@@ -94,11 +100,13 @@ namespace Omniscient
         public void SetChannelB(Channel newChan) { chanB = newChan; }
         public void SetConstant(double newConst) { constant = newConst; }
         public void SetDelay(TimeSpan newDelay) { delay = newDelay; }
+        public void SetDataFileName(string newDataFileName) { dataFileName = newDataFileName; }
 
         public VirtualChannelType GetVirtualChannelType() { return virtualType; }
         public Channel GetChannelA() { return chanA; }
         public Channel GetChannelB() { return chanB; }
         public double GetConstant() { return constant; }
         public TimeSpan GetDelay() { return delay; }
+        public string GetDataFileName() { return dataFileName; }
     }
 }

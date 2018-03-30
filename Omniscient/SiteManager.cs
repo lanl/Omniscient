@@ -143,6 +143,9 @@ namespace Omniscient
                                                     case "DELAY":
                                                         chan.SetVirtualChannelType(VirtualChannel.VirtualChannelType.DELAY);
                                                         break;
+                                                    case "CONVOLVE":
+                                                        chan.SetVirtualChannelType(VirtualChannel.VirtualChannelType.CONVOLVE);
+                                                        break;
                                                     default:
                                                         return ReturnCode.CORRUPTED_FILE;
                                                 }
@@ -165,6 +168,9 @@ namespace Omniscient
                                                         break;
                                                     case VirtualChannel.VirtualChannelType.DELAY:
                                                         chan.SetDelay(TimeSpan.FromSeconds(double.Parse(chanNode.Attributes["delay"]?.InnerText)));
+                                                        break;
+                                                    case VirtualChannel.VirtualChannelType.CONVOLVE:
+                                                        chan.SetDataFileName(chanNode.Attributes["data_file"]?.InnerText);
                                                         break;
                                                     default:
                                                         return ReturnCode.CORRUPTED_FILE;
@@ -428,6 +434,10 @@ namespace Omniscient
                                     case VirtualChannel.VirtualChannelType.DELAY:
                                         xmlWriter.WriteAttributeString("channel_A", chan.GetChannelA().GetName());
                                         xmlWriter.WriteAttributeString("delay", chan.GetDelay().TotalSeconds.ToString());
+                                        break;
+                                    case VirtualChannel.VirtualChannelType.CONVOLVE:
+                                        xmlWriter.WriteAttributeString("channel_A", chan.GetChannelA().GetName());
+                                        xmlWriter.WriteAttributeString("data_file", chan.GetDataFileName());
                                         break;
                                     case VirtualChannel.VirtualChannelType.ROI:
                                         xmlWriter.WriteAttributeString("roi_start", ((ROIChannel)chan).GetROI().GetROIStart().ToString());
