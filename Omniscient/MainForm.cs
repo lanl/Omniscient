@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 using System.Windows.Media;
 using LiveCharts;
@@ -1383,6 +1384,70 @@ namespace Omniscient
         {
             DeclarationEditor declarationEditor = new DeclarationEditor();
             declarationEditor.Show();
+        }
+
+        private void ExportButton_Click(object sender, EventArgs e)
+        {
+            // File for each active channel
+            foreach (ChannelPanel chanPan in chPanels)
+            {
+                bool plotChan = false;
+                for (int chartNum = 0; chartNum < 4; chartNum++)
+                {
+                    switch (chartNum)
+                    {
+                        case 0:
+                            if (chanPan.Chart1CheckBox.Checked)
+                                plotChan = true;
+                            break;
+                        case 1:
+                            if (chanPan.Chart2CheckBox.Checked)
+                                plotChan = true;
+                            break;
+                        case 2:
+                            if (chanPan.Chart3CheckBox.Checked)
+                                plotChan = true;
+                            break;
+                        case 3:
+                            if (chanPan.Chart4CheckBox.Checked)
+                                plotChan = true;
+                            break;
+                    }
+                }
+                if (plotChan)
+                {
+                    Channel chan = chanPan.GetChannel();
+
+                    List<DateTime> dates = chan.GetTimeStamps();
+                    List<double> vals = chan.GetValues();
+
+                    StreamWriter file = new StreamWriter(chan.GetName() + ".csv");
+                    
+                    for(int i=0; i<dates.Count; i++)
+                    {
+                        file.WriteLine(dates[i].ToString() + "," + vals[i].ToString());
+                    }
+                    file.Close();
+                }
+
+                // File for each active instrument
+                foreach(Instrument inst in activeInstruments)
+                {
+                    StreamWriter file = new StreamWriter(inst.GetName() + ".csv");
+                    List<DateTime> dates = inst.GetChannels()[0].GetTimeStamps();
+                    Channel[] channels = inst.GetChannels();
+                    for (int i=0; i<dates.Count; i++)
+                    {
+                        file.Write(dates[i].ToString("yyyy-MM-dd HH:mm:ss"));
+                        for (int c=0; c<channels.Length; c++)
+                        {
+                            file.Write("," + channels[c].GetValues()[i]);
+                        }
+                        file.Write("\r\n");
+                    }
+                    file.Close();
+                }
+            }
         }
     }
 }
