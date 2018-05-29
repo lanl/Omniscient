@@ -1399,7 +1399,7 @@ namespace Omniscient
             declarationEditor.Show();
         }
 
-        private void ExportButton_Click(object sender, EventArgs e)
+        private void exportToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // File for each active channel
             foreach (ChannelPanel chanPan in chPanels)
@@ -1435,8 +1435,8 @@ namespace Omniscient
                     List<double> vals = chan.GetValues();
 
                     StreamWriter file = new StreamWriter(chan.GetName() + ".csv");
-                    
-                    for(int i=0; i<dates.Count; i++)
+
+                    for (int i = 0; i < dates.Count; i++)
                     {
                         file.WriteLine(dates[i].ToString() + "," + vals[i].ToString());
                     }
@@ -1444,15 +1444,15 @@ namespace Omniscient
                 }
 
                 // File for each active instrument
-                foreach(Instrument inst in activeInstruments)
+                foreach (Instrument inst in activeInstruments)
                 {
                     StreamWriter file = new StreamWriter(inst.GetName() + ".csv");
                     List<DateTime> dates = inst.GetChannels()[0].GetTimeStamps();
                     Channel[] channels = inst.GetChannels();
-                    for (int i=0; i<dates.Count; i++)
+                    for (int i = 0; i < dates.Count; i++)
                     {
                         file.Write(dates[i].ToString("yyyy-MM-dd HH:mm:ss"));
-                        for (int c=0; c<channels.Length; c++)
+                        for (int c = 0; c < channels.Length; c++)
                         {
                             file.Write("," + channels[c].GetValues()[i]);
                         }
