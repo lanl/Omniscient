@@ -38,7 +38,7 @@ namespace Omniscient
     public partial class MainForm : Form
     {
         ///////////////////////////////////////////////////////////////////////
-        private const string VERSION = "0.1.18";
+        private const string VERSION = "0.2.0";
 
         private const int N_CHARTS = 4;
         private const int MAX_HIGHLIGHTED_EVENTS = 60;
@@ -1461,6 +1461,12 @@ namespace Omniscient
                     file.Close();
                 }
             }
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AboutBox aboutBox = new AboutBox(VERSION);
+            aboutBox.ShowDialog();
         }
     }
 }
