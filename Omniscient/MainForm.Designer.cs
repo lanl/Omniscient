@@ -127,8 +127,8 @@ namespace Omniscient
             this.EventsWarningLabel = new System.Windows.Forms.Label();
             this.GenerateEventsButton = new System.Windows.Forms.Button();
             this.ButtonImageList = new System.Windows.Forms.ImageList(this.components);
-            this.SitesTreeView = new Omniscient.Controls.ResponsiveTreeView();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.SitesTreeView = new Omniscient.Controls.ResponsiveTreeView();
             this.StripChartControlPanel.SuspendLayout();
             this.StripChartsPanel.SuspendLayout();
             this.StripChartsLayoutPanel.SuspendLayout();
@@ -164,7 +164,7 @@ namespace Omniscient
             this.StripChartControlPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.StripChartControlPanel.Location = new System.Drawing.Point(0, 0);
             this.StripChartControlPanel.Name = "StripChartControlPanel";
-            this.StripChartControlPanel.Size = new System.Drawing.Size(735, 434);
+            this.StripChartControlPanel.Size = new System.Drawing.Size(715, 434);
             this.StripChartControlPanel.TabIndex = 1;
             // 
             // StripChartsPanel
@@ -173,7 +173,7 @@ namespace Omniscient
             this.StripChartsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.StripChartsPanel.Location = new System.Drawing.Point(0, 0);
             this.StripChartsPanel.Name = "StripChartsPanel";
-            this.StripChartsPanel.Size = new System.Drawing.Size(735, 417);
+            this.StripChartsPanel.Size = new System.Drawing.Size(715, 417);
             this.StripChartsPanel.TabIndex = 2;
             // 
             // StripChartsLayoutPanel
@@ -193,7 +193,7 @@ namespace Omniscient
             this.StripChartsLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.StripChartsLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.StripChartsLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.StripChartsLayoutPanel.Size = new System.Drawing.Size(735, 417);
+            this.StripChartsLayoutPanel.Size = new System.Drawing.Size(715, 417);
             this.StripChartsLayoutPanel.TabIndex = 1;
             // 
             // StripChart3
@@ -201,7 +201,7 @@ namespace Omniscient
             this.StripChart3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.StripChart3.Location = new System.Drawing.Point(5, 314);
             this.StripChart3.Name = "StripChart3";
-            this.StripChart3.Size = new System.Drawing.Size(725, 98);
+            this.StripChart3.Size = new System.Drawing.Size(705, 98);
             this.StripChart3.TabIndex = 4;
             this.StripChart3.Text = "cartesianChart3";
             // 
@@ -210,7 +210,7 @@ namespace Omniscient
             this.StripChart2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.StripChart2.Location = new System.Drawing.Point(5, 211);
             this.StripChart2.Name = "StripChart2";
-            this.StripChart2.Size = new System.Drawing.Size(725, 95);
+            this.StripChart2.Size = new System.Drawing.Size(705, 95);
             this.StripChart2.TabIndex = 3;
             this.StripChart2.Text = "cartesianChart2";
             // 
@@ -219,7 +219,7 @@ namespace Omniscient
             this.StripChart1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.StripChart1.Location = new System.Drawing.Point(5, 108);
             this.StripChart1.Name = "StripChart1";
-            this.StripChart1.Size = new System.Drawing.Size(725, 95);
+            this.StripChart1.Size = new System.Drawing.Size(705, 95);
             this.StripChart1.TabIndex = 2;
             this.StripChart1.Text = "cartesianChart1";
             // 
@@ -228,7 +228,7 @@ namespace Omniscient
             this.StripChart0.Dock = System.Windows.Forms.DockStyle.Fill;
             this.StripChart0.Location = new System.Drawing.Point(5, 5);
             this.StripChart0.Name = "StripChart0";
-            this.StripChart0.Size = new System.Drawing.Size(725, 95);
+            this.StripChart0.Size = new System.Drawing.Size(705, 95);
             this.StripChart0.TabIndex = 1;
             this.StripChart0.Text = "cartesianChart1";
             // 
@@ -237,7 +237,7 @@ namespace Omniscient
             this.StripChartScroll.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.StripChartScroll.Location = new System.Drawing.Point(0, 417);
             this.StripChartScroll.Name = "StripChartScroll";
-            this.StripChartScroll.Size = new System.Drawing.Size(735, 17);
+            this.StripChartScroll.Size = new System.Drawing.Size(715, 17);
             this.StripChartScroll.TabIndex = 1;
             this.StripChartScroll.Scroll += new System.Windows.Forms.ScrollEventHandler(this.StripChartScroll_Scroll);
             // 
@@ -710,10 +710,10 @@ namespace Omniscient
             this.LeftPanel.Controls.Add(this.BottomLeftPanel);
             this.LeftPanel.Dock = System.Windows.Forms.DockStyle.Left;
             this.LeftPanel.Location = new System.Drawing.Point(0, 51);
-            this.LeftPanel.MinimumSize = new System.Drawing.Size(200, 0);
+            this.LeftPanel.MinimumSize = new System.Drawing.Size(220, 0);
             this.LeftPanel.Name = "LeftPanel";
             this.LeftPanel.Padding = new System.Windows.Forms.Padding(5);
-            this.LeftPanel.Size = new System.Drawing.Size(200, 665);
+            this.LeftPanel.Size = new System.Drawing.Size(220, 665);
             this.LeftPanel.TabIndex = 5;
             // 
             // TreeImageList
@@ -734,7 +734,7 @@ namespace Omniscient
             this.TopLeftPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.TopLeftPanel.Location = new System.Drawing.Point(5, 5);
             this.TopLeftPanel.Name = "TopLeftPanel";
-            this.TopLeftPanel.Size = new System.Drawing.Size(190, 63);
+            this.TopLeftPanel.Size = new System.Drawing.Size(210, 63);
             this.TopLeftPanel.TabIndex = 13;
             // 
             // PresetSaveButton
@@ -774,7 +774,7 @@ namespace Omniscient
             this.BottomLeftPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.BottomLeftPanel.Location = new System.Drawing.Point(5, 594);
             this.BottomLeftPanel.Name = "BottomLeftPanel";
-            this.BottomLeftPanel.Size = new System.Drawing.Size(190, 66);
+            this.BottomLeftPanel.Size = new System.Drawing.Size(210, 66);
             this.BottomLeftPanel.TabIndex = 12;
             // 
             // GlobalEndTextBox
@@ -817,7 +817,7 @@ namespace Omniscient
             // 
             this.CenterSplitContainer.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.CenterSplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.CenterSplitContainer.Location = new System.Drawing.Point(200, 51);
+            this.CenterSplitContainer.Location = new System.Drawing.Point(220, 51);
             this.CenterSplitContainer.Name = "CenterSplitContainer";
             this.CenterSplitContainer.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -828,7 +828,7 @@ namespace Omniscient
             // CenterSplitContainer.Panel2
             // 
             this.CenterSplitContainer.Panel2.Controls.Add(this.BottomPanel);
-            this.CenterSplitContainer.Size = new System.Drawing.Size(739, 665);
+            this.CenterSplitContainer.Size = new System.Drawing.Size(719, 665);
             this.CenterSplitContainer.SplitterDistance = 438;
             this.CenterSplitContainer.SplitterWidth = 5;
             this.CenterSplitContainer.TabIndex = 9;
@@ -840,7 +840,7 @@ namespace Omniscient
             this.BottomPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.BottomPanel.Location = new System.Drawing.Point(0, 0);
             this.BottomPanel.Name = "BottomPanel";
-            this.BottomPanel.Size = new System.Drawing.Size(735, 218);
+            this.BottomPanel.Size = new System.Drawing.Size(715, 218);
             this.BottomPanel.TabIndex = 9;
             // 
             // EventGridView
@@ -857,7 +857,7 @@ namespace Omniscient
             this.EventGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.EventGridView.Location = new System.Drawing.Point(0, 34);
             this.EventGridView.Name = "EventGridView";
-            this.EventGridView.Size = new System.Drawing.Size(735, 184);
+            this.EventGridView.Size = new System.Drawing.Size(715, 184);
             this.EventGridView.TabIndex = 2;
             this.EventGridView.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.EventGridView_CellDoubleClick);
             // 
@@ -907,14 +907,14 @@ namespace Omniscient
             this.EventControlPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.EventControlPanel.Location = new System.Drawing.Point(0, 0);
             this.EventControlPanel.Name = "EventControlPanel";
-            this.EventControlPanel.Size = new System.Drawing.Size(735, 34);
+            this.EventControlPanel.Size = new System.Drawing.Size(715, 34);
             this.EventControlPanel.TabIndex = 3;
             // 
             // RightEventControlPanel
             // 
             this.RightEventControlPanel.Controls.Add(this.HighlightEventsCheckBox);
             this.RightEventControlPanel.Dock = System.Windows.Forms.DockStyle.Right;
-            this.RightEventControlPanel.Location = new System.Drawing.Point(548, 0);
+            this.RightEventControlPanel.Location = new System.Drawing.Point(528, 0);
             this.RightEventControlPanel.Name = "RightEventControlPanel";
             this.RightEventControlPanel.Size = new System.Drawing.Size(187, 34);
             this.RightEventControlPanel.TabIndex = 3;
@@ -958,6 +958,13 @@ namespace Omniscient
             this.ButtonImageList.Images.SetKeyName(2, "Plus");
             this.ButtonImageList.Images.SetKeyName(3, "Delete");
             // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+            this.aboutToolStripMenuItem.Text = "About";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+            // 
             // SitesTreeView
             // 
             this.SitesTreeView.CheckBoxes = true;
@@ -968,16 +975,9 @@ namespace Omniscient
             this.SitesTreeView.Name = "SitesTreeView";
             this.SitesTreeView.SelectedImageIndex = 0;
             this.SitesTreeView.ShowNodeToolTips = true;
-            this.SitesTreeView.Size = new System.Drawing.Size(190, 526);
+            this.SitesTreeView.Size = new System.Drawing.Size(210, 526);
             this.SitesTreeView.TabIndex = 11;
             this.SitesTreeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.SitesTreeView_AfterCheck);
-            // 
-            // aboutToolStripMenuItem
-            // 
-            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.aboutToolStripMenuItem.Text = "About";
-            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // MainForm
             // 
