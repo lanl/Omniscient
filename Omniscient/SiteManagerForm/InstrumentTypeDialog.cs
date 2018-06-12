@@ -58,5 +58,12 @@ namespace Omniscient
             DialogResult = DialogResult.Cancel;
             Dispose();
         }
+
+        private void NGAMButton_Click(object sender, EventArgs e)
+        {
+            InstrumentType = "NGAM";
+            DialogResult = DialogResult.OK;
+            Dispose();
+        }
     }
 }

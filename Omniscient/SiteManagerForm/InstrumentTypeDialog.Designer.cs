@@ -45,6 +45,7 @@ namespace Omniscient
             this.ISRButton = new System.Windows.Forms.Button();
             this.MCAButton = new System.Windows.Forms.Button();
             this.CancelButton = new System.Windows.Forms.Button();
+            this.NGAMButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // GRANDButton
@@ -79,7 +80,7 @@ namespace Omniscient
             // 
             // CancelButton
             // 
-            this.CancelButton.Location = new System.Drawing.Point(98, 56);
+            this.CancelButton.Location = new System.Drawing.Point(140, 56);
             this.CancelButton.Name = "CancelButton";
             this.CancelButton.Size = new System.Drawing.Size(80, 30);
             this.CancelButton.TabIndex = 3;
@@ -87,11 +88,22 @@ namespace Omniscient
             this.CancelButton.UseVisualStyleBackColor = true;
             this.CancelButton.Click += new System.EventHandler(this.CancelButton_Click);
             // 
+            // NGAMButton
+            // 
+            this.NGAMButton.Location = new System.Drawing.Point(270, 12);
+            this.NGAMButton.Name = "NGAMButton";
+            this.NGAMButton.Size = new System.Drawing.Size(80, 30);
+            this.NGAMButton.TabIndex = 4;
+            this.NGAMButton.Text = "NGAM";
+            this.NGAMButton.UseVisualStyleBackColor = true;
+            this.NGAMButton.Click += new System.EventHandler(this.NGAMButton_Click);
+            // 
             // InstrumentTypeDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(270, 98);
+            this.ClientSize = new System.Drawing.Size(361, 98);
+            this.Controls.Add(this.NGAMButton);
             this.Controls.Add(this.CancelButton);
             this.Controls.Add(this.MCAButton);
             this.Controls.Add(this.ISRButton);
@@ -109,5 +121,6 @@ namespace Omniscient
         private System.Windows.Forms.Button ISRButton;
         private System.Windows.Forms.Button MCAButton;
         private System.Windows.Forms.Button CancelButton;
+        private System.Windows.Forms.Button NGAMButton;
     }
 }

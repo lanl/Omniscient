@@ -323,6 +323,12 @@ namespace Omniscient
                     FileExtensionComboBox.Items.Clear();
                     FileExtensionComboBox.Items.Add("bid");
                 }
+                else if (inst is NGAMInstrument)
+                {
+                    InstTypeComboBox.Text = "NGAM";
+                    FileExtensionComboBox.Items.Clear();
+                    FileExtensionComboBox.Items.Add("vbf");
+                }
                 FileExtensionComboBox.Text = inst.FileExtension;
                 PrefixTextBox.Text = inst.GetFilePrefix();
                 DirectoryTextBox.Text = inst.GetDataFolder();
@@ -843,6 +849,15 @@ namespace Omniscient
                         uniqueName = !siteMan.ContainsName(name);
                     }
                     newInstrument = new GRANDInstrument(name);
+                    break;
+                case "NGAM":
+                    while (!uniqueName)
+                    {
+                        iteration++;
+                        name = "New-NGAM-" + iteration.ToString();
+                        uniqueName = !siteMan.ContainsName(name);
+                    }
+                    newInstrument = new NGAMInstrument(name);
                     break;
                 case "ISR":
                     while (!uniqueName)

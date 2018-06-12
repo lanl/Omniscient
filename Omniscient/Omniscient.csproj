@@ -77,6 +77,7 @@
     <Compile Include="Analysis\FRAMUraniumResultParser.cs" />
     <Compile Include="Analysis\ResultParser.cs" />
     <Compile Include="Analysis\SpectrumCompiler.cs" />
+    <Compile Include="Check_Signature\SignatureChecker.cs" />
     <Compile Include="Controls\ResponsiveTreeView.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -141,6 +142,7 @@
     <Compile Include="Instruments\GRANDInstrument.cs" />
     <Compile Include="Instruments\Instrument.cs" />
     <Compile Include="Instruments\ISRInstrument.cs" />
+    <Compile Include="Instruments\NGAMInstrument.cs" />
     <Compile Include="Instruments\ROIChannel.cs" />
     <Compile Include="Instruments\VirtualChannel.cs" />
     <Compile Include="NuclearComposition.cs" />
@@ -152,6 +154,7 @@
     <Compile Include="Parsers\SpectrumParser.cs" />
     <Compile Include="Parsers\SpectrumWriter.cs" />
     <Compile Include="Parsers\SPEParser.cs" />
+    <Compile Include="Parsers\VBFParser.cs" />
     <Compile Include="ROI.cs" />
     <Compile Include="SignalProcessor.cs" />
     <Compile Include="SiteManagerForm\InstrumentTypeDialog.cs">
@@ -247,6 +250,7 @@
     <EmbeddedResource Include="SiteManagerForm\SiteManagerForm.resx">
       <DependentUpon>SiteManagerForm.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="Check_Signature\Check_Signature.lib" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -262,6 +266,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Check_Signature\Check_Signature.dll" />
+    <Content Include="Check_Signature\Check_Signature.h" />
+    <Content Include="Check_Signature\cl32.dll" />
     <Content Include="Presets.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

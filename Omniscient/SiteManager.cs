@@ -104,6 +104,9 @@ namespace Omniscient
                                     case "MCA":
                                         newInstrument = new MCAInstrument(instrumentNode.Attributes["name"]?.InnerText);
                                         break;
+                                    case "NGAM":
+                                        newInstrument = new NGAMInstrument(instrumentNode.Attributes["name"]?.InnerText);
+                                        break;
                                     case "Declaration":
                                         newInstrument = new DeclarationInstrument(instrumentNode.Attributes["name"]?.InnerText);
                                         break;

@@ -196,7 +196,8 @@ namespace Omniscient
             this.InstTypeComboBox.Items.AddRange(new object[] {
             "ISR",
             "GRAND",
-            "MCA"});
+            "MCA",
+            "NGAM"});
             this.InstTypeComboBox.Location = new System.Drawing.Point(136, 10);
             this.InstTypeComboBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.InstTypeComboBox.Name = "InstTypeComboBox";
@@ -242,7 +243,8 @@ namespace Omniscient
             this.FileExtensionComboBox.Items.AddRange(new object[] {
             "ISR",
             "GRAND",
-            "MCA"});
+            "MCA",
+            "NGAM"});
             this.FileExtensionComboBox.Location = new System.Drawing.Point(136, 47);
             this.FileExtensionComboBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.FileExtensionComboBox.Name = "FileExtensionComboBox";
