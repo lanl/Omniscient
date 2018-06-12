@@ -113,22 +113,23 @@ namespace Omniscient
             if (endIndex == -1) endIndex = (vbfDates.Length) - 1;
 
             DateTime time;
-
+            DataFile dataFile;
             for (int i = startIndex; i <= endIndex; ++i)
             {
                 returnCode = vbfParser.ParseFile(vbfFiles[i]);
+                dataFile = new DataFile(vbfFiles[i]);
                 int numRecords = vbfParser.GetNumRecords();
                 for (int r = 0; r < numRecords; ++r)
                 {
                     time = vbfParser.VBFTimeToDateTime(vbfParser.GetRecord(r).time);
-                    channels[data0].AddDataPoint(time, vbfParser.GetRecord(r).data[0], vbfFiles[i]);
-                    channels[data1].AddDataPoint(time, vbfParser.GetRecord(r).data[1], vbfFiles[i]);
-                    channels[data2].AddDataPoint(time, vbfParser.GetRecord(r).data[2], vbfFiles[i]);
-                    channels[data3].AddDataPoint(time, vbfParser.GetRecord(r).data[3], vbfFiles[i]);
-                    channels[data4].AddDataPoint(time, vbfParser.GetRecord(r).data[4], vbfFiles[i]);
-                    channels[data5].AddDataPoint(time, vbfParser.GetRecord(r).data[5], vbfFiles[i]);
-                    channels[data6].AddDataPoint(time, vbfParser.GetRecord(r).data[6], vbfFiles[i]);
-                    channels[data7].AddDataPoint(time, vbfParser.GetRecord(r).data[7], vbfFiles[i]);
+                    channels[data0].AddDataPoint(time, vbfParser.GetRecord(r).data[0], dataFile);
+                    channels[data1].AddDataPoint(time, vbfParser.GetRecord(r).data[1], dataFile);
+                    channels[data2].AddDataPoint(time, vbfParser.GetRecord(r).data[2], dataFile);
+                    channels[data3].AddDataPoint(time, vbfParser.GetRecord(r).data[3], dataFile);
+                    channels[data4].AddDataPoint(time, vbfParser.GetRecord(r).data[4], dataFile);
+                    channels[data5].AddDataPoint(time, vbfParser.GetRecord(r).data[5], dataFile);
+                    channels[data6].AddDataPoint(time, vbfParser.GetRecord(r).data[6], dataFile);
+                    channels[data7].AddDataPoint(time, vbfParser.GetRecord(r).data[7], dataFile);
                 }
             }
             channels[data0].Sort();

@@ -110,21 +110,22 @@ namespace Omniscient
             if (endIndex == -1) endIndex = (bidDates.Length) - 1;
 
             DateTime time;
-
+            DataFile dataFile;
             for (int i = startIndex; i <= endIndex; ++i)
             {
                 returnCode = bidParser.ParseFile(bidFiles[i]);
+                dataFile = new DataFile(bidFiles[i]);
                 int numRecords = bidParser.GetNumRecords();
                 for (int r = 0; r < numRecords; ++r)
                 {
                     time = bidParser.BIDTimeToDateTime(bidParser.GetRecord(r).time);
-                    channels[chACountRate].AddDataPoint(time, bidParser.GetRecord(r).chACountRate, bidFiles[i]);
-                    channels[chBCountRate].AddDataPoint(time, bidParser.GetRecord(r).chBCountRate, bidFiles[i]);
-                    channels[chCCountRate].AddDataPoint(time, bidParser.GetRecord(r).chCCountRate, bidFiles[i]);
-                    channels[gamInGamCh1].AddDataPoint(time, bidParser.GetRecord(r).gamInGamCh1, bidFiles[i]);
-                    channels[gamCh1Sigma].AddDataPoint(time, bidParser.GetRecord(r).gamCh1Sigma, bidFiles[i]);
-                    channels[gamInGamCh2].AddDataPoint(time, bidParser.GetRecord(r).gamInGamCh2, bidFiles[i]);
-                    channels[gamCh2Sigma].AddDataPoint(time, bidParser.GetRecord(r).gamCh2Sigma, bidFiles[i]);
+                    channels[chACountRate].AddDataPoint(time, bidParser.GetRecord(r).chACountRate, dataFile);
+                    channels[chBCountRate].AddDataPoint(time, bidParser.GetRecord(r).chBCountRate, dataFile);
+                    channels[chCCountRate].AddDataPoint(time, bidParser.GetRecord(r).chCCountRate, dataFile);
+                    channels[gamInGamCh1].AddDataPoint(time, bidParser.GetRecord(r).gamInGamCh1, dataFile);
+                    channels[gamCh1Sigma].AddDataPoint(time, bidParser.GetRecord(r).gamCh1Sigma, dataFile);
+                    channels[gamInGamCh2].AddDataPoint(time, bidParser.GetRecord(r).gamInGamCh2, dataFile);
+                    channels[gamCh2Sigma].AddDataPoint(time, bidParser.GetRecord(r).gamCh2Sigma, dataFile);
                 }
             }
             channels[chACountRate].Sort();

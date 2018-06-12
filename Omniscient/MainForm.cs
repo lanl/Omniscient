@@ -96,7 +96,7 @@ namespace Omniscient
             this.StripChart2.Base.MouseMove += new System.Windows.Input.MouseEventHandler(this.StripChart_MouseMoved);
             this.StripChart3.Base.MouseMove += new System.Windows.Input.MouseEventHandler(this.StripChart_MouseMoved);
 
-            globalStart = DateTime.Today.AddDays(-7);
+            globalStart = DateTime.Today.AddDays(-1);
             GlobalStartTextBox.Text = globalStart.ToString("MMM dd, yyyy");
             globalEnd = DateTime.Today;
             GlobalEndTextBox.Text = globalEnd.ToString("MMM dd, yyyy");
@@ -109,7 +109,7 @@ namespace Omniscient
             if (siteMan.Reload() != ReturnCode.SUCCESS) MessageBox.Show("Warning: Bad trouble loading the site manager!");
             LoadPresets();
             UpdateSitesTree();
-            RangeTextBox.Text = "7";
+            RangeTextBox.Text = "1";
             RangeComboBox.Text = "Days";
             InitializeCharts();
             bootingUp = false;
@@ -632,10 +632,10 @@ namespace Omniscient
             }
             if (changedRange)
             {
-                if (TimeSpan.FromTicks(end.Ticks - start.Ticks).TotalDays > 7)
+                if (TimeSpan.FromTicks(end.Ticks - start.Ticks).TotalDays > 1)
                 {
-                    start = end.AddDays(-7);
-                    RangeTextBox.Text = "7";
+                    start = end.AddDays(-1);
+                    RangeTextBox.Text = "1";
                     RangeComboBox.Text = "Days";
                 }
                 else if (TimeSpan.FromTicks(end.Ticks - start.Ticks).TotalDays > 1)
@@ -1093,14 +1093,14 @@ namespace Omniscient
                                 if (chan.GetInstrument() is MCAInstrument)
                                 {
                                     MenuItem menuItem = new MenuItem("View " + chan.GetName() + " in Inspectrum");
-                                    menuItem.Tag = chan.GetFiles()[meas];
+                                    menuItem.Tag = chan.GetFiles()[meas].FileName;
                                     menuItem.Click += PlotSpectrumMenuItem_Click;
                                     chartMenu.MenuItems.Add(menuItem);
                                 }
                                 else if(chan.GetInstrument() is DeclarationInstrument)
                                 {
                                     MenuItem menuItem = new MenuItem("View " + chan.GetName() + " in Declaration Editor");
-                                    menuItem.Tag = chan.GetFiles()[meas];
+                                    menuItem.Tag = chan.GetFiles()[meas].FileName;
                                     menuItem.Click += DeclarationMenuItem_Click;
                                     chartMenu.MenuItems.Add(menuItem);
                                 }

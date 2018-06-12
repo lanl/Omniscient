@@ -98,7 +98,7 @@ namespace Omniscient
                     time = decParser.FromTime;
                     duration = decParser.ToTime - decParser.FromTime;
 
-                    channels[DECLARATION].AddDataPoint(time, 1, duration, decFiles[i]);
+                    channels[DECLARATION].AddDataPoint(time, 1, duration, new DataFile(decFiles[i]));
                 }
                 channels[DECLARATION].Sort();
                 LoadVirtualChannels();

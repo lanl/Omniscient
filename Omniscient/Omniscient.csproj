@@ -138,6 +138,7 @@
       <DependentUpon>Inspectrum.cs</DependentUpon>
     </Compile>
     <Compile Include="Instruments\Channel.cs" />
+    <Compile Include="Instruments\DataFile.cs" />
     <Compile Include="Instruments\DeclarationInstrument.cs" />
     <Compile Include="Instruments\GRANDInstrument.cs" />
     <Compile Include="Instruments\Instrument.cs" />

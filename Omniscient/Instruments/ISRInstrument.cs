@@ -102,19 +102,20 @@ namespace Omniscient
             if (endIndex == -1) endIndex = (isrDates.Length) - 1;
 
             DateTime time;
-
+            DataFile dataFile;
             for (int i=startIndex; i<=endIndex; ++i)
             {
                 returnCode = isrParser.ParseFile(isrFiles[i]);
+                dataFile = new DataFile(isrFiles[i]);
                 int numRecords = isrParser.GetNumRecords();
                 for (int r=0; r < numRecords; ++r)
                 {
                     time = isrParser.ISRTimeToDateTime(isrParser.GetRecord(r).time);
-                    channels[TOTALS1].AddDataPoint(time, isrParser.GetRecord(r).totals1, isrFiles[i]);
-                    channels[TOTALS2].AddDataPoint(time, isrParser.GetRecord(r).totals2, isrFiles[i]);
-                    channels[TOTALS3].AddDataPoint(time, isrParser.GetRecord(r).totals3, isrFiles[i]);
-                    channels[REALS_PLUS_ACC].AddDataPoint(time, isrParser.GetRecord(r).realsPlusAccidentals, isrFiles[i]);
-                    channels[ACC].AddDataPoint(time, isrParser.GetRecord(r).accidentals, isrFiles[i]);
+                    channels[TOTALS1].AddDataPoint(time, isrParser.GetRecord(r).totals1, dataFile);
+                    channels[TOTALS2].AddDataPoint(time, isrParser.GetRecord(r).totals2, dataFile);
+                    channels[TOTALS3].AddDataPoint(time, isrParser.GetRecord(r).totals3, dataFile);
+                    channels[REALS_PLUS_ACC].AddDataPoint(time, isrParser.GetRecord(r).realsPlusAccidentals, dataFile);
+                    channels[ACC].AddDataPoint(time, isrParser.GetRecord(r).accidentals, dataFile);
                 }
             }
             channels[TOTALS1].Sort();

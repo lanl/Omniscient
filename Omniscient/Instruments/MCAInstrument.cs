@@ -114,10 +114,11 @@ namespace Omniscient
             DateTime time;
             TimeSpan duration;
             Spectrum spectrum;
-
+            DataFile dataFile;
             for (int i = startIndex; i <= endIndex; ++i)
             {
                 returnCode = spectrumParser.ParseSpectrumFile(chnFiles[i]);
+                dataFile = new DataFile(chnFiles[i]);
                 spectrum = spectrumParser.GetSpectrum();
                 time = spectrum.GetStartTime();
                 duration = TimeSpan.FromSeconds(spectrum.GetRealTime());
@@ -127,14 +128,14 @@ namespace Omniscient
                 {
                     counts += spectrum.GetCounts()[ch];
                 }
-                channels[COUNT_RATE].AddDataPoint(time, counts/ spectrum.GetLiveTime(), duration, chnFiles[i]);
+                channels[COUNT_RATE].AddDataPoint(time, counts/ spectrum.GetLiveTime(), duration, dataFile);
 
                 
                 foreach(VirtualChannel chan in virtualChannels)
                 {
                     if (chan is ROIChannel)
                     {
-                        ((ROIChannel)chan).AddDataPoint(time, spectrum, duration, chnFiles[i]);
+                        ((ROIChannel)chan).AddDataPoint(time, spectrum, duration, dataFile);
                     }
                 }
             }

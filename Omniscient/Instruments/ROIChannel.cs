@@ -29,7 +29,7 @@ namespace Omniscient
             roi = new ROI();
         }
 
-        public void AddDataPoint(DateTime time, Spectrum spectrum, TimeSpan duration, string file)
+        public void AddDataPoint(DateTime time, Spectrum spectrum, TimeSpan duration, DataFile file)
         {
             timeStamps.Add(time);
             values.Add(roi.GetROICountRate(spectrum));

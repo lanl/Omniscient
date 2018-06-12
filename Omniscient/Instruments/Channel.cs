@@ -29,7 +29,7 @@ namespace Omniscient
         protected List<DateTime> timeStamps;
         protected List<TimeSpan> durations;
         protected List<double> values;
-        protected List<string> files;
+        protected List<DataFile> files;
 
         public Channel(string newName, Instrument parent, ChannelType newType)
         {
@@ -39,17 +39,17 @@ namespace Omniscient
             timeStamps = new List<DateTime>();
             durations = new List<TimeSpan>();
             values = new List<double>();
-            files = new List<string>();
+            files = new List<DataFile>();
         }
 
-        public void AddDataPoint(DateTime time, double value, string file)
+        public void AddDataPoint(DateTime time, double value, DataFile file)
         {
             timeStamps.Add(time);
             values.Add(value);
             files.Add(file);
         }
 
-        public void AddDataPoint(DateTime time, double value, TimeSpan duration, string file)
+        public void AddDataPoint(DateTime time, double value, TimeSpan duration, DataFile file)
         {
             timeStamps.Add(time);
             values.Add(value);
@@ -61,7 +61,7 @@ namespace Omniscient
         {
             timeStamps = new List<DateTime>();
             values = new List<double>();
-            files = new List<string>();
+            files = new List<DataFile>();
             if (channelType == ChannelType.DURATION_VALUE)
                 durations = new List<TimeSpan>();
         }
@@ -70,7 +70,7 @@ namespace Omniscient
         {
             DateTime[] stampArray = timeStamps.ToArray();
             double[] valueArray = values.ToArray();
-            string[] fileArray = files.ToArray();
+            DataFile[] fileArray = files.ToArray();
 
             if (channelType == ChannelType.DURATION_VALUE)
             {
@@ -86,9 +86,9 @@ namespace Omniscient
             files = fileArray.ToList();
         }
 
-        public List<string> GetFiles(DateTime start, DateTime end)
+        public List<DataFile> GetFiles(DateTime start, DateTime end)
         {
-            List<string> outFiles = new List<string>();
+            List<DataFile> outFiles = new List<DataFile>();
             for(int i=0; i<files.Count(); i++)
             {
                 if(timeStamps[i] >= start && timeStamps[i] <= end)
@@ -109,7 +109,7 @@ namespace Omniscient
         public List<DateTime> GetTimeStamps() { return timeStamps; }
         public List<TimeSpan> GetDurations() { return durations; }
         public List<double> GetValues() { return values; }
-        public List<string> GetFiles() { return files; }
+        public List<DataFile> GetFiles() { return files; }
         public Instrument GetInstrument() { return instrument; }
     }
 }
