@@ -77,7 +77,6 @@
     <Compile Include="Analysis\FRAMUraniumResultParser.cs" />
     <Compile Include="Analysis\ResultParser.cs" />
     <Compile Include="Analysis\SpectrumCompiler.cs" />
-    <Compile Include="Check_Signature\SignatureChecker.cs" />
     <Compile Include="Controls\ResponsiveTreeView.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -251,7 +250,6 @@
     <EmbeddedResource Include="SiteManagerForm\SiteManagerForm.resx">
       <DependentUpon>SiteManagerForm.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="Check_Signature\Check_Signature.lib" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -267,9 +265,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Check_Signature\Check_Signature.dll" />
-    <Content Include="Check_Signature\Check_Signature.h" />
-    <Content Include="Check_Signature\cl32.dll" />
     <Content Include="Presets.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
