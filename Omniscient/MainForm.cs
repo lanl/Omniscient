@@ -106,7 +106,13 @@ namespace Omniscient
             EndTimePicker.Value = globalEnd.Date;
             chPanels = new List<ChannelPanel>();
             siteMan = new SiteManager("SiteManager.xml");
-            if (siteMan.Reload() != ReturnCode.SUCCESS) MessageBox.Show("Warning: Bad trouble loading the site manager!");
+            ReturnCode returnCode = siteMan.Reload();
+            if (returnCode == ReturnCode.FILE_DOESNT_EXIST)
+            {
+                siteMan.WriteBlank();
+                MessageBox.Show("SiteManager.xml not found. A new one has been created.");
+            }
+            else if (returnCode != ReturnCode.SUCCESS) MessageBox.Show("Warning: Bad trouble loading the site manager!");
             LoadPresets();
             UpdateSitesTree();
             RangeTextBox.Text = "1";
@@ -173,7 +179,13 @@ namespace Omniscient
         public void LoadPresets()
         {
             presetMan = new PresetManager("Presets.xml", siteMan);
-            if (presetMan.Reload() != ReturnCode.SUCCESS) MessageBox.Show("Warning: Bad trouble loading the preset manager!");
+            ReturnCode returnCode = presetMan.Reload();
+            if (returnCode == ReturnCode.FILE_DOESNT_EXIST)
+            {
+                presetMan.WriteBlank();
+                MessageBox.Show("Presets.xml not found. A new one has been created.");
+            }
+            else if (returnCode != ReturnCode.SUCCESS) MessageBox.Show("Warning: Bad trouble loading the preset manager!");
             PresetsComboBox.Items.Clear();
             foreach (Preset preset in presetMan.GetPresets())
             {

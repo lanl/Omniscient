@@ -18,6 +18,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Windows.Forms;
+using System.IO;
 
 namespace Omniscient
 {
@@ -71,8 +72,24 @@ namespace Omniscient
             return WriteToXML(xmlFile);
         }
 
+        public ReturnCode WriteBlank()
+        {
+            XmlWriter xmlWriter = XmlWriter.Create(xmlFile, new XmlWriterSettings()
+            {
+                Indent = true,
+            });
+
+            xmlWriter.WriteStartDocument();
+            xmlWriter.WriteStartElement("SiteManager");
+            xmlWriter.WriteEndElement();
+            xmlWriter.WriteEndDocument();
+            xmlWriter.Close();
+            return ReturnCode.SUCCESS;
+        }
+
         public ReturnCode LoadFromXML(string fileName)
         {
+            if (!File.Exists(fileName)) return ReturnCode.FILE_DOESNT_EXIST;
             XmlDocument doc = new XmlDocument();
             doc.Load(fileName);
             sites.Clear();

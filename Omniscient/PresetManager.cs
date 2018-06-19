@@ -17,6 +17,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using System.IO;
 
 namespace Omniscient
 {
@@ -44,8 +45,24 @@ namespace Omniscient
             return LoadFromXML(xmlFile);
         }
 
+        public ReturnCode WriteBlank()
+        {
+            XmlWriter xmlWriter = XmlWriter.Create(xmlFile, new XmlWriterSettings()
+            {
+                Indent = true,
+            });
+
+            xmlWriter.WriteStartDocument();
+            xmlWriter.WriteStartElement("Presets");
+            xmlWriter.WriteEndElement();
+            xmlWriter.WriteEndDocument();
+            xmlWriter.Close();
+            return ReturnCode.SUCCESS;
+        }
+
         public ReturnCode LoadFromXML(string fileName)
         {
+            if (!File.Exists(fileName)) return ReturnCode.FILE_DOESNT_EXIST;
             try
             {
                 XmlDocument doc = new XmlDocument();

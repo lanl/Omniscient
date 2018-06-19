@@ -19,7 +19,7 @@ using System.Windows.Forms;
 
 namespace Omniscient
 {
-    public enum ReturnCode { SUCCESS, FAIL, BAD_INPUT, COULD_NOT_OPEN_FILE, CORRUPTED_FILE }
+    public enum ReturnCode { SUCCESS, FAIL, BAD_INPUT, COULD_NOT_OPEN_FILE, CORRUPTED_FILE, FILE_DOESNT_EXIST }
 
     static class Program
     {
