@@ -56,6 +56,11 @@ namespace Omniscient
             DownButton.Image = main.ButtonImageList.Images[1];           
             RemoveButton.Image = main.ButtonImageList.Images[3];
             UpdateSitesTree();
+
+            // G - Disable buttons lower on the tree until a site exists
+            NewFacilityButton.Enabled = false;
+            NewSystemButton.Enabled = false;
+            NewInstrumentButton.Enabled = false;
         }
 
         /// <summary>
@@ -385,6 +390,22 @@ namespace Omniscient
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
 
+            // Check if declaration exists
+            if (DeclarationCheckBox.Checked)
+            {
+                try
+                {
+                    selectedSystem.GetDeclarationInstrument().SetFilePrefix(DeclarationPrefixTextBox.Text);
+                    selectedSystem.GetDeclarationInstrument().SetDataFolder(DeclarationDirectoryTextBox.Text);
+                }
+
+                catch
+                {
+                    MessageBox.Show("Enter a declaration or uncheck the declaration box.");
+                    return;
+                }
+
+            }
             saveFileDialog.Filter = "xml files (*.xml)|*.xml";
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
@@ -404,6 +425,15 @@ namespace Omniscient
             siteMan.Save();
             UpdateSitesTree();
             siteManChanged = true;
+
+            // G - Enable buttons which create objects lower on the tree
+            NewFacilityButton.Enabled = true;
+            NewSystemButton.Enabled = true;
+            NewInstrumentButton.Enabled = true;
+
+            // G - Select first node
+            SitesTreeView.SelectedNode = SitesTreeView.TopNode;
+
         }
 
         private void DiscardButton_Click(object sender, EventArgs e)
@@ -595,8 +625,18 @@ namespace Omniscient
                 nodeName = sys.GetName();
                 if(DeclarationCheckBox.Checked)
                 {
-                    selectedSystem.GetDeclarationInstrument().SetFilePrefix(DeclarationPrefixTextBox.Text);
-                    selectedSystem.GetDeclarationInstrument().SetDataFolder(DeclarationDirectoryTextBox.Text);
+                    try
+                    {
+                        selectedSystem.GetDeclarationInstrument().SetFilePrefix(DeclarationPrefixTextBox.Text);
+                        selectedSystem.GetDeclarationInstrument().SetDataFolder(DeclarationDirectoryTextBox.Text);
+                    }
+
+                    catch
+                    {
+                        MessageBox.Show("Enter a declaration or uncheck the declaration box.");
+                    }
+
+
                 }
             }
             else if (node.Tag is Instrument)
@@ -700,6 +740,11 @@ namespace Omniscient
         {
             bool uniqueName = false;
             int iteration = 0;
+
+            // G - Enable buttons which create objects lower on the tree
+            NewFacilityButton.Enabled = true;
+            NewSystemButton.Enabled = true;
+            NewInstrumentButton.Enabled = true;
 
             string name = "";
             while (!uniqueName)
