@@ -591,6 +591,29 @@ namespace Omniscient
 
             VirtualChannel virtualChan = null;
 
+
+            // G - Check ALL nodes for violation
+            TreeNodeCollection nodes = SitesTreeView.Nodes;
+            foreach(TreeNode tn in nodes)
+            {
+                if (DeclarationCheckBox.Checked)
+                {
+                    try
+                    {
+                        selectedSystem.GetDeclarationInstrument().SetFilePrefix(DeclarationPrefixTextBox.Text);
+                        selectedSystem.GetDeclarationInstrument().SetDataFolder(DeclarationDirectoryTextBox.Text);
+                    }
+
+                    catch
+                    {
+                        MessageBox.Show("Enter a declaration or uncheck the declaration box.");
+                        return;
+                    }
+
+
+                }
+            }
+
             if (node.Tag is Site)
             {
                 Site site = (Site)node.Tag;
@@ -625,17 +648,8 @@ namespace Omniscient
                 nodeName = sys.GetName();
                 if(DeclarationCheckBox.Checked)
                 {
-                    try
-                    {
                         selectedSystem.GetDeclarationInstrument().SetFilePrefix(DeclarationPrefixTextBox.Text);
                         selectedSystem.GetDeclarationInstrument().SetDataFolder(DeclarationDirectoryTextBox.Text);
-                    }
-
-                    catch
-                    {
-                        MessageBox.Show("Enter a declaration or uncheck the declaration box.");
-                    }
-
 
                 }
             }
@@ -724,6 +738,9 @@ namespace Omniscient
             siteMan.Save();
             UpdateSitesTree();
             siteManChanged = true;
+
+            // G - Select new node after deleting
+            SitesTreeView.SelectedNode = SitesTreeView.TopNode;
         }
 
         private void DirectoryButton_Click(object sender, EventArgs e)
