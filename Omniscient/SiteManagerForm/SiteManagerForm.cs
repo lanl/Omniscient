@@ -587,6 +587,11 @@ namespace Omniscient
 
         private void SaveButton_Click(object sender, EventArgs e)
         {
+            if ( siteMan.GetSites().Count == 0 )
+            {
+                MessageBox.Show("May as well make some changes before you save, am I right?");
+                return;
+            }
             TreeNode node = SitesTreeView.SelectedNode;
             string nodeName = node.Name;
 
@@ -627,9 +632,8 @@ namespace Omniscient
                 nodeName = sys.GetName();
                 if(DeclarationCheckBox.Checked)
                 {
-                        selectedSystem.GetDeclarationInstrument().SetFilePrefix(DeclarationPrefixTextBox.Text);
-                        selectedSystem.GetDeclarationInstrument().SetDataFolder(DeclarationDirectoryTextBox.Text);
-
+                    selectedSystem.GetDeclarationInstrument().SetFilePrefix(DeclarationPrefixTextBox.Text);
+                    selectedSystem.GetDeclarationInstrument().SetDataFolder(DeclarationDirectoryTextBox.Text);
                 }
             }
             else if (node.Tag is Instrument)
@@ -1456,32 +1460,6 @@ namespace Omniscient
             {
                 FilterFileTextBox.Text = dialog.FileName;
             }
-        }
-
-        // G - Check ALL nodes for incorrect declaration
-        private bool DeclarationCheck()
-        {
-            TreeNodeCollection nodes = SitesTreeView.Nodes;
-            foreach (TreeNode tn in nodes)
-            {
-                if (DeclarationCheckBox.Checked)
-                {
-                    try
-                    {
-                        selectedSystem.GetDeclarationInstrument().SetFilePrefix(DeclarationPrefixTextBox.Text);
-                        selectedSystem.GetDeclarationInstrument().SetDataFolder(DeclarationDirectoryTextBox.Text);
-                    }
-
-                    catch
-                    {
-                        MessageBox.Show("Enter a declaration or uncheck the declaration box.");
-                        return false;
-                    }
-
-
-                }
-            }
-            return false;
         }
 
         // G - Shorthand to disable buttons on lower trees
