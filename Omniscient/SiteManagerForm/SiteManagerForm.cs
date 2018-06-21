@@ -391,6 +391,7 @@ namespace Omniscient
             SaveFileDialog saveFileDialog = new SaveFileDialog();
 
             // Check if declaration exists
+            // Need to check EVERY system!
             if (DeclarationCheckBox.Checked)
             {
                 try
@@ -592,28 +593,6 @@ namespace Omniscient
             VirtualChannel virtualChan = null;
 
 
-            // G - Check ALL nodes for violation
-            TreeNodeCollection nodes = SitesTreeView.Nodes;
-            foreach(TreeNode tn in nodes)
-            {
-                if (DeclarationCheckBox.Checked)
-                {
-                    try
-                    {
-                        selectedSystem.GetDeclarationInstrument().SetFilePrefix(DeclarationPrefixTextBox.Text);
-                        selectedSystem.GetDeclarationInstrument().SetDataFolder(DeclarationDirectoryTextBox.Text);
-                    }
-
-                    catch
-                    {
-                        MessageBox.Show("Enter a declaration or uncheck the declaration box.");
-                        return;
-                    }
-
-
-                }
-            }
-
             if (node.Tag is Site)
             {
                 Site site = (Site)node.Tag;
@@ -710,6 +689,12 @@ namespace Omniscient
             {
                 Site site = (Site)node.Tag;
                 siteMan.GetSites().Remove(site);
+                // G - Turn off other buttons if there are no longer any sites
+                if (siteMan.GetSites().Count == 0)
+                {
+                    DisableButtons();
+                }
+
             }
             else if (node.Tag is Facility)
             {
@@ -735,6 +720,7 @@ namespace Omniscient
                 DetectionSystem sys = (DetectionSystem)node.Parent.Tag;
                 sys.GetEventGenerators().Remove(eg);
             }
+        
             siteMan.Save();
             UpdateSitesTree();
             siteManChanged = true;
@@ -1470,6 +1456,40 @@ namespace Omniscient
             {
                 FilterFileTextBox.Text = dialog.FileName;
             }
+        }
+
+        // G - Check ALL nodes for incorrect declaration
+        private bool DeclarationCheck()
+        {
+            TreeNodeCollection nodes = SitesTreeView.Nodes;
+            foreach (TreeNode tn in nodes)
+            {
+                if (DeclarationCheckBox.Checked)
+                {
+                    try
+                    {
+                        selectedSystem.GetDeclarationInstrument().SetFilePrefix(DeclarationPrefixTextBox.Text);
+                        selectedSystem.GetDeclarationInstrument().SetDataFolder(DeclarationDirectoryTextBox.Text);
+                    }
+
+                    catch
+                    {
+                        MessageBox.Show("Enter a declaration or uncheck the declaration box.");
+                        return false;
+                    }
+
+
+                }
+            }
+            return false;
+        }
+
+        // G - Shorthand to disable buttons on lower trees
+        private void DisableButtons()
+        {
+            NewFacilityButton.Enabled = false;
+            NewSystemButton.Enabled = false;
+            NewInstrumentButton.Enabled = false;
         }
     }
 }
