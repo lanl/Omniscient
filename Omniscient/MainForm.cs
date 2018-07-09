@@ -296,6 +296,7 @@ namespace Omniscient
             {
                 Chart chart;
                 chart = GetChart(chartNum);
+                chart.AntiAliasing = AntiAliasingStyles.None;
 
                 // Initizialize chart values
                 /*
@@ -375,8 +376,10 @@ namespace Omniscient
                     List<double> vals = chan.GetValues();
 
                     Series series = new Series(chan.GetName());
+                    series.Points.SuspendUpdates();
                     series.ChartType = SeriesChartType.FastLine;
                     series.XValueType = ChartValueType.DateTime;
+                    
                     if (chan.GetChannelType() == Channel.ChannelType.DURATION_VALUE)
                     {
                         List<TimeSpan> durations = chan.GetDurations();
@@ -404,7 +407,6 @@ namespace Omniscient
                                 }
                             }
                         }
-                        chart.Series.Add(series);
                     }
                     else
                     {
@@ -425,8 +427,9 @@ namespace Omniscient
                                     series.Points.AddXY(dates[i].ToOADate(), vals[i]);
                             }
                         }
-                        chart.Series.Add(series);
                     }
+                    chart.Series.Add(series);
+                    series.Points.ResumeUpdates();
                 }
             }
             System.Windows.Forms.Cursor.Current = Cursors.Default;
@@ -445,14 +448,16 @@ namespace Omniscient
                 chart.Annotations.Clear();
                 chart.Update();
 
-                VerticalLineAnnotation line = new VerticalLineAnnotation();
-                line.AxisX = chart.ChartAreas[0].AxisX;
-                line.IsInfinitive = true;
-                line.X = markerValue;
-                line.LineColor = System.Drawing.Color.FromArgb(64, 64, 64);
-                line.Width = 1;
-                chart.Annotations.Add(line);
-           
+                if (markerValue > start.ToOADate() && markerValue < end.ToOADate())
+                {
+                    VerticalLineAnnotation line = new VerticalLineAnnotation();
+                    line.AxisX = chart.ChartAreas[0].AxisX;
+                    line.IsInfinitive = true;
+                    line.X = markerValue;
+                    line.LineColor = System.Drawing.Color.FromArgb(64, 64, 64);
+                    line.Width = 1;
+                    chart.Annotations.Add(line);
+                }
                 eventCount = 0;
                 if (HighlightEventsCheckBox.Checked)
                 {
@@ -967,6 +972,7 @@ namespace Omniscient
 
         private void StripChartScroll_Scroll(object sender, ScrollEventArgs e)
         {
+            if (e.Type != ScrollEventType.EndScroll) return;
             DateTime newStart = new DateTime((long)(StripChartScroll.Value * 6e8));
             StartDatePicker.Value = newStart.Date;
             StartTimePicker.Value = newStart;
