@@ -45,13 +45,20 @@ namespace Omniscient
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.StripChartControlPanel = new System.Windows.Forms.Panel();
             this.StripChartsPanel = new System.Windows.Forms.Panel();
-            this.StripChartsLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
-            this.StripChart3 = new LiveCharts.WinForms.CartesianChart();
-            this.StripChart2 = new LiveCharts.WinForms.CartesianChart();
-            this.StripChart1 = new LiveCharts.WinForms.CartesianChart();
-            this.StripChart0 = new LiveCharts.WinForms.CartesianChart();
             this.StripChartScroll = new System.Windows.Forms.HScrollBar();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -63,6 +70,7 @@ namespace Omniscient
             this.launchInspectaclesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.declarationEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ChannelsLabelPanel = new System.Windows.Forms.Panel();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -100,6 +108,7 @@ namespace Omniscient
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.LeftPanel = new System.Windows.Forms.Panel();
+            this.SitesTreeView = new Omniscient.Controls.ResponsiveTreeView();
             this.TreeImageList = new System.Windows.Forms.ImageList(this.components);
             this.TopLeftPanel = new System.Windows.Forms.Panel();
             this.PresetSaveButton = new System.Windows.Forms.Button();
@@ -127,11 +136,13 @@ namespace Omniscient
             this.EventsWarningLabel = new System.Windows.Forms.Label();
             this.GenerateEventsButton = new System.Windows.Forms.Button();
             this.ButtonImageList = new System.Windows.Forms.ImageList(this.components);
-            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.SitesTreeView = new Omniscient.Controls.ResponsiveTreeView();
+            this.StripChartsLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.StripChart0 = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.StripChart3 = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.StripChart1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.StripChart2 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.StripChartControlPanel.SuspendLayout();
             this.StripChartsPanel.SuspendLayout();
-            this.StripChartsLayoutPanel.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.ChannelsLabelPanel.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -155,6 +166,11 @@ namespace Omniscient
             ((System.ComponentModel.ISupportInitialize)(this.EventGridView)).BeginInit();
             this.EventControlPanel.SuspendLayout();
             this.RightEventControlPanel.SuspendLayout();
+            this.StripChartsLayoutPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.StripChart0)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.StripChart3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.StripChart1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.StripChart2)).BeginInit();
             this.SuspendLayout();
             // 
             // StripChartControlPanel
@@ -175,62 +191,6 @@ namespace Omniscient
             this.StripChartsPanel.Name = "StripChartsPanel";
             this.StripChartsPanel.Size = new System.Drawing.Size(715, 417);
             this.StripChartsPanel.TabIndex = 2;
-            // 
-            // StripChartsLayoutPanel
-            // 
-            this.StripChartsLayoutPanel.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Inset;
-            this.StripChartsLayoutPanel.ColumnCount = 1;
-            this.StripChartsLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.StripChartsLayoutPanel.Controls.Add(this.StripChart3, 0, 2);
-            this.StripChartsLayoutPanel.Controls.Add(this.StripChart2, 0, 1);
-            this.StripChartsLayoutPanel.Controls.Add(this.StripChart1, 0, 1);
-            this.StripChartsLayoutPanel.Controls.Add(this.StripChart0, 0, 0);
-            this.StripChartsLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.StripChartsLayoutPanel.Location = new System.Drawing.Point(0, 0);
-            this.StripChartsLayoutPanel.Name = "StripChartsLayoutPanel";
-            this.StripChartsLayoutPanel.RowCount = 4;
-            this.StripChartsLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.StripChartsLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.StripChartsLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.StripChartsLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.StripChartsLayoutPanel.Size = new System.Drawing.Size(715, 417);
-            this.StripChartsLayoutPanel.TabIndex = 1;
-            // 
-            // StripChart3
-            // 
-            this.StripChart3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.StripChart3.Location = new System.Drawing.Point(5, 314);
-            this.StripChart3.Name = "StripChart3";
-            this.StripChart3.Size = new System.Drawing.Size(705, 98);
-            this.StripChart3.TabIndex = 4;
-            this.StripChart3.Text = "cartesianChart3";
-            // 
-            // StripChart2
-            // 
-            this.StripChart2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.StripChart2.Location = new System.Drawing.Point(5, 211);
-            this.StripChart2.Name = "StripChart2";
-            this.StripChart2.Size = new System.Drawing.Size(705, 95);
-            this.StripChart2.TabIndex = 3;
-            this.StripChart2.Text = "cartesianChart2";
-            // 
-            // StripChart1
-            // 
-            this.StripChart1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.StripChart1.Location = new System.Drawing.Point(5, 108);
-            this.StripChart1.Name = "StripChart1";
-            this.StripChart1.Size = new System.Drawing.Size(705, 95);
-            this.StripChart1.TabIndex = 2;
-            this.StripChart1.Text = "cartesianChart1";
-            // 
-            // StripChart0
-            // 
-            this.StripChart0.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.StripChart0.Location = new System.Drawing.Point(5, 5);
-            this.StripChart0.Name = "StripChart0";
-            this.StripChart0.Size = new System.Drawing.Size(705, 95);
-            this.StripChart0.TabIndex = 1;
-            this.StripChart0.Text = "cartesianChart1";
             // 
             // StripChartScroll
             // 
@@ -323,6 +283,13 @@ namespace Omniscient
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.helpToolStripMenuItem.Text = "Help";
+            // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+            this.aboutToolStripMenuItem.Text = "About";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
             // ChannelsLabelPanel
             // 
@@ -716,6 +683,20 @@ namespace Omniscient
             this.LeftPanel.Size = new System.Drawing.Size(220, 665);
             this.LeftPanel.TabIndex = 5;
             // 
+            // SitesTreeView
+            // 
+            this.SitesTreeView.CheckBoxes = true;
+            this.SitesTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.SitesTreeView.ImageIndex = 0;
+            this.SitesTreeView.ImageList = this.TreeImageList;
+            this.SitesTreeView.Location = new System.Drawing.Point(5, 68);
+            this.SitesTreeView.Name = "SitesTreeView";
+            this.SitesTreeView.SelectedImageIndex = 0;
+            this.SitesTreeView.ShowNodeToolTips = true;
+            this.SitesTreeView.Size = new System.Drawing.Size(210, 526);
+            this.SitesTreeView.TabIndex = 11;
+            this.SitesTreeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.SitesTreeView_AfterCheck);
+            // 
             // TreeImageList
             // 
             this.TreeImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("TreeImageList.ImageStream")));
@@ -958,26 +939,97 @@ namespace Omniscient
             this.ButtonImageList.Images.SetKeyName(2, "Plus");
             this.ButtonImageList.Images.SetKeyName(3, "Delete");
             // 
-            // aboutToolStripMenuItem
+            // StripChartsLayoutPanel
             // 
-            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
-            this.aboutToolStripMenuItem.Text = "About";
-            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+            this.StripChartsLayoutPanel.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Inset;
+            this.StripChartsLayoutPanel.ColumnCount = 1;
+            this.StripChartsLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.StripChartsLayoutPanel.Controls.Add(this.StripChart0, 0, 0);
+            this.StripChartsLayoutPanel.Controls.Add(this.StripChart3, 0, 3);
+            this.StripChartsLayoutPanel.Controls.Add(this.StripChart1, 0, 1);
+            this.StripChartsLayoutPanel.Controls.Add(this.StripChart2, 0, 2);
+            this.StripChartsLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.StripChartsLayoutPanel.Location = new System.Drawing.Point(0, 0);
+            this.StripChartsLayoutPanel.Name = "StripChartsLayoutPanel";
+            this.StripChartsLayoutPanel.RowCount = 4;
+            this.StripChartsLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.StripChartsLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.StripChartsLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.StripChartsLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
+            this.StripChartsLayoutPanel.Size = new System.Drawing.Size(715, 417);
+            this.StripChartsLayoutPanel.TabIndex = 1;
             // 
-            // SitesTreeView
+            // StripChart0
             // 
-            this.SitesTreeView.CheckBoxes = true;
-            this.SitesTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SitesTreeView.ImageIndex = 0;
-            this.SitesTreeView.ImageList = this.TreeImageList;
-            this.SitesTreeView.Location = new System.Drawing.Point(5, 68);
-            this.SitesTreeView.Name = "SitesTreeView";
-            this.SitesTreeView.SelectedImageIndex = 0;
-            this.SitesTreeView.ShowNodeToolTips = true;
-            this.SitesTreeView.Size = new System.Drawing.Size(210, 526);
-            this.SitesTreeView.TabIndex = 11;
-            this.SitesTreeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.SitesTreeView_AfterCheck);
+            chartArea1.Name = "ChartArea1";
+            this.StripChart0.ChartAreas.Add(chartArea1);
+            this.StripChart0.Dock = System.Windows.Forms.DockStyle.Fill;
+            legend1.Name = "Legend1";
+            this.StripChart0.Legends.Add(legend1);
+            this.StripChart0.Location = new System.Drawing.Point(5, 5);
+            this.StripChart0.Name = "StripChart0";
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            this.StripChart0.Series.Add(series1);
+            this.StripChart0.Size = new System.Drawing.Size(705, 95);
+            this.StripChart0.TabIndex = 5;
+            this.StripChart0.Text = "chart1";
+            // 
+            // StripChart3
+            // 
+            chartArea2.Name = "ChartArea1";
+            this.StripChart3.ChartAreas.Add(chartArea2);
+            this.StripChart3.Dock = System.Windows.Forms.DockStyle.Fill;
+            legend2.Name = "Legend1";
+            this.StripChart3.Legends.Add(legend2);
+            this.StripChart3.Location = new System.Drawing.Point(5, 314);
+            this.StripChart3.Name = "StripChart3";
+            series2.ChartArea = "ChartArea1";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series2.Legend = "Legend1";
+            series2.Name = "Series1";
+            this.StripChart3.Series.Add(series2);
+            this.StripChart3.Size = new System.Drawing.Size(705, 98);
+            this.StripChart3.TabIndex = 6;
+            this.StripChart3.Text = "chart1";
+            // 
+            // StripChart1
+            // 
+            chartArea3.Name = "ChartArea1";
+            this.StripChart1.ChartAreas.Add(chartArea3);
+            this.StripChart1.Dock = System.Windows.Forms.DockStyle.Fill;
+            legend3.Name = "Legend1";
+            this.StripChart1.Legends.Add(legend3);
+            this.StripChart1.Location = new System.Drawing.Point(5, 108);
+            this.StripChart1.Name = "StripChart1";
+            series3.ChartArea = "ChartArea1";
+            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series3.Legend = "Legend1";
+            series3.Name = "Series1";
+            this.StripChart1.Series.Add(series3);
+            this.StripChart1.Size = new System.Drawing.Size(705, 95);
+            this.StripChart1.TabIndex = 7;
+            this.StripChart1.Text = "chart2";
+            // 
+            // StripChart2
+            // 
+            chartArea4.Name = "ChartArea1";
+            this.StripChart2.ChartAreas.Add(chartArea4);
+            this.StripChart2.Dock = System.Windows.Forms.DockStyle.Fill;
+            legend4.Name = "Legend1";
+            this.StripChart2.Legends.Add(legend4);
+            this.StripChart2.Location = new System.Drawing.Point(5, 211);
+            this.StripChart2.Name = "StripChart2";
+            series4.ChartArea = "ChartArea1";
+            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series4.Legend = "Legend1";
+            series4.Name = "Series1";
+            this.StripChart2.Series.Add(series4);
+            this.StripChart2.Size = new System.Drawing.Size(705, 95);
+            this.StripChart2.TabIndex = 8;
+            this.StripChart2.Text = "chart3";
             // 
             // MainForm
             // 
@@ -997,7 +1049,6 @@ namespace Omniscient
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.StripChartControlPanel.ResumeLayout(false);
             this.StripChartsPanel.ResumeLayout(false);
-            this.StripChartsLayoutPanel.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ChannelsLabelPanel.ResumeLayout(false);
@@ -1034,6 +1085,11 @@ namespace Omniscient
             this.EventControlPanel.PerformLayout();
             this.RightEventControlPanel.ResumeLayout(false);
             this.RightEventControlPanel.PerformLayout();
+            this.StripChartsLayoutPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.StripChart0)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.StripChart3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.StripChart1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.StripChart2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1072,11 +1128,6 @@ namespace Omniscient
         private System.Windows.Forms.DataGridView EventGridView;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
         private System.Windows.Forms.ToolStripProgressBar ToolStripProgressBar;
-        private System.Windows.Forms.TableLayoutPanel StripChartsLayoutPanel;
-        private LiveCharts.WinForms.CartesianChart StripChart1;
-        private LiveCharts.WinForms.CartesianChart StripChart0;
-        private LiveCharts.WinForms.CartesianChart StripChart3;
-        private LiveCharts.WinForms.CartesianChart StripChart2;
         private System.Windows.Forms.Panel EventControlPanel;
         private System.Windows.Forms.Button GenerateEventsButton;
         private System.Windows.Forms.ToolStripMenuItem launchInspectrumToolStripMenuItem;
@@ -1124,6 +1175,11 @@ namespace Omniscient
         private ToolStripMenuItem declarationEditorToolStripMenuItem;
         private ToolStripMenuItem exportToolStripMenuItem;
         private ToolStripMenuItem aboutToolStripMenuItem;
+        private TableLayoutPanel StripChartsLayoutPanel;
+        private System.Windows.Forms.DataVisualization.Charting.Chart StripChart0;
+        private System.Windows.Forms.DataVisualization.Charting.Chart StripChart3;
+        private System.Windows.Forms.DataVisualization.Charting.Chart StripChart1;
+        private System.Windows.Forms.DataVisualization.Charting.Chart StripChart2;
     }
 }
 

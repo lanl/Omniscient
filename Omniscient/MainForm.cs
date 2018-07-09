@@ -21,14 +21,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using System.Windows.Forms.DataVisualization.Charting;
 
 using System.Windows.Media;
-using LiveCharts;
-using LiveCharts.Wpf;
-using LiveCharts.WinForms;
-using LiveCharts.Defaults;
-using LiveCharts.Geared;
-using LiveCharts.Configurations;
 
 namespace Omniscient
 {
@@ -57,7 +52,7 @@ namespace Omniscient
         private bool[] logScale;
 
         // The following are used to show a time marker when a user clicks a chart
-        LiveCharts.WinForms.CartesianChart activeChart;
+        Chart activeChart;
         double mouseX = 0;
         double mouseY = 0;
         DateTime mouseTime;
@@ -87,14 +82,15 @@ namespace Omniscient
         {
             this.Text = "Omniscient - Version " + VERSION;
             bootingUp = true;
-            this.StripChart0.Base.MouseDown += new System.Windows.Input.MouseButtonEventHandler(this.StripChart_MouseClick);
-            this.StripChart1.Base.MouseDown += new System.Windows.Input.MouseButtonEventHandler(this.StripChart_MouseClick);
-            this.StripChart2.Base.MouseDown += new System.Windows.Input.MouseButtonEventHandler(this.StripChart_MouseClick);
-            this.StripChart3.Base.MouseDown += new System.Windows.Input.MouseButtonEventHandler(this.StripChart_MouseClick);
-            this.StripChart0.Base.MouseMove += new System.Windows.Input.MouseEventHandler(this.StripChart_MouseMoved);
-            this.StripChart1.Base.MouseMove += new System.Windows.Input.MouseEventHandler(this.StripChart_MouseMoved);
-            this.StripChart2.Base.MouseMove += new System.Windows.Input.MouseEventHandler(this.StripChart_MouseMoved);
-            this.StripChart3.Base.MouseMove += new System.Windows.Input.MouseEventHandler(this.StripChart_MouseMoved);
+            
+            StripChart0.MouseDown += new MouseEventHandler(StripChart_MouseClick);
+            StripChart1.MouseDown += new MouseEventHandler(StripChart_MouseClick);
+            StripChart2.MouseDown += new MouseEventHandler(StripChart_MouseClick);
+            StripChart3.MouseDown += new MouseEventHandler(StripChart_MouseClick);
+            StripChart0.MouseMove += new MouseEventHandler(StripChart_MouseMoved);
+            StripChart1.MouseMove += new MouseEventHandler(StripChart_MouseMoved);
+            StripChart2.MouseMove += new MouseEventHandler(StripChart_MouseMoved);
+            StripChart3.MouseMove += new MouseEventHandler(StripChart_MouseMoved);
 
             globalStart = DateTime.Today.AddDays(-1);
             GlobalStartTextBox.Text = globalStart.ToString("MMM dd, yyyy");
@@ -254,7 +250,7 @@ namespace Omniscient
 
         /// <summary>
         /// GetChart is used to easily loop through the charts in other methods.</summary>
-        private LiveCharts.WinForms.CartesianChart GetChart(int chartNum)
+        private Chart GetChart(int chartNum)
         {
             switch (chartNum)
             {
@@ -279,9 +275,9 @@ namespace Omniscient
         /// UpdateInstrumentData is called when instruments are added to the channel panels.</summary>
         private void UpdateInstrumentData(Instrument inst)
         {
-            Cursor.Current = Cursors.WaitCursor;
+            System.Windows.Forms.Cursor.Current = Cursors.WaitCursor;
             inst.LoadData(new DateTime(1900, 1, 1), new DateTime(2100, 1, 1));
-            Cursor.Current = Cursors.Default;
+            System.Windows.Forms.Cursor.Current = Cursors.Default;
         }
 
         private void UpdateData()
@@ -298,14 +294,11 @@ namespace Omniscient
         {
             for (int chartNum = 0; chartNum < N_CHARTS; chartNum++)
             {
-                LiveCharts.WinForms.CartesianChart chart;
+                Chart chart;
                 chart = GetChart(chartNum);
 
-                chart.DisableAnimations = true;
-                chart.Hoverable = false;
-                chart.DataTooltip = null;
-
                 // Initizialize chart values
+                /*
                 chart.AxisX.Clear();
                 chart.AxisY.Clear();
                 chart.AxisX.Add(new Axis
@@ -315,29 +308,10 @@ namespace Omniscient
                     MaxValue = DateTime.Today.Ticks + TimeSpan.TicksPerDay,
                     //Separator = sep
                 });
+                */
+                Series series = chart.Series[0];
 
-                chart.AxisY.Add(new Axis
-                {
-                    MinValue = 0,
-                    //MaxValue = 200
-                });
-
-                GearedValues<DateTimePoint> chartVals = new GearedValues<DateTimePoint>();
-                List<DateTimePoint> list = new List<DateTimePoint>();
-                list.Add(new DateTimePoint(DateTime.Today, 0.0));
-                chartVals = list.AsGearedValues().WithQuality(Quality.Highest);
-
-                GStepLineSeries series = new GStepLineSeries()
-                {
-                    Title = "",
-                    PointGeometry = null,
-                    Values = chartVals
-                };
-
-                chart.LegendLocation = LegendLocation.Right;
-                chart.DefaultLegend.Visibility = System.Windows.Visibility.Visible;
-                chart.DefaultLegend.Width = 200;
-                chart.Update(true, true);
+                series.Points.Clear();
             }
         }
 
@@ -357,36 +331,19 @@ namespace Omniscient
         /// UpdateChart is called whenever the data to be displayed on a chart changes. </summary>
         private void UpdateChart(int chartNum)
         {
-            Cursor.Current = Cursors.WaitCursor;
-            LiveCharts.WinForms.CartesianChart chart;
+            System.Windows.Forms.Cursor.Current = Cursors.WaitCursor;
+            Chart chart;
             chart = GetChart(chartNum);
 
             // Needed for speedy loading
             DateTime start = GetRangeStart();
             DateTime end = GetRangeEnd();
 
-            SeriesCollection seriesColl;
             if (logScale[chartNum])
-            {
-                seriesColl = new SeriesCollection(Mappers.Xy<DateTimePoint>()
-                    .X(point => point.DateTime.Ticks)
-                    .Y(point => Math.Log10(point.Value)));
-                chart.AxisY.Clear();
-                chart.AxisY.Add(new LogarithmicAxis()
-                {
-                    LabelFormatter = value => Math.Pow(10, value).ToString("N0"),
-                    Base = 10,
-                });
-            }
+                chart.ChartAreas[0].AxisY.IsLogarithmic = true;
             else
-            {
-                seriesColl = new SeriesCollection();
-                chart.AxisY.Clear();
-                chart.AxisY.Add(new Axis()
-                {
-                    MinValue = 0,
-                });
-            }
+                chart.ChartAreas[0].AxisY.IsLogarithmic = false;
+            chart.Series.Clear();
 
             foreach (ChannelPanel chanPan in chPanels)
             {
@@ -416,20 +373,22 @@ namespace Omniscient
 
                     List<DateTime> dates = chan.GetTimeStamps();
                     List<double> vals = chan.GetValues();
+
+                    Series series = new Series(chan.GetName());
+                    series.ChartType = SeriesChartType.FastLine;
+                    series.XValueType = ChartValueType.DateTime;
                     if (chan.GetChannelType() == Channel.ChannelType.DURATION_VALUE)
                     {
                         List<TimeSpan> durations = chan.GetDurations();
-                        ChartValues<DateTimePoint> chartVals = new ChartValues<DateTimePoint>();
-                        List<DateTimePoint> list = new List<DateTimePoint>();
                         if (logScale[chartNum])
                         {
-                            for (int i = 0; i < dates.Count; ++i) //
+                            for (int i = 0; i < dates.Count; ++i)
                             {
                                 if (vals[i] > 0 && dates[i] + durations[i] >= start && dates[i] <= end)
                                 {
-                                    list.Add(new DateTimePoint(dates[i], vals[i]));
-                                    list.Add(new DateTimePoint(dates[i] + durations[i], vals[i]));
-                                    list.Add(new DateTimePoint(dates[i] + durations[i].Add(TimeSpan.FromTicks(1)), double.NaN));
+                                    series.Points.AddXY(dates[i].ToOADate(), vals[i]);
+                                    series.Points.AddXY((dates[i] + durations[i]).ToOADate(), vals[i]);
+                                    series.Points.AddXY((dates[i] + durations[i].Add(TimeSpan.FromTicks(1))).ToOADate(), double.NaN);
                                 }
                             }
                         }
@@ -439,33 +398,23 @@ namespace Omniscient
                             {
                                 if (dates[i] + durations[i] >= start && dates[i] <= end)
                                 {
-                                    list.Add(new DateTimePoint(dates[i], vals[i]));
-                                    list.Add(new DateTimePoint(dates[i] + durations[i], vals[i]));
-                                    list.Add(new DateTimePoint(dates[i] + durations[i].Add(TimeSpan.FromTicks(1)), double.NaN));
+                                    series.Points.AddXY(dates[i].ToOADate(), vals[i]);
+                                    series.Points.AddXY((dates[i] + durations[i]).ToOADate(), vals[i]);
+                                    series.Points.AddXY((dates[i] + durations[i].Add(TimeSpan.FromTicks(1))).ToOADate(), double.NaN);
                                 }
                             }
                         }
-                        chartVals.AddRange(list);
-                        LineSeries series;
-                        series = new LineSeries()
-                        {
-                            Title = chan.GetName(),
-                            PointGeometry = null,
-                            Values = chartVals
-                        };
-                        seriesColl.Add(series);
+                        chart.Series.Add(series);
                     }
                     else
                     {
                         // Load up the chart values
-                        GearedValues<DateTimePoint> chartVals = new GearedValues<DateTimePoint>();
-                        List<DateTimePoint> list = new List<DateTimePoint>();
                         if (logScale[chartNum])
                         {
                             for (int i = 0; i < dates.Count; ++i) //
                             {
                                 if (vals[i] > 0 && dates[i] >= start && dates[i] <= end)
-                                    list.Add(new DateTimePoint(dates[i], vals[i]));
+                                    series.Points.AddXY(dates[i].ToOADate(), vals[i]);
                             }
                         }
                         else
@@ -473,46 +422,37 @@ namespace Omniscient
                             for (int i = 0; i < dates.Count; ++i) //
                             {
                                 if (dates[i] >= start && dates[i] <= end)
-                                    list.Add(new DateTimePoint(dates[i], vals[i]));
+                                    series.Points.AddXY(dates[i].ToOADate(), vals[i]);
                             }
                         }
-                        chartVals = list.AsGearedValues().WithQuality(Quality.Highest);
-                        GStepLineSeries series;
-                        series = new GStepLineSeries()
-                        {
-                            Title = chan.GetName(),
-                            PointGeometry = null,
-                            Values = chartVals
-                        };
-                        seriesColl.Add(series);
+                        chart.Series.Add(series);
                     }
                 }
             }
-            chart.Series = seriesColl;
-            Cursor.Current = Cursors.Default;
+            System.Windows.Forms.Cursor.Current = Cursors.Default;
         }
 
         private void DrawSections()
         {
+            
             DateTime start = GetRangeStart();
             DateTime end = GetRangeEnd();
             int eventCount = 0;
-            LiveCharts.WinForms.CartesianChart chart;
+            Chart chart;
             for (int chartNum = 0; chartNum < N_CHARTS; chartNum++)
-            {
+            {               
                 chart = GetChart(chartNum);
-                if (chart.AxisX[0].Sections != null)
-                    chart.AxisX[0].Sections.Clear();
-                chart.AxisX[0].Sections = new SectionsCollection();
-                chart.AxisX[0].Sections.Add(
-                    new AxisSection()
-                    {
-                        Value = markerValue,
-                        Stroke = new SolidColorBrush(System.Windows.Media.Color.FromRgb(64, 64, 64)),
-                        StrokeThickness = 1,
-                    }
-                );
+                chart.Annotations.Clear();
+                chart.Update();
 
+                VerticalLineAnnotation line = new VerticalLineAnnotation();
+                line.AxisX = chart.ChartAreas[0].AxisX;
+                line.IsInfinitive = true;
+                line.X = markerValue;
+                line.LineColor = System.Drawing.Color.FromArgb(64, 64, 64);
+                line.Width = 1;
+                chart.Annotations.Add(line);
+           
                 eventCount = 0;
                 if (HighlightEventsCheckBox.Checked)
                 {
@@ -520,23 +460,23 @@ namespace Omniscient
                     {
                         if (eve.GetStartTime() < end && eve.GetEndTime() > start && eventCount < MAX_HIGHLIGHTED_EVENTS)
                         {
-                            chart.AxisX[0].Sections.Add(new AxisSection()
-                            {
-                                Value = eve.GetStartTime().Ticks,
-                                SectionWidth = (eve.GetEndTime().Ticks - eve.GetStartTime().Ticks > 0) ? 
-                                                    eve.GetEndTime().Ticks - eve.GetStartTime().Ticks :
-                                                    TimeSpan.FromSeconds(5).Ticks,
-                                Fill = new SolidColorBrush
-                                {
-                                    Color = System.Windows.Media.Color.FromRgb(0, 255, 0),
-                                    Opacity = .5
-                                }
-                            });
+                            RectangleAnnotation rect = new RectangleAnnotation();
+                            rect.AxisX = chart.ChartAreas[0].AxisX;
+                            rect.AxisY = chart.ChartAreas[0].AxisY;
+                            rect.X = eve.GetStartTime().ToOADate();
+                            rect.Y = rect.AxisY.Maximum;
+                            rect.LineWidth = 0;
+
+                            rect.BackColor = System.Drawing.Color.FromArgb(128, 0, 255, 0);
+                            rect.Width = (eve.GetEndTime().Ticks - eve.GetStartTime().Ticks > 0) ? 
+                                rect.AxisX.ValueToPixelPosition(eve.GetEndTime().ToOADate()) - rect.AxisX.ValueToPixelPosition(eve.GetStartTime().ToOADate()) :
+                                rect.AxisX.ValueToPixelPosition((eve.GetStartTime() + TimeSpan.FromSeconds(5)).ToOADate()) - rect.AxisX.ValueToPixelPosition(eve.GetStartTime().ToOADate());
+                            rect.Height = rect.AxisY.ValueToPixelPosition(rect.AxisY.Minimum) - rect.AxisY.ValueToPixelPosition(rect.AxisY.Maximum);
+                            chart.Annotations.Add(rect);
                             eventCount++;
                         }
                     }
                 }
-                chart.Update(true, true);
             }
             if (eventCount == MAX_HIGHLIGHTED_EVENTS)
                 EventsWarningLabel.Text = "Warning: Too many events in view. Not all are highlighted";
@@ -555,12 +495,12 @@ namespace Omniscient
             int numVisible = 0;
             for (int chartNum=0; chartNum< N_CHARTS; chartNum++)
             {
-                LiveCharts.WinForms.CartesianChart chart = GetChart(chartNum);
+                Chart chart = GetChart(chartNum);
                 if (chart.Series.Count > 0) numVisible++;
             }
             for (int chartNum = 0; chartNum < N_CHARTS; chartNum++)
             {
-                LiveCharts.WinForms.CartesianChart chart = GetChart(chartNum);
+                Chart chart = GetChart(chartNum);
                 if (chart.Series.Count > 0)
                 {
                     StripChartsLayoutPanel.RowStyles[chartNum].SizeType = SizeType.Percent;
@@ -859,7 +799,7 @@ namespace Omniscient
         /// changes.</summary>
         private void UpdateRange()
         {
-            Cursor.Current = Cursors.WaitCursor;
+            System.Windows.Forms.Cursor.Current = Cursors.WaitCursor;
             if (bootingUp) return;
             if (RangeTextBox.Text == "") return;
 
@@ -891,38 +831,45 @@ namespace Omniscient
             StripChartScroll.LargeChange = (int)((end.Ticks - start.Ticks) / 6e8);
 
             string xLabelFormat;
-            Separator sep = new Separator();
+
+            DateTimeIntervalType intervalType;
             double daysInRange = TimeSpan.FromTicks(end.Ticks - start.Ticks).TotalDays;
             // Choose an appropriate x-axis label format
             if (daysInRange > 1460)
             {
                 xLabelFormat = "yyyy";
-                sep.Step = TimeSpan.FromDays(365).Ticks;
+                intervalType = DateTimeIntervalType.Years;
+                //sep.Step = TimeSpan.FromDays(365).Ticks;
             }
             else if (daysInRange > 540)
             {
                 xLabelFormat = "MM/yyyy";
-                sep.Step = TimeSpan.FromDays(90).Ticks;
+                intervalType = DateTimeIntervalType.Months;
+                //sep.Step = TimeSpan.FromDays(90).Ticks;
             }
             else if (daysInRange > 180)
             {
                 xLabelFormat = "MM/yyyy";
-                sep.Step = TimeSpan.FromDays(30).Ticks;
+                intervalType = DateTimeIntervalType.Months;
+                //sep.Step = TimeSpan.FromDays(30).Ticks;
             }
             else if (daysInRange > 60)
             {
                 xLabelFormat = "MMM dd";
-                sep.Step = TimeSpan.FromDays(10).Ticks;
+                intervalType = DateTimeIntervalType.Days;
+                //sep.Step = TimeSpan.FromDays(10).Ticks;
             }
             else if (daysInRange > 20)
             {
                 xLabelFormat = "MMM dd";
-                sep.Step = TimeSpan.FromDays(3).Ticks;
+                intervalType = DateTimeIntervalType.Days;
+                //sep.Step = TimeSpan.FromDays(3).Ticks;
             }
             else if (daysInRange > 2)
             {
                 xLabelFormat = "MMM dd";
-                sep.Step = TimeSpan.FromDays(1).Ticks;
+                intervalType = DateTimeIntervalType.Days;
+                //sep.Step = TimeSpan.FromDays(1).Ticks;
             }
             else
             {
@@ -930,17 +877,20 @@ namespace Omniscient
                 if (hoursInRange > 12)
                 {
                     xLabelFormat = "HH:mm";
-                    sep.Step = TimeSpan.FromHours(2).Ticks;
+                    intervalType = DateTimeIntervalType.Hours;
+                    //sep.Step = TimeSpan.FromHours(2).Ticks;
                 }
                 else if (hoursInRange > 4)
                 {
                     xLabelFormat = "HH:mm";
-                    sep.Step = TimeSpan.FromHours(1).Ticks;
+                    intervalType = DateTimeIntervalType.Hours;
+                    //sep.Step = TimeSpan.FromHours(1).Ticks;
                 }
                 else if (hoursInRange > 1)
                 {
                     xLabelFormat = "HH:mm";
-                    sep.Step = TimeSpan.FromHours(0.25).Ticks;
+                    intervalType = DateTimeIntervalType.Minutes;
+                    //sep.Step = TimeSpan.FromHours(0.25).Ticks;
                 }
                 else
                 {
@@ -948,66 +898,45 @@ namespace Omniscient
                     if (minInRange > 30)
                     {
                         xLabelFormat = "HH:mm:ss";
-                        sep.Step = TimeSpan.FromMinutes(5).Ticks;
+                        intervalType = DateTimeIntervalType.Minutes;
+                        //sep.Step = TimeSpan.FromMinutes(5).Ticks;
                     }
                     else if (minInRange > 15)
                     {
                         xLabelFormat = "HH:mm:ss";
-                        sep.Step = TimeSpan.FromMinutes(2).Ticks;
+                        intervalType = DateTimeIntervalType.Minutes;
+                        //sep.Step = TimeSpan.FromMinutes(2).Ticks;
                     }
                     else if (minInRange > 5)
                     {
                         xLabelFormat = "HH:mm:ss";
-                        sep.Step = TimeSpan.FromMinutes(1).Ticks;
+                        intervalType = DateTimeIntervalType.Minutes;
+                        //sep.Step = TimeSpan.FromMinutes(1).Ticks;
                     }
                     else if (minInRange > 1)
                     {
                         xLabelFormat = "HH:mm:ss";
-                        sep.Step = TimeSpan.FromMinutes(0.5).Ticks;
+                        intervalType = DateTimeIntervalType.Seconds;
+                        //sep.Step = TimeSpan.FromMinutes(0.5).Ticks;
                     }
                     else
                     {
                         xLabelFormat = "HH:mm:ss";
-                        sep.Step = TimeSpan.FromMilliseconds(5000).Ticks;
+                        intervalType = DateTimeIntervalType.Seconds;
+                        //sep.Step = TimeSpan.FromMilliseconds(5000).Ticks;
                     }
                 }
             }
-
+            
             for (int i = 0; i < N_CHARTS; ++i)
             {
-                LiveCharts.WinForms.CartesianChart chart;
-                chart = GetChart(i);
-
-                if (chart.AxisX.Count > 0)
-                {
-                    chart.AxisX[0].LabelFormatter = val => new System.DateTime((long)val).ToString(xLabelFormat);
-                    chart.AxisX[0].MinValue = start.Ticks;
-                    chart.AxisX[0].MaxValue = end.Ticks;
-                    chart.AxisX[0].Separator = sep;
-                }
-                else
-                {
-                    chart.AxisX.Clear();
-                    chart.AxisX.Add(new Axis
-                    {
-                        LabelFormatter = val => new System.DateTime((long)val).ToString(xLabelFormat),
-                        MinValue = start.Ticks,
-                        MaxValue = end.Ticks,
-                        Separator = sep
-                    });
-                }
-
-                chart.AxisY.Clear();
-                chart.AxisY.Add(new Axis
-                {
-                    MinValue = 0,
-
-                    //MaxValue = 200
-                });
-                
-                
+                Chart chart = GetChart(i);
+                chart.ChartAreas[0].AxisX.LabelStyle.Format = xLabelFormat;
+                chart.ChartAreas[0].AxisX.IntervalType = intervalType;
+                chart.ChartAreas[0].AxisX.Minimum = start.ToOADate();
+                chart.ChartAreas[0].AxisX.Maximum = end.ToOADate();
             }
-            Cursor.Current = Cursors.Default;
+            System.Windows.Forms.Cursor.Current = Cursors.Default;
             UpdatesCharts();
             DrawSections();
             StripChartsPanel.ResumeLayout();
@@ -1050,11 +979,11 @@ namespace Omniscient
         /// marker/indicator/cursor on the same spot on all of the charts.</summary>
         private void DrawMarker()
         {
-            Cursor.Current = Cursors.WaitCursor;
+            System.Windows.Forms.Cursor.Current = Cursors.WaitCursor;
             DrawSections();
-            DateTime markerTime = new DateTime((long)markerValue);
+            DateTime markerTime = DateTime.FromOADate(markerValue);
             MarkerToolStripLabel.Text = "Marker Location: " + markerTime.ToString("MMM dd, yyyy  HH:mm:ss");
-            Cursor.Current = Cursors.Default;
+            System.Windows.Forms.Cursor.Current = Cursors.Default;
         }
 
         private void CreateChartContextMenu()
@@ -1142,18 +1071,18 @@ namespace Omniscient
 
         /// <summary>
         /// Called when a user clicks on any of the charts.</summary>
-        private void StripChart_MouseClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void StripChart_MouseClick(object sender, System.Windows.Forms.MouseEventArgs e)
         {
-            if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed)
+            if (e.Button == MouseButtons.Left)
             {
-                LiveCharts.Wpf.CartesianChart chartBase = (LiveCharts.Wpf.CartesianChart)sender;
-                DateTime clickTime = new DateTime((long)LiveCharts.ChartFunctions.FromPlotArea(mouseX, AxisOrientation.X, chartBase.Model));
-                markerValue = clickTime.Ticks;
+                Chart chart = (Chart)sender;
+                DateTime clickTime = DateTime.FromOADate( chart.ChartAreas[0].AxisX.PixelPositionToValue(mouseX));
+                markerValue = clickTime.ToOADate();
                 showMarker = true;
 
                 DrawMarker();
             }
-            else if (e.RightButton == System.Windows.Input.MouseButtonState.Pressed)
+            else if (e.Button == MouseButtons.Right)
             {
                 CreateChartContextMenu();
             }
@@ -1161,17 +1090,19 @@ namespace Omniscient
 
         /// <summary>
         /// Called when a user moves the mouse over any of the charts.</summary>
-        public void StripChart_MouseMoved(object sender, System.Windows.Input.MouseEventArgs e)
+        public void StripChart_MouseMoved(object sender, System.Windows.Forms.MouseEventArgs e)
         {
-            LiveCharts.Wpf.CartesianChart chartBase = (LiveCharts.Wpf.CartesianChart)sender;
-            if (StripChart0.Base == chartBase) activeChart = StripChart0;
-            else if (StripChart1.Base == chartBase) activeChart = StripChart1;
-            else if (StripChart2.Base == chartBase) activeChart = StripChart2;
-            else if (StripChart3.Base == chartBase) activeChart = StripChart3;
-            mouseX = e.GetPosition(chartBase).X;
-            mouseY = e.GetPosition(chartBase).Y;
-            mouseTime = new DateTime((long)LiveCharts.ChartFunctions.FromPlotArea(mouseX, AxisOrientation.X, chartBase.Model));
-            MouseTimeToolStripLabel.Text = "Mouse Location: " + mouseTime.ToString("MMM dd, yyyy  HH:mm:ss");
+            Chart chart = (Chart)sender;
+            activeChart = chart;
+            mouseX = e.X;
+            mouseY = e.Y;
+            try
+            {
+                mouseTime = DateTime.FromOADate(chart.ChartAreas[0].AxisX.PixelPositionToValue(mouseX));
+                MouseTimeToolStripLabel.Text = "Mouse Location: " + mouseTime.ToString("MMM dd, yyyy  HH:mm:ss");
+            }
+            catch
+            { }
         }
 
         private void C1LogScaleCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -1413,7 +1344,7 @@ namespace Omniscient
 
         private void exportToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Cursor.Current = Cursors.WaitCursor;
+            System.Windows.Forms.Cursor.Current = Cursors.WaitCursor;
             // File for each active channel
             foreach (ChannelPanel chanPan in chPanels)
             {
@@ -1474,7 +1405,7 @@ namespace Omniscient
                 }
                 file.Close();
             }
-            Cursor.Current = Cursors.Default;
+            System.Windows.Forms.Cursor.Current = Cursors.Default;
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
