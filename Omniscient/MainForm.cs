@@ -411,6 +411,13 @@ namespace Omniscient
                     else
                     {
                         // Load up the chart values
+                        DataDecimator dataDecimator = new DataDecimator();
+                        dataDecimator.TimeStamps = dates;
+                        dataDecimator.Values = vals;
+                        dataDecimator.Decimate(1000, start, end);
+                        dates = dataDecimator.TimeStamps;
+                        vals = dataDecimator.Values;
+
                         if (logScale[chartNum])
                         {
                             for (int i = 0; i < dates.Count; ++i) //
