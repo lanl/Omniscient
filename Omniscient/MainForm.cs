@@ -794,6 +794,9 @@ namespace Omniscient
                 case "Minutes":
                     newEnd = StartDatePicker.Value.AddMinutes(range);
                     break;
+                case "Seconds":
+                    newEnd = StartDatePicker.Value.AddSeconds(range);
+                    break;
                 default:
                     newEnd = StartDatePicker.Value.AddMinutes(range);
                     break;
@@ -834,13 +837,14 @@ namespace Omniscient
             DateTime end = GetRangeEnd();
 
             if (start >= end) return;
-
+            int startSeconds = DateTimeToReferenceSeconds(start);
+            int endSeconds = DateTimeToReferenceSeconds(end);
             // Update Scrollbar
-            StripChartScroll.Minimum = (int)(globalStart.Ticks/6e8);
-            StripChartScroll.Maximum = (int)(globalEnd.Ticks/6e8);
-            StripChartScroll.Value = (int)(start.Ticks/6e8);
-            StripChartScroll.SmallChange = (int)((end.Ticks - start.Ticks) / 6e8);
-            StripChartScroll.LargeChange = (int)((end.Ticks - start.Ticks) / 6e8);
+            StripChartScroll.Minimum =  DateTimeToReferenceSeconds(globalStart);
+            StripChartScroll.Maximum = DateTimeToReferenceSeconds(globalEnd);
+            StripChartScroll.Value = startSeconds;
+            StripChartScroll.SmallChange = endSeconds - startSeconds;
+            StripChartScroll.LargeChange = endSeconds - startSeconds;
 
             string xLabelFormat;
 
@@ -980,7 +984,7 @@ namespace Omniscient
         private void StripChartScroll_Scroll(object sender, ScrollEventArgs e)
         {
             if (e.Type != ScrollEventType.EndScroll) return;
-            DateTime newStart = new DateTime((long)(StripChartScroll.Value * 6e8));
+            DateTime newStart = ReferenceSecondsToDateTime(StripChartScroll.Value);
             StartDatePicker.Value = newStart.Date;
             StartTimePicker.Value = newStart;
             UpdateEndPickers();
@@ -1425,6 +1429,18 @@ namespace Omniscient
         {
             AboutBox aboutBox = new AboutBox(VERSION);
             aboutBox.ShowDialog();
+        }
+
+        private int DateTimeToReferenceSeconds(DateTime dateTime)
+        {
+            DateTime reference = new DateTime(2000, 1, 1, 0, 0, 0);
+            return (int)((dateTime.Ticks - reference.Ticks)/1e7);
+        }
+
+        private DateTime ReferenceSecondsToDateTime(int time)
+        {
+            DateTime reference = new DateTime(2000, 1, 1, 0, 0, 0);
+            return reference.AddSeconds(time);
         }
     }
 }
