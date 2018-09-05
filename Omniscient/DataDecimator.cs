@@ -60,6 +60,12 @@ namespace Omniscient
                 binStart = start.AddSeconds(range.TotalSeconds*i/bins);
                 binEnd = start.AddSeconds(range.TotalSeconds * (i + 1) / bins);
 
+                if (index == nValues)
+                {
+                    outOfData = true;
+                    break;
+                }
+
                 while (TimeStamps[index] < binStart)
                 {
                     index += 1;
@@ -78,7 +84,7 @@ namespace Omniscient
                 firstVal = maxVal = minVal = Values[index];
 
                 index += 1;
-                while (TimeStamps[index] < binEnd)
+                while (index < nValues && TimeStamps[index] < binEnd)
                 {
                     if(Values[index] > maxVal)  // Update max value
                     {
