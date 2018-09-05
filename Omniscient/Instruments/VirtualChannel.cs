@@ -25,7 +25,7 @@ namespace Omniscient
     /// corresponding to the same timestamps.</remarks>
     public class VirtualChannel : Channel
     {
-        public enum VirtualChannelType { RATIO, SUM, DIFFERENCE, ADD_CONST, SCALE, DELAY, ROI, CONVOLVE}
+        public enum VirtualChannelType { RATIO, SUM, DIFFERENCE, ADD_CONST, SCALE, DELAY, ROI, CONVOLVE, LOCAL_MAX, LOCAL_MIN}
 
         protected VirtualChannelType virtualType;
 
@@ -46,7 +46,7 @@ namespace Omniscient
             if (channelType == ChannelType.DURATION_VALUE)
                 durations = chanA.GetDurations();
 
-            List<double> A;
+            List<double> A = chanA.GetValues();
             List<double> B;
             List<DateTime> ATime;
 
@@ -54,39 +54,33 @@ namespace Omniscient
             {
                 case VirtualChannelType.RATIO:
                     timeStamps = chanA.GetTimeStamps();
-                    A = chanA.GetValues();
                     B = chanB.GetValues();
                     for (int i = 0; i < A.Count; i++)
                         arrayVals[i] = A[i] / B[i];
                     break;
                 case VirtualChannelType.SUM:
                     timeStamps = chanA.GetTimeStamps();
-                    A = chanA.GetValues();
                     B = chanB.GetValues();
                     for (int i = 0; i < A.Count; i++)
                         arrayVals[i] = A[i] + B[i];
                     break;
                 case VirtualChannelType.DIFFERENCE:
                     timeStamps = chanA.GetTimeStamps();
-                    A = chanA.GetValues();
                     B = chanB.GetValues();
                     for (int i = 0; i < A.Count; i++)
                         arrayVals[i] = A[i] - B[i];
                     break;
                 case VirtualChannelType.ADD_CONST:
                     timeStamps = chanA.GetTimeStamps();
-                    A = chanA.GetValues();
                     for (int i = 0; i < A.Count; i++)
                         arrayVals[i] = A[i] + constant;
                     break;
                 case VirtualChannelType.SCALE:
                     timeStamps = chanA.GetTimeStamps();
-                    A = chanA.GetValues();
                     for (int i = 0; i < A.Count; i++)
                         arrayVals[i] = constant*A[i];
                     break;
                 case VirtualChannelType.DELAY:
-                    A = chanA.GetValues();
                     arrayVals = A.ToArray();
                     ATime = chanA.GetTimeStamps();
                     DateTime[] arrayTimeStamps = new DateTime[ATime.Count];
@@ -96,8 +90,37 @@ namespace Omniscient
                     break;
                 case VirtualChannelType.CONVOLVE:
                     timeStamps = chanA.GetTimeStamps();
-                    A = chanA.GetValues();
                     arrayVals = SignalProcessor.Convolve(A.ToArray(), SignalProcessor.FromFile(dataFileName));
+                    break;
+                case VirtualChannelType.LOCAL_MAX:
+                    timeStamps = chanA.GetTimeStamps();
+                    double max;
+                    int range = (int)constant;
+                    for (int i = 0; i < A.Count; i++)
+                    {
+                        max = double.MinValue;
+                        for (int j = i; j > i - range; j--)
+                        {
+                            if (j < 0) break;
+                            if (A[j] > max) max = A[j];
+                        }
+                        arrayVals[i] = max;
+                    }
+                    break;
+                case VirtualChannelType.LOCAL_MIN:
+                    timeStamps = chanA.GetTimeStamps();
+                    double min;
+                    int minRange = (int)constant;
+                    for (int i = 0; i < A.Count; i++)
+                    {
+                        min = double.MaxValue;
+                        for (int j = i; j >= i - minRange; j--)
+                        {
+                            if (j < 0) break;
+                            if (A[j] < min) min = A[j];
+                        }
+                        arrayVals[i] = min;
+                    }
                     break;
             }
             values = arrayVals.ToList();

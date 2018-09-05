@@ -179,6 +179,12 @@ namespace Omniscient
                                                     case "CONVOLVE":
                                                         chan.SetVirtualChannelType(VirtualChannel.VirtualChannelType.CONVOLVE);
                                                         break;
+                                                    case "LOCAL_MAX":
+                                                        chan.SetVirtualChannelType(VirtualChannel.VirtualChannelType.LOCAL_MAX);
+                                                        break;
+                                                    case "LOCAL_MIN":
+                                                        chan.SetVirtualChannelType(VirtualChannel.VirtualChannelType.LOCAL_MIN);
+                                                        break;
                                                     default:
                                                         return ReturnCode.CORRUPTED_FILE;
                                                 }
@@ -197,6 +203,8 @@ namespace Omniscient
                                                         break;
                                                     case VirtualChannel.VirtualChannelType.ADD_CONST:
                                                     case VirtualChannel.VirtualChannelType.SCALE:
+                                                    case VirtualChannel.VirtualChannelType.LOCAL_MAX:
+                                                    case VirtualChannel.VirtualChannelType.LOCAL_MIN:
                                                         chan.SetConstant(double.Parse(chanNode.Attributes["constant"]?.InnerText));
                                                         break;
                                                     case VirtualChannel.VirtualChannelType.DELAY:
@@ -461,6 +469,8 @@ namespace Omniscient
                                         break;
                                     case VirtualChannel.VirtualChannelType.ADD_CONST:
                                     case VirtualChannel.VirtualChannelType.SCALE:
+                                    case VirtualChannel.VirtualChannelType.LOCAL_MAX:
+                                    case VirtualChannel.VirtualChannelType.LOCAL_MIN:
                                         xmlWriter.WriteAttributeString("channel_A", chan.GetChannelA().GetName());
                                         xmlWriter.WriteAttributeString("constant", chan.GetConstant().ToString());
                                         break;

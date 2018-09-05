@@ -25,7 +25,7 @@ namespace Omniscient
 {
     public partial class SiteManagerForm : Form
     {
-        string[] DEFAULT_VIRTUAL_CHANNEL_TYPES = {"Ratio", "Sum", "Difference", "Add Constant", "Scale", "Delay", "Convolve"};
+        string[] DEFAULT_VIRTUAL_CHANNEL_TYPES = {"Ratio", "Sum", "Difference", "Add Constant", "Scale", "Delay", "Convolve", "Local Max","Local Min"};
 
         // SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
         // State
@@ -144,6 +144,10 @@ namespace Omniscient
                     return "Delay";
                 case VirtualChannel.VirtualChannelType.CONVOLVE:
                     return "Convolve";
+                case VirtualChannel.VirtualChannelType.LOCAL_MAX:
+                    return "Local Max";
+                case VirtualChannel.VirtualChannelType.LOCAL_MIN:
+                    return "Local Min";
                 case VirtualChannel.VirtualChannelType.ROI:
                     return "ROI";
             }
@@ -196,6 +200,8 @@ namespace Omniscient
                     break;
                 case VirtualChannel.VirtualChannelType.ADD_CONST:
                 case VirtualChannel.VirtualChannelType.SCALE:
+                case VirtualChannel.VirtualChannelType.LOCAL_MAX:
+                case VirtualChannel.VirtualChannelType.LOCAL_MIN:
                     PopulateVCChannelConstPanel(chan, inst);
                     VirtualChannelChannelComboBox.Text = chan.GetChannelA().GetName();
                     VirtualChannelConstantTextBox.Text = chan.GetConstant().ToString();
@@ -477,6 +483,12 @@ namespace Omniscient
                 case "ROI":
                     chan.SetVirtualChannelType(VirtualChannel.VirtualChannelType.ROI);
                     break;
+                case "Local Max":
+                    chan.SetVirtualChannelType(VirtualChannel.VirtualChannelType.LOCAL_MAX);
+                    break;
+                case "Local Min":
+                    chan.SetVirtualChannelType(VirtualChannel.VirtualChannelType.LOCAL_MIN);
+                    break;
                 default:
                     MessageBox.Show("Invalid virtual channel type!");
                     return;
@@ -496,6 +508,8 @@ namespace Omniscient
                     break;
                 case "Add Constant":
                 case "Scale":
+                case "Local Max":
+                case "Local Min":
                     foreach (Channel otherChan in inst.GetChannels())
                     {
                         if (otherChan.GetName() == VirtualChannelChannelComboBox.Text)
@@ -1134,6 +1148,8 @@ namespace Omniscient
                     break;
                 case "Add Constant":
                 case "Scale":
+                case "Local Max":
+                case "Local Min":
                     PopulateVCChannelConstPanel(chan, inst);
                     VCTwoChannelPanel.Visible = false;
                     VCChannelConstPanel.Visible = true;
