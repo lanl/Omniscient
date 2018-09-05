@@ -296,8 +296,8 @@ namespace Omniscient
             {
                 Chart chart;
                 chart = GetChart(chartNum);
-                chart.AntiAliasing = AntiAliasingStyles.None;
-
+                chart.AntiAliasing = AntiAliasingStyles.All;
+                chart.GetToolTipText += new EventHandler<ToolTipEventArgs>(GetChartToolTip);
                 // Initizialize chart values
                 /*
                 chart.AxisX.Clear();
@@ -311,9 +311,36 @@ namespace Omniscient
                 });
                 */
                 Series series = chart.Series[0];
-
+                
                 series.Points.Clear();
             }
+        }
+
+        private void GetChartToolTip(object sender, ToolTipEventArgs e)
+        {
+            Chart chart = (Chart)sender;
+           
+            double distSq = 1e9;
+            double thisDistSq;
+            double yVal = 0;
+            string sName = "";
+            foreach(Series series in chart.Series)
+            {
+                foreach(DataPoint point in series.Points)
+                {
+                    double deltaX = Math.Abs(e.X - chart.ChartAreas[0].AxisX.ValueToPixelPosition(point.XValue));
+                    double deltaY = Math.Abs(e.Y - chart.ChartAreas[0].AxisY.ValueToPixelPosition(point.YValues[0]));
+                    thisDistSq = deltaX * deltaX + deltaY * deltaY;
+                    if (thisDistSq < distSq)
+                    {
+                        distSq = thisDistSq;
+                        yVal = point.YValues[0];
+                        sName = series.Name;
+                    }
+                }
+            }
+            if (distSq < 100)
+                e.Text = (sName + "\n" + yVal.ToString());
         }
 
         private DateTime GetRangeStart()
