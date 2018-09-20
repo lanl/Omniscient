@@ -30,6 +30,7 @@ namespace Omniscient
         // SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
         // State
         DetectionSystem selectedSystem;
+        VirtualChannel selectedVirtualChannel;
 
         // SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
 
@@ -157,12 +158,7 @@ namespace Omniscient
         private void SetupVirtualChannelGroupBox()
         {
             Instrument inst = (Instrument)SitesTreeView.SelectedNode.Tag;
-            VirtualChannel chan = null;
-            foreach (VirtualChannel otherChan in inst.GetVirtualChannels())
-            {
-                if (otherChan.GetName() == VirtualChannelsComboBox.Text)
-                    chan = otherChan;
-            }
+            VirtualChannel chan = selectedVirtualChannel;
             Channel[] instChannels = inst.GetChannels();
             int chanIndex = -1;
             for (int i=0; i< instChannels.Length;i++)
@@ -350,7 +346,8 @@ namespace Omniscient
                 {
                     foreach (VirtualChannel vc in inst.GetVirtualChannels())
                         VirtualChannelsComboBox.Items.Add(vc.GetName());
-                    VirtualChannelsComboBox.Text = inst.GetVirtualChannels()[0].GetName();
+                    selectedVirtualChannel = inst.GetVirtualChannels()[0];
+                    VirtualChannelsComboBox.Text = selectedVirtualChannel.GetName();
                     VirtualChannelGroupBox.Visible = true;
                     SetupVirtualChannelGroupBox();
                 }
@@ -978,6 +975,7 @@ namespace Omniscient
             siteManChanged = true;
             SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(inst.GetName(), true)[0];
             VirtualChannelsComboBox.Text = name;
+            selectedVirtualChannel = virtualChannel;
         }
 
         private void PopulateVCTwoChannelPanel(VirtualChannel chan, Instrument inst)
@@ -1128,12 +1126,7 @@ namespace Omniscient
         private void VirtualChannelTypeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             Instrument inst = (Instrument)SitesTreeView.SelectedNode.Tag;
-            VirtualChannel chan = null;
-            foreach (VirtualChannel otherChan in inst.GetVirtualChannels())
-            {
-                if (otherChan.GetName() == VirtualChannelsComboBox.Text)
-                    chan = otherChan;
-            }
+            VirtualChannel chan = selectedVirtualChannel;
             switch (VirtualChannelTypeComboBox.Text)
             {
                 case "Ratio":
@@ -1202,18 +1195,19 @@ namespace Omniscient
 
         private void VirtualChannelsComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
+            Instrument inst = (Instrument)SitesTreeView.SelectedNode.Tag;
+            foreach (VirtualChannel otherChan in inst.GetVirtualChannels())
+            {
+                if (otherChan.GetName() == VirtualChannelsComboBox.Text)
+                    selectedVirtualChannel = otherChan;
+            }
             SetupVirtualChannelGroupBox();
         }
 
         private void RemoveVirtualChannelButton_Click(object sender, EventArgs e)
         {
             Instrument inst = (Instrument)SitesTreeView.SelectedNode.Tag;
-            VirtualChannel chan = null;
-            foreach (VirtualChannel otherChan in inst.GetVirtualChannels())
-            {
-                if (otherChan.GetName() == VirtualChannelsComboBox.Text)
-                    chan = otherChan;
-            }
+            VirtualChannel chan = selectedVirtualChannel;
             inst.GetVirtualChannels().Remove(chan);
             siteMan.Save();
             UpdateSitesTree();
@@ -1363,15 +1357,7 @@ namespace Omniscient
         private void VCUpButton_Click(object sender, EventArgs e)
         {
             Instrument inst = (Instrument)SitesTreeView.SelectedNode.Tag;
-            VirtualChannel chan = null;
-            foreach (VirtualChannel otherChan in inst.GetVirtualChannels())
-            {
-                if (otherChan.GetName() == VirtualChannelsComboBox.Text)
-                {
-                    chan = otherChan;
-                    break;
-                }
-            }
+            VirtualChannel chan = selectedVirtualChannel;
 
             int index = inst.GetVirtualChannels().IndexOf(chan);
             if (index > 0)
@@ -1405,15 +1391,7 @@ namespace Omniscient
         private void VCDownButton_Click(object sender, EventArgs e)
         {
             Instrument inst = (Instrument)SitesTreeView.SelectedNode.Tag;
-            VirtualChannel chan = null;
-            foreach (VirtualChannel otherChan in inst.GetVirtualChannels())
-            {
-                if (otherChan.GetName() == VirtualChannelsComboBox.Text)
-                {
-                    chan = otherChan;
-                    break;
-                }
-            }
+            VirtualChannel chan = selectedVirtualChannel;
 
             int index = inst.GetVirtualChannels().IndexOf(chan);
             if (index < inst.GetVirtualChannels().Count() - 1)
