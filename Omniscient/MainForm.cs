@@ -297,6 +297,8 @@ namespace Omniscient
                 Chart chart;
                 chart = GetChart(chartNum);
                 chart.AntiAliasing = AntiAliasingStyles.All;
+                chart.ChartAreas[0].AxisX.MajorGrid.LineColor = System.Drawing.Color.LightGray;
+                chart.ChartAreas[0].AxisY.MajorGrid.LineColor = System.Drawing.Color.LightGray;
                 chart.GetToolTipText += new EventHandler<ToolTipEventArgs>(GetChartToolTip);
                 // Initizialize chart values
                 /*
