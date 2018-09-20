@@ -501,18 +501,26 @@ namespace Omniscient
                     {
                         if (eve.GetStartTime() < end && eve.GetEndTime() > start && eventCount < MAX_HIGHLIGHTED_EVENTS)
                         {
+                            double width = eve.GetEndTime().ToOADate() - eve.GetStartTime().ToOADate();
                             RectangleAnnotation rect = new RectangleAnnotation();
                             rect.AxisX = chart.ChartAreas[0].AxisX;
                             rect.AxisY = chart.ChartAreas[0].AxisY;
-                            rect.X = eve.GetStartTime().ToOADate();
-                            rect.Y = rect.AxisY.Maximum;
+                            rect.AnchorX = eve.GetStartTime().ToOADate() + width/2;
+                            rect.AnchorY = rect.AxisY.Minimum;
+                            rect.IsSizeAlwaysRelative = false;
                             rect.LineWidth = 0;
 
                             rect.BackColor = System.Drawing.Color.FromArgb(128, 0, 255, 0);
-                            rect.Width = (eve.GetEndTime().Ticks - eve.GetStartTime().Ticks > 0) ? 
-                                rect.AxisX.ValueToPixelPosition(eve.GetEndTime().ToOADate()) - rect.AxisX.ValueToPixelPosition(eve.GetStartTime().ToOADate()) :
-                                rect.AxisX.ValueToPixelPosition((eve.GetStartTime() + TimeSpan.FromSeconds(5)).ToOADate()) - rect.AxisX.ValueToPixelPosition(eve.GetStartTime().ToOADate());
-                            rect.Height = rect.AxisY.ValueToPixelPosition(rect.AxisY.Minimum) - rect.AxisY.ValueToPixelPosition(rect.AxisY.Maximum);
+                            if (eve.GetEventGenerator() is CoincidenceEG)
+                            {
+                                rect.BackColor = System.Drawing.Color.FromArgb(128, 243, 243, 21);
+                                rect.BackHatchStyle = ChartHatchStyle.WideUpwardDiagonal;
+                            }
+                            //rect.Width = (eve.GetEndTime().Ticks - eve.GetStartTime().Ticks > 0) ? 
+                            //    rect.AxisX.ValueToPixelPosition(eve.GetEndTime().ToOADate()) - rect.AxisX.ValueToPixelPosition(eve.GetStartTime().ToOADate()) :
+                            //    rect.AxisX.ValueToPixelPosition((eve.GetStartTime() + TimeSpan.FromSeconds(5)).ToOADate()) - rect.AxisX.ValueToPixelPosition(eve.GetStartTime().ToOADate());
+                            rect.Width = eve.GetEndTime().ToOADate() - eve.GetStartTime().ToOADate();
+                            rect.Height = rect.AxisY.Maximum - rect.AxisY.Minimum;
                             chart.Annotations.Add(rect);
                             eventCount++;
                         }

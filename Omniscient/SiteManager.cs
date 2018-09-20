@@ -541,7 +541,7 @@ namespace Omniscient
                                         break;
                                 }
                                 xmlWriter.WriteAttributeString("event_generator_A", coinkEg.GetEventGeneratorA().GetName());
-                                xmlWriter.WriteAttributeString("event_generator_B", coinkEg.GetEventGeneratorA().GetName());
+                                xmlWriter.WriteAttributeString("event_generator_B", coinkEg.GetEventGeneratorB().GetName());
                                 xmlWriter.WriteAttributeString("window", coinkEg.GetWindow().TotalSeconds.ToString());
                                 xmlWriter.WriteAttributeString("min_difference", coinkEg.GetMinDifference().TotalSeconds.ToString());
                             }
