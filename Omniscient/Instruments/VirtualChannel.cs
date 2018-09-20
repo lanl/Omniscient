@@ -56,7 +56,10 @@ namespace Omniscient
                     timeStamps = chanA.GetTimeStamps();
                     B = chanB.GetValues();
                     for (int i = 0; i < A.Count; i++)
-                        arrayVals[i] = A[i] / B[i];
+                        if (B[i] == 0)
+                            arrayVals[i] = 0;
+                        else
+                            arrayVals[i] = A[i] / B[i];
                     break;
                 case VirtualChannelType.SUM:
                     timeStamps = chanA.GetTimeStamps();
