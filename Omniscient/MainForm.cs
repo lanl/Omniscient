@@ -1479,5 +1479,16 @@ namespace Omniscient
             DateTime reference = new DateTime(2000, 1, 1, 0, 0, 0);
             return reference.AddSeconds(time);
         }
+
+        private void StripChart_DoubleClick(object sender, EventArgs e)
+        {
+            Chart chart = (Chart)sender;
+            using (MemoryStream ms = new MemoryStream())
+            {
+                chart.SaveImage(ms, ChartImageFormat.Bmp);
+                Bitmap bm = new Bitmap(ms);
+                Clipboard.SetImage(bm);
+            }
+        }
     }
 }

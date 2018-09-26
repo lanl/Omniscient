@@ -229,6 +229,7 @@ namespace Omniscient
             this.StripChart0.Size = new System.Drawing.Size(705, 95);
             this.StripChart0.TabIndex = 5;
             this.StripChart0.Text = "chart1";
+            this.StripChart0.DoubleClick += new System.EventHandler(this.StripChart_DoubleClick);
             // 
             // StripChart3
             // 
@@ -247,6 +248,8 @@ namespace Omniscient
             this.StripChart3.Size = new System.Drawing.Size(705, 98);
             this.StripChart3.TabIndex = 6;
             this.StripChart3.Text = "chart1";
+            this.StripChart3.DoubleClick += new System.EventHandler(this.StripChart_DoubleClick);
+
             // 
             // StripChart1
             // 
@@ -265,6 +268,8 @@ namespace Omniscient
             this.StripChart1.Size = new System.Drawing.Size(705, 95);
             this.StripChart1.TabIndex = 7;
             this.StripChart1.Text = "chart2";
+            this.StripChart1.DoubleClick += new System.EventHandler(this.StripChart_DoubleClick);
+
             // 
             // StripChart2
             // 
@@ -283,6 +288,8 @@ namespace Omniscient
             this.StripChart2.Size = new System.Drawing.Size(705, 95);
             this.StripChart2.TabIndex = 8;
             this.StripChart2.Text = "chart3";
+            this.StripChart2.DoubleClick += new System.EventHandler(this.StripChart_DoubleClick);
+
             // 
             // StripChartScroll
             // 
