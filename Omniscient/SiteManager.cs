@@ -124,6 +124,11 @@ namespace Omniscient
                                     case "NGAM":
                                         newInstrument = new NGAMInstrument(instrumentNode.Attributes["name"]?.InnerText);
                                         break;
+                                    case "CSV":
+                                        newInstrument = new CSVInstrument(instrumentNode.Attributes["name"]?.InnerText,
+                                                                           int.Parse(instrumentNode.Attributes["nChannels"]?.InnerText));
+                                        ((CSVInstrument)newInstrument).NumberOfHeaders = int.Parse(instrumentNode.Attributes["nHeaders"]?.InnerText);
+                                        break;
                                     case "Declaration":
                                         newInstrument = new DeclarationInstrument(instrumentNode.Attributes["name"]?.InnerText);
                                         break;
@@ -454,7 +459,12 @@ namespace Omniscient
                             xmlWriter.WriteAttributeString("file_prefix", inst.GetFilePrefix());
                             xmlWriter.WriteAttributeString("type", inst.GetInstrumentType());
                             xmlWriter.WriteAttributeString("directory", inst.GetDataFolder());
-                            foreach(VirtualChannel chan in inst.GetVirtualChannels())
+                            if (inst is CSVInstrument)
+                            {
+                                xmlWriter.WriteAttributeString("nHeaders", ((CSVInstrument)inst).NumberOfHeaders.ToString());
+                                xmlWriter.WriteAttributeString("nChannels", inst.GetNumChannels().ToString());
+                            }
+                            foreach (VirtualChannel chan in inst.GetVirtualChannels())
                             {
                                 xmlWriter.WriteStartElement("VirtualChannel");
                                 xmlWriter.WriteAttributeString("name", chan.GetName());

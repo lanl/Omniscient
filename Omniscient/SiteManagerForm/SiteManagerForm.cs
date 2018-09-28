@@ -309,6 +309,10 @@ namespace Omniscient
             {
                 Instrument inst = (Instrument)node.Tag;
                 TypeLabel.Text = "Instrument";
+                NHeadersTextBox.Text = "";
+                NHeadersTextBox.Enabled = false;
+                NChannelsTextBox.Text = "";
+                NChannelsTextBox.Enabled = false;
                 if (inst is MCAInstrument)
                 {
                     InstTypeComboBox.Text = "MCA";
@@ -329,6 +333,16 @@ namespace Omniscient
                     InstTypeComboBox.Text = "GRAND";
                     FileExtensionComboBox.Items.Clear();
                     FileExtensionComboBox.Items.Add("bid");
+                }
+                else if (inst is CSVInstrument)
+                {
+                    InstTypeComboBox.Text = "CSV";
+                    FileExtensionComboBox.Items.Clear();
+                    FileExtensionComboBox.Items.Add("csv");
+                    NHeadersTextBox.Enabled = true;
+                    NHeadersTextBox.Text = ((CSVInstrument)inst).NumberOfHeaders.ToString();
+                    NChannelsTextBox.Enabled = true;
+                    NChannelsTextBox.Text = inst.GetNumChannels().ToString();
                 }
                 else if (inst is NGAMInstrument)
                 {
@@ -667,6 +681,28 @@ namespace Omniscient
                 }
                 inst.SetFilePrefix(PrefixTextBox.Text);
                 inst.SetDataFolder(DirectoryTextBox.Text);
+                if (inst is CSVInstrument)
+                {
+                    CSVInstrument csvInst = (CSVInstrument)inst;
+                    try
+                    {
+                        csvInst.SetNumberOfChannels(int.Parse(NChannelsTextBox.Text));
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Invalid number of channels!");
+                        return;
+                    }
+                    try
+                    {
+                        csvInst.NumberOfHeaders = int.Parse(NHeadersTextBox.Text);
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Invalid number of headers!");
+                        return;
+                    }
+                }
                 foreach(VirtualChannel chan in inst.GetVirtualChannels())
                 {
                     if (chan.GetName() == VirtualChannelsComboBox.Text)
@@ -904,6 +940,15 @@ namespace Omniscient
 
             switch (dialog.InstrumentType)
             {
+                case "CSV":
+                    while (!uniqueName)
+                    {
+                        iteration++;
+                        name = "New-CSV-" + iteration.ToString();
+                        uniqueName = !siteMan.ContainsName(name);
+                    }
+                    newInstrument = new CSVInstrument(name, 1);
+                    break;
                 case "GRAND":
                     while (!uniqueName)
                     {

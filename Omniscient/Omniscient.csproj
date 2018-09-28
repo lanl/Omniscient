@@ -139,6 +139,7 @@
       <DependentUpon>Inspectrum.cs</DependentUpon>
     </Compile>
     <Compile Include="Instruments\Channel.cs" />
+    <Compile Include="Instruments\CSVInstrument.cs" />
     <Compile Include="Instruments\DataFile.cs" />
     <Compile Include="Instruments\DeclarationInstrument.cs" />
     <Compile Include="Instruments\GRANDInstrument.cs" />
@@ -149,6 +150,7 @@
     <Compile Include="Instruments\VirtualChannel.cs" />
     <Compile Include="NuclearComposition.cs" />
     <Compile Include="Parsers\CHNWriter.cs" />
+    <Compile Include="Parsers\CSVParser.cs" />
     <Compile Include="Parsers\DECFile.cs" />
     <Compile Include="Parsers\FRAMParser.cs" />
     <Compile Include="Parsers\NCCParser.cs" />

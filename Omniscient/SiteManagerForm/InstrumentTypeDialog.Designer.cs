@@ -46,11 +46,12 @@ namespace Omniscient
             this.MCAButton = new System.Windows.Forms.Button();
             this.CancelButton = new System.Windows.Forms.Button();
             this.NGAMButton = new System.Windows.Forms.Button();
+            this.CSVButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // GRANDButton
             // 
-            this.GRANDButton.Location = new System.Drawing.Point(12, 12);
+            this.GRANDButton.Location = new System.Drawing.Point(92, 12);
             this.GRANDButton.Name = "GRANDButton";
             this.GRANDButton.Size = new System.Drawing.Size(80, 30);
             this.GRANDButton.TabIndex = 0;
@@ -60,7 +61,7 @@ namespace Omniscient
             // 
             // ISRButton
             // 
-            this.ISRButton.Location = new System.Drawing.Point(98, 12);
+            this.ISRButton.Location = new System.Drawing.Point(178, 12);
             this.ISRButton.Name = "ISRButton";
             this.ISRButton.Size = new System.Drawing.Size(80, 30);
             this.ISRButton.TabIndex = 1;
@@ -70,7 +71,7 @@ namespace Omniscient
             // 
             // MCAButton
             // 
-            this.MCAButton.Location = new System.Drawing.Point(184, 12);
+            this.MCAButton.Location = new System.Drawing.Point(264, 12);
             this.MCAButton.Name = "MCAButton";
             this.MCAButton.Size = new System.Drawing.Size(80, 30);
             this.MCAButton.TabIndex = 2;
@@ -80,7 +81,7 @@ namespace Omniscient
             // 
             // CancelButton
             // 
-            this.CancelButton.Location = new System.Drawing.Point(140, 56);
+            this.CancelButton.Location = new System.Drawing.Point(178, 56);
             this.CancelButton.Name = "CancelButton";
             this.CancelButton.Size = new System.Drawing.Size(80, 30);
             this.CancelButton.TabIndex = 3;
@@ -90,7 +91,7 @@ namespace Omniscient
             // 
             // NGAMButton
             // 
-            this.NGAMButton.Location = new System.Drawing.Point(270, 12);
+            this.NGAMButton.Location = new System.Drawing.Point(350, 12);
             this.NGAMButton.Name = "NGAMButton";
             this.NGAMButton.Size = new System.Drawing.Size(80, 30);
             this.NGAMButton.TabIndex = 4;
@@ -98,11 +99,22 @@ namespace Omniscient
             this.NGAMButton.UseVisualStyleBackColor = true;
             this.NGAMButton.Click += new System.EventHandler(this.NGAMButton_Click);
             // 
+            // CSVButton
+            // 
+            this.CSVButton.Location = new System.Drawing.Point(6, 12);
+            this.CSVButton.Name = "CSVButton";
+            this.CSVButton.Size = new System.Drawing.Size(80, 30);
+            this.CSVButton.TabIndex = 5;
+            this.CSVButton.Text = "CSV";
+            this.CSVButton.UseVisualStyleBackColor = true;
+            this.CSVButton.Click += new System.EventHandler(this.CSVButton_Click);
+            // 
             // InstrumentTypeDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(361, 98);
+            this.ClientSize = new System.Drawing.Size(441, 98);
+            this.Controls.Add(this.CSVButton);
             this.Controls.Add(this.NGAMButton);
             this.Controls.Add(this.CancelButton);
             this.Controls.Add(this.MCAButton);
@@ -122,5 +134,6 @@ namespace Omniscient
         private System.Windows.Forms.Button MCAButton;
         private System.Windows.Forms.Button CancelButton;
         private System.Windows.Forms.Button NGAMButton;
+        private System.Windows.Forms.Button CSVButton;
     }
 }

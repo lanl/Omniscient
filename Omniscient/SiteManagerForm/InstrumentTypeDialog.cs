@@ -65,5 +65,12 @@ namespace Omniscient
             DialogResult = DialogResult.OK;
             Dispose();
         }
+
+        private void CSVButton_Click(object sender, EventArgs e)
+        {
+            InstrumentType = "CSV";
+            DialogResult = DialogResult.OK;
+            Dispose();
+        }
     }
 }
