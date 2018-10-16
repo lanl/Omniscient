@@ -55,6 +55,8 @@ namespace Omniscient
         Chart activeChart;
         double mouseX = 0;
         double mouseY = 0;
+        double mouseDownX = 0;
+        double mouseDownY = 0;
         DateTime mouseTime;
         private bool showMarker = false;
         private double markerValue = 0;
@@ -299,6 +301,8 @@ namespace Omniscient
                 chart.AntiAliasing = AntiAliasingStyles.All;
                 chart.ChartAreas[0].AxisX.MajorGrid.LineColor = System.Drawing.Color.LightGray;
                 chart.ChartAreas[0].AxisY.MajorGrid.LineColor = System.Drawing.Color.LightGray;
+                chart.ChartAreas[0].AxisX.ScaleView.Zoomable = true;
+                chart.ChartAreas[0].AxisY.ScaleView.Zoomable = true;
                 chart.GetToolTipText += new EventHandler<ToolTipEventArgs>(GetChartToolTip);
                 // Initizialize chart values
                 /*
@@ -1489,6 +1493,95 @@ namespace Omniscient
                 Bitmap bm = new Bitmap(ms);
                 Clipboard.SetImage(bm);
             }
+        }
+
+        Chart downChart;
+        private void StripChart_MouseDown(object sender, MouseEventArgs e)
+        {
+            downChart = (Chart)sender;
+            mouseDownX = downChart.ChartAreas[0].AxisX.PixelPositionToValue(e.X);
+        }
+
+        private void StripChart_MouseUp(object sender, MouseEventArgs e)
+        {
+            Chart chart = (Chart)sender;
+            if (chart != downChart) return;
+            double mouseUpX = 0;
+            try
+            {
+                mouseUpX = chart.ChartAreas[0].AxisX.PixelPositionToValue(e.X);
+            }
+            catch
+            {
+                return;
+            }
+            double mouseDelta = mouseUpX - mouseDownX;
+            double range = chart.ChartAreas[0].AxisX.Maximum - chart.ChartAreas[0].AxisX.Minimum;
+
+            if (mouseDelta/range < -0.05)
+            {
+                // Zoom out
+                try
+                {
+                    chart.ChartAreas[0].AxisX.Minimum = chart.ChartAreas[0].AxisX.Minimum - range / 2;
+                    chart.ChartAreas[0].AxisX.Maximum = chart.ChartAreas[0].AxisX.Maximum + range / 2;
+                }
+                catch
+                {
+                }
+            }
+
+            if (mouseDelta / range > 0.05)
+            {
+                chart.ChartAreas[0].AxisX.Minimum = mouseDownX;
+                chart.ChartAreas[0].AxisX.Maximum = mouseUpX;
+            }
+            UpdatePickersFromChart(chart);
+        }
+
+        public void UpdatePickersFromChart(Chart chart)
+        {
+            DateTime start = DateTime.FromOADate(chart.ChartAreas[0].AxisX.Minimum);
+            DateTime end = DateTime.FromOADate(chart.ChartAreas[0].AxisX.Maximum);
+            StartTimePicker.Value = start;
+            StartDatePicker.Value = start;
+            EndTimePicker.Value = end;
+            EndDatePicker.Value = end;
+
+            TimeSpan span = end - start;
+
+            if (span > TimeSpan.FromDays(2*365))
+            {
+                RangeComboBox.Text = "Years";
+                RangeTextBox.Text = Math.Floor(span.TotalDays / 365).ToString();
+            }
+            else if (span > TimeSpan.FromDays(90))
+            {
+                RangeComboBox.Text = "Months";
+                RangeTextBox.Text = Math.Floor(span.TotalDays / 30).ToString();
+            }
+            else if (span > TimeSpan.FromDays(3))
+            {
+                RangeComboBox.Text = "Days";
+                RangeTextBox.Text = Math.Floor(span.TotalDays).ToString();
+            }
+            else if (span > TimeSpan.FromHours(3))
+            {
+                RangeComboBox.Text = "Hours";
+                RangeTextBox.Text = Math.Floor(span.TotalHours).ToString();
+            }
+            else if (span > TimeSpan.FromMinutes(3))
+            {
+                RangeComboBox.Text = "Minutes";
+                RangeTextBox.Text = Math.Floor(span.TotalMinutes).ToString();
+            }
+            else
+            {
+                RangeComboBox.Text = "Seconds";
+                RangeTextBox.Text = Math.Floor(span.TotalSeconds).ToString();
+            }
+            UpdateEndPickers();
+            UpdateRange();
         }
     }
 }

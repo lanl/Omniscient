@@ -113,7 +113,6 @@ namespace Omniscient
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.LeftPanel = new System.Windows.Forms.Panel();
-            this.SitesTreeView = new Omniscient.Controls.ResponsiveTreeView();
             this.TreeImageList = new System.Windows.Forms.ImageList(this.components);
             this.TopLeftPanel = new System.Windows.Forms.Panel();
             this.PresetSaveButton = new System.Windows.Forms.Button();
@@ -141,6 +140,7 @@ namespace Omniscient
             this.EventsWarningLabel = new System.Windows.Forms.Label();
             this.GenerateEventsButton = new System.Windows.Forms.Button();
             this.ButtonImageList = new System.Windows.Forms.ImageList(this.components);
+            this.SitesTreeView = new Omniscient.Controls.ResponsiveTreeView();
             this.StripChartControlPanel.SuspendLayout();
             this.StripChartsPanel.SuspendLayout();
             this.StripChartsLayoutPanel.SuspendLayout();
@@ -230,6 +230,8 @@ namespace Omniscient
             this.StripChart0.TabIndex = 5;
             this.StripChart0.Text = "chart1";
             this.StripChart0.DoubleClick += new System.EventHandler(this.StripChart_DoubleClick);
+            this.StripChart0.MouseDown += new System.Windows.Forms.MouseEventHandler(this.StripChart_MouseDown);
+            this.StripChart0.MouseUp += new System.Windows.Forms.MouseEventHandler(this.StripChart_MouseUp);
             // 
             // StripChart3
             // 
@@ -249,7 +251,8 @@ namespace Omniscient
             this.StripChart3.TabIndex = 6;
             this.StripChart3.Text = "chart1";
             this.StripChart3.DoubleClick += new System.EventHandler(this.StripChart_DoubleClick);
-
+            this.StripChart3.MouseDown += new System.Windows.Forms.MouseEventHandler(this.StripChart_MouseDown);
+            this.StripChart3.MouseUp += new System.Windows.Forms.MouseEventHandler(this.StripChart_MouseUp);
             // 
             // StripChart1
             // 
@@ -269,7 +272,8 @@ namespace Omniscient
             this.StripChart1.TabIndex = 7;
             this.StripChart1.Text = "chart2";
             this.StripChart1.DoubleClick += new System.EventHandler(this.StripChart_DoubleClick);
-
+            this.StripChart1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.StripChart_MouseDown);
+            this.StripChart1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.StripChart_MouseUp);
             // 
             // StripChart2
             // 
@@ -289,7 +293,8 @@ namespace Omniscient
             this.StripChart2.TabIndex = 8;
             this.StripChart2.Text = "chart3";
             this.StripChart2.DoubleClick += new System.EventHandler(this.StripChart_DoubleClick);
-
+            this.StripChart2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.StripChart_MouseDown);
+            this.StripChart2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.StripChart_MouseUp);
             // 
             // StripChartScroll
             // 
@@ -783,20 +788,6 @@ namespace Omniscient
             this.LeftPanel.Size = new System.Drawing.Size(220, 665);
             this.LeftPanel.TabIndex = 5;
             // 
-            // SitesTreeView
-            // 
-            this.SitesTreeView.CheckBoxes = true;
-            this.SitesTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SitesTreeView.ImageIndex = 0;
-            this.SitesTreeView.ImageList = this.TreeImageList;
-            this.SitesTreeView.Location = new System.Drawing.Point(5, 68);
-            this.SitesTreeView.Name = "SitesTreeView";
-            this.SitesTreeView.SelectedImageIndex = 0;
-            this.SitesTreeView.ShowNodeToolTips = true;
-            this.SitesTreeView.Size = new System.Drawing.Size(210, 526);
-            this.SitesTreeView.TabIndex = 11;
-            this.SitesTreeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.SitesTreeView_AfterCheck);
-            // 
             // TreeImageList
             // 
             this.TreeImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("TreeImageList.ImageStream")));
@@ -1038,6 +1029,20 @@ namespace Omniscient
             this.ButtonImageList.Images.SetKeyName(1, "DownArrow");
             this.ButtonImageList.Images.SetKeyName(2, "Plus");
             this.ButtonImageList.Images.SetKeyName(3, "Delete");
+            // 
+            // SitesTreeView
+            // 
+            this.SitesTreeView.CheckBoxes = true;
+            this.SitesTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.SitesTreeView.ImageIndex = 0;
+            this.SitesTreeView.ImageList = this.TreeImageList;
+            this.SitesTreeView.Location = new System.Drawing.Point(5, 68);
+            this.SitesTreeView.Name = "SitesTreeView";
+            this.SitesTreeView.SelectedImageIndex = 0;
+            this.SitesTreeView.ShowNodeToolTips = true;
+            this.SitesTreeView.Size = new System.Drawing.Size(210, 526);
+            this.SitesTreeView.TabIndex = 11;
+            this.SitesTreeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.SitesTreeView_AfterCheck);
             // 
             // MainForm
             // 
