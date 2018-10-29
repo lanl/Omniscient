@@ -93,6 +93,10 @@ namespace Omniscient
             StripChart1.MouseMove += new MouseEventHandler(StripChart_MouseMoved);
             StripChart2.MouseMove += new MouseEventHandler(StripChart_MouseMoved);
             StripChart3.MouseMove += new MouseEventHandler(StripChart_MouseMoved);
+            StripChart0.Paint += new PaintEventHandler(StripChart_Paint);
+            StripChart1.Paint += new PaintEventHandler(StripChart_Paint);
+            StripChart2.Paint += new PaintEventHandler(StripChart_Paint);
+            StripChart3.Paint += new PaintEventHandler(StripChart_Paint);
 
             globalStart = DateTime.Today.AddDays(-1);
             GlobalStartTextBox.Text = globalStart.ToString("MMM dd, yyyy");
@@ -1161,6 +1165,13 @@ namespace Omniscient
             }
             catch
             { }
+            if (drawingZoomBox)
+            {
+                for (int i=0; i<N_CHARTS; i++)
+                {
+                    GetChart(i).Invalidate();
+                }
+            }
         }
 
         private void C1LogScaleCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -1496,14 +1507,17 @@ namespace Omniscient
         }
 
         Chart downChart;
+        bool drawingZoomBox = false;
         private void StripChart_MouseDown(object sender, MouseEventArgs e)
         {
             downChart = (Chart)sender;
             mouseDownX = downChart.ChartAreas[0].AxisX.PixelPositionToValue(e.X);
+            drawingZoomBox = true;
         }
 
         private void StripChart_MouseUp(object sender, MouseEventArgs e)
         {
+            drawingZoomBox = false;
             Chart chart = (Chart)sender;
             if (chart != downChart) return;
             double mouseUpX = 0;
@@ -1537,6 +1551,20 @@ namespace Omniscient
                 chart.ChartAreas[0].AxisX.Maximum = mouseUpX;
             }
             UpdatePickersFromChart(chart);
+        }
+
+        public void StripChart_Paint(object sender, PaintEventArgs e)
+        {
+            if (drawingZoomBox)
+            {
+                Chart chart = (Chart)sender;
+                Axis X = chart.ChartAreas[0].AxisX;
+                Axis Y = chart.ChartAreas[0].AxisY;
+                int xStart = (int)X.ValueToPixelPosition(mouseDownX);
+                int xNow = (int)mouseX;
+                e.Graphics.DrawRectangle(Pens.Gray, Math.Min(xStart, xNow), (int)Y.ValueToPixelPosition(Y.Maximum),
+                    Math.Abs(xStart - xNow), (int)Y.ValueToPixelPosition(Y.Minimum) - (int)Y.ValueToPixelPosition(Y.Maximum));
+            }
         }
 
         public void UpdatePickersFromChart(Chart chart)
