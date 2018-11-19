@@ -49,6 +49,10 @@ namespace Omniscient
             this.InstTypeComboBox = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.InstrumentPanel = new System.Windows.Forms.Panel();
+            this.NHeadersTextBox = new System.Windows.Forms.TextBox();
+            this.label28 = new System.Windows.Forms.Label();
+            this.NChannelsTextBox = new System.Windows.Forms.TextBox();
+            this.label27 = new System.Windows.Forms.Label();
             this.FileExtensionComboBox = new System.Windows.Forms.ComboBox();
             this.label24 = new System.Windows.Forms.Label();
             this.VirtualChannelGroupBox = new System.Windows.Forms.GroupBox();
@@ -133,10 +137,6 @@ namespace Omniscient
             this.panel4 = new System.Windows.Forms.Panel();
             this.ExportButton = new System.Windows.Forms.Button();
             this.ImportButton = new System.Windows.Forms.Button();
-            this.NChannelsTextBox = new System.Windows.Forms.TextBox();
-            this.label27 = new System.Windows.Forms.Label();
-            this.NHeadersTextBox = new System.Windows.Forms.TextBox();
-            this.label28 = new System.Windows.Forms.Label();
             this.InstrumentPanel.SuspendLayout();
             this.VirtualChannelGroupBox.SuspendLayout();
             this.VCTwoChannelPanel.SuspendLayout();
@@ -192,6 +192,7 @@ namespace Omniscient
             // 
             // InstTypeComboBox
             // 
+            this.InstTypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.InstTypeComboBox.FormattingEnabled = true;
             this.InstTypeComboBox.Items.AddRange(new object[] {
             "ISR",
@@ -237,6 +238,38 @@ namespace Omniscient
             this.InstrumentPanel.Name = "InstrumentPanel";
             this.InstrumentPanel.Size = new System.Drawing.Size(334, 470);
             this.InstrumentPanel.TabIndex = 9;
+            // 
+            // NHeadersTextBox
+            // 
+            this.NHeadersTextBox.Location = new System.Drawing.Point(102, 135);
+            this.NHeadersTextBox.Name = "NHeadersTextBox";
+            this.NHeadersTextBox.Size = new System.Drawing.Size(80, 20);
+            this.NHeadersTextBox.TabIndex = 27;
+            // 
+            // label28
+            // 
+            this.label28.AutoSize = true;
+            this.label28.Location = new System.Drawing.Point(39, 138);
+            this.label28.Name = "label28";
+            this.label28.Size = new System.Drawing.Size(57, 13);
+            this.label28.TabIndex = 26;
+            this.label28.Text = "# Headers";
+            // 
+            // NChannelsTextBox
+            // 
+            this.NChannelsTextBox.Location = new System.Drawing.Point(102, 109);
+            this.NChannelsTextBox.Name = "NChannelsTextBox";
+            this.NChannelsTextBox.Size = new System.Drawing.Size(80, 20);
+            this.NChannelsTextBox.TabIndex = 25;
+            // 
+            // label27
+            // 
+            this.label27.AutoSize = true;
+            this.label27.Location = new System.Drawing.Point(35, 112);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(61, 13);
+            this.label27.TabIndex = 24;
+            this.label27.Text = "# Channels";
             // 
             // FileExtensionComboBox
             // 
@@ -298,6 +331,7 @@ namespace Omniscient
             // 
             // VirtualChannelChanBComboBox
             // 
+            this.VirtualChannelChanBComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.VirtualChannelChanBComboBox.FormattingEnabled = true;
             this.VirtualChannelChanBComboBox.Location = new System.Drawing.Point(95, 33);
             this.VirtualChannelChanBComboBox.Name = "VirtualChannelChanBComboBox";
@@ -315,6 +349,7 @@ namespace Omniscient
             // 
             // VirtualChannelChanAComboBox
             // 
+            this.VirtualChannelChanAComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.VirtualChannelChanAComboBox.FormattingEnabled = true;
             this.VirtualChannelChanAComboBox.Location = new System.Drawing.Point(95, 6);
             this.VirtualChannelChanAComboBox.Name = "VirtualChannelChanAComboBox";
@@ -418,6 +453,7 @@ namespace Omniscient
             // 
             // ROIBackgroundComboBox
             // 
+            this.ROIBackgroundComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ROIBackgroundComboBox.FormattingEnabled = true;
             this.ROIBackgroundComboBox.Items.AddRange(new object[] {
             "None",
@@ -500,6 +536,7 @@ namespace Omniscient
             // 
             // VirtualChannelChannelComboBox
             // 
+            this.VirtualChannelChannelComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.VirtualChannelChannelComboBox.FormattingEnabled = true;
             this.VirtualChannelChannelComboBox.Location = new System.Drawing.Point(95, 6);
             this.VirtualChannelChannelComboBox.Name = "VirtualChannelChannelComboBox";
@@ -522,6 +559,7 @@ namespace Omniscient
             // 
             // DelayComboBox
             // 
+            this.DelayComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.DelayComboBox.FormattingEnabled = true;
             this.DelayComboBox.Items.AddRange(new object[] {
             "Seconds",
@@ -560,6 +598,7 @@ namespace Omniscient
             // 
             // DelayChannelComboBox
             // 
+            this.DelayChannelComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.DelayChannelComboBox.FormattingEnabled = true;
             this.DelayChannelComboBox.Location = new System.Drawing.Point(95, 6);
             this.DelayChannelComboBox.Name = "DelayChannelComboBox";
@@ -617,6 +656,7 @@ namespace Omniscient
             // 
             // ConvolveChannelComboBox
             // 
+            this.ConvolveChannelComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.ConvolveChannelComboBox.FormattingEnabled = true;
             this.ConvolveChannelComboBox.Location = new System.Drawing.Point(95, 6);
             this.ConvolveChannelComboBox.Name = "ConvolveChannelComboBox";
@@ -668,6 +708,7 @@ namespace Omniscient
             // 
             // VirtualChannelTypeComboBox
             // 
+            this.VirtualChannelTypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.VirtualChannelTypeComboBox.FormattingEnabled = true;
             this.VirtualChannelTypeComboBox.Items.AddRange(new object[] {
             "Ratio",
@@ -730,6 +771,7 @@ namespace Omniscient
             // 
             // VirtualChannelsComboBox
             // 
+            this.VirtualChannelsComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.VirtualChannelsComboBox.FormattingEnabled = true;
             this.VirtualChannelsComboBox.Location = new System.Drawing.Point(102, 165);
             this.VirtualChannelsComboBox.Name = "VirtualChannelsComboBox";
@@ -887,7 +929,7 @@ namespace Omniscient
             this.LeftPanel.Dock = System.Windows.Forms.DockStyle.Left;
             this.LeftPanel.Location = new System.Drawing.Point(0, 0);
             this.LeftPanel.Name = "LeftPanel";
-            this.LeftPanel.Padding = new System.Windows.Forms.Padding(10, 10, 10, 10);
+            this.LeftPanel.Padding = new System.Windows.Forms.Padding(10);
             this.LeftPanel.Size = new System.Drawing.Size(400, 571);
             this.LeftPanel.TabIndex = 12;
             // 
@@ -900,7 +942,7 @@ namespace Omniscient
             this.RightPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.RightPanel.Location = new System.Drawing.Point(400, 0);
             this.RightPanel.Name = "RightPanel";
-            this.RightPanel.Padding = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.RightPanel.Padding = new System.Windows.Forms.Padding(5);
             this.RightPanel.Size = new System.Drawing.Size(390, 571);
             this.RightPanel.TabIndex = 13;
             // 
@@ -1005,7 +1047,7 @@ namespace Omniscient
             this.LeftRightPanel.Dock = System.Windows.Forms.DockStyle.Left;
             this.LeftRightPanel.Location = new System.Drawing.Point(5, 35);
             this.LeftRightPanel.Name = "LeftRightPanel";
-            this.LeftRightPanel.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.LeftRightPanel.Padding = new System.Windows.Forms.Padding(2);
             this.LeftRightPanel.Size = new System.Drawing.Size(46, 471);
             this.LeftRightPanel.TabIndex = 14;
             // 
@@ -1067,38 +1109,6 @@ namespace Omniscient
             this.ImportButton.Text = "Import";
             this.ImportButton.UseVisualStyleBackColor = true;
             this.ImportButton.Click += new System.EventHandler(this.ImportButton_Click);
-            // 
-            // NChannelsTextBox
-            // 
-            this.NChannelsTextBox.Location = new System.Drawing.Point(102, 109);
-            this.NChannelsTextBox.Name = "NChannelsTextBox";
-            this.NChannelsTextBox.Size = new System.Drawing.Size(80, 20);
-            this.NChannelsTextBox.TabIndex = 25;
-            // 
-            // label27
-            // 
-            this.label27.AutoSize = true;
-            this.label27.Location = new System.Drawing.Point(35, 112);
-            this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(61, 13);
-            this.label27.TabIndex = 24;
-            this.label27.Text = "# Channels";
-            // 
-            // NHeadersTextBox
-            // 
-            this.NHeadersTextBox.Location = new System.Drawing.Point(102, 135);
-            this.NHeadersTextBox.Name = "NHeadersTextBox";
-            this.NHeadersTextBox.Size = new System.Drawing.Size(80, 20);
-            this.NHeadersTextBox.TabIndex = 27;
-            // 
-            // label28
-            // 
-            this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(39, 138);
-            this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(57, 13);
-            this.label28.TabIndex = 26;
-            this.label28.Text = "# Headers";
             // 
             // SiteManagerForm
             // 
