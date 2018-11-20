@@ -30,18 +30,28 @@ namespace Omniscient
         public EventTypeDialog()
         {
             InitializeComponent();
+            int count = 0;
+            foreach(EventGeneratorHookup hookup in EventGenerator.Hookups)
+            {
+                Button button = new Button();
+                button.Text = hookup.Type;
+                button.Click += EGButton_Click;
+                button.Width = 120;
+                button.Dock = DockStyle.Left;
+                ButtPanel.Controls.Add(button);
+                button.BringToFront();
+                button.TabIndex = count;
+                count++;
+            }
+
+            CancelButton.TabIndex = count;
+
+            Width = count * (125) + 25;
         }
 
-        private void ThresholdButton_Click(object sender, EventArgs e)
+        private void EGButton_Click(object sender, EventArgs e)
         {
-            eventType = "Threshold";
-            DialogResult = DialogResult.OK;
-            Dispose();
-        }
-
-        private void CoincidenceButton_Click(object sender, EventArgs e)
-        {
-            eventType = "Coincidence";
+            eventType = ((Button)sender).Text;
             DialogResult = DialogResult.OK;
             Dispose();
         }
@@ -50,6 +60,11 @@ namespace Omniscient
         {
             DialogResult = DialogResult.Cancel;
             Dispose();
+        }
+
+        private void EventTypeDialog_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

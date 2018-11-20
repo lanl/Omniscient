@@ -54,11 +54,50 @@ namespace Omniscient
         public Channel GetChannel() { return channel; }
         public void SetInterval(TimeSpan newInterval) { interval = newInterval; }
         public TimeSpan GetInterval() { return interval; }
+
+        public override List<Parameter> GetParameters()
+        {
+            List<Parameter> parameters = new List<Parameter>()
+            {
+                new SystemChannelParameter("Channel", (DetectionSystem)eventWatcher){ Value = channel.GetName() },
+                new TimeSpanParameter("Interval") { Value = interval.ToString() }
+            };
+            return parameters;
+        }
     }
 
     public class GapEGHookup : EventGeneratorHookup
     {
+        public override EventGenerator FromParameters(EventWatcher parent, string newName, List<Parameter> parameters)
+        {
+            Channel channel = null;
+            double interval = 0;
+
+            foreach(Parameter param in parameters)
+            {
+                switch(param.Name)
+                {
+                    case "Channel":
+                        channel = ((SystemChannelParameter)param).ToChannel();
+                        break;
+                    case "Interval":
+                        interval = ((TimeSpanParameter)param).ToTimeSpan().TotalSeconds;
+                        break;
+                }
+            }
+            return new GapEG(parent, newName, channel, interval);
+        }
+
         public override string Type { get { return "Gap"; } }
+
+        public GapEGHookup()
+        {
+            TemplateParameters = new List<ParameterTemplate>()
+            {
+                new ParameterTemplate("Channel", ParameterType.SystemChannel),
+                new ParameterTemplate("Interval", ParameterType.TimeSpan)
+            };
+        }
 
         public override EventGenerator GenerateFromXML(XmlNode eventNode, DetectionSystem system)
         {

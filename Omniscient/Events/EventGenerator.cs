@@ -32,10 +32,11 @@ namespace Omniscient
         public static readonly EventGeneratorHookup[] Hookups = new EventGeneratorHookup[] 
         {
             new ThresholdEGHookup(),
-            new CoincidenceEGHookup()
+            new CoincidenceEGHookup(),
+            new GapEGHookup()
         };
 
-        EventWatcher eventWatcher;
+        protected EventWatcher eventWatcher;
         protected string name;
         protected string eventGeneratorType;
         protected List<Event> events;
@@ -65,6 +66,8 @@ namespace Omniscient
         }
 
         public EventWatcher GetEventWatcher() { return eventWatcher; }
+
+        public abstract List<Parameter> GetParameters();
 
         public static EventGeneratorHookup GetHookup(string type)
         {
@@ -96,7 +99,9 @@ namespace Omniscient
 
     public abstract class EventGeneratorHookup
     {
+        public abstract EventGenerator FromParameters(EventWatcher parent, string newName, List<Parameter> parameters);
         public abstract string Type { get; }
+        public List<ParameterTemplate> TemplateParameters { get; set; }
         public abstract EventGenerator GenerateFromXML(XmlNode eventNode, DetectionSystem system);
         public abstract void GenerateXML(XmlWriter xmlWriter, EventGenerator eg);
     }

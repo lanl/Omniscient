@@ -78,6 +78,18 @@
     <Compile Include="Analysis\FRAMUraniumResultParser.cs" />
     <Compile Include="Analysis\ResultParser.cs" />
     <Compile Include="Analysis\SpectrumCompiler.cs" />
+    <Compile Include="Controls\ParameterListPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ParameterListPanel.Designer.cs">
+      <DependentUpon>ParameterListPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ParameterPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\ParameterPanel.Designer.cs">
+      <DependentUpon>ParameterPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\ResponsiveTreeView.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -112,6 +124,7 @@
     <Compile Include="Events\Event.cs" />
     <Compile Include="Events\EventGenerator.cs" />
     <Compile Include="Events\EventWatcher.cs" />
+    <Compile Include="Events\GapEG.cs" />
     <Compile Include="Events\ThresholdEG.cs" />
     <Compile Include="EventViewerForm\EventViewerForm.cs">
       <SubType>Form</SubType>
@@ -149,6 +162,7 @@
     <Compile Include="Instruments\ROIChannel.cs" />
     <Compile Include="Instruments\VirtualChannel.cs" />
     <Compile Include="NuclearComposition.cs" />
+    <Compile Include="Parameter.cs" />
     <Compile Include="Parsers\CHNWriter.cs" />
     <Compile Include="Parsers\CSVParser.cs" />
     <Compile Include="Parsers\DECFile.cs" />
@@ -206,6 +220,12 @@
     <EmbeddedResource Include="AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ParameterListPanel.resx">
+      <DependentUpon>ParameterListPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ParameterPanel.resx">
+      <DependentUpon>ParameterPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DeclarationEditor.resx">
       <DependentUpon>DeclarationEditor.cs</DependentUpon>

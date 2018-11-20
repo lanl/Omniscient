@@ -73,29 +73,6 @@ namespace Omniscient
             this.AddActionButton = new System.Windows.Forms.Button();
             this.label11 = new System.Windows.Forms.Label();
             this.ActionsComboBox = new System.Windows.Forms.ComboBox();
-            this.ThresholdPanel = new System.Windows.Forms.Panel();
-            this.DebounceComboBox = new System.Windows.Forms.ComboBox();
-            this.DebounceTextBox = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.ChannelComboBox = new System.Windows.Forms.ComboBox();
-            this.ThresholdTextBox = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.CoincidencePanel = new System.Windows.Forms.Panel();
-            this.MinDifferenceComboBox = new System.Windows.Forms.ComboBox();
-            this.MinDifferenceTextBox = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.TimingTypeComboBox = new System.Windows.Forms.ComboBox();
-            this.label10 = new System.Windows.Forms.Label();
-            this.EventGeneratorBComboBox = new System.Windows.Forms.ComboBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.EventGeneratorAComboBox = new System.Windows.Forms.ComboBox();
-            this.label8 = new System.Windows.Forms.Label();
-            this.WindowComboBox = new System.Windows.Forms.ComboBox();
-            this.WindowTextBox = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.CoincidenceTypeComboBox = new System.Windows.Forms.ComboBox();
-            this.label7 = new System.Windows.Forms.Label();
             this.NamePanel = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.NameTextBox = new System.Windows.Forms.TextBox();
@@ -109,6 +86,7 @@ namespace Omniscient
             this.SaveButton = new System.Windows.Forms.Button();
             this.ExitButton = new System.Windows.Forms.Button();
             this.DataCompilerPanel1 = new Omniscient.DataCompilerPanel();
+            this.ParamListPanel = new Omniscient.Controls.ParameterListPanel();
             this.LeftPanel.SuspendLayout();
             this.RightPanel.SuspendLayout();
             this.InnerRightPanel.SuspendLayout();
@@ -123,8 +101,6 @@ namespace Omniscient
             this.AnalysisTabPage.SuspendLayout();
             this.ResultsTabPage.SuspendLayout();
             this.ActionSubPanel.SuspendLayout();
-            this.ThresholdPanel.SuspendLayout();
-            this.CoincidencePanel.SuspendLayout();
             this.NamePanel.SuspendLayout();
             this.LeftRightPanel.SuspendLayout();
             this.panel3.SuspendLayout();
@@ -159,19 +135,19 @@ namespace Omniscient
             this.RightPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.RightPanel.Location = new System.Drawing.Point(400, 0);
             this.RightPanel.Name = "RightPanel";
-            this.RightPanel.Size = new System.Drawing.Size(390, 781);
+            this.RightPanel.Size = new System.Drawing.Size(406, 781);
             this.RightPanel.TabIndex = 14;
             // 
             // InnerRightPanel
             // 
             this.InnerRightPanel.Controls.Add(this.ActionPanel);
-            this.InnerRightPanel.Controls.Add(this.ThresholdPanel);
-            this.InnerRightPanel.Controls.Add(this.CoincidencePanel);
+            this.InnerRightPanel.Controls.Add(this.ParamListPanel);
             this.InnerRightPanel.Controls.Add(this.NamePanel);
             this.InnerRightPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.InnerRightPanel.Location = new System.Drawing.Point(46, 29);
             this.InnerRightPanel.Name = "InnerRightPanel";
-            this.InnerRightPanel.Size = new System.Drawing.Size(344, 723);
+            this.InnerRightPanel.Padding = new System.Windows.Forms.Padding(10);
+            this.InnerRightPanel.Size = new System.Drawing.Size(360, 723);
             this.InnerRightPanel.TabIndex = 34;
             // 
             // ActionPanel
@@ -182,9 +158,9 @@ namespace Omniscient
             this.ActionPanel.Controls.Add(this.label11);
             this.ActionPanel.Controls.Add(this.ActionsComboBox);
             this.ActionPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.ActionPanel.Location = new System.Drawing.Point(0, 297);
+            this.ActionPanel.Location = new System.Drawing.Point(10, 250);
             this.ActionPanel.Name = "ActionPanel";
-            this.ActionPanel.Size = new System.Drawing.Size(344, 384);
+            this.ActionPanel.Size = new System.Drawing.Size(340, 384);
             this.ActionPanel.TabIndex = 34;
             // 
             // ActionGroupBox
@@ -194,7 +170,7 @@ namespace Omniscient
             this.ActionGroupBox.Controls.Add(this.ActionSubPanel);
             this.ActionGroupBox.Location = new System.Drawing.Point(5, 37);
             this.ActionGroupBox.Name = "ActionGroupBox";
-            this.ActionGroupBox.Size = new System.Drawing.Size(334, 314);
+            this.ActionGroupBox.Size = new System.Drawing.Size(350, 314);
             this.ActionGroupBox.TabIndex = 25;
             this.ActionGroupBox.TabStop = false;
             this.ActionGroupBox.Text = "Action";
@@ -206,7 +182,7 @@ namespace Omniscient
             this.CommandPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.CommandPanel.Location = new System.Drawing.Point(3, 311);
             this.CommandPanel.Name = "CommandPanel";
-            this.CommandPanel.Size = new System.Drawing.Size(328, 28);
+            this.CommandPanel.Size = new System.Drawing.Size(344, 28);
             this.CommandPanel.TabIndex = 34;
             // 
             // ActionCommandTextBox
@@ -231,7 +207,7 @@ namespace Omniscient
             this.AnalysisPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.AnalysisPanel.Location = new System.Drawing.Point(3, 71);
             this.AnalysisPanel.Name = "AnalysisPanel";
-            this.AnalysisPanel.Size = new System.Drawing.Size(328, 240);
+            this.AnalysisPanel.Size = new System.Drawing.Size(344, 240);
             this.AnalysisPanel.TabIndex = 35;
             // 
             // AnalysisTabControl
@@ -243,7 +219,7 @@ namespace Omniscient
             this.AnalysisTabControl.Location = new System.Drawing.Point(0, 0);
             this.AnalysisTabControl.Name = "AnalysisTabControl";
             this.AnalysisTabControl.SelectedIndex = 0;
-            this.AnalysisTabControl.Size = new System.Drawing.Size(328, 240);
+            this.AnalysisTabControl.Size = new System.Drawing.Size(344, 240);
             this.AnalysisTabControl.TabIndex = 0;
             // 
             // DataTabPage
@@ -252,7 +228,7 @@ namespace Omniscient
             this.DataTabPage.Location = new System.Drawing.Point(4, 22);
             this.DataTabPage.Name = "DataTabPage";
             this.DataTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.DataTabPage.Size = new System.Drawing.Size(320, 214);
+            this.DataTabPage.Size = new System.Drawing.Size(336, 214);
             this.DataTabPage.TabIndex = 0;
             this.DataTabPage.Text = "Data";
             this.DataTabPage.UseVisualStyleBackColor = true;
@@ -264,7 +240,7 @@ namespace Omniscient
             this.DataSourceTabControl.Location = new System.Drawing.Point(3, 3);
             this.DataSourceTabControl.Name = "DataSourceTabControl";
             this.DataSourceTabControl.SelectedIndex = 0;
-            this.DataSourceTabControl.Size = new System.Drawing.Size(314, 208);
+            this.DataSourceTabControl.Size = new System.Drawing.Size(330, 208);
             this.DataSourceTabControl.TabIndex = 0;
             // 
             // tabPage1
@@ -273,7 +249,7 @@ namespace Omniscient
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(306, 182);
+            this.tabPage1.Size = new System.Drawing.Size(322, 182);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Data Source 1";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -366,7 +342,7 @@ namespace Omniscient
             this.ActionSubPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.ActionSubPanel.Location = new System.Drawing.Point(3, 16);
             this.ActionSubPanel.Name = "ActionSubPanel";
-            this.ActionSubPanel.Size = new System.Drawing.Size(328, 55);
+            this.ActionSubPanel.Size = new System.Drawing.Size(344, 55);
             this.ActionSubPanel.TabIndex = 33;
             // 
             // label12
@@ -444,249 +420,14 @@ namespace Omniscient
             this.ActionsComboBox.TabIndex = 21;
             this.ActionsComboBox.SelectedIndexChanged += new System.EventHandler(this.ActionsComboBox_SelectedIndexChanged);
             // 
-            // ThresholdPanel
-            // 
-            this.ThresholdPanel.Controls.Add(this.DebounceComboBox);
-            this.ThresholdPanel.Controls.Add(this.DebounceTextBox);
-            this.ThresholdPanel.Controls.Add(this.label4);
-            this.ThresholdPanel.Controls.Add(this.label3);
-            this.ThresholdPanel.Controls.Add(this.ChannelComboBox);
-            this.ThresholdPanel.Controls.Add(this.ThresholdTextBox);
-            this.ThresholdPanel.Controls.Add(this.label2);
-            this.ThresholdPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.ThresholdPanel.Location = new System.Drawing.Point(0, 193);
-            this.ThresholdPanel.Name = "ThresholdPanel";
-            this.ThresholdPanel.Size = new System.Drawing.Size(344, 104);
-            this.ThresholdPanel.TabIndex = 25;
-            // 
-            // DebounceComboBox
-            // 
-            this.DebounceComboBox.FormattingEnabled = true;
-            this.DebounceComboBox.Items.AddRange(new object[] {
-            "Seconds",
-            "Minutes",
-            "Hours",
-            "Days"});
-            this.DebounceComboBox.Location = new System.Drawing.Point(163, 64);
-            this.DebounceComboBox.Name = "DebounceComboBox";
-            this.DebounceComboBox.Size = new System.Drawing.Size(114, 21);
-            this.DebounceComboBox.TabIndex = 31;
-            // 
-            // DebounceTextBox
-            // 
-            this.DebounceTextBox.Location = new System.Drawing.Point(105, 64);
-            this.DebounceTextBox.Name = "DebounceTextBox";
-            this.DebounceTextBox.Size = new System.Drawing.Size(52, 20);
-            this.DebounceTextBox.TabIndex = 30;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(17, 68);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(83, 13);
-            this.label4.TabIndex = 29;
-            this.label4.Text = "Debounce Time";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(46, 39);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(54, 13);
-            this.label3.TabIndex = 28;
-            this.label3.Text = "Threshold";
-            // 
-            // ChannelComboBox
-            // 
-            this.ChannelComboBox.FormattingEnabled = true;
-            this.ChannelComboBox.Location = new System.Drawing.Point(105, 6);
-            this.ChannelComboBox.Name = "ChannelComboBox";
-            this.ChannelComboBox.Size = new System.Drawing.Size(172, 21);
-            this.ChannelComboBox.TabIndex = 27;
-            // 
-            // ThresholdTextBox
-            // 
-            this.ThresholdTextBox.Location = new System.Drawing.Point(105, 35);
-            this.ThresholdTextBox.Name = "ThresholdTextBox";
-            this.ThresholdTextBox.Size = new System.Drawing.Size(172, 20);
-            this.ThresholdTextBox.TabIndex = 26;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(54, 10);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(46, 13);
-            this.label2.TabIndex = 25;
-            this.label2.Text = "Channel";
-            // 
-            // CoincidencePanel
-            // 
-            this.CoincidencePanel.Controls.Add(this.MinDifferenceComboBox);
-            this.CoincidencePanel.Controls.Add(this.MinDifferenceTextBox);
-            this.CoincidencePanel.Controls.Add(this.label6);
-            this.CoincidencePanel.Controls.Add(this.TimingTypeComboBox);
-            this.CoincidencePanel.Controls.Add(this.label10);
-            this.CoincidencePanel.Controls.Add(this.EventGeneratorBComboBox);
-            this.CoincidencePanel.Controls.Add(this.label9);
-            this.CoincidencePanel.Controls.Add(this.EventGeneratorAComboBox);
-            this.CoincidencePanel.Controls.Add(this.label8);
-            this.CoincidencePanel.Controls.Add(this.WindowComboBox);
-            this.CoincidencePanel.Controls.Add(this.WindowTextBox);
-            this.CoincidencePanel.Controls.Add(this.label5);
-            this.CoincidencePanel.Controls.Add(this.CoincidenceTypeComboBox);
-            this.CoincidencePanel.Controls.Add(this.label7);
-            this.CoincidencePanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.CoincidencePanel.Location = new System.Drawing.Point(0, 29);
-            this.CoincidencePanel.Name = "CoincidencePanel";
-            this.CoincidencePanel.Size = new System.Drawing.Size(344, 164);
-            this.CoincidencePanel.TabIndex = 32;
-            // 
-            // MinDifferenceComboBox
-            // 
-            this.MinDifferenceComboBox.FormattingEnabled = true;
-            this.MinDifferenceComboBox.Items.AddRange(new object[] {
-            "Seconds",
-            "Minutes",
-            "Hours",
-            "Days"});
-            this.MinDifferenceComboBox.Location = new System.Drawing.Point(163, 135);
-            this.MinDifferenceComboBox.Name = "MinDifferenceComboBox";
-            this.MinDifferenceComboBox.Size = new System.Drawing.Size(114, 21);
-            this.MinDifferenceComboBox.TabIndex = 40;
-            // 
-            // MinDifferenceTextBox
-            // 
-            this.MinDifferenceTextBox.Location = new System.Drawing.Point(105, 135);
-            this.MinDifferenceTextBox.Name = "MinDifferenceTextBox";
-            this.MinDifferenceTextBox.Size = new System.Drawing.Size(52, 20);
-            this.MinDifferenceTextBox.TabIndex = 39;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(24, 139);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(76, 13);
-            this.label6.TabIndex = 38;
-            this.label6.Text = "Min Difference";
-            // 
-            // TimingTypeComboBox
-            // 
-            this.TimingTypeComboBox.FormattingEnabled = true;
-            this.TimingTypeComboBox.Items.AddRange(new object[] {
-            "Start to Start",
-            "Start to End",
-            "End to Start",
-            "End to End",
-            "Max to Max"});
-            this.TimingTypeComboBox.Location = new System.Drawing.Point(105, 81);
-            this.TimingTypeComboBox.Name = "TimingTypeComboBox";
-            this.TimingTypeComboBox.Size = new System.Drawing.Size(172, 21);
-            this.TimingTypeComboBox.TabIndex = 37;
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(35, 85);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(65, 13);
-            this.label10.TabIndex = 36;
-            this.label10.Text = "Timing Type";
-            // 
-            // EventGeneratorBComboBox
-            // 
-            this.EventGeneratorBComboBox.FormattingEnabled = true;
-            this.EventGeneratorBComboBox.Location = new System.Drawing.Point(105, 30);
-            this.EventGeneratorBComboBox.Name = "EventGeneratorBComboBox";
-            this.EventGeneratorBComboBox.Size = new System.Drawing.Size(172, 21);
-            this.EventGeneratorBComboBox.TabIndex = 35;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(5, 34);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(95, 13);
-            this.label9.TabIndex = 34;
-            this.label9.Text = "Event Generator B";
-            // 
-            // EventGeneratorAComboBox
-            // 
-            this.EventGeneratorAComboBox.FormattingEnabled = true;
-            this.EventGeneratorAComboBox.Location = new System.Drawing.Point(105, 3);
-            this.EventGeneratorAComboBox.Name = "EventGeneratorAComboBox";
-            this.EventGeneratorAComboBox.Size = new System.Drawing.Size(172, 21);
-            this.EventGeneratorAComboBox.TabIndex = 33;
-            // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(5, 7);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(95, 13);
-            this.label8.TabIndex = 32;
-            this.label8.Text = "Event Generator A";
-            // 
-            // WindowComboBox
-            // 
-            this.WindowComboBox.FormattingEnabled = true;
-            this.WindowComboBox.Items.AddRange(new object[] {
-            "Seconds",
-            "Minutes",
-            "Hours",
-            "Days"});
-            this.WindowComboBox.Location = new System.Drawing.Point(163, 108);
-            this.WindowComboBox.Name = "WindowComboBox";
-            this.WindowComboBox.Size = new System.Drawing.Size(114, 21);
-            this.WindowComboBox.TabIndex = 31;
-            // 
-            // WindowTextBox
-            // 
-            this.WindowTextBox.Location = new System.Drawing.Point(105, 108);
-            this.WindowTextBox.Name = "WindowTextBox";
-            this.WindowTextBox.Size = new System.Drawing.Size(52, 20);
-            this.WindowTextBox.TabIndex = 30;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(54, 112);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(46, 13);
-            this.label5.TabIndex = 29;
-            this.label5.Text = "Window";
-            // 
-            // CoincidenceTypeComboBox
-            // 
-            this.CoincidenceTypeComboBox.FormattingEnabled = true;
-            this.CoincidenceTypeComboBox.Items.AddRange(new object[] {
-            "A then B",
-            "B then A",
-            "Either order"});
-            this.CoincidenceTypeComboBox.Location = new System.Drawing.Point(105, 57);
-            this.CoincidenceTypeComboBox.Name = "CoincidenceTypeComboBox";
-            this.CoincidenceTypeComboBox.Size = new System.Drawing.Size(172, 21);
-            this.CoincidenceTypeComboBox.TabIndex = 27;
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(7, 61);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(93, 13);
-            this.label7.TabIndex = 25;
-            this.label7.Text = "Coincidence Type";
-            // 
             // NamePanel
             // 
             this.NamePanel.Controls.Add(this.label1);
             this.NamePanel.Controls.Add(this.NameTextBox);
             this.NamePanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.NamePanel.Location = new System.Drawing.Point(0, 0);
+            this.NamePanel.Location = new System.Drawing.Point(10, 10);
             this.NamePanel.Name = "NamePanel";
-            this.NamePanel.Size = new System.Drawing.Size(344, 29);
+            this.NamePanel.Size = new System.Drawing.Size(340, 40);
             this.NamePanel.TabIndex = 33;
             // 
             // label1
@@ -762,7 +503,7 @@ namespace Omniscient
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(390, 29);
+            this.panel1.Size = new System.Drawing.Size(406, 29);
             this.panel1.TabIndex = 23;
             // 
             // panel3
@@ -772,7 +513,7 @@ namespace Omniscient
             this.panel3.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel3.Location = new System.Drawing.Point(0, 752);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(390, 29);
+            this.panel3.Size = new System.Drawing.Size(406, 29);
             this.panel3.TabIndex = 12;
             // 
             // SaveButton
@@ -800,14 +541,25 @@ namespace Omniscient
             this.DataCompilerPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.DataCompilerPanel1.Location = new System.Drawing.Point(3, 3);
             this.DataCompilerPanel1.Name = "DataCompilerPanel1";
-            this.DataCompilerPanel1.Size = new System.Drawing.Size(300, 176);
+            this.DataCompilerPanel1.Size = new System.Drawing.Size(316, 176);
             this.DataCompilerPanel1.TabIndex = 0;
+            // 
+            // ParamListPanel
+            // 
+            this.ParamListPanel.AutoScroll = true;
+            this.ParamListPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.ParamListPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.ParamListPanel.Location = new System.Drawing.Point(10, 50);
+            this.ParamListPanel.Margin = new System.Windows.Forms.Padding(10);
+            this.ParamListPanel.Name = "ParamListPanel";
+            this.ParamListPanel.Size = new System.Drawing.Size(340, 200);
+            this.ParamListPanel.TabIndex = 35;
             // 
             // EventManagerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(790, 781);
+            this.ClientSize = new System.Drawing.Size(806, 781);
             this.ControlBox = false;
             this.Controls.Add(this.RightPanel);
             this.Controls.Add(this.LeftPanel);
@@ -835,10 +587,6 @@ namespace Omniscient
             this.ResultsTabPage.PerformLayout();
             this.ActionSubPanel.ResumeLayout(false);
             this.ActionSubPanel.PerformLayout();
-            this.ThresholdPanel.ResumeLayout(false);
-            this.ThresholdPanel.PerformLayout();
-            this.CoincidencePanel.ResumeLayout(false);
-            this.CoincidencePanel.PerformLayout();
             this.NamePanel.ResumeLayout(false);
             this.NamePanel.PerformLayout();
             this.LeftRightPanel.ResumeLayout(false);
@@ -862,32 +610,9 @@ namespace Omniscient
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button SaveButton;
         private System.Windows.Forms.Panel InnerRightPanel;
-        private System.Windows.Forms.Panel ThresholdPanel;
-        private System.Windows.Forms.ComboBox DebounceComboBox;
-        private System.Windows.Forms.TextBox DebounceTextBox;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ComboBox ChannelComboBox;
-        private System.Windows.Forms.TextBox ThresholdTextBox;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Panel CoincidencePanel;
-        private System.Windows.Forms.ComboBox WindowComboBox;
-        private System.Windows.Forms.TextBox WindowTextBox;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.ComboBox CoincidenceTypeComboBox;
-        private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Panel NamePanel;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox NameTextBox;
-        private System.Windows.Forms.ComboBox MinDifferenceComboBox;
-        private System.Windows.Forms.TextBox MinDifferenceTextBox;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.ComboBox TimingTypeComboBox;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.ComboBox EventGeneratorBComboBox;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.ComboBox EventGeneratorAComboBox;
-        private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Panel ActionPanel;
         private System.Windows.Forms.Button RemoveActionButton;
         private System.Windows.Forms.Button AddActionButton;
@@ -916,5 +641,6 @@ namespace Omniscient
         private System.Windows.Forms.TabControl DataSourceTabControl;
         private System.Windows.Forms.TabPage tabPage1;
         private DataCompilerPanel DataCompilerPanel1;
+        private Controls.ParameterListPanel ParamListPanel;
     }
 }

@@ -166,10 +166,122 @@ namespace Omniscient
         {
             name = newName;
         }
+
+        public override List<Parameter> GetParameters()
+        {
+            string coincidenceTypeStr = "";
+            switch (coincidenceType)
+            {
+                case CoincidenceType.A_THEN_B:
+                    coincidenceTypeStr = "A Then B";
+                    break;
+                case CoincidenceType.B_THEN_A:
+                    coincidenceTypeStr = "B Then A";
+                    break;
+                case CoincidenceType.EITHER_ORDER:
+                    coincidenceTypeStr = "Either Order";
+                    break;
+            }
+            string timingTypeStr = "";
+            switch(timingType)
+            {
+                case TimingType.START_TO_START:
+                    timingTypeStr = "Start to Start";
+                    break;
+                case TimingType.START_TO_END:
+                    timingTypeStr = "Start to End";
+                    break;
+                case TimingType.END_TO_START:
+                    timingTypeStr = "End to Start";
+                    break;
+                case TimingType.END_TO_END:
+                    timingTypeStr = "End to End";
+                    break;
+                case TimingType.MAX_TO_MAX:
+                    timingTypeStr = "Max to Max";
+                    break;
+            }
+            List<Parameter> parameters = new List<Parameter>()
+            {
+                new EnumParameter("Coincidence Type") {Value = coincidenceTypeStr, ValidValues = new List<string>()
+                {
+                    "A Then B", "B Then A", "Either Order"
+                } },
+                new EnumParameter("Timing Type") {Value = timingTypeStr, ValidValues = new List<string>()
+                {
+                    "Start to Start", "Start to End", "End to Start", "End to End", "Max to Max"
+                } },
+                new SystemEventGeneratorParameter("Event Generator A", (DetectionSystem)eventWatcher){ Value = eventGeneratorA.GetName() },
+                new SystemEventGeneratorParameter("Event Generator B", (DetectionSystem)eventWatcher){ Value = eventGeneratorB.GetName() },
+                new TimeSpanParameter("Window") { Value = window.TotalSeconds.ToString() },
+                new TimeSpanParameter("Min Difference") { Value = minDifference.TotalSeconds.ToString() }
+            };
+            return parameters;
+        }
     }
 
     public class CoincidenceEGHookup : EventGeneratorHookup
     {
+        public CoincidenceEGHookup()
+        {
+            TemplateParameters = new List<ParameterTemplate>()
+            {
+                new ParameterTemplate("Coincidence Type", ParameterType.Enum, new List<string>()
+                {
+                    "A Then B", "B Then A", "Either Order"
+                }),
+                new ParameterTemplate("Timing Type", ParameterType.Enum, new List<string>()
+                {
+                    "Start to Start", "Start to End", "End to Start", "End to End", "Max to Max"
+                }),
+                new ParameterTemplate("Event Generator A", ParameterType.SystemEventGenerator),
+                new ParameterTemplate("Event Generator B", ParameterType.SystemEventGenerator),
+                new ParameterTemplate("Window", ParameterType.TimeSpan),
+                new ParameterTemplate("Min Difference", ParameterType.TimeSpan)
+            };
+        }
+
+        public override EventGenerator FromParameters(EventWatcher parent, string newName, List<Parameter> parameters)
+        {
+            CoincidenceEG.CoincidenceType coincidenceType = CoincidenceEG.CoincidenceType.A_THEN_B;
+            CoincidenceEG.TimingType timingType = CoincidenceEG.TimingType.END_TO_END;
+            EventGenerator egA = null;
+            EventGenerator egB = null;
+            TimeSpan window = TimeSpan.FromTicks(0);
+            TimeSpan minDifference = TimeSpan.FromTicks(0);
+            
+            foreach (Parameter param in parameters)
+            {
+                switch (param.Name)
+                {
+                    case "Coincidence Type":
+                        coincidenceType = (CoincidenceEG.CoincidenceType)((EnumParameter)param).ToInt();
+                        break;
+                    case "Timing Type":
+                        timingType = (CoincidenceEG.TimingType)((EnumParameter)param).ToInt();
+                        break;
+                    case "Event Generator A":
+                        egA = ((SystemEventGeneratorParameter)param).ToEventGenerator();
+                        break;
+                    case "Event Generator B":
+                        egB = ((SystemEventGeneratorParameter)param).ToEventGenerator();
+                        break;
+                    case "Window":
+                        window = ((TimeSpanParameter)param).ToTimeSpan();
+                        break;
+                    case "Min Difference":
+                        minDifference = ((TimeSpanParameter)param).ToTimeSpan();
+                        break;
+                }
+            }
+            CoincidenceEG eg = new CoincidenceEG(parent, newName, coincidenceType, timingType);
+            eg.SetEventGeneratorA(egA);
+            eg.SetEventGeneratorB(egB);
+            eg.SetWindow(window);
+            eg.SetMinDifference(minDifference);
+            return eg;
+        }
+
         public override string Type { get { return "Coincidence"; } }
 
         public override EventGenerator GenerateFromXML(XmlNode eventNode, DetectionSystem system)

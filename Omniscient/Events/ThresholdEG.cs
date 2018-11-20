@@ -170,11 +170,49 @@ namespace Omniscient
         {
             name = newName;
         }
+
+        public override List<Parameter> GetParameters()
+        {
+            List<Parameter> parameters = new List<Parameter>()
+            {
+                new SystemChannelParameter("Channel", (DetectionSystem)eventWatcher){ Value = channel.GetName() },
+                new DoubleParameter("Threshold") { Value = threshold.ToString() }
+            };
+            return parameters;
+        }
     }
 
     public class ThresholdEGHookup : EventGeneratorHookup
     {
+        public ThresholdEGHookup()
+        {
+            TemplateParameters = new List<ParameterTemplate>()
+            {
+                new ParameterTemplate("Channel", ParameterType.SystemChannel),
+                new ParameterTemplate("Threshold", ParameterType.Double)
+            };
+        }
+
         public override string Type { get { return "Threshold"; } }
+
+        public override EventGenerator FromParameters(EventWatcher parent, string newName, List<Parameter> parameters)
+        {
+            Channel channel = null;
+            double threshold = 0;
+            foreach (Parameter param in parameters)
+            {
+                switch (param.Name)
+                {
+                    case "Channel":
+                        channel = ((SystemChannelParameter)param).ToChannel();
+                        break;
+                    case "Threshold":
+                        threshold = ((DoubleParameter)param).ToDouble();
+                        break;
+                }
+            }
+            return new ThresholdEG(parent, newName, channel, threshold);
+        }
 
         public override EventGenerator GenerateFromXML(XmlNode eventNode, DetectionSystem system)
         {
