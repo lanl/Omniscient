@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace Omniscient
 {
@@ -168,6 +169,36 @@ namespace Omniscient
         public override void SetName(string newName)
         {
             name = newName;
+        }
+    }
+
+    public class ThresholdEGHookup : EventGeneratorHookup
+    {
+        public override string Type { get { return "Threshold"; } }
+
+        public override EventGenerator GenerateFromXML(XmlNode eventNode, DetectionSystem system)
+        {
+            Channel channel = null;
+            foreach (Instrument inst in system.GetInstruments())
+            {
+                foreach (Channel ch in inst.GetChannels())
+                {
+                    if (ch.GetName() == eventNode.Attributes["channel"]?.InnerText)
+                        channel = ch;
+                }
+            }
+            if (channel is null) return null;
+            try
+            {
+                ThresholdEG eg = new ThresholdEG(system, eventNode.Attributes["name"]?.InnerText, channel, double.Parse(eventNode.Attributes["threshold"]?.InnerText));
+                if (eventNode.Attributes["debounce_time"] != null)
+                    eg.SetDebounceTime(TimeSpan.FromSeconds(double.Parse(eventNode.Attributes["debounce_time"]?.InnerText)));
+                return eg;
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 }

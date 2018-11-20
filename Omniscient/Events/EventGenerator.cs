@@ -16,11 +16,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace Omniscient
 {
     public abstract class EventGenerator
     {
+        /// <summary>
+        /// This array contains a hookup for each type of EventGenerator. In 
+        /// order for Omniscient to recognize a new kind of EventGenerator, a
+        /// corresponding EventGeneratorHookup must be made and added to this
+        /// array. This is to make it easier to integrate new EventGenerators 
+        /// into Omniscient.
+        /// </summary>
+        public static readonly EventGeneratorHookup[] Hookups = new EventGeneratorHookup[] 
+        {
+            new ThresholdEGHookup(),
+            new CoincidenceEGHookup()
+        };
+
         EventWatcher eventWatcher;
         protected string name;
         protected string eventGeneratorType;
@@ -51,5 +65,23 @@ namespace Omniscient
         }
 
         public EventWatcher GetEventWatcher() { return eventWatcher; }
+
+        public static EventGenerator FromXML(XmlNode eventNode, DetectionSystem system)
+        {
+            foreach(EventGeneratorHookup hookup in Hookups)
+            {
+                if (hookup.Type == eventNode.Attributes["type"]?.InnerText)
+                {
+                    return hookup.GenerateFromXML(eventNode, system);
+                }
+            }
+            return null;
+        }
+    }
+
+    public abstract class EventGeneratorHookup
+    {
+        public abstract string Type { get; }
+        public abstract EventGenerator GenerateFromXML(XmlNode eventNode, DetectionSystem system);
     }
 }

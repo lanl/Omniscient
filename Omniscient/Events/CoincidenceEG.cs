@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace Omniscient
 {
@@ -164,6 +165,68 @@ namespace Omniscient
         public override void SetName(string newName)
         {
             name = newName;
+        }
+    }
+
+    public class CoincidenceEGHookup : EventGeneratorHookup
+    {
+        public override string Type { get { return "Coincidence"; } }
+
+        public override EventGenerator GenerateFromXML(XmlNode eventNode, DetectionSystem system)
+        {
+            CoincidenceEG coinkEG;
+            try
+            {
+                coinkEG = new CoincidenceEG(system, eventNode.Attributes["name"]?.InnerText);
+                switch (eventNode.Attributes["coincidence_type"]?.InnerText)
+                {
+                    case "A_THEN_B":
+                        coinkEG.SetCoincidenceType(CoincidenceEG.CoincidenceType.A_THEN_B);
+                        break;
+                    case "B_THEN_A":
+                        coinkEG.SetCoincidenceType(CoincidenceEG.CoincidenceType.B_THEN_A);
+                        break;
+                    case "EITHER_ORDER":
+                        coinkEG.SetCoincidenceType(CoincidenceEG.CoincidenceType.EITHER_ORDER);
+                        break;
+                    default:
+                        return null;
+                }
+                switch (eventNode.Attributes["timing_type"]?.InnerText)
+                {
+                    case "START_TO_START":
+                        coinkEG.SetTimingType(CoincidenceEG.TimingType.START_TO_START);
+                        break;
+                    case "START_TO_END":
+                        coinkEG.SetTimingType(CoincidenceEG.TimingType.START_TO_END);
+                        break;
+                    case "END_TO_START":
+                        coinkEG.SetTimingType(CoincidenceEG.TimingType.END_TO_START);
+                        break;
+                    case "END_TO_END":
+                        coinkEG.SetTimingType(CoincidenceEG.TimingType.END_TO_END);
+                        break;
+                    case "MAX_TO_MAX":
+                        coinkEG.SetTimingType(CoincidenceEG.TimingType.MAX_TO_MAX);
+                        break;
+                    default:
+                        return null;
+                }
+                foreach (EventGenerator watchedEG in system.GetEventGenerators())
+                {
+                    if (watchedEG.GetName() == eventNode.Attributes["event_generator_A"]?.InnerText)
+                        coinkEG.SetEventGeneratorA(watchedEG);
+                    if (watchedEG.GetName() == eventNode.Attributes["event_generator_B"]?.InnerText)
+                        coinkEG.SetEventGeneratorB(watchedEG);
+                }
+                coinkEG.SetWindow(TimeSpan.FromSeconds(double.Parse(eventNode.Attributes["window"]?.InnerText)));
+                coinkEG.SetMinDifference(TimeSpan.FromSeconds(double.Parse(eventNode.Attributes["min_difference"]?.InnerText)));
+            }
+            catch
+            {
+                return null;
+            }
+            return coinkEG;
         }
     }
 }
