@@ -200,5 +200,12 @@ namespace Omniscient
                 return null;
             }
         }
+
+        public override void GenerateXML(XmlWriter xmlWriter, EventGenerator eg)
+        {
+            xmlWriter.WriteAttributeString("channel", ((ThresholdEG)eg).GetChannel().GetName());
+            xmlWriter.WriteAttributeString("threshold", ((ThresholdEG)eg).GetThreshold().ToString());
+            xmlWriter.WriteAttributeString("debounce_time", ((ThresholdEG)eg).GetDebounceTime().TotalSeconds.ToString());
+        }
     }
 }

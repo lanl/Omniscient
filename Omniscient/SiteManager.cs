@@ -428,53 +428,7 @@ namespace Omniscient
                         }
                         foreach (EventGenerator eg in sys.GetEventGenerators())
                         {
-                            xmlWriter.WriteStartElement("EventGenerator");
-                            xmlWriter.WriteAttributeString("name", eg.GetName());
-                            xmlWriter.WriteAttributeString("type", eg.GetEventGeneratorType());
-                            if (eg is ThresholdEG)
-                            {
-                                xmlWriter.WriteAttributeString("channel", ((ThresholdEG)eg).GetChannel().GetName());    
-                                xmlWriter.WriteAttributeString("threshold", ((ThresholdEG)eg).GetThreshold().ToString());
-                                xmlWriter.WriteAttributeString("debounce_time", ((ThresholdEG)eg).GetDebounceTime().TotalSeconds.ToString());
-                            }
-                            else if(eg is CoincidenceEG)
-                            {
-                                CoincidenceEG coinkEg = (CoincidenceEG)eg;
-                                switch (coinkEg.GetCoincidenceType())
-                                {
-                                    case CoincidenceEG.CoincidenceType.A_THEN_B:
-                                        xmlWriter.WriteAttributeString("coincidence_type", "A_THEN_B");
-                                        break;
-                                    case CoincidenceEG.CoincidenceType.B_THEN_A:
-                                        xmlWriter.WriteAttributeString("coincidence_type", "B_THEN_A");
-                                        break;
-                                    case CoincidenceEG.CoincidenceType.EITHER_ORDER:
-                                        xmlWriter.WriteAttributeString("coincidence_type", "EITHER_ORDER");
-                                        break;
-                                }
-                                switch (coinkEg.GetTimingType())
-                                {
-                                    case CoincidenceEG.TimingType.START_TO_START:
-                                        xmlWriter.WriteAttributeString("timing_type", "START_TO_START");
-                                        break;
-                                    case CoincidenceEG.TimingType.START_TO_END:
-                                        xmlWriter.WriteAttributeString("timing_type", "START_TO_END");
-                                        break;
-                                    case CoincidenceEG.TimingType.END_TO_START:
-                                        xmlWriter.WriteAttributeString("timing_type", "END_TO_START");
-                                        break;
-                                    case CoincidenceEG.TimingType.END_TO_END:
-                                        xmlWriter.WriteAttributeString("timing_type", "END_TO_END");
-                                        break;
-                                    case CoincidenceEG.TimingType.MAX_TO_MAX:
-                                        xmlWriter.WriteAttributeString("timing_type", "MAX_TO_MAX");
-                                        break;
-                                }
-                                xmlWriter.WriteAttributeString("event_generator_A", coinkEg.GetEventGeneratorA().GetName());
-                                xmlWriter.WriteAttributeString("event_generator_B", coinkEg.GetEventGeneratorB().GetName());
-                                xmlWriter.WriteAttributeString("window", coinkEg.GetWindow().TotalSeconds.ToString());
-                                xmlWriter.WriteAttributeString("min_difference", coinkEg.GetMinDifference().TotalSeconds.ToString());
-                            }
+                            EventGenerator.ToXML(xmlWriter, eg);
                             foreach(Action action in eg.GetActions())
                             {
                                 xmlWriter.WriteStartElement("Action");

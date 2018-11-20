@@ -66,16 +66,31 @@ namespace Omniscient
 
         public EventWatcher GetEventWatcher() { return eventWatcher; }
 
-        public static EventGenerator FromXML(XmlNode eventNode, DetectionSystem system)
+        public static EventGeneratorHookup GetHookup(string type)
         {
-            foreach(EventGeneratorHookup hookup in Hookups)
+            foreach (EventGeneratorHookup hookup in Hookups)
             {
-                if (hookup.Type == eventNode.Attributes["type"]?.InnerText)
+                if (hookup.Type == type)
                 {
-                    return hookup.GenerateFromXML(eventNode, system);
+                    return hookup;
                 }
             }
             return null;
+        }
+
+        public static EventGenerator FromXML(XmlNode eventNode, DetectionSystem system)
+        {
+            EventGeneratorHookup hookup = GetHookup(eventNode.Attributes["type"]?.InnerText);
+            return hookup?.GenerateFromXML(eventNode, system);
+        }
+
+        public static void ToXML(XmlWriter xmlWriter, EventGenerator eg)
+        {
+            xmlWriter.WriteStartElement("EventGenerator");
+            xmlWriter.WriteAttributeString("name", eg.GetName());
+            xmlWriter.WriteAttributeString("type", eg.GetEventGeneratorType());
+            EventGeneratorHookup hookup = GetHookup(eg.GetEventGeneratorType());
+            hookup.GenerateXML(xmlWriter, eg);
         }
     }
 
@@ -83,5 +98,6 @@ namespace Omniscient
     {
         public abstract string Type { get; }
         public abstract EventGenerator GenerateFromXML(XmlNode eventNode, DetectionSystem system);
+        public abstract void GenerateXML(XmlWriter xmlWriter, EventGenerator eg);
     }
 }
