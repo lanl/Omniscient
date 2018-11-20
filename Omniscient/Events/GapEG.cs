@@ -35,6 +35,7 @@ namespace Omniscient
                     eve.SetMaxTime(times[i - 1]);
                     eve.SetMaxValue(0);
                     eve.SetComment(channel.GetName() + " has a gap.");
+                    events.Add(eve);
                 }
             }
             return events;
@@ -60,7 +61,7 @@ namespace Omniscient
             List<Parameter> parameters = new List<Parameter>()
             {
                 new SystemChannelParameter("Channel", (DetectionSystem)eventWatcher){ Value = channel.GetName() },
-                new TimeSpanParameter("Interval") { Value = interval.ToString() }
+                new TimeSpanParameter("Interval") { Value = interval.TotalSeconds.ToString() }
             };
             return parameters;
         }
