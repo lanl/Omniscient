@@ -176,7 +176,8 @@ namespace Omniscient
             List<Parameter> parameters = new List<Parameter>()
             {
                 new SystemChannelParameter("Channel", (DetectionSystem)eventWatcher){ Value = channel.GetName() },
-                new DoubleParameter("Threshold") { Value = threshold.ToString() }
+                new DoubleParameter("Threshold") { Value = threshold.ToString() },
+                new TimeSpanParameter("Debounce Time") { Value = debounceTime.TotalSeconds.ToString() }
             };
             return parameters;
         }
@@ -189,7 +190,8 @@ namespace Omniscient
             TemplateParameters = new List<ParameterTemplate>()
             {
                 new ParameterTemplate("Channel", ParameterType.SystemChannel),
-                new ParameterTemplate("Threshold", ParameterType.Double)
+                new ParameterTemplate("Threshold", ParameterType.Double),
+                new ParameterTemplate("Debounce Time", ParameterType.TimeSpan)
             };
         }
 
@@ -199,6 +201,7 @@ namespace Omniscient
         {
             Channel channel = null;
             double threshold = 0;
+            TimeSpan debounceTime = TimeSpan.FromTicks(0);
             foreach (Parameter param in parameters)
             {
                 switch (param.Name)
@@ -209,41 +212,12 @@ namespace Omniscient
                     case "Threshold":
                         threshold = ((DoubleParameter)param).ToDouble();
                         break;
+                    case "Debounce Time":
+                        debounceTime = ((TimeSpanParameter)param).ToTimeSpan();
+                        break;
                 }
             }
-            return new ThresholdEG(parent, newName, channel, threshold);
-        }
-
-        public override EventGenerator GenerateFromXML(XmlNode eventNode, DetectionSystem system)
-        {
-            Channel channel = null;
-            foreach (Instrument inst in system.GetInstruments())
-            {
-                foreach (Channel ch in inst.GetChannels())
-                {
-                    if (ch.GetName() == eventNode.Attributes["channel"]?.InnerText)
-                        channel = ch;
-                }
-            }
-            if (channel is null) return null;
-            try
-            {
-                ThresholdEG eg = new ThresholdEG(system, eventNode.Attributes["name"]?.InnerText, channel, double.Parse(eventNode.Attributes["threshold"]?.InnerText));
-                if (eventNode.Attributes["debounce_time"] != null)
-                    eg.SetDebounceTime(TimeSpan.FromSeconds(double.Parse(eventNode.Attributes["debounce_time"]?.InnerText)));
-                return eg;
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
-        public override void GenerateXML(XmlWriter xmlWriter, EventGenerator eg)
-        {
-            xmlWriter.WriteAttributeString("channel", ((ThresholdEG)eg).GetChannel().GetName());
-            xmlWriter.WriteAttributeString("threshold", ((ThresholdEG)eg).GetThreshold().ToString());
-            xmlWriter.WriteAttributeString("debounce_time", ((ThresholdEG)eg).GetDebounceTime().TotalSeconds.ToString());
+            return new ThresholdEG(parent, newName, channel, threshold, debounceTime);
         }
     }
 }

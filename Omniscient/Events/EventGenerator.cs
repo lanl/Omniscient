@@ -83,17 +83,51 @@ namespace Omniscient
 
         public static EventGenerator FromXML(XmlNode eventNode, DetectionSystem system)
         {
-            EventGeneratorHookup hookup = GetHookup(eventNode.Attributes["type"]?.InnerText);
-            return hookup?.GenerateFromXML(eventNode, system);
+            string name = eventNode.Attributes["Name"]?.InnerText;
+            EventGeneratorHookup hookup = GetHookup(eventNode.Attributes["Type"]?.InnerText);
+            List<Parameter> parameters = new List<Parameter>();
+            
+            foreach (ParameterTemplate pTemplate in hookup.TemplateParameters)
+            {
+                string paramNameStr = pTemplate.Name.Replace(' ', '_');
+                switch (pTemplate.Type)
+                {
+                    case ParameterType.Double:
+                        parameters.Add(new DoubleParameter(pTemplate.Name) { Value = eventNode.Attributes[paramNameStr]?.InnerText });
+                        break;
+                    case ParameterType.Enum:
+                        parameters.Add(new EnumParameter(pTemplate.Name)
+                        {
+                            Value = eventNode.Attributes[paramNameStr]?.InnerText,
+                            ValidValues = pTemplate.ValidValues
+                        });
+                        break;
+                    case ParameterType.SystemChannel:
+                        parameters.Add(new SystemChannelParameter(pTemplate.Name, system) { Value = eventNode.Attributes[paramNameStr]?.InnerText });
+                        break;
+                    case ParameterType.SystemEventGenerator:
+                        parameters.Add(new SystemEventGeneratorParameter(pTemplate.Name, system) { Value = eventNode.Attributes[paramNameStr]?.InnerText });
+                        break;
+                    case ParameterType.TimeSpan:
+                        parameters.Add(new TimeSpanParameter(pTemplate.Name) { Value = eventNode.Attributes[paramNameStr]?.InnerText });
+                        break;
+                }
+            }
+            return hookup?.FromParameters(system, name, parameters);
         }
 
         public static void ToXML(XmlWriter xmlWriter, EventGenerator eg)
         {
             xmlWriter.WriteStartElement("EventGenerator");
-            xmlWriter.WriteAttributeString("name", eg.GetName());
-            xmlWriter.WriteAttributeString("type", eg.GetEventGeneratorType());
+            xmlWriter.WriteAttributeString("Name", eg.GetName());
+            xmlWriter.WriteAttributeString("Type", eg.GetEventGeneratorType());
             EventGeneratorHookup hookup = GetHookup(eg.GetEventGeneratorType());
-            hookup.GenerateXML(xmlWriter, eg);
+            List<Parameter> parameters = eg.GetParameters();
+            foreach (Parameter param in parameters)
+            {
+                xmlWriter.WriteAttributeString(param.Name.Replace(' ','_'), param.Value);
+            }
+            //hookup.GenerateXML(xmlWriter, eg);
         }
     }
 
@@ -102,7 +136,5 @@ namespace Omniscient
         public abstract EventGenerator FromParameters(EventWatcher parent, string newName, List<Parameter> parameters);
         public abstract string Type { get; }
         public List<ParameterTemplate> TemplateParameters { get; set; }
-        public abstract EventGenerator GenerateFromXML(XmlNode eventNode, DetectionSystem system);
-        public abstract void GenerateXML(XmlWriter xmlWriter, EventGenerator eg);
     }
 }

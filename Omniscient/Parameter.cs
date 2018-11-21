@@ -42,6 +42,42 @@ namespace Omniscient
     public abstract class Parameter
     {
         public ParameterType Type { get; private set; }
+        public static string TypeToString(ParameterType type)
+        {
+            switch(type)
+            {
+                case ParameterType.Double:
+                    return "Double";
+                case ParameterType.Enum:
+                    return "Enum";
+                case ParameterType.SystemChannel:
+                    return "SystemChannel";
+                case ParameterType.SystemEventGenerator:
+                    return "SystemEventGenerator";
+                case ParameterType.TimeSpan:
+                    return "TimeSpan";
+            }
+            return "";
+        }
+
+        public static ParameterType StringToType(string type)
+        {
+            switch(type)
+            {
+                case "Double":
+                    return ParameterType.Double;
+                case "Enum":
+                    return ParameterType.Enum;
+                case "SystemChannel":
+                    return ParameterType.SystemChannel;
+                case "SystemEventGenerator":
+                    return ParameterType.SystemEventGenerator;
+                case "TimeSpan":
+                    return ParameterType.TimeSpan;
+            }
+            return ParameterType.Double;
+        }
+
         public string Name { get; set; }
         public string Value { get; set; }
 

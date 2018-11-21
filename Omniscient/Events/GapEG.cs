@@ -99,34 +99,5 @@ namespace Omniscient
                 new ParameterTemplate("Interval", ParameterType.TimeSpan)
             };
         }
-
-        public override EventGenerator GenerateFromXML(XmlNode eventNode, DetectionSystem system)
-        {
-            Channel channel = null;
-            foreach (Instrument inst in system.GetInstruments())
-            {
-                foreach (Channel ch in inst.GetChannels())
-                {
-                    if (ch.GetName() == eventNode.Attributes["channel"]?.InnerText)
-                        channel = ch;
-                }
-            }
-            if (channel is null) return null;
-            try
-            {
-                GapEG eg = new GapEG(system, eventNode.Attributes["name"]?.InnerText, channel, double.Parse(eventNode.Attributes["interval"]?.InnerText));
-                return eg;
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
-        public override void GenerateXML(XmlWriter xmlWriter, EventGenerator eg)
-        {
-            xmlWriter.WriteAttributeString("channel", ((GapEG)eg).GetChannel().GetName());
-            xmlWriter.WriteAttributeString("interval", ((GapEG)eg).GetInterval().TotalSeconds.ToString());
-        }
     }
 }
