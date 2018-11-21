@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace Omniscient
 {
@@ -36,6 +37,10 @@ namespace Omniscient
                 case ParameterType.TimeSpan:
                     InitializeTimeSpan();
                     break;
+                case ParameterType.FileName:
+                    InitializeFileName();
+                    break;
+
             }
             this.ResumeLayout();
             NameLabel.Text = param.Name +":";
@@ -45,6 +50,7 @@ namespace Omniscient
         {
             switch (parameter.Type)
             {
+                case ParameterType.FileName:
                 case ParameterType.Double:
                     parameter.Value = ((TextBox)paramControls[0]).Text;
                     break;
@@ -89,6 +95,47 @@ namespace Omniscient
         {
             Scrape();
             return parameter;
+        }
+
+        private void InitializeFileName()
+        {
+            TextBox textBox = new TextBox();
+            textBox.Dock = System.Windows.Forms.DockStyle.Left;
+            textBox.Margin = new System.Windows.Forms.Padding(5);
+            textBox.Width = 180;
+            textBox.Text = parameter.Value;
+            paramControls.Add(textBox);
+            this.Controls.Add(textBox);
+            textBox.BringToFront();
+
+            Button button = new Button();
+            button.Dock = DockStyle.Left;
+            button.Margin = new Padding(5);
+            button.Width = 20;
+            button.Height = 20;
+            button.Image = Properties.Resources.OpenIcon;
+            button.Click += OpenFileButton_Click;
+            paramControls.Add(button);
+            this.Controls.Add(button);
+            button.BringToFront();
+        }
+
+        private void OpenFileButton_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog dialog = new OpenFileDialog();
+            if (File.Exists(((TextBox)paramControls[0]).Text))
+            {
+                FileInfo info = new FileInfo(((TextBox)paramControls[0]).Text);
+                dialog.InitialDirectory = info.DirectoryName;
+            }
+            else if (Directory.Exists(((TextBox)paramControls[0]).Text))
+            {
+                dialog.InitialDirectory = ((TextBox)paramControls[0]).Text;
+            }
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                ((TextBox)paramControls[0]).Text = dialog.FileName;
+            }
         }
 
         private void InitializeSimpleTextBox()

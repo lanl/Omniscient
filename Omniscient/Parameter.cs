@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace Omniscient
 {
-    public enum ParameterType { Double, Enum, TimeSpan, SystemChannel, SystemEventGenerator }
+    public enum ParameterType { Double, Enum, TimeSpan, SystemChannel, SystemEventGenerator, FileName }
 
     /// <summary>
     /// A description of a Parameter. Used in Hookups
@@ -214,6 +215,17 @@ namespace Omniscient
                 if (Value == eg.GetName()) return eg;
             }
             return null;
+        }
+    }
+
+    public class FileNameParameter : Parameter
+    {
+        public FileNameParameter(string name) : base(name, ParameterType.FileName) {}
+
+        public override bool Validate()
+        {
+            if (File.Exists(Value)) return true;
+            return false;
         }
     }
 }
