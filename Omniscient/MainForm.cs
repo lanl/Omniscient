@@ -57,6 +57,7 @@ namespace Omniscient
         double mouseY = 0;
         double mouseDownX = 0;
         double mouseDownY = 0;
+        double mouseUpX = 0;
         DateTime mouseTime;
         private bool showMarker = false;
         private double markerValue = 0;
@@ -84,7 +85,6 @@ namespace Omniscient
         {
             this.Text = "Omniscient - Version " + VERSION;
             bootingUp = true;
-            
             StripChart0.MouseDown += new MouseEventHandler(StripChart_MouseClick);
             StripChart1.MouseDown += new MouseEventHandler(StripChart_MouseClick);
             StripChart2.MouseDown += new MouseEventHandler(StripChart_MouseClick);
@@ -307,6 +307,7 @@ namespace Omniscient
                 chart.ChartAreas[0].AxisY.MajorGrid.LineColor = System.Drawing.Color.LightGray;
                 chart.ChartAreas[0].AxisX.ScaleView.Zoomable = true;
                 chart.ChartAreas[0].AxisY.ScaleView.Zoomable = true;
+                chart.Tag = chartNum;
                 chart.GetToolTipText += new EventHandler<ToolTipEventArgs>(GetChartToolTip);
                 // Initizialize chart values
                 /*
@@ -1135,6 +1136,8 @@ namespace Omniscient
         /// Called when a user clicks on any of the charts.</summary>
         private void StripChart_MouseClick(object sender, System.Windows.Forms.MouseEventArgs e)
         {
+            drawHighlightBox = false;
+
             if (e.Button == MouseButtons.Left)
             {
                 Chart chart = (Chart)sender;
@@ -1508,19 +1511,67 @@ namespace Omniscient
 
         Chart downChart;
         bool drawingZoomBox = false;
+        bool drawHighlightBox = false;
         private void StripChart_MouseDown(object sender, MouseEventArgs e)
         {
             downChart = (Chart)sender;
             mouseDownX = downChart.ChartAreas[0].AxisX.PixelPositionToValue(e.X);
+            drawHighlightBox = false;
             drawingZoomBox = true;
+        }
+
+        string boxData;
+        private void CalculateHighlightBoxValues()
+        {
+            boxData = "";
+            int chartNum = (int)downChart.Tag;
+            DateTime start = DateTime.FromOADate(mouseDownX);
+            DateTime end = DateTime.FromOADate(mouseUpX);
+            if (end < start)
+            {
+                DateTime dateTimesScrap = start;
+                start = end;
+                end = dateTimesScrap;
+            }
+            foreach (ChannelPanel chanPan in chPanels)
+            {
+                bool plotChan = false;
+                switch (chartNum)
+                {
+                    case 0:
+                        if (chanPan.Chart1CheckBox.Checked)
+                            plotChan = true;
+                        break;
+                    case 1:
+                        if (chanPan.Chart2CheckBox.Checked)
+                            plotChan = true;
+                        break;
+                    case 2:
+                        if (chanPan.Chart3CheckBox.Checked)
+                            plotChan = true;
+                        break;
+                    case 3:
+                        if (chanPan.Chart4CheckBox.Checked)
+                            plotChan = true;
+                        break;    
+                }
+                if(plotChan)
+                {
+                    Channel ch = chanPan.GetChannel();
+                    boxData += "--" + ch.GetName() + "--\n";
+                    boxData += "μ: " + ch.GetAverage(start, end).ToString("G6") + "\n";
+                    boxData += "σ: " + ch.GetStandardDeviation(start, end).ToString("G6") + "\n";
+                    boxData += "Max: " + ch.GetMax(start, end).ToString("G6") + "\n";
+                    boxData += "Min: " + ch.GetMin(start, end).ToString("G6") + "\n";
+                }
+            }
         }
 
         private void StripChart_MouseUp(object sender, MouseEventArgs e)
         {
-            drawingZoomBox = false;
             Chart chart = (Chart)sender;
             if (chart != downChart) return;
-            double mouseUpX = 0;
+            mouseUpX = 0;
             try
             {
                 mouseUpX = chart.ChartAreas[0].AxisX.PixelPositionToValue(e.X);
@@ -1529,10 +1580,12 @@ namespace Omniscient
             {
                 return;
             }
+            drawingZoomBox = false;
+            
             double mouseDelta = mouseUpX - mouseDownX;
             double range = chart.ChartAreas[0].AxisX.Maximum - chart.ChartAreas[0].AxisX.Minimum;
 
-            if (mouseDelta/range < -0.05)
+            if (mouseDelta/range < -0.05 && controlPressed)
             {
                 // Zoom out
                 try
@@ -1544,18 +1597,29 @@ namespace Omniscient
                 {
                 }
             }
-
-            if (mouseDelta / range > 0.05)
+            else if (mouseDelta / range > 0.05 && controlPressed)
             {
                 chart.ChartAreas[0].AxisX.Minimum = mouseDownX;
                 chart.ChartAreas[0].AxisX.Maximum = mouseUpX;
+            }
+            else if (controlPressed || 
+                ((mouseDelta / range < 0.05) && (mouseDelta/range > -0.05)))
+            {
+                drawHighlightBox = false;
+                return;
+            }
+            else
+            {
+                drawHighlightBox = true;
+                CalculateHighlightBoxValues();
+                return;
             }
             UpdatePickersFromChart(chart);
         }
 
         public void StripChart_Paint(object sender, PaintEventArgs e)
         {
-            if (drawingZoomBox)
+            if (drawingZoomBox || drawHighlightBox)
             {
                 Chart chart = (Chart)sender;
                 Axis X = chart.ChartAreas[0].AxisX;
@@ -1564,6 +1628,10 @@ namespace Omniscient
                 int xNow = (int)mouseX;
                 e.Graphics.DrawRectangle(Pens.Gray, Math.Min(xStart, xNow), (int)Y.ValueToPixelPosition(Y.Maximum),
                     Math.Abs(xStart - xNow), (int)Y.ValueToPixelPosition(Y.Minimum) - (int)Y.ValueToPixelPosition(Y.Maximum));
+                if(drawHighlightBox && chart == downChart)
+                {
+                    e.Graphics.DrawString(boxData, SystemFonts.DefaultFont, SystemBrushes.InfoText, new Point(Math.Min(xStart, xNow) + 5, (int)Y.ValueToPixelPosition(Y.Maximum) + 5));
+                }
             }
         }
 
@@ -1610,6 +1678,23 @@ namespace Omniscient
             }
             UpdateEndPickers();
             UpdateRange();
+        }
+
+        bool controlPressed = false;
+        private void MainForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.ControlKey)
+            {
+                controlPressed = true;
+            }
+        }
+
+        private void MainForm_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.ControlKey)
+            {
+                controlPressed = false;
+            }
         }
     }
 }

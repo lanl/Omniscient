@@ -111,5 +111,105 @@ namespace Omniscient
         public List<double> GetValues() { return values; }
         public List<DataFile> GetFiles() { return files; }
         public Instrument GetInstrument() { return instrument; }
+
+        public double GetAverage(DateTime start, DateTime end)
+        {
+            int count = timeStamps.Count;
+            int startIndex = FindFirstIndexAfter(start);
+            int endIndex = FindFirstIndexAfter(end);
+            if (startIndex >= count || endIndex == 0 || startIndex>=endIndex) return double.NaN;
+
+            double sum = 0;
+            for (int i=startIndex; i<endIndex; ++i)
+            {
+                sum += values[i];
+            }
+            return sum / (endIndex - startIndex);
+        }
+
+        public double GetStandardDeviation(DateTime start, DateTime end)
+        {
+            int count = timeStamps.Count;
+            int startIndex = FindFirstIndexAfter(start);
+            int endIndex = FindFirstIndexAfter(end);
+            if (startIndex >= count || endIndex == 0 || startIndex >= endIndex) return double.NaN;
+
+            double average = GetAverage(start, end);
+            double sumSquareDeviations = 0;
+            for (int i=startIndex; i<endIndex; i++)
+            {
+                sumSquareDeviations += (values[i] - average) * (values[i] - average);
+            }
+
+            return Math.Sqrt(sumSquareDeviations / (endIndex - startIndex));
+        }
+
+        public double GetMax(DateTime start, DateTime end)
+        {
+            int count = timeStamps.Count;
+            int startIndex = FindFirstIndexAfter(start);
+            int endIndex = FindFirstIndexAfter(end);
+            if (startIndex >= count || endIndex == 0 || startIndex >= endIndex) return double.NaN;
+
+            double max = double.MinValue;
+            for (int i=startIndex; i<endIndex; i++)
+            {
+                if (values[i] > max) max = values[i];
+            }
+            return max;
+        }
+
+        public double GetMin(DateTime start, DateTime end)
+        {
+            int count = timeStamps.Count;
+            int startIndex = FindFirstIndexAfter(start);
+            int endIndex = FindFirstIndexAfter(end);
+            if (startIndex >= count || endIndex == 0 || startIndex >= endIndex) return double.NaN;
+
+            double min = double.MaxValue;
+            for (int i = startIndex; i < endIndex; i++)
+            {
+                if (values[i] < min) min = values[i];
+            }
+            return min;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>Binary search FTW</remarks>
+        /// <param name="dateTime"></param>
+        /// <returns></returns>
+        public int FindFirstIndexAfter(DateTime dateTime)
+        {
+            int count = timeStamps.Count;
+            if (count == 0 || timeStamps[0] > dateTime) return 0;
+            if (dateTime > timeStamps[count - 1]) return count;
+
+            int lastSmallerIndex = 0;
+            int lastBiggerIndex = count - 1;
+            int index = count / 2;
+            int nextIndex;
+            while (true)
+            {
+                if (timeStamps[index] > dateTime)
+                {
+                    // Go down
+                    if (timeStamps[index - 1] < dateTime) return index;
+                    nextIndex = (lastSmallerIndex + index) / 2;
+                    lastBiggerIndex = index;
+                    index = nextIndex;
+                }
+                else
+                {
+                    // Go up
+                    if (timeStamps[index + 1] > dateTime) return index + 1;
+                    nextIndex = (lastBiggerIndex + index) / 2;
+                    lastSmallerIndex = index;
+                    index = nextIndex;
+                }
+            }
+        }
+
     }
 }
