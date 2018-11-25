@@ -26,6 +26,7 @@ namespace Omniscient
             this.SuspendLayout();
             switch (parameter.Type)
             {
+                case ParameterType.String:
                 case ParameterType.Int:
                 case ParameterType.Double:
                     InitializeSimpleTextBox();
@@ -42,7 +43,9 @@ namespace Omniscient
                 case ParameterType.FileName:
                     InitializeFileName();
                     break;
-
+                case ParameterType.Directory:
+                    InitializeDirectory();
+                    break;
             }
             this.ResumeLayout();
             NameLabel.Text = param.Name +":";
@@ -53,6 +56,8 @@ namespace Omniscient
             switch (parameter.Type)
             {
                 case ParameterType.FileName:
+                case ParameterType.Directory:
+                case ParameterType.String:
                 case ParameterType.Int:
                 case ParameterType.Double:
                     parameter.Value = ((TextBox)paramControls[0]).Text;
@@ -139,6 +144,43 @@ namespace Omniscient
             if (dialog.ShowDialog() == DialogResult.OK)
             {
                 ((TextBox)paramControls[0]).Text = dialog.FileName;
+            }
+        }
+
+        private void InitializeDirectory()
+        {
+            TextBox textBox = new TextBox();
+            textBox.Dock = System.Windows.Forms.DockStyle.Left;
+            textBox.Margin = new System.Windows.Forms.Padding(5);
+            textBox.Width = 180;
+            textBox.Text = parameter.Value;
+            paramControls.Add(textBox);
+            this.Controls.Add(textBox);
+            textBox.BringToFront();
+
+            Button button = new Button();
+            button.Dock = DockStyle.Left;
+            button.Margin = new Padding(5);
+            button.Width = 20;
+            button.Height = 20;
+            button.Image = Properties.Resources.OpenIcon;
+            button.Click += OpenDirectory_Click;
+            paramControls.Add(button);
+            this.Controls.Add(button);
+            button.BringToFront();
+        }
+
+        private void OpenDirectory_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog dialog = new FolderBrowserDialog();
+            dialog.RootFolder = Environment.SpecialFolder.MyComputer;
+            if (Directory.Exists(((TextBox)paramControls[0]).Text))
+            {
+                dialog.SelectedPath = ((TextBox)paramControls[0]).Text;
+            }
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                ((TextBox)paramControls[0]).Text = dialog.SelectedPath;
             }
         }
 

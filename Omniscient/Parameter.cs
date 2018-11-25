@@ -8,7 +8,7 @@ using System.Xml;
 
 namespace Omniscient
 {
-    public enum ParameterType { Int, Double, Enum, TimeSpan, SystemChannel, SystemEventGenerator, FileName, InstrumentChannel }
+    public enum ParameterType { String, Int, Double, Enum, TimeSpan, SystemChannel, SystemEventGenerator, FileName, Directory, InstrumentChannel }
 
     /// <summary>
     /// A description of a Parameter. Used in Hookups
@@ -52,6 +52,9 @@ namespace Omniscient
                 string paramNameStr = pTemplate.Name.Replace(' ', '_');
                 switch (pTemplate.Type)
                 {
+                    case ParameterType.String:
+                        parameters.Add(new StringParameter(pTemplate.Name) { Value = node.Attributes[paramNameStr]?.InnerText });
+                        break;
                     case ParameterType.Int:
                         parameters.Add(new IntParameter(pTemplate.Name) { Value = node.Attributes[paramNameStr]?.InnerText });
                         break;
@@ -77,6 +80,9 @@ namespace Omniscient
                     case ParameterType.FileName:
                         parameters.Add(new FileNameParameter(pTemplate.Name) { Value = node.Attributes[paramNameStr]?.InnerText });
                         break;
+                    case ParameterType.Directory:
+                        parameters.Add(new DirectoryParameter(pTemplate.Name) { Value = node.Attributes[paramNameStr]?.InnerText });
+                        break;
                     case ParameterType.InstrumentChannel:
                         parameters.Add(new InstrumentChannelParameter(pTemplate.Name, instrument) { Value = node.Attributes[paramNameStr]?.InnerText });
                         break;
@@ -85,53 +91,6 @@ namespace Omniscient
             return parameters;
         }
         public ParameterType Type { get; private set; }
-        public static string TypeToString(ParameterType type)
-        {
-            switch(type)
-            {
-                case ParameterType.Int:
-                    return "Int";
-                case ParameterType.Double:
-                    return "Double";
-                case ParameterType.Enum:
-                    return "Enum";
-                case ParameterType.SystemChannel:
-                    return "SystemChannel";
-                case ParameterType.SystemEventGenerator:
-                    return "SystemEventGenerator";
-                case ParameterType.TimeSpan:
-                    return "TimeSpan";
-                case ParameterType.FileName:
-                    return "FileName";
-                case ParameterType.InstrumentChannel:
-                    return "InstrumentChannel";
-            }
-            return "";
-        }
-
-        public static ParameterType StringToType(string type)
-        {
-            switch(type)
-            {
-                case "Int":
-                    return ParameterType.Int;
-                case "Double":
-                    return ParameterType.Double;
-                case "Enum":
-                    return ParameterType.Enum;
-                case "SystemChannel":
-                    return ParameterType.SystemChannel;
-                case "SystemEventGenerator":
-                    return ParameterType.SystemEventGenerator;
-                case "TimeSpan":
-                    return ParameterType.TimeSpan;
-                case "FileName":
-                    return ParameterType.FileName;
-                case "InstrumentChannel":
-                    return ParameterType.InstrumentChannel;
-            }
-            return ParameterType.Double;
-        }
 
         public string Name { get; set; }
         public string Value { get; set; }
@@ -164,6 +123,16 @@ namespace Omniscient
             }
             return false;
         }
+    }
+
+    /// <summary>
+    /// A simple Parameter for a string. 
+    /// More specifc Parameter types should be used when available.
+    /// </summary>
+    public class StringParameter : Parameter
+    {
+        public StringParameter(string name) : base(name, ParameterType.String) { }
+        public override bool Validate() { return true; }
     }
 
     /// <summary>
@@ -292,6 +261,20 @@ namespace Omniscient
         public override bool Validate()
         {
             if (File.Exists(Value)) return true;
+            return false;
+        }
+    }
+
+    /// <summary>
+    /// A DirectoryParameter stores the name of a directoy on the system.
+    /// </summary>
+    public class DirectoryParameter : Parameter
+    {
+        public DirectoryParameter(string name) : base(name, ParameterType.FileName) { }
+
+        public override bool Validate()
+        {
+            if (Directory.Exists(Value)) return true;
             return false;
         }
     }
