@@ -13,39 +13,70 @@
 // THIS SOFTWARE IS PROVIDED BY LOS ALAMOS NATIONAL SECURITY, LLC AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL LOS ALAMOS NATIONAL SECURITY, LLC OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Omniscient
 {
-    class ROIChannel : VirtualChannel
+    public partial class VirtualChannelTypeDialog : Form
     {
-        ROI roi;
+        public string vcType;
 
-        public ROIChannel(string newName, MCAInstrument parent, ChannelType newType) : base(newName, parent, newType)
+        public VirtualChannelTypeDialog(bool isMCA)
         {
-            VCType = "ROI";
-            roi = new ROI();
+            InitializeComponent();
+            int count = 0;
+            foreach(VirtualChannelHookup hookup in VirtualChannel.Hookups)
+            {
+                Button button = new Button();
+                button.Text = hookup.Type;
+                button.Click += VCButton_Click;
+                button.Width = 120;
+                button.Dock = DockStyle.Left;
+                ButtPanel.Controls.Add(button);
+                button.BringToFront();
+                button.TabIndex = count;
+                count++;
+            }
+            if (isMCA)
+            {
+                Button button = new Button();
+                button.Text = "ROI";
+                button.Click += VCButton_Click;
+                button.Width = 120;
+                button.Dock = DockStyle.Left;
+                ButtPanel.Controls.Add(button);
+                button.BringToFront();
+                button.TabIndex = count;
+                count++;
+            }
+
+            CancelButton.TabIndex = count;
+
+            Width = count * (125) + 25;
         }
 
-        public void AddDataPoint(DateTime time, Spectrum spectrum, TimeSpan duration, DataFile file)
+        private void VCButton_Click(object sender, EventArgs e)
         {
-            timeStamps.Add(time);
-            values.Add(roi.GetROICountRate(spectrum));
-            durations.Add(duration);
-            files.Add(file);
+            vcType = ((Button)sender).Text;
+            DialogResult = DialogResult.OK;
+            Dispose();
         }
 
-        public override void CalculateValues(){}
-
-        public override List<Parameter> GetParameters()
+        private void CancelButton_Click(object sender, EventArgs e)
         {
-            throw new NotImplementedException();
+            DialogResult = DialogResult.Cancel;
+            Dispose();
         }
 
-        public ROI GetROI() { return roi; }
+        private void EventTypeDialog_Load(object sender, EventArgs e)
+        {
 
-        public void SetROI(ROI newROI) { roi = newROI; }
+        }
     }
 }

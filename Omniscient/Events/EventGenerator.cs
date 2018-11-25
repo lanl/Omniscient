@@ -85,34 +85,7 @@ namespace Omniscient
         {
             string name = eventNode.Attributes["Name"]?.InnerText;
             EventGeneratorHookup hookup = GetHookup(eventNode.Attributes["Type"]?.InnerText);
-            List<Parameter> parameters = new List<Parameter>();
-            
-            foreach (ParameterTemplate pTemplate in hookup.TemplateParameters)
-            {
-                string paramNameStr = pTemplate.Name.Replace(' ', '_');
-                switch (pTemplate.Type)
-                {
-                    case ParameterType.Double:
-                        parameters.Add(new DoubleParameter(pTemplate.Name) { Value = eventNode.Attributes[paramNameStr]?.InnerText });
-                        break;
-                    case ParameterType.Enum:
-                        parameters.Add(new EnumParameter(pTemplate.Name)
-                        {
-                            Value = eventNode.Attributes[paramNameStr]?.InnerText,
-                            ValidValues = pTemplate.ValidValues
-                        });
-                        break;
-                    case ParameterType.SystemChannel:
-                        parameters.Add(new SystemChannelParameter(pTemplate.Name, system) { Value = eventNode.Attributes[paramNameStr]?.InnerText });
-                        break;
-                    case ParameterType.SystemEventGenerator:
-                        parameters.Add(new SystemEventGeneratorParameter(pTemplate.Name, system) { Value = eventNode.Attributes[paramNameStr]?.InnerText });
-                        break;
-                    case ParameterType.TimeSpan:
-                        parameters.Add(new TimeSpanParameter(pTemplate.Name) { Value = eventNode.Attributes[paramNameStr]?.InnerText });
-                        break;
-                }
-            }
+            List<Parameter> parameters = Parameter.FromXML(eventNode, hookup.TemplateParameters, system);
             return hookup?.FromParameters(system, name, parameters);
         }
 
@@ -121,7 +94,6 @@ namespace Omniscient
             xmlWriter.WriteStartElement("EventGenerator");
             xmlWriter.WriteAttributeString("Name", eg.GetName());
             xmlWriter.WriteAttributeString("Type", eg.GetEventGeneratorType());
-            EventGeneratorHookup hookup = GetHookup(eg.GetEventGeneratorType());
             List<Parameter> parameters = eg.GetParameters();
             foreach (Parameter param in parameters)
             {

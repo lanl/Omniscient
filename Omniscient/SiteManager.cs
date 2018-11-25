@@ -158,69 +158,7 @@ namespace Omniscient
                                             }
                                             if (chanNode.Attributes["type"]?.InnerText != "ROI")
                                             {
-                                                VirtualChannel chan = new VirtualChannel(chanNode.Attributes["name"]?.InnerText,
-                                                                                        newInstrument, chanA.GetChannelType());
-                                                chan.SetChannelA(chanA);
-                                                switch (chanNode.Attributes["type"]?.InnerText)
-                                                {
-                                                    case "RATIO":
-                                                        chan.SetVirtualChannelType(VirtualChannel.VirtualChannelType.RATIO);
-                                                        break;
-                                                    case "SUM":
-                                                        chan.SetVirtualChannelType(VirtualChannel.VirtualChannelType.SUM);
-                                                        break;
-                                                    case "DIFFERENCE":
-                                                        chan.SetVirtualChannelType(VirtualChannel.VirtualChannelType.DIFFERENCE);
-                                                        break;
-                                                    case "ADD_CONST":
-                                                        chan.SetVirtualChannelType(VirtualChannel.VirtualChannelType.ADD_CONST);
-                                                        break;
-                                                    case "SCALE":
-                                                        chan.SetVirtualChannelType(VirtualChannel.VirtualChannelType.SCALE);
-                                                        break;
-                                                    case "DELAY":
-                                                        chan.SetVirtualChannelType(VirtualChannel.VirtualChannelType.DELAY);
-                                                        break;
-                                                    case "CONVOLVE":
-                                                        chan.SetVirtualChannelType(VirtualChannel.VirtualChannelType.CONVOLVE);
-                                                        break;
-                                                    case "LOCAL_MAX":
-                                                        chan.SetVirtualChannelType(VirtualChannel.VirtualChannelType.LOCAL_MAX);
-                                                        break;
-                                                    case "LOCAL_MIN":
-                                                        chan.SetVirtualChannelType(VirtualChannel.VirtualChannelType.LOCAL_MIN);
-                                                        break;
-                                                    default:
-                                                        return ReturnCode.CORRUPTED_FILE;
-                                                }
-                                                switch (chan.GetVirtualChannelType())
-                                                {
-                                                    case VirtualChannel.VirtualChannelType.RATIO:
-                                                    case VirtualChannel.VirtualChannelType.SUM:
-                                                    case VirtualChannel.VirtualChannelType.DIFFERENCE:
-                                                        Channel chanB = null;
-                                                        foreach (Channel ch in newInstrument.GetChannels())
-                                                        {
-                                                            if (ch.GetName() == chanNode.Attributes["channel_B"]?.InnerText)
-                                                                chanB = ch;
-                                                        }
-                                                        chan.SetChannelB(chanB);
-                                                        break;
-                                                    case VirtualChannel.VirtualChannelType.ADD_CONST:
-                                                    case VirtualChannel.VirtualChannelType.SCALE:
-                                                    case VirtualChannel.VirtualChannelType.LOCAL_MAX:
-                                                    case VirtualChannel.VirtualChannelType.LOCAL_MIN:
-                                                        chan.SetConstant(double.Parse(chanNode.Attributes["constant"]?.InnerText));
-                                                        break;
-                                                    case VirtualChannel.VirtualChannelType.DELAY:
-                                                        chan.SetDelay(TimeSpan.FromSeconds(double.Parse(chanNode.Attributes["delay"]?.InnerText)));
-                                                        break;
-                                                    case VirtualChannel.VirtualChannelType.CONVOLVE:
-                                                        chan.SetDataFileName(chanNode.Attributes["data_file"]?.InnerText);
-                                                        break;
-                                                    default:
-                                                        return ReturnCode.CORRUPTED_FILE;
-                                                }
+                                                VirtualChannel chan = VirtualChannel.FromXML(chanNode, newInstrument);
                                                 newInstrument.GetVirtualChannels().Add(chan);
                                             }
                                             else
@@ -386,41 +324,22 @@ namespace Omniscient
                             }
                             foreach (VirtualChannel chan in inst.GetVirtualChannels())
                             {
-                                xmlWriter.WriteStartElement("VirtualChannel");
-                                xmlWriter.WriteAttributeString("name", chan.GetName());
-                                xmlWriter.WriteAttributeString("type", chan.GetVirtualChannelType().ToString());
-                                switch (chan.GetVirtualChannelType())
+                                if (chan is ROIChannel)
                                 {
-                                    case VirtualChannel.VirtualChannelType.RATIO:
-                                    case VirtualChannel.VirtualChannelType.SUM:
-                                    case VirtualChannel.VirtualChannelType.DIFFERENCE:
-                                        xmlWriter.WriteAttributeString("channel_A", chan.GetChannelA().GetName());
-                                        xmlWriter.WriteAttributeString("channel_B", chan.GetChannelB().GetName());
-                                        break;
-                                    case VirtualChannel.VirtualChannelType.ADD_CONST:
-                                    case VirtualChannel.VirtualChannelType.SCALE:
-                                    case VirtualChannel.VirtualChannelType.LOCAL_MAX:
-                                    case VirtualChannel.VirtualChannelType.LOCAL_MIN:
-                                        xmlWriter.WriteAttributeString("channel_A", chan.GetChannelA().GetName());
-                                        xmlWriter.WriteAttributeString("constant", chan.GetConstant().ToString());
-                                        break;
-                                    case VirtualChannel.VirtualChannelType.DELAY:
-                                        xmlWriter.WriteAttributeString("channel_A", chan.GetChannelA().GetName());
-                                        xmlWriter.WriteAttributeString("delay", chan.GetDelay().TotalSeconds.ToString());
-                                        break;
-                                    case VirtualChannel.VirtualChannelType.CONVOLVE:
-                                        xmlWriter.WriteAttributeString("channel_A", chan.GetChannelA().GetName());
-                                        xmlWriter.WriteAttributeString("data_file", chan.GetDataFileName());
-                                        break;
-                                    case VirtualChannel.VirtualChannelType.ROI:
-                                        xmlWriter.WriteAttributeString("roi_start", ((ROIChannel)chan).GetROI().GetROIStart().ToString());
-                                        xmlWriter.WriteAttributeString("roi_end", ((ROIChannel)chan).GetROI().GetROIEnd().ToString());
-                                        xmlWriter.WriteAttributeString("bg1_start", ((ROIChannel)chan).GetROI().GetBG1Start().ToString());
-                                        xmlWriter.WriteAttributeString("bg1_end", ((ROIChannel)chan).GetROI().GetBG1End().ToString());
-                                        xmlWriter.WriteAttributeString("bg2_start", ((ROIChannel)chan).GetROI().GetBG2Start().ToString());
-                                        xmlWriter.WriteAttributeString("bg2_end", ((ROIChannel)chan).GetROI().GetBG2End().ToString());
-                                        xmlWriter.WriteAttributeString("bg_type", (ROI.BGTypeToString(((ROIChannel)chan).GetROI().GetBGType())));
-                                        break;
+                                    xmlWriter.WriteStartElement("VirtualChannel");
+                                    xmlWriter.WriteAttributeString("name", chan.GetName());
+                                    xmlWriter.WriteAttributeString("type", chan.VCType);
+                                    xmlWriter.WriteAttributeString("roi_start", ((ROIChannel)chan).GetROI().GetROIStart().ToString());
+                                    xmlWriter.WriteAttributeString("roi_end", ((ROIChannel)chan).GetROI().GetROIEnd().ToString());
+                                    xmlWriter.WriteAttributeString("bg1_start", ((ROIChannel)chan).GetROI().GetBG1Start().ToString());
+                                    xmlWriter.WriteAttributeString("bg1_end", ((ROIChannel)chan).GetROI().GetBG1End().ToString());
+                                    xmlWriter.WriteAttributeString("bg2_start", ((ROIChannel)chan).GetROI().GetBG2Start().ToString());
+                                    xmlWriter.WriteAttributeString("bg2_end", ((ROIChannel)chan).GetROI().GetBG2End().ToString());
+                                    xmlWriter.WriteAttributeString("bg_type", (ROI.BGTypeToString(((ROIChannel)chan).GetROI().GetBGType())));
+                                }
+                                else
+                                {
+                                    VirtualChannel.ToXML(xmlWriter, chan);
                                 }
                                 xmlWriter.WriteEndElement();
                             }

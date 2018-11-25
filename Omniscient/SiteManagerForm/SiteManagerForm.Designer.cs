@@ -56,11 +56,7 @@ namespace Omniscient
             this.FileExtensionComboBox = new System.Windows.Forms.ComboBox();
             this.label24 = new System.Windows.Forms.Label();
             this.VirtualChannelGroupBox = new System.Windows.Forms.GroupBox();
-            this.VCTwoChannelPanel = new System.Windows.Forms.Panel();
-            this.label10 = new System.Windows.Forms.Label();
-            this.VirtualChannelChanBComboBox = new System.Windows.Forms.ComboBox();
-            this.label9 = new System.Windows.Forms.Label();
-            this.VirtualChannelChanAComboBox = new System.Windows.Forms.ComboBox();
+            this.VCParameterListPanel = new Omniscient.Controls.ParameterListPanel();
             this.ROIVCPanel = new System.Windows.Forms.Panel();
             this.label20 = new System.Windows.Forms.Label();
             this.BG2EndTextBox = new System.Windows.Forms.TextBox();
@@ -76,28 +72,10 @@ namespace Omniscient
             this.ROIEndTextBox = new System.Windows.Forms.TextBox();
             this.ROIStartTextBox = new System.Windows.Forms.TextBox();
             this.label16 = new System.Windows.Forms.Label();
-            this.VCChannelConstPanel = new System.Windows.Forms.Panel();
-            this.VirtualChannelConstantTextBox = new System.Windows.Forms.TextBox();
-            this.label11 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.VirtualChannelChannelComboBox = new System.Windows.Forms.ComboBox();
-            this.VCDelayPanel = new System.Windows.Forms.Panel();
-            this.DelayComboBox = new System.Windows.Forms.ComboBox();
-            this.DelayTextBox = new System.Windows.Forms.TextBox();
-            this.label13 = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
-            this.DelayChannelComboBox = new System.Windows.Forms.ComboBox();
-            this.ConvolvePanel = new System.Windows.Forms.Panel();
-            this.FilterFileBbutton = new System.Windows.Forms.Button();
-            this.FilterFileTextBox = new System.Windows.Forms.TextBox();
-            this.label25 = new System.Windows.Forms.Label();
-            this.label26 = new System.Windows.Forms.Label();
-            this.ConvolveChannelComboBox = new System.Windows.Forms.ComboBox();
             this.VCTopPanel = new System.Windows.Forms.Panel();
             this.VCDownButton = new System.Windows.Forms.Button();
             this.VCUpButton = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
-            this.VirtualChannelTypeComboBox = new System.Windows.Forms.ComboBox();
             this.VirtualChannelNameTextBox = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.RemoveVirtualChannelButton = new System.Windows.Forms.Button();
@@ -137,13 +115,10 @@ namespace Omniscient
             this.panel4 = new System.Windows.Forms.Panel();
             this.ExportButton = new System.Windows.Forms.Button();
             this.ImportButton = new System.Windows.Forms.Button();
+            this.VirtualChannelTypeTextBox = new System.Windows.Forms.TextBox();
             this.InstrumentPanel.SuspendLayout();
             this.VirtualChannelGroupBox.SuspendLayout();
-            this.VCTwoChannelPanel.SuspendLayout();
             this.ROIVCPanel.SuspendLayout();
-            this.VCChannelConstPanel.SuspendLayout();
-            this.VCDelayPanel.SuspendLayout();
-            this.ConvolvePanel.SuspendLayout();
             this.VCTopPanel.SuspendLayout();
             this.NewButtonPanel.SuspendLayout();
             this.BottomRightPanel.SuspendLayout();
@@ -162,7 +137,7 @@ namespace Omniscient
             this.SitesTreeView.Location = new System.Drawing.Point(10, 10);
             this.SitesTreeView.Name = "SitesTreeView";
             this.SitesTreeView.ShowNodeToolTips = true;
-            this.SitesTreeView.Size = new System.Drawing.Size(380, 551);
+            this.SitesTreeView.Size = new System.Drawing.Size(380, 621);
             this.SitesTreeView.TabIndex = 0;
             this.SitesTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.SitesTreeView_AfterSelect);
             // 
@@ -236,7 +211,7 @@ namespace Omniscient
             this.InstrumentPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.InstrumentPanel.Location = new System.Drawing.Point(0, 126);
             this.InstrumentPanel.Name = "InstrumentPanel";
-            this.InstrumentPanel.Size = new System.Drawing.Size(334, 470);
+            this.InstrumentPanel.Size = new System.Drawing.Size(362, 470);
             this.InstrumentPanel.TabIndex = 9;
             // 
             // NHeadersTextBox
@@ -295,66 +270,26 @@ namespace Omniscient
             // 
             // VirtualChannelGroupBox
             // 
-            this.VirtualChannelGroupBox.Controls.Add(this.VCTwoChannelPanel);
+            this.VirtualChannelGroupBox.Controls.Add(this.VCParameterListPanel);
             this.VirtualChannelGroupBox.Controls.Add(this.ROIVCPanel);
-            this.VirtualChannelGroupBox.Controls.Add(this.VCChannelConstPanel);
-            this.VirtualChannelGroupBox.Controls.Add(this.VCDelayPanel);
-            this.VirtualChannelGroupBox.Controls.Add(this.ConvolvePanel);
             this.VirtualChannelGroupBox.Controls.Add(this.VCTopPanel);
             this.VirtualChannelGroupBox.Location = new System.Drawing.Point(3, 189);
             this.VirtualChannelGroupBox.Name = "VirtualChannelGroupBox";
-            this.VirtualChannelGroupBox.Size = new System.Drawing.Size(328, 247);
+            this.VirtualChannelGroupBox.Size = new System.Drawing.Size(356, 220);
             this.VirtualChannelGroupBox.TabIndex = 21;
             this.VirtualChannelGroupBox.TabStop = false;
             this.VirtualChannelGroupBox.Text = "Virtual Channel";
             // 
-            // VCTwoChannelPanel
+            // VCParameterListPanel
             // 
-            this.VCTwoChannelPanel.Controls.Add(this.label10);
-            this.VCTwoChannelPanel.Controls.Add(this.VirtualChannelChanBComboBox);
-            this.VCTwoChannelPanel.Controls.Add(this.label9);
-            this.VCTwoChannelPanel.Controls.Add(this.VirtualChannelChanAComboBox);
-            this.VCTwoChannelPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.VCTwoChannelPanel.Location = new System.Drawing.Point(3, 364);
-            this.VCTwoChannelPanel.Name = "VCTwoChannelPanel";
-            this.VCTwoChannelPanel.Size = new System.Drawing.Size(322, 62);
-            this.VCTwoChannelPanel.TabIndex = 7;
-            // 
-            // label10
-            // 
-            this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(30, 36);
-            this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(56, 13);
-            this.label10.TabIndex = 22;
-            this.label10.Text = "Channel B";
-            // 
-            // VirtualChannelChanBComboBox
-            // 
-            this.VirtualChannelChanBComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.VirtualChannelChanBComboBox.FormattingEnabled = true;
-            this.VirtualChannelChanBComboBox.Location = new System.Drawing.Point(95, 33);
-            this.VirtualChannelChanBComboBox.Name = "VirtualChannelChanBComboBox";
-            this.VirtualChannelChanBComboBox.Size = new System.Drawing.Size(159, 21);
-            this.VirtualChannelChanBComboBox.TabIndex = 21;
-            // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(30, 9);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(56, 13);
-            this.label9.TabIndex = 20;
-            this.label9.Text = "Channel A";
-            // 
-            // VirtualChannelChanAComboBox
-            // 
-            this.VirtualChannelChanAComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.VirtualChannelChanAComboBox.FormattingEnabled = true;
-            this.VirtualChannelChanAComboBox.Location = new System.Drawing.Point(95, 6);
-            this.VirtualChannelChanAComboBox.Name = "VirtualChannelChanAComboBox";
-            this.VirtualChannelChanAComboBox.Size = new System.Drawing.Size(159, 21);
-            this.VirtualChannelChanAComboBox.TabIndex = 19;
+            this.VCParameterListPanel.AutoScroll = true;
+            this.VCParameterListPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.VCParameterListPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.VCParameterListPanel.Location = new System.Drawing.Point(3, 194);
+            this.VCParameterListPanel.Name = "VCParameterListPanel";
+            this.VCParameterListPanel.Padding = new System.Windows.Forms.Padding(5);
+            this.VCParameterListPanel.Size = new System.Drawing.Size(350, 120);
+            this.VCParameterListPanel.TabIndex = 11;
             // 
             // ROIVCPanel
             // 
@@ -373,9 +308,9 @@ namespace Omniscient
             this.ROIVCPanel.Controls.Add(this.ROIStartTextBox);
             this.ROIVCPanel.Controls.Add(this.label16);
             this.ROIVCPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.ROIVCPanel.Location = new System.Drawing.Point(3, 248);
+            this.ROIVCPanel.Location = new System.Drawing.Point(3, 78);
             this.ROIVCPanel.Name = "ROIVCPanel";
-            this.ROIVCPanel.Size = new System.Drawing.Size(322, 116);
+            this.ROIVCPanel.Size = new System.Drawing.Size(350, 116);
             this.ROIVCPanel.TabIndex = 10;
             // 
             // label20
@@ -496,185 +431,18 @@ namespace Omniscient
             this.label16.TabIndex = 20;
             this.label16.Text = "ROI Bounds (keV)";
             // 
-            // VCChannelConstPanel
-            // 
-            this.VCChannelConstPanel.Controls.Add(this.VirtualChannelConstantTextBox);
-            this.VCChannelConstPanel.Controls.Add(this.label11);
-            this.VCChannelConstPanel.Controls.Add(this.label12);
-            this.VCChannelConstPanel.Controls.Add(this.VirtualChannelChannelComboBox);
-            this.VCChannelConstPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.VCChannelConstPanel.Location = new System.Drawing.Point(3, 190);
-            this.VCChannelConstPanel.Name = "VCChannelConstPanel";
-            this.VCChannelConstPanel.Size = new System.Drawing.Size(322, 58);
-            this.VCChannelConstPanel.TabIndex = 8;
-            this.VCChannelConstPanel.Visible = false;
-            // 
-            // VirtualChannelConstantTextBox
-            // 
-            this.VirtualChannelConstantTextBox.Location = new System.Drawing.Point(94, 33);
-            this.VirtualChannelConstantTextBox.Name = "VirtualChannelConstantTextBox";
-            this.VirtualChannelConstantTextBox.Size = new System.Drawing.Size(160, 20);
-            this.VirtualChannelConstantTextBox.TabIndex = 23;
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(37, 36);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(49, 13);
-            this.label11.TabIndex = 22;
-            this.label11.Text = "Constant";
-            // 
-            // label12
-            // 
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(40, 9);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(46, 13);
-            this.label12.TabIndex = 20;
-            this.label12.Text = "Channel";
-            // 
-            // VirtualChannelChannelComboBox
-            // 
-            this.VirtualChannelChannelComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.VirtualChannelChannelComboBox.FormattingEnabled = true;
-            this.VirtualChannelChannelComboBox.Location = new System.Drawing.Point(95, 6);
-            this.VirtualChannelChannelComboBox.Name = "VirtualChannelChannelComboBox";
-            this.VirtualChannelChannelComboBox.Size = new System.Drawing.Size(159, 21);
-            this.VirtualChannelChannelComboBox.TabIndex = 19;
-            // 
-            // VCDelayPanel
-            // 
-            this.VCDelayPanel.Controls.Add(this.DelayComboBox);
-            this.VCDelayPanel.Controls.Add(this.DelayTextBox);
-            this.VCDelayPanel.Controls.Add(this.label13);
-            this.VCDelayPanel.Controls.Add(this.label14);
-            this.VCDelayPanel.Controls.Add(this.DelayChannelComboBox);
-            this.VCDelayPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.VCDelayPanel.Location = new System.Drawing.Point(3, 132);
-            this.VCDelayPanel.Name = "VCDelayPanel";
-            this.VCDelayPanel.Size = new System.Drawing.Size(322, 58);
-            this.VCDelayPanel.TabIndex = 9;
-            this.VCDelayPanel.Visible = false;
-            // 
-            // DelayComboBox
-            // 
-            this.DelayComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.DelayComboBox.FormattingEnabled = true;
-            this.DelayComboBox.Items.AddRange(new object[] {
-            "Seconds",
-            "Minutes",
-            "Hours",
-            "Days"});
-            this.DelayComboBox.Location = new System.Drawing.Point(153, 31);
-            this.DelayComboBox.Name = "DelayComboBox";
-            this.DelayComboBox.Size = new System.Drawing.Size(114, 21);
-            this.DelayComboBox.TabIndex = 33;
-            // 
-            // DelayTextBox
-            // 
-            this.DelayTextBox.Location = new System.Drawing.Point(95, 31);
-            this.DelayTextBox.Name = "DelayTextBox";
-            this.DelayTextBox.Size = new System.Drawing.Size(52, 20);
-            this.DelayTextBox.TabIndex = 32;
-            // 
-            // label13
-            // 
-            this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(37, 36);
-            this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(34, 13);
-            this.label13.TabIndex = 22;
-            this.label13.Text = "Delay";
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(40, 9);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(46, 13);
-            this.label14.TabIndex = 20;
-            this.label14.Text = "Channel";
-            // 
-            // DelayChannelComboBox
-            // 
-            this.DelayChannelComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.DelayChannelComboBox.FormattingEnabled = true;
-            this.DelayChannelComboBox.Location = new System.Drawing.Point(95, 6);
-            this.DelayChannelComboBox.Name = "DelayChannelComboBox";
-            this.DelayChannelComboBox.Size = new System.Drawing.Size(159, 21);
-            this.DelayChannelComboBox.TabIndex = 19;
-            // 
-            // ConvolvePanel
-            // 
-            this.ConvolvePanel.Controls.Add(this.FilterFileBbutton);
-            this.ConvolvePanel.Controls.Add(this.FilterFileTextBox);
-            this.ConvolvePanel.Controls.Add(this.label25);
-            this.ConvolvePanel.Controls.Add(this.label26);
-            this.ConvolvePanel.Controls.Add(this.ConvolveChannelComboBox);
-            this.ConvolvePanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.ConvolvePanel.Location = new System.Drawing.Point(3, 74);
-            this.ConvolvePanel.Name = "ConvolvePanel";
-            this.ConvolvePanel.Size = new System.Drawing.Size(322, 58);
-            this.ConvolvePanel.TabIndex = 35;
-            this.ConvolvePanel.Visible = false;
-            // 
-            // FilterFileBbutton
-            // 
-            this.FilterFileBbutton.Image = ((System.Drawing.Image)(resources.GetObject("FilterFileBbutton.Image")));
-            this.FilterFileBbutton.Location = new System.Drawing.Point(261, 24);
-            this.FilterFileBbutton.Name = "FilterFileBbutton";
-            this.FilterFileBbutton.Size = new System.Drawing.Size(28, 28);
-            this.FilterFileBbutton.TabIndex = 33;
-            this.FilterFileBbutton.UseVisualStyleBackColor = true;
-            this.FilterFileBbutton.Click += new System.EventHandler(this.FilterFileBbutton_Click);
-            // 
-            // FilterFileTextBox
-            // 
-            this.FilterFileTextBox.Location = new System.Drawing.Point(95, 31);
-            this.FilterFileTextBox.Name = "FilterFileTextBox";
-            this.FilterFileTextBox.Size = new System.Drawing.Size(158, 20);
-            this.FilterFileTextBox.TabIndex = 32;
-            // 
-            // label25
-            // 
-            this.label25.AutoSize = true;
-            this.label25.Location = new System.Drawing.Point(37, 36);
-            this.label25.Name = "label25";
-            this.label25.Size = new System.Drawing.Size(48, 13);
-            this.label25.TabIndex = 22;
-            this.label25.Text = "Filter File";
-            // 
-            // label26
-            // 
-            this.label26.AutoSize = true;
-            this.label26.Location = new System.Drawing.Point(40, 9);
-            this.label26.Name = "label26";
-            this.label26.Size = new System.Drawing.Size(46, 13);
-            this.label26.TabIndex = 20;
-            this.label26.Text = "Channel";
-            // 
-            // ConvolveChannelComboBox
-            // 
-            this.ConvolveChannelComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.ConvolveChannelComboBox.FormattingEnabled = true;
-            this.ConvolveChannelComboBox.Location = new System.Drawing.Point(95, 6);
-            this.ConvolveChannelComboBox.Name = "ConvolveChannelComboBox";
-            this.ConvolveChannelComboBox.Size = new System.Drawing.Size(159, 21);
-            this.ConvolveChannelComboBox.TabIndex = 19;
-            // 
             // VCTopPanel
             // 
+            this.VCTopPanel.Controls.Add(this.VirtualChannelTypeTextBox);
             this.VCTopPanel.Controls.Add(this.VCDownButton);
             this.VCTopPanel.Controls.Add(this.VCUpButton);
             this.VCTopPanel.Controls.Add(this.label8);
-            this.VCTopPanel.Controls.Add(this.VirtualChannelTypeComboBox);
             this.VCTopPanel.Controls.Add(this.VirtualChannelNameTextBox);
             this.VCTopPanel.Controls.Add(this.label7);
             this.VCTopPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.VCTopPanel.Location = new System.Drawing.Point(3, 16);
             this.VCTopPanel.Name = "VCTopPanel";
-            this.VCTopPanel.Size = new System.Drawing.Size(322, 58);
+            this.VCTopPanel.Size = new System.Drawing.Size(350, 62);
             this.VCTopPanel.TabIndex = 6;
             // 
             // VCDownButton
@@ -705,24 +473,6 @@ namespace Omniscient
             this.label8.Size = new System.Drawing.Size(31, 13);
             this.label8.TabIndex = 20;
             this.label8.Text = "Type";
-            // 
-            // VirtualChannelTypeComboBox
-            // 
-            this.VirtualChannelTypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.VirtualChannelTypeComboBox.FormattingEnabled = true;
-            this.VirtualChannelTypeComboBox.Items.AddRange(new object[] {
-            "Ratio",
-            "Sum",
-            "Difference",
-            "Add Constant",
-            "Scale",
-            "Delay",
-            "Convolve"});
-            this.VirtualChannelTypeComboBox.Location = new System.Drawing.Point(96, 29);
-            this.VirtualChannelTypeComboBox.Name = "VirtualChannelTypeComboBox";
-            this.VirtualChannelTypeComboBox.Size = new System.Drawing.Size(159, 21);
-            this.VirtualChannelTypeComboBox.TabIndex = 19;
-            this.VirtualChannelTypeComboBox.SelectedIndexChanged += new System.EventHandler(this.VirtualChannelTypeComboBox_SelectedIndexChanged);
             // 
             // VirtualChannelNameTextBox
             // 
@@ -839,7 +589,7 @@ namespace Omniscient
             this.NewButtonPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.NewButtonPanel.Location = new System.Drawing.Point(0, 0);
             this.NewButtonPanel.Name = "NewButtonPanel";
-            this.NewButtonPanel.Size = new System.Drawing.Size(334, 71);
+            this.NewButtonPanel.Size = new System.Drawing.Size(362, 71);
             this.NewButtonPanel.TabIndex = 10;
             // 
             // NewInstrumentButton
@@ -888,9 +638,9 @@ namespace Omniscient
             this.BottomRightPanel.Controls.Add(this.SaveButton);
             this.BottomRightPanel.Controls.Add(this.ExitButton);
             this.BottomRightPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.BottomRightPanel.Location = new System.Drawing.Point(5, 506);
+            this.BottomRightPanel.Location = new System.Drawing.Point(5, 576);
             this.BottomRightPanel.Name = "BottomRightPanel";
-            this.BottomRightPanel.Size = new System.Drawing.Size(380, 60);
+            this.BottomRightPanel.Size = new System.Drawing.Size(408, 60);
             this.BottomRightPanel.TabIndex = 11;
             // 
             // DiscardButton
@@ -930,7 +680,7 @@ namespace Omniscient
             this.LeftPanel.Location = new System.Drawing.Point(0, 0);
             this.LeftPanel.Name = "LeftPanel";
             this.LeftPanel.Padding = new System.Windows.Forms.Padding(10);
-            this.LeftPanel.Size = new System.Drawing.Size(400, 571);
+            this.LeftPanel.Size = new System.Drawing.Size(400, 641);
             this.LeftPanel.TabIndex = 12;
             // 
             // RightPanel
@@ -943,7 +693,7 @@ namespace Omniscient
             this.RightPanel.Location = new System.Drawing.Point(400, 0);
             this.RightPanel.Name = "RightPanel";
             this.RightPanel.Padding = new System.Windows.Forms.Padding(5);
-            this.RightPanel.Size = new System.Drawing.Size(390, 571);
+            this.RightPanel.Size = new System.Drawing.Size(418, 641);
             this.RightPanel.TabIndex = 13;
             // 
             // InnerRightPanel
@@ -955,7 +705,7 @@ namespace Omniscient
             this.InnerRightPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.InnerRightPanel.Location = new System.Drawing.Point(51, 35);
             this.InnerRightPanel.Name = "InnerRightPanel";
-            this.InnerRightPanel.Size = new System.Drawing.Size(334, 471);
+            this.InnerRightPanel.Size = new System.Drawing.Size(362, 541);
             this.InnerRightPanel.TabIndex = 13;
             // 
             // SystemPanel
@@ -969,7 +719,7 @@ namespace Omniscient
             this.SystemPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.SystemPanel.Location = new System.Drawing.Point(0, 596);
             this.SystemPanel.Name = "SystemPanel";
-            this.SystemPanel.Size = new System.Drawing.Size(334, 100);
+            this.SystemPanel.Size = new System.Drawing.Size(362, 100);
             this.SystemPanel.TabIndex = 12;
             // 
             // DeclarationCheckBox
@@ -1035,7 +785,7 @@ namespace Omniscient
             this.NamePanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.NamePanel.Location = new System.Drawing.Point(0, 71);
             this.NamePanel.Name = "NamePanel";
-            this.NamePanel.Size = new System.Drawing.Size(334, 55);
+            this.NamePanel.Size = new System.Drawing.Size(362, 55);
             this.NamePanel.TabIndex = 11;
             // 
             // LeftRightPanel
@@ -1048,7 +798,7 @@ namespace Omniscient
             this.LeftRightPanel.Location = new System.Drawing.Point(5, 35);
             this.LeftRightPanel.Name = "LeftRightPanel";
             this.LeftRightPanel.Padding = new System.Windows.Forms.Padding(2);
-            this.LeftRightPanel.Size = new System.Drawing.Size(46, 471);
+            this.LeftRightPanel.Size = new System.Drawing.Size(46, 541);
             this.LeftRightPanel.TabIndex = 14;
             // 
             // RemoveButton
@@ -1063,7 +813,7 @@ namespace Omniscient
             // DownButton
             // 
             this.DownButton.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.DownButton.Location = new System.Drawing.Point(2, 425);
+            this.DownButton.Location = new System.Drawing.Point(2, 495);
             this.DownButton.Name = "DownButton";
             this.DownButton.Size = new System.Drawing.Size(38, 40);
             this.DownButton.TabIndex = 1;
@@ -1087,7 +837,7 @@ namespace Omniscient
             this.panel4.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel4.Location = new System.Drawing.Point(5, 5);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(380, 30);
+            this.panel4.Size = new System.Drawing.Size(408, 30);
             this.panel4.TabIndex = 12;
             // 
             // ExportButton
@@ -1110,11 +860,19 @@ namespace Omniscient
             this.ImportButton.UseVisualStyleBackColor = true;
             this.ImportButton.Click += new System.EventHandler(this.ImportButton_Click);
             // 
+            // VirtualChannelTypeTextBox
+            // 
+            this.VirtualChannelTypeTextBox.Enabled = false;
+            this.VirtualChannelTypeTextBox.Location = new System.Drawing.Point(95, 29);
+            this.VirtualChannelTypeTextBox.Name = "VirtualChannelTypeTextBox";
+            this.VirtualChannelTypeTextBox.Size = new System.Drawing.Size(160, 20);
+            this.VirtualChannelTypeTextBox.TabIndex = 23;
+            // 
             // SiteManagerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(790, 571);
+            this.ClientSize = new System.Drawing.Size(818, 641);
             this.ControlBox = false;
             this.Controls.Add(this.RightPanel);
             this.Controls.Add(this.LeftPanel);
@@ -1126,16 +884,8 @@ namespace Omniscient
             this.InstrumentPanel.ResumeLayout(false);
             this.InstrumentPanel.PerformLayout();
             this.VirtualChannelGroupBox.ResumeLayout(false);
-            this.VCTwoChannelPanel.ResumeLayout(false);
-            this.VCTwoChannelPanel.PerformLayout();
             this.ROIVCPanel.ResumeLayout(false);
             this.ROIVCPanel.PerformLayout();
-            this.VCChannelConstPanel.ResumeLayout(false);
-            this.VCChannelConstPanel.PerformLayout();
-            this.VCDelayPanel.ResumeLayout(false);
-            this.VCDelayPanel.PerformLayout();
-            this.ConvolvePanel.ResumeLayout(false);
-            this.ConvolvePanel.PerformLayout();
             this.VCTopPanel.ResumeLayout(false);
             this.VCTopPanel.PerformLayout();
             this.NewButtonPanel.ResumeLayout(false);
@@ -1195,25 +945,8 @@ namespace Omniscient
         private System.Windows.Forms.GroupBox VirtualChannelGroupBox;
         private System.Windows.Forms.Panel VCTopPanel;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.ComboBox VirtualChannelTypeComboBox;
         private System.Windows.Forms.TextBox VirtualChannelNameTextBox;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Panel VCTwoChannelPanel;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.ComboBox VirtualChannelChanBComboBox;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.ComboBox VirtualChannelChanAComboBox;
-        private System.Windows.Forms.Panel VCChannelConstPanel;
-        private System.Windows.Forms.TextBox VirtualChannelConstantTextBox;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.ComboBox VirtualChannelChannelComboBox;
-        private System.Windows.Forms.Panel VCDelayPanel;
-        private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.Label label14;
-        private System.Windows.Forms.ComboBox DelayChannelComboBox;
-        private System.Windows.Forms.ComboBox DelayComboBox;
-        private System.Windows.Forms.TextBox DelayTextBox;
         private System.Windows.Forms.Button VCDownButton;
         private System.Windows.Forms.Button VCUpButton;
         private System.Windows.Forms.Panel ROIVCPanel;
@@ -1240,15 +973,11 @@ namespace Omniscient
         private System.Windows.Forms.Label label22;
         private System.Windows.Forms.ComboBox FileExtensionComboBox;
         private System.Windows.Forms.Label label24;
-        private System.Windows.Forms.Panel ConvolvePanel;
-        private System.Windows.Forms.Button FilterFileBbutton;
-        private System.Windows.Forms.TextBox FilterFileTextBox;
-        private System.Windows.Forms.Label label25;
-        private System.Windows.Forms.Label label26;
-        private System.Windows.Forms.ComboBox ConvolveChannelComboBox;
         private System.Windows.Forms.TextBox NHeadersTextBox;
         private System.Windows.Forms.Label label28;
         private System.Windows.Forms.TextBox NChannelsTextBox;
         private System.Windows.Forms.Label label27;
+        private Controls.ParameterListPanel VCParameterListPanel;
+        private System.Windows.Forms.TextBox VirtualChannelTypeTextBox;
     }
 }

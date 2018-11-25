@@ -26,12 +26,14 @@ namespace Omniscient
             this.SuspendLayout();
             switch (parameter.Type)
             {
+                case ParameterType.Int:
                 case ParameterType.Double:
                     InitializeSimpleTextBox();
                     break;
                 case ParameterType.Enum:
                 case ParameterType.SystemChannel:
                 case ParameterType.SystemEventGenerator:
+                case ParameterType.InstrumentChannel:
                     InitializeLimitedValues();
                     break;
                 case ParameterType.TimeSpan:
@@ -51,12 +53,14 @@ namespace Omniscient
             switch (parameter.Type)
             {
                 case ParameterType.FileName:
+                case ParameterType.Int:
                 case ParameterType.Double:
                     parameter.Value = ((TextBox)paramControls[0]).Text;
                     break;
                 case ParameterType.Enum:
                 case ParameterType.SystemChannel:
                 case ParameterType.SystemEventGenerator:
+                case ParameterType.InstrumentChannel:
                     parameter.Value = ((ComboBox)paramControls[0]).Text;
                     break;
                 case ParameterType.TimeSpan:
@@ -155,7 +159,7 @@ namespace Omniscient
             ComboBox comboBox = new ComboBox();
             comboBox.Dock = DockStyle.Left;
             comboBox.Margin = new Padding(5);
-            comboBox.Width = 120;
+            comboBox.Width = 180;
             foreach(string value in ((LimitedValueParameter)parameter).ValidValues)
             {
                 comboBox.Items.Add(value);
