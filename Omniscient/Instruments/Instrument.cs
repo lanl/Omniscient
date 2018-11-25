@@ -16,15 +16,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
-
+using System.Xml;
 
 namespace Omniscient
 {
     public abstract class Instrument
     {
+        public static readonly InstrumentHookup[] Hookups = new InstrumentHookup[]
+        {
+            new CSVInstrumentHookup(),
+            new GRANDInstrumentHookup(),
+            new ISRInstrumentHookup(),
+            new MCAInstrumentHookup(),
+            new NGAMInstrumentHookup()
+        };
+
         protected string name;
-        protected string instrumentType;
+        public string InstrumentType { get; protected set; }
         protected string dataFolder;
         protected string filePrefix;
 
@@ -63,7 +71,7 @@ namespace Omniscient
         }
 
         public string GetName() { return name; }
-        public string GetInstrumentType() { return instrumentType; }
+        public string GetInstrumentType() { return InstrumentType; }
         public string GetDataFolder() { return dataFolder; }
         public string GetFilePrefix() { return filePrefix; }
         public int GetNumChannels() { return numChannels; }
@@ -79,11 +87,78 @@ namespace Omniscient
             }
             return result;
         }
-        //public Channel GetChannel(int chanNum)
-        //{
-
-        //    return channels[chanNum];
-        //}
+        
         public List<VirtualChannel> GetVirtualChannels() { return virtualChannels; }
+
+        public abstract List<Parameter> GetParameters();
+
+        protected List<Parameter> GetStandardInstrumentParameters()
+        {
+            List<Parameter> parameters = new List<Parameter>()
+            {
+                new StringParameter("File Prefix") { Value = filePrefix },
+                new DirectoryParameter("Data Directory"){ Value = dataFolder }                
+            };
+            return parameters;
+        }
+
+        public static void ApplyStandardInstrumentParameters(Instrument instrument, List<Parameter> parameters)
+        {
+            foreach (Parameter param in parameters)
+            {
+                switch (param.Name)
+                {
+                    case "File Prefix":
+                        instrument.filePrefix = param.Value;
+                        break;
+                    case "Data Directory":
+                        instrument.dataFolder = param.Value;
+                        break;
+                }
+            }
+        }
+
+        public static InstrumentHookup GetHookup(string type)
+        {
+            foreach (InstrumentHookup hookup in Hookups)
+            {
+                if (hookup.Type == type)
+                {
+                    return hookup;
+                }
+            }
+            return null;
+        }
+
+        public static Instrument FromXML(XmlNode node, DetectionSystem system)
+        {
+            string name = node.Attributes["Name"]?.InnerText;
+            InstrumentHookup hookup = GetHookup(node.Attributes["Type"]?.InnerText);
+            List<Parameter> parameters = Parameter.FromXML(node, hookup.TemplateParameters, system);
+            return hookup?.FromParameters(name, parameters);
+        }
+
+        public static void ToXML(XmlWriter xmlWriter, Instrument instrument)
+        {
+            xmlWriter.WriteStartElement("Instrument");
+            xmlWriter.WriteAttributeString("Name", instrument.GetName());
+            xmlWriter.WriteAttributeString("Type", instrument.GetInstrumentType());
+            List<Parameter> parameters = instrument.GetParameters();
+            foreach (Parameter param in parameters)
+            {
+                xmlWriter.WriteAttributeString(param.Name.Replace(' ', '_'), param.Value);
+            }
+        }
+    }
+
+    public abstract class InstrumentHookup
+    {
+        public abstract Instrument FromParameters(string newName, List<Parameter> parameters);
+        public abstract string Type { get; }
+        public List<ParameterTemplate> TemplateParameters { get; set; } = new List<ParameterTemplate>()
+        {
+            new ParameterTemplate("File Prefix", ParameterType.String),
+            new ParameterTemplate("Data Directory", ParameterType.Directory)
+        };
     }
 }

@@ -40,7 +40,7 @@ namespace Omniscient
 
         public GRANDInstrument(string newName) : base(newName)
         {
-            instrumentType = "GRAND";
+            InstrumentType = "GRAND";
             FileExtension = FILE_EXTENSION;
             filePrefix = "";
             bidFiles = new string[0];
@@ -144,6 +144,25 @@ namespace Omniscient
             {
                 ch.ClearData();
             }
+        }
+
+        public override List<Parameter> GetParameters()
+        {
+            return GetStandardInstrumentParameters();
+        }
+    }
+
+    public class GRANDInstrumentHookup : InstrumentHookup
+    {
+        public GRANDInstrumentHookup() { }
+
+        public override string Type { get { return "GRAND"; } }
+
+        public override Instrument FromParameters(string newName, List<Parameter> parameters)
+        {
+            GRANDInstrument instrument = new GRANDInstrument(newName);
+            Instrument.ApplyStandardInstrumentParameters(instrument, parameters);
+            return instrument;
         }
     }
 }

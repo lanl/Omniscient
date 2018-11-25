@@ -24,7 +24,7 @@ namespace Omniscient
 
         public CSVInstrument(string newName, int nChannels) : base(newName)
         {
-            instrumentType = "CSV";
+            InstrumentType = "CSV";
             numChannels = nChannels;
             FileExtension = FILE_EXTENSION;
             filePrefix = "";
@@ -36,7 +36,7 @@ namespace Omniscient
             csvParser.NumberOfColumns = numChannels + 1;
 
             channels = new Channel[numChannels];
-            for (int i=0; i<numChannels; i++)
+            for (int i = 0; i < numChannels; i++)
                 channels[i] = new Channel(name + "-" + i.ToString(), this, Channel.ChannelType.COUNT_RATE);
         }
 
@@ -79,7 +79,7 @@ namespace Omniscient
                 for (int r = 0; r < numRecords; ++r)
                 {
                     time = csvParser.TimeStamps[r];
-                    for (int c = 0; c<numChannels; c++)
+                    for (int c = 0; c < numChannels; c++)
                     {
                         channels[c].AddDataPoint(time, csvParser.Data[r, c], dataFile);
                     }
@@ -126,6 +126,50 @@ namespace Omniscient
             name = newName;
             for (int i = 0; i < numChannels; i++)
                 channels[i].SetName(name + "-" + i.ToString());
+        }
+
+        public override List<Parameter> GetParameters()
+        {
+            List<Parameter> parameters = GetStandardInstrumentParameters();
+            parameters.Add(new IntParameter("Headers") { Value = NumberOfHeaders.ToString() });
+            parameters.Add(new IntParameter("Channels") { Value = numChannels.ToString() });
+            return parameters;
+        }
+    }
+
+
+    public class CSVInstrumentHookup : InstrumentHookup
+    {
+        public CSVInstrumentHookup()
+        {
+            TemplateParameters.AddRange( new List<ParameterTemplate>() {
+                new ParameterTemplate("Headers", ParameterType.Int),
+                new ParameterTemplate("Channels", ParameterType.Int)
+                });
+        }
+
+        public override string Type { get { return "CSV"; } }
+
+        public override Instrument FromParameters(string newName, List<Parameter> parameters)
+        {
+            int nHeaders = 0;
+            int nChannels = 0;
+            foreach (Parameter param in parameters)
+            {
+                switch (param.Name)
+                {
+                    case "Headers":
+                        nHeaders = ((IntParameter)param).ToInt();
+                        break;
+                    case "Channels":
+                        nChannels = ((IntParameter)param).ToInt();
+                        break;
+                }
+            }
+            CSVInstrument instrument = new CSVInstrument(newName, nChannels);
+            instrument.NumberOfHeaders = nHeaders;
+            Instrument.ApplyStandardInstrumentParameters(instrument, parameters);
+            return instrument;
         }
     }
 }

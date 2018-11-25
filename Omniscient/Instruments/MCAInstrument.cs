@@ -55,7 +55,7 @@ namespace Omniscient
 
         public MCAInstrument(string newName) : base(newName)
         {
-            instrumentType = "MCA";
+            InstrumentType = "MCA";
             FileExtension = FILE_EXTENSION;
             filePrefix = "";
             chnFiles = new string[0];
@@ -149,6 +149,46 @@ namespace Omniscient
             {
                 ch.ClearData();
             }
+        }
+
+        public override List<Parameter> GetParameters()
+        {
+            List<Parameter> parameters = GetStandardInstrumentParameters();
+            parameters.Add(new EnumParameter("File Extension")
+            {
+                Value = FileExtension,
+                ValidValues = { "chn", "spe" }
+            });
+            return parameters;
+        }
+    }
+
+    public class MCAInstrumentHookup : InstrumentHookup
+    {
+        public MCAInstrumentHookup()
+        {
+            TemplateParameters.Add(new ParameterTemplate("File Extension", ParameterType.Enum)
+            {
+                ValidValues = { "chn", "spe" }
+            });
+        }
+
+        public override string Type { get { return "MCA"; } }
+
+        public override Instrument FromParameters(string newName, List<Parameter> parameters)
+        {
+            MCAInstrument instrument = new MCAInstrument(newName);
+            Instrument.ApplyStandardInstrumentParameters(instrument, parameters);
+            foreach (Parameter param in parameters)
+            {
+                switch (param.Name)
+                {
+                    case "File Extension":
+                        instrument.FileExtension = param.Value;
+                        break;
+                }
+            }
+            return instrument;
         }
     }
 }

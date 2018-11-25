@@ -37,7 +37,7 @@ namespace Omniscient
 
         public ISRInstrument(string newName) : base(newName)
         {
-            instrumentType = "ISR";
+            InstrumentType = "ISR";
             FileExtension = FILE_EXTENSION;
             filePrefix = "";
             isrFiles = new string[0];
@@ -134,6 +134,44 @@ namespace Omniscient
             }
         }
 
+        public override List<Parameter> GetParameters()
+        {
+            List<Parameter> parameters = GetStandardInstrumentParameters();
+            parameters.Add(new EnumParameter("File Extension")
+            {
+                Value = FileExtension,
+                ValidValues = {"isr", "jsr", "hmr"}
+            });
+            return parameters;
+        }
+    }
 
+    public class ISRInstrumentHookup : InstrumentHookup
+    {
+        public ISRInstrumentHookup()
+        {
+            TemplateParameters.Add(new ParameterTemplate("File Extension", ParameterType.Enum)
+            {
+                ValidValues = {"isr", "jsr", "hmr"}
+            });
+        }
+
+        public override string Type { get { return "ISR"; } }
+
+        public override Instrument FromParameters(string newName, List<Parameter> parameters)
+        {
+            ISRInstrument instrument = new ISRInstrument(newName);
+            Instrument.ApplyStandardInstrumentParameters(instrument, parameters);
+            foreach (Parameter param in parameters)
+            {
+                switch (param.Name)
+                {
+                    case "File Extension":
+                        instrument.FileExtension = param.Value;
+                        break;
+                }
+            }
+            return instrument;
+        }
     }
 }

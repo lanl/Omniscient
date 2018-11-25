@@ -33,7 +33,7 @@ namespace Omniscient
 
         public DeclarationInstrument(string newName) : base(newName)
         {
-            instrumentType = "Declaration";
+            InstrumentType = "Declaration";
             filePrefix = "";
             decFiles = new string[0];
             decDates = new DateTime[0];

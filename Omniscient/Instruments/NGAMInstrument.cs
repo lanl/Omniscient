@@ -41,7 +41,7 @@ namespace Omniscient
 
         public NGAMInstrument(string newName) : base(newName)
         {
-            instrumentType = "NGAM";
+            InstrumentType = "NGAM";
             FileExtension = FILE_EXTENSION;
             filePrefix = "";
             vbfFiles = new string[0];
@@ -149,6 +149,25 @@ namespace Omniscient
             {
                 ch.ClearData();
             }
+        }
+
+        public override List<Parameter> GetParameters()
+        {
+            return GetStandardInstrumentParameters();
+        }
+    }
+
+    public class NGAMInstrumentHookup : InstrumentHookup
+    {
+        public NGAMInstrumentHookup() { }
+
+        public override string Type { get { return "NGAM"; } }
+
+        public override Instrument FromParameters(string newName, List<Parameter> parameters)
+        {
+            NGAMInstrument instrument = new NGAMInstrument(newName);
+            Instrument.ApplyStandardInstrumentParameters(instrument, parameters);
+            return instrument;
         }
     }
 }
