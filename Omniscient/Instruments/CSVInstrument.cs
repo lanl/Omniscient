@@ -94,6 +94,7 @@ namespace Omniscient
 
         public override void ScanDataFolder()
         {
+            if (string.IsNullOrEmpty(dataFolder)) return;
             csvParser.NumberOfHeaders = NumberOfHeaders;
             List<string> csvFileList = new List<string>();
             List<DateTime> csvDateList = new List<DateTime>();
@@ -134,6 +135,23 @@ namespace Omniscient
             parameters.Add(new IntParameter("Headers") { Value = NumberOfHeaders.ToString() });
             parameters.Add(new IntParameter("Channels") { Value = numChannels.ToString() });
             return parameters;
+        }
+
+        public override void ApplyParameters(List<Parameter> parameters)
+        {
+            ApplyStandardInstrumentParameters(this, parameters);
+            foreach (Parameter param in parameters)
+            {
+                switch (param.Name)
+                {
+                    case "Headers":
+                        NumberOfHeaders = ((IntParameter)param).ToInt();
+                        break;
+                    case "Channels":
+                        SetNumberOfChannels(((IntParameter)param).ToInt());
+                        break;
+                }
+            }
         }
     }
 

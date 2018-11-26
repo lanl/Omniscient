@@ -251,51 +251,9 @@ namespace Omniscient
             {
                 Instrument inst = (Instrument)node.Tag;
                 TypeLabel.Text = "Instrument";
-                NHeadersTextBox.Text = "";
-                NHeadersTextBox.Enabled = false;
-                NChannelsTextBox.Text = "";
-                NChannelsTextBox.Enabled = false;
-                if (inst is MCAInstrument)
-                {
-                    InstTypeComboBox.Text = "MCA";
-                    FileExtensionComboBox.Items.Clear();
-                    FileExtensionComboBox.Items.Add("chn");
-                    FileExtensionComboBox.Items.Add("spe");
-                }
-                else if (inst is ISRInstrument)
-                { 
-                    InstTypeComboBox.Text = "ISR";
-                    FileExtensionComboBox.Items.Clear();
-                    FileExtensionComboBox.Items.Add("isr");
-                    FileExtensionComboBox.Items.Add("jsr");
-                    FileExtensionComboBox.Items.Add("hmr");
-                }
-                else if (inst is GRANDInstrument)
-                { 
-                    InstTypeComboBox.Text = "GRAND";
-                    FileExtensionComboBox.Items.Clear();
-                    FileExtensionComboBox.Items.Add("bid");
-                }
-                else if (inst is CSVInstrument)
-                {
-                    InstTypeComboBox.Text = "CSV";
-                    FileExtensionComboBox.Items.Clear();
-                    FileExtensionComboBox.Items.Add("csv");
-                    NHeadersTextBox.Enabled = true;
-                    NHeadersTextBox.Text = ((CSVInstrument)inst).NumberOfHeaders.ToString();
-                    NChannelsTextBox.Enabled = true;
-                    NChannelsTextBox.Text = inst.GetNumChannels().ToString();
-                }
-                else if (inst is NGAMInstrument)
-                {
-                    InstTypeComboBox.Text = "NGAM";
-                    FileExtensionComboBox.Items.Clear();
-                    FileExtensionComboBox.Items.Add("vbf");
-                }
-                FileExtensionComboBox.Text = inst.FileExtension;
-                PrefixTextBox.Text = inst.GetFilePrefix();
-                DirectoryTextBox.Text = inst.GetDataFolder();
-
+                InstrumentParameterListPanel.LoadParameters(inst.GetParameters());
+                InstTypeTextBox.Text = inst.InstrumentType;
+                
                 VirtualChannelsComboBox.Items.Clear();
                 //VirtualChannelsComboBox.Text = "";
                 if (inst.GetVirtualChannels().Count > 0)
@@ -527,40 +485,13 @@ namespace Omniscient
                     MessageBox.Show("All items in the Site Manager require a unique name!");
                     return;
                 }
-                inst.SetName(NameTextBox.Text);
-                try
-                {
-                    inst.FileExtension = FileExtensionComboBox.Text;
-                }
-                catch
-                {
-                    MessageBox.Show("Invalid file extension!");
-                    return;
-                }
-                inst.SetFilePrefix(PrefixTextBox.Text);
-                inst.SetDataFolder(DirectoryTextBox.Text);
-                if (inst is CSVInstrument)
-                {
-                    CSVInstrument csvInst = (CSVInstrument)inst;
-                    try
-                    {
-                        csvInst.SetNumberOfChannels(int.Parse(NChannelsTextBox.Text));
-                    }
-                    catch
-                    {
-                        MessageBox.Show("Invalid number of channels!");
-                        return;
-                    }
-                    try
-                    {
-                        csvInst.NumberOfHeaders = int.Parse(NHeadersTextBox.Text);
-                    }
-                    catch
-                    {
-                        MessageBox.Show("Invalid number of headers!");
-                        return;
-                    }
-                }
+                if (!InstrumentParameterListPanel.ValidateInput()) return;
+                string name = NameTextBox.Text;
+                string type = inst.InstrumentType;
+
+                inst.SetName(name);
+                inst.ApplyParameters(InstrumentParameterListPanel.Parameters);
+                
                 foreach(VirtualChannel chan in inst.GetVirtualChannels())
                 {
                     if (chan.GetName() == VirtualChannelsComboBox.Text)
@@ -636,16 +567,6 @@ namespace Omniscient
 
             // G - Select new node after deleting
             SitesTreeView.SelectedNode = SitesTreeView.TopNode;
-        }
-
-        private void DirectoryButton_Click(object sender, EventArgs e)
-        {
-            FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
-            DialogResult result = folderBrowserDialog.ShowDialog();
-            if (result == DialogResult.OK)
-            {
-                DirectoryTextBox.Text = folderBrowserDialog.SelectedPath;
-            }
         }
 
         private void NewSiteButton_Click(object sender, EventArgs e)
@@ -767,7 +688,7 @@ namespace Omniscient
         private void NewInstrumentButton_Click(object sender, EventArgs e)
         {
             // Choose instrument type
-            InstrumentTypeDialog dialog = new InstrumentTypeDialog();
+            InstTypeDialog dialog = new InstTypeDialog();
             DialogResult result = dialog.ShowDialog();
             if (result == DialogResult.Cancel) return;
 
@@ -793,57 +714,45 @@ namespace Omniscient
             int iteration = 0;
 
             string name = "";
+            string type = dialog.instrumentType;
 
-            Instrument newInstrument;
-
-            switch (dialog.InstrumentType)
+            while (!uniqueName)
             {
-                case "CSV":
-                    while (!uniqueName)
-                    {
-                        iteration++;
-                        name = "New-CSV-" + iteration.ToString();
-                        uniqueName = !siteMan.ContainsName(name);
-                    }
-                    newInstrument = new CSVInstrument(name, 1);
-                    break;
-                case "GRAND":
-                    while (!uniqueName)
-                    {
-                        iteration++;
-                        name = "New-GRAND-" + iteration.ToString();
-                        uniqueName = !siteMan.ContainsName(name);
-                    }
-                    newInstrument = new GRANDInstrument(name);
-                    break;
-                case "NGAM":
-                    while (!uniqueName)
-                    {
-                        iteration++;
-                        name = "New-NGAM-" + iteration.ToString();
-                        uniqueName = !siteMan.ContainsName(name);
-                    }
-                    newInstrument = new NGAMInstrument(name);
-                    break;
-                case "ISR":
-                    while (!uniqueName)
-                    {
-                        iteration++;
-                        name = "New-ISR-" + iteration.ToString();
-                        uniqueName = !siteMan.ContainsName(name);
-                    }
-                    newInstrument = new ISRInstrument(name);
-                    break;
-                default:                // MCA
-                    while (!uniqueName)
-                    {
-                        iteration++;
-                        name = "New-MCA-" + iteration.ToString();
-                        uniqueName = !siteMan.ContainsName(name);
-                    }
-                    newInstrument = new MCAInstrument(name);
-                    break;
+                iteration++;
+                name = "New-" + type + "-" + iteration.ToString();
+                uniqueName = !siteMan.ContainsName(name);
             }
+
+            InstrumentHookup hookup = Instrument.GetHookup(type);
+            List<Parameter> parameters = new List<Parameter>();
+            foreach (ParameterTemplate paramTemp in hookup.TemplateParameters)
+            {
+                switch (paramTemp.Type)
+                {
+                    case ParameterType.String:
+                        parameters.Add(new StringParameter(paramTemp.Name) { Value = "" });
+                        break;
+                    case ParameterType.Int:
+                        parameters.Add(new IntParameter(paramTemp.Name) { Value = "0" });
+                        break;
+                    case ParameterType.Double:
+                        parameters.Add(new DoubleParameter(paramTemp.Name) { Value = "0" });
+                        break;
+                    case ParameterType.Enum:
+                        parameters.Add(new EnumParameter(paramTemp.Name) { Value = paramTemp.ValidValues[0], ValidValues = paramTemp.ValidValues });
+                        break;
+                    case ParameterType.TimeSpan:
+                        parameters.Add(new TimeSpanParameter(paramTemp.Name) { Value = "0" });
+                        break;
+                    case ParameterType.FileName:
+                        parameters.Add(new FileNameParameter(paramTemp.Name) { Value = "" });
+                        break;
+                    case ParameterType.Directory:
+                        parameters.Add(new DirectoryParameter(paramTemp.Name) { Value = "" });
+                        break;
+                }
+            }
+            Instrument newInstrument = hookup.FromParameters(name, parameters);
 
             sys.GetInstruments().Insert(index, newInstrument);
             siteMan.Save();

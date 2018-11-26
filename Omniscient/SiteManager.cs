@@ -109,53 +109,13 @@ namespace Omniscient
                         {
                             if (instrumentNode.Name == "Instrument")
                             {
-                                Instrument newInstrument;
-                                switch (instrumentNode.Attributes["type"]?.InnerText)
-                                {
-                                    case "ISR":
-                                        newInstrument = new ISRInstrument(instrumentNode.Attributes["name"]?.InnerText);
-                                        break;
-                                    case "GRAND":
-                                        newInstrument = new GRANDInstrument(instrumentNode.Attributes["name"]?.InnerText);
-                                        break;
-                                    case "MCA":
-                                        newInstrument = new MCAInstrument(instrumentNode.Attributes["name"]?.InnerText);
-                                        break;
-                                    case "NGAM":
-                                        newInstrument = new NGAMInstrument(instrumentNode.Attributes["name"]?.InnerText);
-                                        break;
-                                    case "CSV":
-                                        newInstrument = new CSVInstrument(instrumentNode.Attributes["name"]?.InnerText,
-                                                                           int.Parse(instrumentNode.Attributes["nChannels"]?.InnerText));
-                                        ((CSVInstrument)newInstrument).NumberOfHeaders = int.Parse(instrumentNode.Attributes["nHeaders"]?.InnerText);
-                                        break;
-                                    case "Declaration":
-                                        newInstrument = new DeclarationInstrument(instrumentNode.Attributes["name"]?.InnerText);
-                                        break;
-                                    default:
-                                        return ReturnCode.CORRUPTED_FILE;
-                                }
+                                Instrument newInstrument = Instrument.FromXML(instrumentNode, newSystem);
                                 if (!newInstrument.Equals(null))
                                 {
-                                    if (instrumentNode.Attributes["file_extension"] != null)
-                                    {
-                                        newInstrument.FileExtension = instrumentNode.Attributes["file_extension"].InnerText;
-                                    }
-                                    if (instrumentNode.Attributes["file_prefix"] != null)
-                                    {
-                                        newInstrument.SetFilePrefix(instrumentNode.Attributes["file_prefix"].InnerText);
-                                    }
-                                    newInstrument.SetDataFolder(instrumentNode.Attributes["directory"]?.InnerText);
                                     foreach(XmlNode chanNode in instrumentNode.ChildNodes)
                                     {
                                         try
                                         {
-                                            Channel chanA = null;
-                                            foreach (Channel ch in newInstrument.GetChannels())
-                                            {
-                                                if (ch.GetName() == chanNode.Attributes["channel_A"]?.InnerText)
-                                                    chanA = ch;
-                                            }
                                             if (chanNode.Attributes["type"]?.InnerText != "ROI")
                                             {
                                                 VirtualChannel chan = VirtualChannel.FromXML(chanNode, newInstrument);
@@ -311,17 +271,7 @@ namespace Omniscient
                         xmlWriter.WriteAttributeString("name", sys.GetName());
                         foreach (Instrument inst in sys.GetInstruments())
                         {
-                            xmlWriter.WriteStartElement("Instrument");
-                            xmlWriter.WriteAttributeString("name", inst.GetName());
-                            xmlWriter.WriteAttributeString("file_extension", inst.FileExtension);
-                            xmlWriter.WriteAttributeString("file_prefix", inst.GetFilePrefix());
-                            xmlWriter.WriteAttributeString("type", inst.GetInstrumentType());
-                            xmlWriter.WriteAttributeString("directory", inst.GetDataFolder());
-                            if (inst is CSVInstrument)
-                            {
-                                xmlWriter.WriteAttributeString("nHeaders", ((CSVInstrument)inst).NumberOfHeaders.ToString());
-                                xmlWriter.WriteAttributeString("nChannels", inst.GetNumChannels().ToString());
-                            }
+                            Instrument.ToXML(xmlWriter, inst);
                             foreach (VirtualChannel chan in inst.GetVirtualChannels())
                             {
                                 if (chan is ROIChannel)

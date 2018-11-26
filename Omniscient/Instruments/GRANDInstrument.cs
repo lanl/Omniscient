@@ -72,6 +72,7 @@ namespace Omniscient
 
         public override void ScanDataFolder()
         {
+            if (string.IsNullOrEmpty(dataFolder)) return;
             List<string> bidFileList = new List<string>();
             List<DateTime> bidDateList = new List<DateTime>();
 
@@ -149,6 +150,10 @@ namespace Omniscient
         public override List<Parameter> GetParameters()
         {
             return GetStandardInstrumentParameters();
+        }
+        public override void ApplyParameters(List<Parameter> parameters)
+        {
+            ApplyStandardInstrumentParameters(this, parameters);
         }
     }
 

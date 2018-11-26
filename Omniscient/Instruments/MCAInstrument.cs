@@ -32,24 +32,24 @@ namespace Omniscient
         string[] chnFiles;
         DateTime[] chnDates;
 
-        private string fileExtension;
         public override string FileExtension
         {
-            get { return fileExtension; }
+            get { return _fileExtension; }
             set
             {
                 if (value == "chn")
                 {
                     spectrumParser = new CHNParser();
-                    fileExtension = value;
+                    _fileExtension = value;
                 }
                 else if (value == "spe")
                 {
                     spectrumParser = new SPEParser();
-                    fileExtension = value;
+                    _fileExtension = value;
                 }
                 else
-                    throw new ArgumentException("File extension must be chn or spe!");   
+                    throw new ArgumentException("File extension must be chn or spe!");
+                ScanDataFolder();
             }
         }
 
@@ -75,6 +75,7 @@ namespace Omniscient
 
         public override void ScanDataFolder()
         {
+            if (string.IsNullOrEmpty(dataFolder))  return;
             List<string> chnFileList = new List<string>();
             List<DateTime> chnDateList = new List<DateTime>();
 
@@ -82,7 +83,7 @@ namespace Omniscient
             foreach (string file in filesInDirectory)
             {
                 string fileAbrev = file.Substring(file.LastIndexOf('\\') + 1);
-                if (fileAbrev.Substring(fileAbrev.Length - 4).ToLower() == ("." + fileExtension) && fileAbrev.ToLower().StartsWith(filePrefix.ToLower()))
+                if (fileAbrev.Substring(fileAbrev.Length - 4).ToLower() == ("." + FileExtension) && fileAbrev.ToLower().StartsWith(filePrefix.ToLower()))
                 {
                     if (spectrumParser.ParseSpectrumFile(file) == ReturnCode.SUCCESS)
                     {
@@ -160,6 +161,20 @@ namespace Omniscient
                 ValidValues = { "chn", "spe" }
             });
             return parameters;
+        }
+
+        public override void ApplyParameters(List<Parameter> parameters)
+        {
+            ApplyStandardInstrumentParameters(this, parameters);
+            foreach (Parameter param in parameters)
+            {
+                switch (param.Name)
+                {
+                    case "File Extension":
+                        FileExtension = param.Value;
+                        break;
+                }
+            }
         }
     }
 

@@ -65,6 +65,7 @@ namespace Omniscient
 
         public override void ScanDataFolder()
         {
+            if (string.IsNullOrEmpty(dataFolder)) return;
             List<string> isrFileList = new List<string>();
             List<DateTime> isrDateList = new List<DateTime>();
 
@@ -143,6 +144,19 @@ namespace Omniscient
                 ValidValues = {"isr", "jsr", "hmr"}
             });
             return parameters;
+        }
+        public override void ApplyParameters(List<Parameter> parameters)
+        {
+            ApplyStandardInstrumentParameters(this, parameters);
+            foreach (Parameter param in parameters)
+            {
+                switch (param.Name)
+                {
+                    case "File Extension":
+                        FileExtension = param.Value;
+                        break;
+                }
+            }
         }
     }
 

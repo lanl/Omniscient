@@ -75,6 +75,7 @@ namespace Omniscient
 
         public override void ScanDataFolder()
         {
+            if (string.IsNullOrEmpty(dataFolder)) return;
             List<string> vbfFileList = new List<string>();
             List<DateTime> vbfDateList = new List<DateTime>();
 
@@ -154,6 +155,10 @@ namespace Omniscient
         public override List<Parameter> GetParameters()
         {
             return GetStandardInstrumentParameters();
+        }
+        public override void ApplyParameters(List<Parameter> parameters)
+        {
+            ApplyStandardInstrumentParameters(this, parameters);
         }
     }
 

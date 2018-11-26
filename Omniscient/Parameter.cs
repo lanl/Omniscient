@@ -270,7 +270,7 @@ namespace Omniscient
     /// </summary>
     public class DirectoryParameter : Parameter
     {
-        public DirectoryParameter(string name) : base(name, ParameterType.FileName) { }
+        public DirectoryParameter(string name) : base(name, ParameterType.Directory) { }
 
         public override bool Validate()
         {

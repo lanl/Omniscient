@@ -40,7 +40,16 @@ namespace Omniscient
         protected Channel[] channels;
         protected List<VirtualChannel> virtualChannels;
 
-        public virtual string FileExtension { get; set; }
+        protected string _fileExtension;
+        public virtual string FileExtension
+        {
+            get { return _fileExtension; }
+            set
+            {
+                _fileExtension = value;
+                ScanDataFolder();
+            }
+        }
 
         public Instrument(string newName)
         {
@@ -62,7 +71,7 @@ namespace Omniscient
         public void SetDataFolder(string newDataFolder)
         {
             dataFolder = newDataFolder;
-            ScanDataFolder();
+            if (dataFolder!="") ScanDataFolder();
         }
 
         public void SetFilePrefix(string newPrefix)
@@ -102,6 +111,7 @@ namespace Omniscient
             return parameters;
         }
 
+        public abstract void ApplyParameters(List<Parameter> parameters);
         public static void ApplyStandardInstrumentParameters(Instrument instrument, List<Parameter> parameters)
         {
             foreach (Parameter param in parameters)
@@ -112,7 +122,7 @@ namespace Omniscient
                         instrument.filePrefix = param.Value;
                         break;
                     case "Data Directory":
-                        instrument.dataFolder = param.Value;
+                        instrument.SetDataFolder(param.Value);
                         break;
                 }
             }

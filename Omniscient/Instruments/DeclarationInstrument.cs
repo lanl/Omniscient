@@ -52,6 +52,7 @@ namespace Omniscient
 
         public override void ScanDataFolder()
         {
+            if (string.IsNullOrEmpty(dataFolder)) return;
             List<string> decFileList = new List<string>();
             List<DateTime> decDateList = new List<DateTime>();
 
@@ -111,6 +112,30 @@ namespace Omniscient
             {
                 ch.ClearData();
             }
+        }
+
+        public override List<Parameter> GetParameters()
+        {
+            return GetStandardInstrumentParameters();
+        }
+
+        public override void ApplyParameters(List<Parameter> parameters)
+        {
+            ApplyStandardInstrumentParameters(this, parameters);
+        }
+    }
+
+    public class DeclarationInstrumentHookup : InstrumentHookup
+    {
+        public DeclarationInstrumentHookup() { }
+
+        public override string Type { get { return "Declaration"; } }
+
+        public override Instrument FromParameters(string newName, List<Parameter> parameters)
+        {
+            DeclarationInstrument instrument = new DeclarationInstrument(newName);
+            Instrument.ApplyStandardInstrumentParameters(instrument, parameters);
+            return instrument;
         }
     }
 }

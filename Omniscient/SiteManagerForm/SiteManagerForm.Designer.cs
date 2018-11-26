@@ -46,15 +46,9 @@ namespace Omniscient
             this.label1 = new System.Windows.Forms.Label();
             this.NameTextBox = new System.Windows.Forms.TextBox();
             this.TypeLabel = new System.Windows.Forms.Label();
-            this.InstTypeComboBox = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
             this.InstrumentPanel = new System.Windows.Forms.Panel();
-            this.NHeadersTextBox = new System.Windows.Forms.TextBox();
-            this.label28 = new System.Windows.Forms.Label();
-            this.NChannelsTextBox = new System.Windows.Forms.TextBox();
-            this.label27 = new System.Windows.Forms.Label();
-            this.FileExtensionComboBox = new System.Windows.Forms.ComboBox();
-            this.label24 = new System.Windows.Forms.Label();
+            this.InstrumentParameterListPanel = new Omniscient.Controls.ParameterListPanel();
             this.VirtualChannelGroupBox = new System.Windows.Forms.GroupBox();
             this.VCParameterListPanel = new Omniscient.Controls.ParameterListPanel();
             this.ROIVCPanel = new System.Windows.Forms.Panel();
@@ -73,6 +67,7 @@ namespace Omniscient
             this.ROIStartTextBox = new System.Windows.Forms.TextBox();
             this.label16 = new System.Windows.Forms.Label();
             this.VCTopPanel = new System.Windows.Forms.Panel();
+            this.VirtualChannelTypeTextBox = new System.Windows.Forms.TextBox();
             this.VCDownButton = new System.Windows.Forms.Button();
             this.VCUpButton = new System.Windows.Forms.Button();
             this.label8 = new System.Windows.Forms.Label();
@@ -82,11 +77,6 @@ namespace Omniscient
             this.AddVirtualChannelButton = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.VirtualChannelsComboBox = new System.Windows.Forms.ComboBox();
-            this.DirectoryButton = new System.Windows.Forms.Button();
-            this.PrefixTextBox = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.DirectoryTextBox = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.NewButtonPanel = new System.Windows.Forms.Panel();
             this.NewInstrumentButton = new System.Windows.Forms.Button();
@@ -115,7 +105,7 @@ namespace Omniscient
             this.panel4 = new System.Windows.Forms.Panel();
             this.ExportButton = new System.Windows.Forms.Button();
             this.ImportButton = new System.Windows.Forms.Button();
-            this.VirtualChannelTypeTextBox = new System.Windows.Forms.TextBox();
+            this.InstTypeTextBox = new System.Windows.Forms.TextBox();
             this.InstrumentPanel.SuspendLayout();
             this.VirtualChannelGroupBox.SuspendLayout();
             this.ROIVCPanel.SuspendLayout();
@@ -165,20 +155,6 @@ namespace Omniscient
             this.TypeLabel.Size = new System.Drawing.Size(0, 13);
             this.TypeLabel.TabIndex = 4;
             // 
-            // InstTypeComboBox
-            // 
-            this.InstTypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.InstTypeComboBox.FormattingEnabled = true;
-            this.InstTypeComboBox.Items.AddRange(new object[] {
-            "ISR",
-            "GRAND",
-            "MCA",
-            "NGAM"});
-            this.InstTypeComboBox.Location = new System.Drawing.Point(102, 8);
-            this.InstTypeComboBox.Name = "InstTypeComboBox";
-            this.InstTypeComboBox.Size = new System.Drawing.Size(160, 21);
-            this.InstTypeComboBox.TabIndex = 5;
-            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -190,83 +166,29 @@ namespace Omniscient
             // 
             // InstrumentPanel
             // 
-            this.InstrumentPanel.Controls.Add(this.NHeadersTextBox);
-            this.InstrumentPanel.Controls.Add(this.label28);
-            this.InstrumentPanel.Controls.Add(this.NChannelsTextBox);
-            this.InstrumentPanel.Controls.Add(this.label27);
-            this.InstrumentPanel.Controls.Add(this.FileExtensionComboBox);
-            this.InstrumentPanel.Controls.Add(this.label24);
+            this.InstrumentPanel.Controls.Add(this.InstTypeTextBox);
+            this.InstrumentPanel.Controls.Add(this.InstrumentParameterListPanel);
             this.InstrumentPanel.Controls.Add(this.VirtualChannelGroupBox);
             this.InstrumentPanel.Controls.Add(this.RemoveVirtualChannelButton);
             this.InstrumentPanel.Controls.Add(this.AddVirtualChannelButton);
             this.InstrumentPanel.Controls.Add(this.label6);
             this.InstrumentPanel.Controls.Add(this.VirtualChannelsComboBox);
-            this.InstrumentPanel.Controls.Add(this.DirectoryButton);
-            this.InstrumentPanel.Controls.Add(this.PrefixTextBox);
-            this.InstrumentPanel.Controls.Add(this.label4);
-            this.InstrumentPanel.Controls.Add(this.DirectoryTextBox);
-            this.InstrumentPanel.Controls.Add(this.label5);
             this.InstrumentPanel.Controls.Add(this.label3);
-            this.InstrumentPanel.Controls.Add(this.InstTypeComboBox);
             this.InstrumentPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.InstrumentPanel.Location = new System.Drawing.Point(0, 126);
             this.InstrumentPanel.Name = "InstrumentPanel";
             this.InstrumentPanel.Size = new System.Drawing.Size(362, 470);
             this.InstrumentPanel.TabIndex = 9;
             // 
-            // NHeadersTextBox
+            // InstrumentParameterListPanel
             // 
-            this.NHeadersTextBox.Location = new System.Drawing.Point(102, 135);
-            this.NHeadersTextBox.Name = "NHeadersTextBox";
-            this.NHeadersTextBox.Size = new System.Drawing.Size(80, 20);
-            this.NHeadersTextBox.TabIndex = 27;
-            // 
-            // label28
-            // 
-            this.label28.AutoSize = true;
-            this.label28.Location = new System.Drawing.Point(39, 138);
-            this.label28.Name = "label28";
-            this.label28.Size = new System.Drawing.Size(57, 13);
-            this.label28.TabIndex = 26;
-            this.label28.Text = "# Headers";
-            // 
-            // NChannelsTextBox
-            // 
-            this.NChannelsTextBox.Location = new System.Drawing.Point(102, 109);
-            this.NChannelsTextBox.Name = "NChannelsTextBox";
-            this.NChannelsTextBox.Size = new System.Drawing.Size(80, 20);
-            this.NChannelsTextBox.TabIndex = 25;
-            // 
-            // label27
-            // 
-            this.label27.AutoSize = true;
-            this.label27.Location = new System.Drawing.Point(35, 112);
-            this.label27.Name = "label27";
-            this.label27.Size = new System.Drawing.Size(61, 13);
-            this.label27.TabIndex = 24;
-            this.label27.Text = "# Channels";
-            // 
-            // FileExtensionComboBox
-            // 
-            this.FileExtensionComboBox.FormattingEnabled = true;
-            this.FileExtensionComboBox.Items.AddRange(new object[] {
-            "ISR",
-            "GRAND",
-            "MCA",
-            "NGAM"});
-            this.FileExtensionComboBox.Location = new System.Drawing.Point(102, 33);
-            this.FileExtensionComboBox.Name = "FileExtensionComboBox";
-            this.FileExtensionComboBox.Size = new System.Drawing.Size(80, 21);
-            this.FileExtensionComboBox.TabIndex = 23;
-            // 
-            // label24
-            // 
-            this.label24.AutoSize = true;
-            this.label24.Location = new System.Drawing.Point(24, 36);
-            this.label24.Name = "label24";
-            this.label24.Size = new System.Drawing.Size(72, 13);
-            this.label24.TabIndex = 22;
-            this.label24.Text = "File Extension";
+            this.InstrumentParameterListPanel.AutoScroll = true;
+            this.InstrumentParameterListPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.InstrumentParameterListPanel.Location = new System.Drawing.Point(6, 34);
+            this.InstrumentParameterListPanel.Name = "InstrumentParameterListPanel";
+            this.InstrumentParameterListPanel.Padding = new System.Windows.Forms.Padding(5);
+            this.InstrumentParameterListPanel.Size = new System.Drawing.Size(350, 120);
+            this.InstrumentParameterListPanel.TabIndex = 22;
             // 
             // VirtualChannelGroupBox
             // 
@@ -445,6 +367,14 @@ namespace Omniscient
             this.VCTopPanel.Size = new System.Drawing.Size(350, 62);
             this.VCTopPanel.TabIndex = 6;
             // 
+            // VirtualChannelTypeTextBox
+            // 
+            this.VirtualChannelTypeTextBox.Enabled = false;
+            this.VirtualChannelTypeTextBox.Location = new System.Drawing.Point(95, 29);
+            this.VirtualChannelTypeTextBox.Name = "VirtualChannelTypeTextBox";
+            this.VirtualChannelTypeTextBox.Size = new System.Drawing.Size(160, 20);
+            this.VirtualChannelTypeTextBox.TabIndex = 23;
+            // 
             // VCDownButton
             // 
             this.VCDownButton.Image = ((System.Drawing.Image)(resources.GetObject("VCDownButton.Image")));
@@ -528,48 +458,6 @@ namespace Omniscient
             this.VirtualChannelsComboBox.Size = new System.Drawing.Size(159, 21);
             this.VirtualChannelsComboBox.TabIndex = 17;
             this.VirtualChannelsComboBox.SelectedIndexChanged += new System.EventHandler(this.VirtualChannelsComboBox_SelectedIndexChanged);
-            // 
-            // DirectoryButton
-            // 
-            this.DirectoryButton.Image = ((System.Drawing.Image)(resources.GetObject("DirectoryButton.Image")));
-            this.DirectoryButton.Location = new System.Drawing.Point(267, 79);
-            this.DirectoryButton.Name = "DirectoryButton";
-            this.DirectoryButton.Size = new System.Drawing.Size(28, 28);
-            this.DirectoryButton.TabIndex = 16;
-            this.DirectoryButton.UseVisualStyleBackColor = true;
-            this.DirectoryButton.Click += new System.EventHandler(this.DirectoryButton_Click);
-            // 
-            // PrefixTextBox
-            // 
-            this.PrefixTextBox.Location = new System.Drawing.Point(102, 58);
-            this.PrefixTextBox.Name = "PrefixTextBox";
-            this.PrefixTextBox.Size = new System.Drawing.Size(160, 20);
-            this.PrefixTextBox.TabIndex = 12;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(44, 60);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(52, 13);
-            this.label4.TabIndex = 11;
-            this.label4.Text = "File Prefix";
-            // 
-            // DirectoryTextBox
-            // 
-            this.DirectoryTextBox.Location = new System.Drawing.Point(102, 83);
-            this.DirectoryTextBox.Name = "DirectoryTextBox";
-            this.DirectoryTextBox.Size = new System.Drawing.Size(160, 20);
-            this.DirectoryTextBox.TabIndex = 10;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(21, 87);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(75, 13);
-            this.label5.TabIndex = 9;
-            this.label5.Text = "Data Directory";
             // 
             // label2
             // 
@@ -860,13 +748,13 @@ namespace Omniscient
             this.ImportButton.UseVisualStyleBackColor = true;
             this.ImportButton.Click += new System.EventHandler(this.ImportButton_Click);
             // 
-            // VirtualChannelTypeTextBox
+            // InstTypeTextBox
             // 
-            this.VirtualChannelTypeTextBox.Enabled = false;
-            this.VirtualChannelTypeTextBox.Location = new System.Drawing.Point(95, 29);
-            this.VirtualChannelTypeTextBox.Name = "VirtualChannelTypeTextBox";
-            this.VirtualChannelTypeTextBox.Size = new System.Drawing.Size(160, 20);
-            this.VirtualChannelTypeTextBox.TabIndex = 23;
+            this.InstTypeTextBox.Enabled = false;
+            this.InstTypeTextBox.Location = new System.Drawing.Point(102, 8);
+            this.InstTypeTextBox.Name = "InstTypeTextBox";
+            this.InstTypeTextBox.Size = new System.Drawing.Size(160, 20);
+            this.InstTypeTextBox.TabIndex = 23;
             // 
             // SiteManagerForm
             // 
@@ -909,13 +797,8 @@ namespace Omniscient
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox NameTextBox;
         private System.Windows.Forms.Label TypeLabel;
-        private System.Windows.Forms.ComboBox InstTypeComboBox;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Panel InstrumentPanel;
-        private System.Windows.Forms.TextBox PrefixTextBox;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox DirectoryTextBox;
-        private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Panel NewButtonPanel;
         private System.Windows.Forms.Button NewInstrumentButton;
         private System.Windows.Forms.Button NewSystemButton;
@@ -929,7 +812,6 @@ namespace Omniscient
         private System.Windows.Forms.Button ExportButton;
         private System.Windows.Forms.Button ImportButton;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button DirectoryButton;
         private System.Windows.Forms.Button DiscardButton;
         private System.Windows.Forms.Button SaveButton;
         private System.Windows.Forms.Panel InnerRightPanel;
@@ -971,13 +853,9 @@ namespace Omniscient
         private System.Windows.Forms.Label label23;
         private System.Windows.Forms.TextBox DeclarationPrefixTextBox;
         private System.Windows.Forms.Label label22;
-        private System.Windows.Forms.ComboBox FileExtensionComboBox;
-        private System.Windows.Forms.Label label24;
-        private System.Windows.Forms.TextBox NHeadersTextBox;
-        private System.Windows.Forms.Label label28;
-        private System.Windows.Forms.TextBox NChannelsTextBox;
-        private System.Windows.Forms.Label label27;
         private Controls.ParameterListPanel VCParameterListPanel;
         private System.Windows.Forms.TextBox VirtualChannelTypeTextBox;
+        private Controls.ParameterListPanel InstrumentParameterListPanel;
+        private System.Windows.Forms.TextBox InstTypeTextBox;
     }
 }
