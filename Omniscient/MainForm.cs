@@ -111,7 +111,7 @@ namespace Omniscient
             StartTimePicker.Value = globalStart.Date;
             EndTimePicker.Value = globalEnd.Date;
             chPanels = new List<ChannelPanel>();
-            siteMan = new SiteManager("SiteManager.xml");
+            siteMan = new SiteManager("SiteManager.xml", VERSION);
             ReturnCode returnCode = siteMan.Reload();
             if (returnCode == ReturnCode.FILE_DOESNT_EXIST)
             {

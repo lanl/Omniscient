@@ -26,11 +26,13 @@ namespace Omniscient
     {
         private List<Site> sites;
         private string xmlFile;
+        string omniscient_version;
 
-        public SiteManager(string newXMLFile)
+        public SiteManager(string newXMLFile, string version)
         {
             sites = new List<Site>();
             xmlFile = newXMLFile;
+            omniscient_version = version;
         }
 
         public bool ContainsName(string name)
@@ -93,6 +95,12 @@ namespace Omniscient
             XmlDocument doc = new XmlDocument();
             doc.Load(fileName);
             sites.Clear();
+
+            if(doc.DocumentElement.Attributes["Omniscient_Version"] == null)
+            {
+                MessageBox.Show("Warning: SiteManager.xml was made by an older version of Omniscient.");
+            }
+
             foreach (XmlNode siteNode in doc.DocumentElement.ChildNodes)
             {
                 if (siteNode.Name != "Site") return ReturnCode.CORRUPTED_FILE;
@@ -269,6 +277,7 @@ namespace Omniscient
             
             xmlWriter.WriteStartDocument();
             xmlWriter.WriteStartElement("SiteManager");
+            xmlWriter.WriteAttributeString("Omniscient_Version", omniscient_version);
             foreach (Site site in sites)
             {
                 xmlWriter.WriteStartElement("Site");
