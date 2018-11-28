@@ -93,6 +93,10 @@ namespace Omniscient
             StripChart1.MouseMove += new MouseEventHandler(StripChart_MouseMoved);
             StripChart2.MouseMove += new MouseEventHandler(StripChart_MouseMoved);
             StripChart3.MouseMove += new MouseEventHandler(StripChart_MouseMoved);
+            StripChart0.MouseWheel += StripChart_MouseWheel;
+            StripChart1.MouseWheel += StripChart_MouseWheel;
+            StripChart2.MouseWheel += StripChart_MouseWheel;
+            StripChart3.MouseWheel += StripChart_MouseWheel;
             StripChart0.Paint += new PaintEventHandler(StripChart_Paint);
             StripChart1.Paint += new PaintEventHandler(StripChart_Paint);
             StripChart2.Paint += new PaintEventHandler(StripChart_Paint);
@@ -122,6 +126,16 @@ namespace Omniscient
             InitializeCharts();
             bootingUp = false;
             UpdateRange();
+        }
+
+        private void StripChart_MouseWheel(object sender, MouseEventArgs e)
+        {
+            // Vertical zoom
+            Chart chart = (Chart)sender;
+            if(e.Delta < 0)
+                chart.ChartAreas[0].AxisY.Maximum *= 1.1;
+            else
+                chart.ChartAreas[0].AxisY.Maximum *= 0.9;
         }
 
         public void CheckFullNodes()
@@ -1136,7 +1150,7 @@ namespace Omniscient
         /// Called when a user clicks on any of the charts.</summary>
         private void StripChart_MouseClick(object sender, System.Windows.Forms.MouseEventArgs e)
         {
-            drawHighlightBox = false;
+            drawStatisticsBox = false;
 
             if (e.Button == MouseButtons.Left)
             {
@@ -1511,13 +1525,16 @@ namespace Omniscient
 
         Chart downChart;
         bool drawingZoomBox = false;
-        bool drawHighlightBox = false;
+        bool drawStatisticsBox = false;
         private void StripChart_MouseDown(object sender, MouseEventArgs e)
         {
             downChart = (Chart)sender;
             mouseDownX = downChart.ChartAreas[0].AxisX.PixelPositionToValue(e.X);
-            drawHighlightBox = false;
-            drawingZoomBox = true;
+            if (e.Button == MouseButtons.Left)
+            {
+                drawStatisticsBox = false;
+                drawingZoomBox = true;
+            }
         }
 
         string boxData;
@@ -1585,7 +1602,19 @@ namespace Omniscient
             double mouseDelta = mouseUpX - mouseDownX;
             double range = chart.ChartAreas[0].AxisX.Maximum - chart.ChartAreas[0].AxisX.Minimum;
 
-            if (mouseDelta/range < -0.05 && controlPressed)
+            if (e.Button == MouseButtons.Right)
+            {
+                // Drag Range
+                try
+                {
+                    chart.ChartAreas[0].AxisX.Minimum -= mouseDelta;
+                    chart.ChartAreas[0].AxisX.Maximum -= mouseDelta;
+                }
+                catch
+                {
+                }
+            }
+            else if (mouseDelta/range < -0.05 && !controlPressed)
             {
                 // Zoom out
                 try
@@ -1597,20 +1626,23 @@ namespace Omniscient
                 {
                 }
             }
-            else if (mouseDelta / range > 0.05 && controlPressed)
+            else if (mouseDelta / range > 0.05 && !controlPressed)
             {
+                // Zoom in
                 chart.ChartAreas[0].AxisX.Minimum = mouseDownX;
                 chart.ChartAreas[0].AxisX.Maximum = mouseUpX;
             }
-            else if (controlPressed || 
+            else if (!controlPressed || 
                 ((mouseDelta / range < 0.05) && (mouseDelta/range > -0.05)))
             {
-                drawHighlightBox = false;
+                // This is nothing - just do nothing
+                drawStatisticsBox = false;
                 return;
             }
             else
             {
-                drawHighlightBox = true;
+                // Draw statistics box
+                drawStatisticsBox = true;
                 CalculateHighlightBoxValues();
                 return;
             }
@@ -1619,7 +1651,7 @@ namespace Omniscient
 
         public void StripChart_Paint(object sender, PaintEventArgs e)
         {
-            if (drawingZoomBox || drawHighlightBox)
+            if (drawingZoomBox || drawStatisticsBox)
             {
                 Chart chart = (Chart)sender;
                 Axis X = chart.ChartAreas[0].AxisX;
@@ -1628,7 +1660,7 @@ namespace Omniscient
                 int xNow = (int)mouseX;
                 e.Graphics.DrawRectangle(Pens.Gray, Math.Min(xStart, xNow), (int)Y.ValueToPixelPosition(Y.Maximum),
                     Math.Abs(xStart - xNow), (int)Y.ValueToPixelPosition(Y.Minimum) - (int)Y.ValueToPixelPosition(Y.Maximum));
-                if(drawHighlightBox && chart == downChart)
+                if(drawStatisticsBox && chart == downChart)
                 {
                     e.Graphics.DrawString(boxData, SystemFonts.DefaultFont, SystemBrushes.InfoText, new Point(Math.Min(xStart, xNow) + 5, (int)Y.ValueToPixelPosition(Y.Maximum) + 5));
                 }
