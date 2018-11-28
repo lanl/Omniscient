@@ -66,7 +66,7 @@ namespace Omniscient
             this.CancelButton.UseVisualStyleBackColor = true;
             this.CancelButton.Click += new System.EventHandler(this.CancelButton_Click);
             // 
-            // EventTypeDialog
+            // VirtualChannelTypeDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -74,10 +74,10 @@ namespace Omniscient
             this.ControlBox = false;
             this.Controls.Add(this.ButtPanel);
             this.Controls.Add(this.CancelButton);
-            this.Name = "EventTypeDialog";
+            this.Name = "VirtualChannelTypeDialog";
             this.Padding = new System.Windows.Forms.Padding(10);
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Event Type";
+            this.Text = "Virtual Channel Type";
             this.Load += new System.EventHandler(this.EventTypeDialog_Load);
             this.ResumeLayout(false);
 

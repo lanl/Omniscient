@@ -225,6 +225,8 @@ namespace Omniscient
         private void ResetFields()
         {
             selectedSystem = null;
+            selectedChannel = null;
+            selectedVirtualChannel = null;
             TreeNode node = SitesTreeView.SelectedNode;
             NameTextBox.Text = node.Text;
 

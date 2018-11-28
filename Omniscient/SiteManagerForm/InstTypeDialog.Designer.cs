@@ -66,7 +66,7 @@ namespace Omniscient
             this.CancelButton.UseVisualStyleBackColor = true;
             this.CancelButton.Click += new System.EventHandler(this.CancelButton_Click);
             // 
-            // EventTypeDialog
+            // InstTypeDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -74,10 +74,10 @@ namespace Omniscient
             this.ControlBox = false;
             this.Controls.Add(this.ButtPanel);
             this.Controls.Add(this.CancelButton);
-            this.Name = "EventTypeDialog";
+            this.Name = "InstTypeDialog";
             this.Padding = new System.Windows.Forms.Padding(10);
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Event Type";
+            this.Text = "Instrument Type";
             this.Load += new System.EventHandler(this.EventTypeDialog_Load);
             this.ResumeLayout(false);
 
