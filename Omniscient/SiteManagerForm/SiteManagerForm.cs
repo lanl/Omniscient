@@ -237,6 +237,7 @@ namespace Omniscient
                 InstrumentPanel.Visible = false;
                 NewInstrumentButton.Enabled = false;
                 NewSystemButton.Enabled = false;
+                NewFacilityButton.Enabled = true;
             }
             else if (node.Tag is Facility)
             {
@@ -247,6 +248,7 @@ namespace Omniscient
                 InstrumentPanel.Visible = false;
                 NewInstrumentButton.Enabled = false;
                 NewSystemButton.Enabled = true;
+                NewFacilityButton.Enabled = true;
             }
             else if (node.Tag is DetectionSystem)
             {
@@ -260,6 +262,7 @@ namespace Omniscient
                 InstrumentPanel.Visible = false;
                 NewInstrumentButton.Enabled = true;
                 NewSystemButton.Enabled = true;
+                NewFacilityButton.Enabled = true;
             }
             else if (node.Tag is Instrument)
             {
@@ -296,6 +299,7 @@ namespace Omniscient
                 InstrumentPanel.Visible = true;
                 NewInstrumentButton.Enabled = true;
                 NewSystemButton.Enabled = true;
+                NewFacilityButton.Enabled = true;
             }
             else if (node.Tag is EventGenerator)
             {
@@ -367,11 +371,6 @@ namespace Omniscient
             siteMan.Save();
             UpdateSitesTree();
             siteManChanged = true;
-
-            // G - Enable buttons which create objects lower on the tree
-            NewFacilityButton.Enabled = true;
-            NewSystemButton.Enabled = true;
-            NewInstrumentButton.Enabled = true;
 
             // G - Select first node
             SitesTreeView.SelectedNode = SitesTreeView.TopNode;
@@ -614,11 +613,6 @@ namespace Omniscient
         {
             bool uniqueName = false;
             int iteration = 0;
-
-            // G - Enable buttons which create objects lower on the tree
-            NewFacilityButton.Enabled = true;
-            NewSystemButton.Enabled = true;
-            NewInstrumentButton.Enabled = true;
 
             string name = "";
             while (!uniqueName)
