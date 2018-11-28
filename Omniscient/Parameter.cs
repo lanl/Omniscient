@@ -8,7 +8,7 @@ using System.Xml;
 
 namespace Omniscient
 {
-    public enum ParameterType { String, Int, Double, Enum, TimeSpan, SystemChannel, SystemEventGenerator, FileName, Directory, InstrumentChannel }
+    public enum ParameterType { String, Int, Double, Bool, Enum, TimeSpan, SystemChannel, SystemEventGenerator, FileName, Directory, InstrumentChannel }
 
     /// <summary>
     /// A description of a Parameter. Used in Hookups
@@ -60,6 +60,9 @@ namespace Omniscient
                         break;
                     case ParameterType.Double:
                         parameters.Add(new DoubleParameter(pTemplate.Name) { Value = node.Attributes[paramNameStr]?.InnerText });
+                        break;
+                    case ParameterType.Bool:
+                        parameters.Add(new BoolParameter(pTemplate.Name) { Value = node.Attributes[paramNameStr]?.InnerText });
                         break;
                     case ParameterType.Enum:
                         parameters.Add(new EnumParameter(pTemplate.Name)
@@ -153,6 +156,26 @@ namespace Omniscient
         public DoubleParameter(string name) : base(name, ParameterType.Double) { }
         public override bool Validate() { return double.TryParse(Value, out double result); }
         public double ToDouble() { return double.Parse(Value); }
+    }
+
+    /// <summary>
+    /// A Parameter that has only two possible values: True or False.
+    /// </summary>
+    public class BoolParameter : Parameter
+    {
+        public static readonly string True = "True";
+        public static readonly string False = "False";
+        public BoolParameter(string name) : base(name, ParameterType.Bool) { }
+        public override bool Validate()
+        {
+            if (Value != True && Value != False) return false;
+            return true;
+        }
+        public bool ToBool()
+        {
+            if (Value == True) return true;
+            return false;
+        }
     }
 
     /// <summary>

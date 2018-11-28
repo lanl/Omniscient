@@ -26,6 +26,9 @@ namespace Omniscient
             this.SuspendLayout();
             switch (parameter.Type)
             {
+                case ParameterType.Bool:
+                    InitializeCheckBox();
+                    break;
                 case ParameterType.String:
                 case ParameterType.Int:
                 case ParameterType.Double:
@@ -51,10 +54,25 @@ namespace Omniscient
             NameLabel.Text = param.Name +":";
         }
 
+        private void InitializeCheckBox()
+        {
+            CheckBox checkBox = new CheckBox();
+            checkBox.Dock = System.Windows.Forms.DockStyle.Left;
+            checkBox.Margin = new System.Windows.Forms.Padding(5);
+            checkBox.Checked = parameter.Value == BoolParameter.True;
+            paramControls.Add(checkBox);
+            this.Controls.Add(checkBox);
+            checkBox.BringToFront();
+        }
+
         public bool Scrape()
         {
             switch (parameter.Type)
             {
+                case ParameterType.Bool:
+                    if (((CheckBox)paramControls[0]).Checked) parameter.Value = BoolParameter.True;
+                    else parameter.Value = BoolParameter.False;
+                    break;
                 case ParameterType.FileName:
                 case ParameterType.Directory:
                 case ParameterType.String:
