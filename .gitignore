@@ -8,7 +8,7 @@
 *.user
 *.userosscache
 *.sln.docstates
-SiteManager.xml
+SiteManager*.xml
 Presets.xml
 
 # User-specific files (MonoDevelop/Xamarin Studio)
