@@ -50,6 +50,8 @@ namespace Omniscient
         private bool bootingUp = false;
 
         private bool[] logScale;
+        double[] chartMaxPointValue;
+        double[] chartMinPointValue;
 
         // The following are used to show a time marker when a user clicks a chart
         Chart activeChart;
@@ -132,10 +134,17 @@ namespace Omniscient
         {
             // Vertical zoom
             Chart chart = (Chart)sender;
-            if(e.Delta < 0)
-                chart.ChartAreas[0].AxisY.Maximum *= 1.1;
+            int chartNum = (int)chart.Tag;
+            if (e.Delta < 0)
+            {
+                if (chart.ChartAreas[0].AxisY.Maximum < 1e6 * chartMaxPointValue[chartNum])
+                    chart.ChartAreas[0].AxisY.Maximum *= 1.1;
+            }
             else
-                chart.ChartAreas[0].AxisY.Maximum *= 0.9;
+            {
+                if (chart.ChartAreas[0].AxisY.Maximum > 1e-6 * chartMaxPointValue[chartNum])
+                    chart.ChartAreas[0].AxisY.Maximum *= 0.9;
+            }
         }
 
         public void CheckFullNodes()
@@ -312,6 +321,8 @@ namespace Omniscient
         /// InitializeCharts is called when the form is loaded. </summary>
         private void InitializeCharts()
         {
+            chartMaxPointValue = new double[N_CHARTS];
+            chartMinPointValue = new double[N_CHARTS];
             for (int chartNum = 0; chartNum < N_CHARTS; chartNum++)
             {
                 Chart chart;
@@ -338,6 +349,8 @@ namespace Omniscient
                 Series series = chart.Series[0];
                 
                 series.Points.Clear();
+                chartMaxPointValue[chartNum] = 0;
+                chartMinPointValue[chartNum] = 0;
             }
         }
 
@@ -384,6 +397,7 @@ namespace Omniscient
         /// UpdateChart is called whenever the data to be displayed on a chart changes. </summary>
         private void UpdateChart(int chartNum)
         {
+            const double MAX_VALUE = (double)decimal.MaxValue;
             System.Windows.Forms.Cursor.Current = Cursors.WaitCursor;
             Chart chart;
             chart = GetChart(chartNum);
@@ -397,7 +411,8 @@ namespace Omniscient
             else
                 chart.ChartAreas[0].AxisY.IsLogarithmic = false;
             chart.Series.Clear();
-
+            chartMaxPointValue[chartNum] = double.MinValue;
+            chartMinPointValue[chartNum] = double.MaxValue;
             foreach (ChannelPanel chanPan in chPanels)
             {
                 bool plotChan = false;
@@ -439,11 +454,13 @@ namespace Omniscient
                         {
                             for (int i = 0; i < dates.Count; ++i)
                             {
-                                if (vals[i] > 0 && dates[i] + durations[i] >= start && dates[i] <= end)
+                                if (!(double.IsNaN(vals[i])) && vals[i] < MAX_VALUE && vals[i] > 0 && dates[i] + durations[i] >= start && dates[i] <= end)
                                 {
                                     series.Points.AddXY(dates[i].ToOADate(), vals[i]);
                                     series.Points.AddXY((dates[i] + durations[i]).ToOADate(), vals[i]);
                                     series.Points.AddXY((dates[i] + durations[i].Add(TimeSpan.FromTicks(1))).ToOADate(), double.NaN);
+                                    if (vals[i] > chartMaxPointValue[chartNum]) chartMaxPointValue[chartNum] = vals[i];
+                                    if (vals[i] < chartMinPointValue[chartNum]) chartMinPointValue[chartNum] = vals[i];
                                 }
                             }
                         }
@@ -451,11 +468,13 @@ namespace Omniscient
                         {
                             for (int i = 0; i < dates.Count; ++i) //
                             {
-                                if (dates[i] + durations[i] >= start && dates[i] <= end)
+                                if (!(double.IsNaN(vals[i])) && vals[i] < MAX_VALUE && dates[i] + durations[i] >= start && dates[i] <= end)
                                 {
                                     series.Points.AddXY(dates[i].ToOADate(), vals[i]);
                                     series.Points.AddXY((dates[i] + durations[i]).ToOADate(), vals[i]);
                                     series.Points.AddXY((dates[i] + durations[i].Add(TimeSpan.FromTicks(1))).ToOADate(), double.NaN);
+                                    if (vals[i] > chartMaxPointValue[chartNum]) chartMaxPointValue[chartNum] = vals[i];
+                                    if (vals[i] < chartMinPointValue[chartNum]) chartMinPointValue[chartNum] = vals[i];
                                 }
                             }
                         }
@@ -474,16 +493,24 @@ namespace Omniscient
                         {
                             for (int i = 0; i < dates.Count; ++i) //
                             {
-                                if (vals[i] > 0 && dates[i] >= start && dates[i] <= end)
+                                if (!(double.IsNaN(vals[i])) && vals[i] > 0 && vals[i] < MAX_VALUE && dates[i] >= start && dates[i] <= end)
+                                {
                                     series.Points.AddXY(dates[i].ToOADate(), vals[i]);
+                                    if (vals[i] > chartMaxPointValue[chartNum]) chartMaxPointValue[chartNum] = vals[i];
+                                    if (vals[i] < chartMinPointValue[chartNum]) chartMinPointValue[chartNum] = vals[i];
+                                }
                             }
                         }
                         else
                         {
                             for (int i = 0; i < dates.Count; ++i) //
                             {
-                                if (dates[i] >= start && dates[i] <= end)
+                                if (!(double.IsNaN(vals[i])) && vals[i] < MAX_VALUE && dates[i] >= start && dates[i] <= end)
+                                {
                                     series.Points.AddXY(dates[i].ToOADate(), vals[i]);
+                                    if (vals[i] > chartMaxPointValue[chartNum]) chartMaxPointValue[chartNum] = vals[i];
+                                    if (vals[i] < chartMinPointValue[chartNum]) chartMinPointValue[chartNum] = vals[i];
+                                }
                             }
                         }
                     }

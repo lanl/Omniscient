@@ -28,11 +28,12 @@ namespace Omniscient
     {
         public static readonly VirtualChannelHookup[] Hookups = new VirtualChannelHookup[]
         {
-            new TwoChannelVCHookup(),
-            new ScalarOperationVCHookup(),
-            new DelayVCHookup(),
             new ConvolveVCHookup(),
-            new LocalStatisticVCHookup()
+            new DelayVCHookup(),
+            new LocalStatisticVCHookup(),
+            new ScalarOperationVCHookup(),
+            new TranscendentalVCHookup(),
+            new TwoChannelVCHookup()
         };
 
         public enum VirtualChannelType { RATIO, SUM, DIFFERENCE, ADD_CONST, SCALE, DELAY, ROI, CONVOLVE, LOCAL_MAX, LOCAL_MIN}
@@ -843,6 +844,304 @@ namespace Omniscient
                 Statistic = statistic,
                 Channel = channel,
                 Period = period
+            };
+        }
+    }
+
+    /// <summary>
+    /// VirtualChannel that calculates a statistic over a period of a data 
+    /// points in a Channel
+    /// </summary>
+    public class TranscendentalVC : VirtualChannel
+    {
+        public enum OperationType { Abs, Acos, Asin, Atan, Cos, Cosh, Exp, Log, Log10, Sign, Sin, Sinh, Sqrt, Tan, Tanh }
+        private Channel _channel;
+        public Channel Channel
+        {
+            get { return _channel; }
+            set
+            {
+                Dependencies.Clear();
+                Dependencies.Add(value);
+                _channel = value;
+            }
+        }
+
+        public OperationType Operation { get; set; }
+
+        public TranscendentalVC(string newName, Instrument parent, ChannelType newType) : base(newName, parent, newType)
+        {
+            VCType = "Transcendental";
+            Channel = null;
+            Operation = OperationType.Sqrt;
+        }
+
+        public override void CalculateValues()
+        {
+            double[] arrayVals = new double[Channel.GetValues().Count];
+
+            if (channelType == ChannelType.DURATION_VALUE)
+                durations = Channel.GetDurations();
+
+            List<double> A = Channel.GetValues();
+            timeStamps = Channel.GetTimeStamps();
+
+            switch (Operation)
+            {
+                case OperationType.Abs:
+                    for (int i = 0; i < A.Count; i++)
+                    {
+                        arrayVals[i] = Math.Abs(A[i]);
+                    }
+                    break;
+                case OperationType.Acos:
+                    for (int i = 0; i < A.Count; i++)
+                    {
+                        arrayVals[i] = Math.Acos(A[i]);
+                    }
+                    break;
+                case OperationType.Asin:
+                    for (int i = 0; i < A.Count; i++)
+                    {
+                        arrayVals[i] = Math.Asin(A[i]);
+                    }
+                    break;
+                case OperationType.Atan:
+                    for (int i = 0; i < A.Count; i++)
+                    {
+                        arrayVals[i] = Math.Atan(A[i]);
+                    }
+                    break;
+                case OperationType.Cos:
+                    for (int i = 0; i < A.Count; i++)
+                    {
+                        arrayVals[i] = Math.Cos(A[i]);
+                    }
+                    break;
+                case OperationType.Cosh:
+                    for (int i = 0; i < A.Count; i++)
+                    {
+                        arrayVals[i] = Math.Cosh(A[i]);
+                    }
+                    break;
+                case OperationType.Exp:
+                    for (int i = 0; i < A.Count; i++)
+                    {
+                        arrayVals[i] = Math.Exp(A[i]);
+                    }
+                    break;
+                case OperationType.Log:
+                    for (int i = 0; i < A.Count; i++)
+                    {
+                        arrayVals[i] = Math.Log(A[i]);
+                    }
+                    break;
+                case OperationType.Log10:
+                    for (int i = 0; i < A.Count; i++)
+                    {
+                        arrayVals[i] = Math.Log10(A[i]);
+                    }
+                    break;
+                case OperationType.Sign:
+                    for (int i = 0; i < A.Count; i++)
+                    {
+                        arrayVals[i] = Math.Sign(A[i]);
+                    }
+                    break;
+                case OperationType.Sin:
+                    for (int i = 0; i < A.Count; i++)
+                    {
+                        arrayVals[i] = Math.Sin(A[i]);
+                    }
+                    break;
+                case OperationType.Sinh:
+                    for (int i = 0; i < A.Count; i++)
+                    {
+                        arrayVals[i] = Math.Sinh(A[i]);
+                    }
+                    break;
+                case OperationType.Sqrt:
+                    for (int i = 0; i < A.Count; i++)
+                    {
+                        arrayVals[i] = Math.Sqrt(A[i]);
+                    }
+                    break;
+                case OperationType.Tan:
+                    for (int i = 0; i < A.Count; i++)
+                    {
+                        arrayVals[i] = Math.Tan(A[i]);
+                    }
+                    break;
+                case OperationType.Tanh:
+                    for (int i = 0; i < A.Count; i++)
+                    {
+                        arrayVals[i] = Math.Tanh(A[i]);
+                    }
+                    break;
+            }
+            for (int i = 0; i < A.Count; i++)
+            {
+                if (double.IsInfinity(arrayVals[i])) arrayVals[i] = double.NaN;
+            }
+            values = arrayVals.ToList();
+        }
+
+        public override List<Parameter> GetParameters()
+        {
+            Channel[] channels = instrument.GetChannels();
+            int cIndex = -1;
+            for (int i = 0; i < channels.Length; i++)
+            {
+                if (channels[i] == this)
+                {
+                    cIndex = i;
+                    break;
+                }
+            }
+            string operation = "";
+            switch (Operation)
+            {
+                case OperationType.Abs:
+                    operation = "Abs";
+                    break;
+                case OperationType.Acos:
+                    operation = "Acos";
+                    break;
+                case OperationType.Asin:
+                    operation = "Asin";
+                    break;
+                case OperationType.Atan:
+                    operation = "Atan";
+                    break;
+                case OperationType.Cos:
+                    operation = "Cos";
+                    break;
+                case OperationType.Cosh:
+                    operation = "Cosh";
+                    break;
+                case OperationType.Exp:
+                    operation = "Exp";
+                    break;
+                case OperationType.Log:
+                    operation = "Log";
+                    break;
+                case OperationType.Log10:
+                    operation = "Log10";
+                    break;
+                case OperationType.Sign:
+                    operation = "Sign";
+                    break;
+                case OperationType.Sin:
+                    operation = "Sin";
+                    break;
+                case OperationType.Sinh:
+                    operation = "Sinh";
+                    break;
+                case OperationType.Sqrt:
+                    operation = "Sqrt";
+                    break;
+                case OperationType.Tan:
+                    operation = "Tan";
+                    break;
+                case OperationType.Tanh:
+                    operation = "Tanh";
+                    break;
+            }
+            return new List<Parameter>()
+            {
+                new EnumParameter("Operation")
+                {
+                    Value = operation,
+                    ValidValues = new List<string>(){ "Abs", "Acos", "Asin", "Atan", "Cos", "Cosh", "Exp", "Log", "Log10", "Sign", "Sin", "Sinh", "Sqrt", "Tan", "Tanh" }
+                },
+                new InstrumentChannelParameter("Channel", instrument, cIndex-1)
+                {
+                    Value = Channel.GetName()
+                }
+            };
+        }
+    }
+
+    public class TranscendentalVCHookup : VirtualChannelHookup
+    {
+        public TranscendentalVCHookup()
+        {
+            TemplateParameters = new List<ParameterTemplate>()
+            {
+                new ParameterTemplate("Operation", ParameterType.Enum, new List<string>(){ "Abs", "Acos", "Asin", "Atan", "Cos", "Cosh", "Exp", "Log", "Log10", "Sign", "Sin", "Sinh", "Sqrt", "Tan", "Tanh" }),
+                new ParameterTemplate("Channel", ParameterType.InstrumentChannel),
+            };
+        }
+
+        public override string Type { get { return "Transcendental"; } }
+
+        public override VirtualChannel FromParameters(Instrument parent, string newName, List<Parameter> parameters)
+        {
+            Channel channel = null;
+            TranscendentalVC.OperationType operation = TranscendentalVC.OperationType.Sqrt;
+            foreach (Parameter param in parameters)
+            {
+                switch (param.Name)
+                {
+                    case "Channel":
+                        channel = ((InstrumentChannelParameter)param).ToChannel();
+                        break;
+                    case "Operation":
+                        switch (param.Value)
+                        {
+                            case "Abs":
+                                operation = TranscendentalVC.OperationType.Abs;
+                                break;
+                            case "Acos":
+                                operation = TranscendentalVC.OperationType.Acos;
+                                break;
+                            case "Asin":
+                                operation = TranscendentalVC.OperationType.Asin;
+                                break;
+                            case "Atan":
+                                operation = TranscendentalVC.OperationType.Atan;
+                                break;
+                            case "Cos":
+                                operation = TranscendentalVC.OperationType.Cos;
+                                break;
+                            case "Cosh":
+                                operation = TranscendentalVC.OperationType.Cosh;
+                                break;
+                            case "Exp":
+                                operation = TranscendentalVC.OperationType.Exp;
+                                break;
+                            case "Log":
+                                operation = TranscendentalVC.OperationType.Log;
+                                break;
+                            case "Log10":
+                                operation = TranscendentalVC.OperationType.Log10;
+                                break;
+                            case "Sign":
+                                operation = TranscendentalVC.OperationType.Sign;
+                                break;
+                            case "Sin":
+                                operation = TranscendentalVC.OperationType.Sin;
+                                break;
+                            case "Sinh":
+                                operation = TranscendentalVC.OperationType.Sinh;
+                                break;
+                            case "Sqrt":
+                                operation = TranscendentalVC.OperationType.Sqrt;
+                                break;
+                            case "Tan":
+                                operation = TranscendentalVC.OperationType.Tan;
+                                break;
+                            case "Tanh":
+                                operation = TranscendentalVC.OperationType.Tanh;
+                                break;
+                        }
+                        break;
+                }
+            }
+            return new TranscendentalVC(newName, parent, channel.GetChannelType())
+            {
+                Operation = operation,
+                Channel = channel
             };
         }
     }
