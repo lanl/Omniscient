@@ -58,18 +58,6 @@ namespace Omniscient
             channels[gamCh2Sigma] = new Channel(name + "-Gammas-2-Sigma", this, Channel.ChannelType.COUNT_RATE);
         }
 
-        public override void SetName(string newName)
-        {
-            name = newName;
-            channels[chACountRate].SetName(name + "-Neutrons-A");
-            channels[chBCountRate].SetName(name + "-Neutrons-B");
-            channels[chCCountRate].SetName(name + "-Neutrons-C");
-            channels[gamInGamCh1].SetName(name + "-Gammas-1");
-            channels[gamCh1Sigma].SetName(name + "-Gammas-1-Sigma");
-            channels[gamInGamCh2].SetName(name + "-Gammas-1");
-            channels[gamCh2Sigma].SetName(name + "-Gammas-1-Sigma");
-        }
-
         public override void ScanDataFolder()
         {
             if (string.IsNullOrEmpty(dataFolder)) return;

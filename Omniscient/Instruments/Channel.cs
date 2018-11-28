@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace Omniscient
 {
@@ -31,6 +32,12 @@ namespace Omniscient
         protected List<double> values;
         protected List<DataFile> files;
 
+        /// <summary>
+        /// A hidden Channel does not appear in the MainWindow ChannelPanel 
+        /// but can still be used as a source of data for VirtualChannels.
+        /// </summary>
+        public bool Hidden { get; set; }
+
         public Channel(string newName, Instrument parent, ChannelType newType)
         {
             name = newName;
@@ -40,6 +47,7 @@ namespace Omniscient
             durations = new List<TimeSpan>();
             values = new List<double>();
             files = new List<DataFile>();
+            Hidden = false;
         }
 
         public void AddDataPoint(DateTime time, double value, DataFile file)
@@ -211,5 +219,49 @@ namespace Omniscient
             }
         }
 
+        public List<Parameter> GetParameters()
+        {
+            List<Parameter> parameters = new List<Parameter>()
+            {
+                new BoolParameter("Hidden", Hidden)
+            };
+            return parameters;
+        }
+
+        public void ApplyParameters(List<Parameter> parameters)
+        {
+            foreach (Parameter param in parameters)
+            {
+                switch (param.Name)
+                {
+                    case "Hidden":
+                        Hidden = ((BoolParameter) param).ToBool();
+                        break;
+                }
+            }
+        }
+
+        public static List<ParameterTemplate> TemplateParameters { get; private set; } = new List<ParameterTemplate>()
+        {
+            new ParameterTemplate("Hidden", ParameterType.Bool)
+        };
+
+        public void ToXML(XmlWriter xmlWriter)
+        {
+            xmlWriter.WriteStartElement("Channel");
+            xmlWriter.WriteAttributeString("Name", GetName());
+            List<Parameter> parameters = GetParameters();
+            foreach (Parameter param in parameters)
+            {
+                xmlWriter.WriteAttributeString(param.Name.Replace(' ', '_'), param.Value);
+            }
+        }
+
+        public void ApplyXML(XmlNode node)
+        {
+            SetName(node.Attributes["Name"]?.InnerText);
+            List<Parameter> parameters = Parameter.FromXML(node, TemplateParameters);
+            ApplyParameters(parameters);
+        }
     }
 }

@@ -31,6 +31,7 @@ namespace Omniscient
         // State
         DetectionSystem selectedSystem;
         VirtualChannel selectedVirtualChannel;
+        Channel selectedChannel;
 
         // SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
 
@@ -186,6 +187,19 @@ namespace Omniscient
                 ROIVCPanel.BringToFront();
                 VCParameterListPanel.Visible = true;
             }
+            VirtualChannelGroupBox.Visible = true;
+            ChannelGroupBox.Visible = false;
+        }
+
+        private void SetupChannelGroupBox()
+        {
+            ChannelNameTextBox.Text = selectedChannel.GetName();
+
+            List<Parameter> parameters = selectedChannel.GetParameters();
+            ChannelParameterListPanel.LoadParameters(parameters);
+
+            VirtualChannelGroupBox.Visible = false;
+            ChannelGroupBox.Visible = true;
         }
 
         private void SetupSystemPanel()
@@ -254,16 +268,26 @@ namespace Omniscient
                 InstrumentParameterListPanel.LoadParameters(inst.GetParameters());
                 InstTypeTextBox.Text = inst.InstrumentType;
                 
-                VirtualChannelsComboBox.Items.Clear();
-                //VirtualChannelsComboBox.Text = "";
-                if (inst.GetVirtualChannels().Count > 0)
+                ChannelsComboBox.Items.Clear();
+                Channel[] channels = inst.GetChannels();
+                if (channels.Length > 0)
                 {
-                    foreach (VirtualChannel vc in inst.GetVirtualChannels())
-                        VirtualChannelsComboBox.Items.Add(vc.GetName());
-                    selectedVirtualChannel = inst.GetVirtualChannels()[0];
-                    VirtualChannelsComboBox.SelectedItem = selectedVirtualChannel.GetName();
-                    VirtualChannelGroupBox.Visible = true;
-                    SetupVirtualChannelGroupBox();
+                    foreach (Channel channel in channels)
+                        ChannelsComboBox.Items.Add(channel.GetName());
+                    if (channels[0] is VirtualChannel)
+                    {
+                        selectedChannel = null;
+                        selectedVirtualChannel = (VirtualChannel)channels[0];
+                        ChannelsComboBox.SelectedItem = selectedVirtualChannel.GetName();
+                        SetupVirtualChannelGroupBox();
+                    }
+                    else
+                    {
+                        selectedChannel = channels[0];
+                        selectedVirtualChannel = null;
+                        ChannelsComboBox.SelectedItem = selectedChannel.GetName();
+                        SetupChannelGroupBox();
+                    }
                 }
                 else
                     VirtualChannelGroupBox.Visible = false;
@@ -359,6 +383,23 @@ namespace Omniscient
             ResetFields();
         }
 
+        private Channel SaveChannel(Instrument inst, Channel chan)
+        {
+            // Validate input
+            if (chan.GetName() != ChannelNameTextBox.Text && siteMan.ContainsName(ChannelNameTextBox.Text))
+            {
+                MessageBox.Show("All items in the Site Manager require a unique name!");
+                return null;
+            }
+            if (!ChannelParameterListPanel.ValidateInput()) return null;
+
+            // Apply new settings
+            chan.SetName(ChannelNameTextBox.Text);
+            chan.ApplyParameters(ChannelParameterListPanel.Parameters);
+
+            return chan;
+        }
+
         private VirtualChannel SaveVirtualChannel(Instrument inst, VirtualChannel chan)
         {
             if (chan.GetName() != VirtualChannelNameTextBox.Text && siteMan.ContainsName(VirtualChannelNameTextBox.Text))
@@ -436,7 +477,7 @@ namespace Omniscient
             TreeNode node = SitesTreeView.SelectedNode;
             string nodeName = node.Name;
 
-            VirtualChannel virtualChan = null;
+            Channel chan = null;
 
 
             if (node.Tag is Site)
@@ -491,15 +532,15 @@ namespace Omniscient
 
                 inst.SetName(name);
                 inst.ApplyParameters(InstrumentParameterListPanel.Parameters);
-                
-                foreach(VirtualChannel chan in inst.GetVirtualChannels())
+
+
+                if (selectedVirtualChannel != null)
                 {
-                    if (chan.GetName() == VirtualChannelsComboBox.Text)
-                    {
-                        virtualChan = SaveVirtualChannel(inst, chan);
-                        if (virtualChan is null) return;
-                        break;
-                    }
+                    chan = SaveVirtualChannel(inst, selectedVirtualChannel);
+                }
+                else if (selectedChannel != null)
+                {
+                    chan = SaveChannel(inst, selectedChannel);
                 }
                 nodeName = inst.GetName();
             }
@@ -512,9 +553,9 @@ namespace Omniscient
             UpdateSitesTree();
             siteManChanged = true;
             SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(nodeName, true)[0];
-            if(virtualChan!=null)
+            if(selectedVirtualChannel != null || selectedChannel != null)
             {
-                VirtualChannelsComboBox.SelectedItem = virtualChan.GetName();
+                ChannelsComboBox.SelectedItem = chan.GetName();
             }
         }
 
@@ -793,7 +834,7 @@ namespace Omniscient
                 UpdateSitesTree();
                 siteManChanged = true;
                 SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(inst.GetName(), true)[0];
-                VirtualChannelsComboBox.SelectedItem = name;
+                ChannelsComboBox.SelectedItem = name;
                 selectedVirtualChannel = roiChannel;
                 return;
             }
@@ -837,7 +878,7 @@ namespace Omniscient
             UpdateSitesTree();
             siteManChanged = true;
             SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(inst.GetName(), true)[0];
-            VirtualChannelsComboBox.SelectedItem = name;
+            ChannelsComboBox.SelectedItem = name;
             selectedVirtualChannel = virtualChannel;
         }
         
@@ -870,12 +911,25 @@ namespace Omniscient
         private void VirtualChannelsComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             Instrument inst = (Instrument)SitesTreeView.SelectedNode.Tag;
-            foreach (VirtualChannel otherChan in inst.GetVirtualChannels())
+            foreach (Channel otherChan in inst.GetChannels())
             {
-                if (otherChan.GetName() == VirtualChannelsComboBox.Text)
-                    selectedVirtualChannel = otherChan;
+                if (otherChan.GetName() == ChannelsComboBox.Text)
+                {
+                    if (otherChan is VirtualChannel)
+                    {
+                        selectedChannel = null;
+                        selectedVirtualChannel = (VirtualChannel)otherChan;
+                        SetupVirtualChannelGroupBox();
+                    }
+                    else
+                    {
+                        selectedChannel = otherChan;
+                        selectedVirtualChannel = null;
+                        SetupChannelGroupBox();
+                    }
+
+                }
             }
-            SetupVirtualChannelGroupBox();
         }
 
         private void RemoveVirtualChannelButton_Click(object sender, EventArgs e)
@@ -1054,7 +1108,7 @@ namespace Omniscient
                 UpdateSitesTree();
                 siteManChanged = true;
                 SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(inst.GetName(), true)[0];
-                VirtualChannelsComboBox.SelectedItem = chan.GetName();
+                ChannelsComboBox.SelectedItem = chan.GetName();
             }
         }
 
@@ -1085,7 +1139,7 @@ namespace Omniscient
                 UpdateSitesTree();
                 siteManChanged = true;
                 SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(inst.GetName(), true)[0];
-                VirtualChannelsComboBox.SelectedItem = chan.GetName();
+                ChannelsComboBox.SelectedItem = chan.GetName();
             }
         }
 

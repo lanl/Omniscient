@@ -67,12 +67,6 @@ namespace Omniscient
             channels[COUNT_RATE] = new Channel(name + "-Count_Rate", this, Channel.ChannelType.DURATION_VALUE);
         }
 
-        public override void SetName(string newName)
-        {
-            name = newName;
-            channels[COUNT_RATE].SetName(name + "-Count_Rate");
-        }
-
         public override void ScanDataFolder()
         {
             if (string.IsNullOrEmpty(dataFolder))  return;

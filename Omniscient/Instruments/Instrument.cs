@@ -63,7 +63,15 @@ namespace Omniscient
                 chan.CalculateValues();
         }
 
-        public abstract void SetName(string newName);
+        public void SetName(string newName)
+        {
+            foreach (Channel channel in GetStandardChannels())
+            {
+                channel.SetName(channel.GetName().Replace(name, newName));
+            }
+            name = newName;
+        }
+
         public abstract void ScanDataFolder();
         public abstract void LoadData(DateTime startDate, DateTime endDate);
         public abstract void ClearData();
@@ -84,6 +92,10 @@ namespace Omniscient
         public string GetDataFolder() { return dataFolder; }
         public string GetFilePrefix() { return filePrefix; }
         public int GetNumChannels() { return numChannels; }
+        public Channel[] GetStandardChannels()
+        {
+            return channels;
+        }
         public Channel[] GetChannels()
         {
             Channel[] result = new Channel[channels.Length + virtualChannels.Count];

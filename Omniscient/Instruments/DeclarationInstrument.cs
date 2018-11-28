@@ -44,12 +44,6 @@ namespace Omniscient
             channels[DECLARATION] = new Channel(name + "-Declarations", this, Channel.ChannelType.DURATION_VALUE);
         }
 
-        public override void SetName(string newName)
-        {
-            name = newName;
-            channels[DECLARATION].SetName(name + "-Declarations");
-        }
-
         public override void ScanDataFolder()
         {
             if (string.IsNullOrEmpty(dataFolder)) return;

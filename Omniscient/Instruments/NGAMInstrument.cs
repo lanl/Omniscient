@@ -60,19 +60,6 @@ namespace Omniscient
             channels[data7] = new Channel(name + "-data7", this, Channel.ChannelType.COUNT_RATE);
         }
 
-        public override void SetName(string newName)
-        {
-            name = newName;
-            channels[data0].SetName(name + "-data0");
-            channels[data1].SetName(name + "-data1");
-            channels[data2].SetName(name + "-data2");
-            channels[data3].SetName(name + "-data3");
-            channels[data4].SetName(name + "-data4");
-            channels[data5].SetName(name + "-data5");
-            channels[data6].SetName(name + "-data6");
-            channels[data7].SetName(name + "-data7");
-        }
-
         public override void ScanDataFolder()
         {
             if (string.IsNullOrEmpty(dataFolder)) return;

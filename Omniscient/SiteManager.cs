@@ -112,44 +112,56 @@ namespace Omniscient
                                 Instrument newInstrument = Instrument.FromXML(instrumentNode, newSystem);
                                 if (!newInstrument.Equals(null))
                                 {
-                                    foreach(XmlNode chanNode in instrumentNode.ChildNodes)
+                                    int channelCount = 0;
+                                    Channel[] channels = newInstrument.GetStandardChannels();
+                                    foreach (XmlNode chanNode in instrumentNode.ChildNodes)
                                     {
-                                        try
+                                        if (chanNode.Name == "Channel")
                                         {
-                                            if (chanNode.Attributes["type"]?.InnerText != "ROI")
-                                            {
-                                                VirtualChannel chan = VirtualChannel.FromXML(chanNode, newInstrument);
-                                                newInstrument.GetVirtualChannels().Add(chan);
-                                            }
-                                            else
-                                            {
-                                                ROIChannel chan = new ROIChannel(chanNode.Attributes["name"]?.InnerText,
-                                                                                        (MCAInstrument)newInstrument, Channel.ChannelType.DURATION_VALUE);
-                                                ROI roi = chan.GetROI();
-                                                roi.SetROIStart(double.Parse(chanNode.Attributes["roi_start"]?.InnerText));
-                                                roi.SetROIEnd(double.Parse(chanNode.Attributes["roi_end"]?.InnerText));
-                                                roi.SetBG1Start(double.Parse(chanNode.Attributes["bg1_start"]?.InnerText));
-                                                roi.SetBG1End(double.Parse(chanNode.Attributes["bg1_end"]?.InnerText));
-                                                roi.SetBG2Start(double.Parse(chanNode.Attributes["bg2_start"]?.InnerText));
-                                                roi.SetBG2End(double.Parse(chanNode.Attributes["bg2_end"]?.InnerText));
-                                                switch(chanNode.Attributes["bg_type"]?.InnerText)
-                                                {
-                                                    case "None":
-                                                        roi.SetBGType(ROI.BG_Type.NONE);
-                                                        break;
-                                                    case "Flat":
-                                                        roi.SetBGType(ROI.BG_Type.FLAT);
-                                                        break;
-                                                    case "Linear":
-                                                        roi.SetBGType(ROI.BG_Type.LINEAR);
-                                                        break;
-                                                    default:
-                                                        return ReturnCode.CORRUPTED_FILE;
-                                                }
-                                                newInstrument.GetVirtualChannels().Add(chan);
-                                            }
+                                            if (channelCount >= channels.Length) return ReturnCode.CORRUPTED_FILE;
+                                            channels[channelCount].ApplyXML(chanNode);
+                                            channelCount++;
                                         }
-                                        catch { return ReturnCode.CORRUPTED_FILE; }
+                                        else if (chanNode.Name == "VirtualChannel")
+                                        {
+                                            try
+                                            {
+                                                if (chanNode.Attributes["type"]?.InnerText != "ROI")
+                                                {
+                                                    VirtualChannel chan = VirtualChannel.FromXML(chanNode, newInstrument);
+                                                    newInstrument.GetVirtualChannels().Add(chan);
+                                                }
+                                                else
+                                                {
+                                                    ROIChannel chan = new ROIChannel(chanNode.Attributes["name"]?.InnerText,
+                                                                                            (MCAInstrument)newInstrument, Channel.ChannelType.DURATION_VALUE);
+                                                    ROI roi = chan.GetROI();
+                                                    roi.SetROIStart(double.Parse(chanNode.Attributes["roi_start"]?.InnerText));
+                                                    roi.SetROIEnd(double.Parse(chanNode.Attributes["roi_end"]?.InnerText));
+                                                    roi.SetBG1Start(double.Parse(chanNode.Attributes["bg1_start"]?.InnerText));
+                                                    roi.SetBG1End(double.Parse(chanNode.Attributes["bg1_end"]?.InnerText));
+                                                    roi.SetBG2Start(double.Parse(chanNode.Attributes["bg2_start"]?.InnerText));
+                                                    roi.SetBG2End(double.Parse(chanNode.Attributes["bg2_end"]?.InnerText));
+                                                    switch (chanNode.Attributes["bg_type"]?.InnerText)
+                                                    {
+                                                        case "None":
+                                                            roi.SetBGType(ROI.BG_Type.NONE);
+                                                            break;
+                                                        case "Flat":
+                                                            roi.SetBGType(ROI.BG_Type.FLAT);
+                                                            break;
+                                                        case "Linear":
+                                                            roi.SetBGType(ROI.BG_Type.LINEAR);
+                                                            break;
+                                                        default:
+                                                            return ReturnCode.CORRUPTED_FILE;
+                                                    }
+                                                    newInstrument.GetVirtualChannels().Add(chan);
+                                                }
+                                            }
+                                            catch { return ReturnCode.CORRUPTED_FILE; }
+                                        }
+                                        else return ReturnCode.CORRUPTED_FILE;
                                     }
                                     newSystem.AddInstrument(newInstrument);
                                 }
@@ -272,6 +284,11 @@ namespace Omniscient
                         foreach (Instrument inst in sys.GetInstruments())
                         {
                             Instrument.ToXML(xmlWriter, inst);
+                            foreach (Channel chan in inst.GetStandardChannels())
+                            {
+                                chan.ToXML(xmlWriter);
+                                xmlWriter.WriteEndElement();
+                            }
                             foreach (VirtualChannel chan in inst.GetVirtualChannels())
                             {
                                 if (chan is ROIChannel)

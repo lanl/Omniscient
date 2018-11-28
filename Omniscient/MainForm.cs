@@ -700,11 +700,14 @@ namespace Omniscient
 
             foreach (Channel ch in inst.GetChannels())
             {
-                ChannelPanel chanPan = new ChannelPanel(ch);
-                chanPan.Dock = DockStyle.Top;
-                chanPan.CheckChanged += new EventHandler(OnChannelPannelCheckChanged);
-                ChannelsPanel.Controls.Add(chanPan);
-                chPanels.Add(chanPan);
+                if (!ch.Hidden)
+                {
+                    ChannelPanel chanPan = new ChannelPanel(ch);
+                    chanPan.Dock = DockStyle.Top;
+                    chanPan.CheckChanged += new EventHandler(OnChannelPannelCheckChanged);
+                    ChannelsPanel.Controls.Add(chanPan);
+                    chPanels.Add(chanPan);
+                }
             }
 
             for (int i = chPanels.Count - 1; i >= 0; i--)

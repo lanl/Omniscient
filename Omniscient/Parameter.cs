@@ -43,7 +43,7 @@ namespace Omniscient
     /// </remarks>
     public abstract class Parameter
     {
-        public static List<Parameter> FromXML(XmlNode node, List<ParameterTemplate> templates, DetectionSystem system, Instrument instrument=null)
+        public static List<Parameter> FromXML(XmlNode node, List<ParameterTemplate> templates, DetectionSystem system=null, Instrument instrument=null)
         {
             List<Parameter> parameters = new List<Parameter>();
 
@@ -165,11 +165,20 @@ namespace Omniscient
     {
         public static readonly string True = "True";
         public static readonly string False = "False";
-        public BoolParameter(string name) : base(name, ParameterType.Bool) { }
+        public BoolParameter(string name, bool initialValue=false) : base(name, ParameterType.Bool)
+        {
+            Set(initialValue);
+        }
+
         public override bool Validate()
         {
             if (Value != True && Value != False) return false;
             return true;
+        }
+        public void Set(bool value)
+        {
+            if (value) Value = True;
+            else Value = False;
         }
         public bool ToBool()
         {

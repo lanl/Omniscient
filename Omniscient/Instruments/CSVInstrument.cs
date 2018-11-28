@@ -122,13 +122,6 @@ namespace Omniscient
             Array.Sort(csvDates, csvFiles);
         }
 
-        public override void SetName(string newName)
-        {
-            name = newName;
-            for (int i = 0; i < numChannels; i++)
-                channels[i].SetName(name + "-" + i.ToString());
-        }
-
         public override List<Parameter> GetParameters()
         {
             List<Parameter> parameters = GetStandardInstrumentParameters();

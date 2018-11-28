@@ -118,6 +118,24 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="VCDownButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        xAAADsQBlSsOGwAAAKFJREFUOE+lkUEKwzAMBPM2P87f6C99dbPCKrOKS1K6IGI5O0NpjjnnX+MLMsaY
+        nHUdMcYWRFBrLeax4Cy+VuerQB0yVaBySHYCvdOZzE4QEj0pyDsNmYug955AFXzekbkIBGSRAt3lmcxW
+        kJLd+VbAcp38ZWSqIP6onSRhdciYgJ+KEsLqGGPLCiUVVoyxBUlJhRVjbClZEoMVY7j8PvN4A80ziomU
+        990nAAAAAElFTkSuQmCC
+</value>
+  </data>
+  <data name="VCUpButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
+        xAAADsQBlSsOGwAAAJlJREFUOE+lktENgCAMRJmN4VjDLfmttmnJXalR4yWXUOQ9E6WJyK/ykDLnPLQ+
+        rhBDA8Rh8ZKEGBo8AY8xrFlCDA1XEO69W7OEGBwquJIgkwUlHA0JMpsAD1frV4J4E0IheRQEnAX4DJlN
+        4LWPmQTrXiBTCexX6RoFvmcSZLJgXZZKoNEzyJAAcyfQEEMDRCGsb1uIweF7pZ0wbIqJ5IDpuQAAAABJ
+        RU5ErkJggg==
+</value>
+  </data>
   <data name="RemoveVirtualChannelButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
@@ -135,24 +153,6 @@
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
         wwAADsMBx2+oZAAAAEhJREFUOE9jwAa+ffv2HxuGShMGIMUWXSYoeDgbAJLAhrEZgA1jtY1YPJwMwIax
         KcaGoXGBCkAS2AyAShMGw8QAbBgqjQQYGAAwAKSsxZk9DAAAAABJRU5ErkJggg==
-</value>
-  </data>
-  <data name="VCDownButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        xAAADsQBlSsOGwAAAKFJREFUOE+lkUEKwzAMBPM2P87f6C99dbPCKrOKS1K6IGI5O0NpjjnnX+MLMsaY
-        nHUdMcYWRFBrLeax4Cy+VuerQB0yVaBySHYCvdOZzE4QEj0pyDsNmYug955AFXzekbkIBGSRAt3lmcxW
-        kJLd+VbAcp38ZWSqIP6onSRhdciYgJ+KEsLqGGPLCiUVVoyxBUlJhRVjbClZEoMVY7j8PvN4A80ziomU
-        990nAAAAAElFTkSuQmCC
-</value>
-  </data>
-  <data name="VCUpButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-    <value>
-        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAO
-        xAAADsQBlSsOGwAAAJlJREFUOE+lktENgCAMRJmN4VjDLfmttmnJXalR4yWXUOQ9E6WJyK/ykDLnPLQ+
-        rhBDA8Rh8ZKEGBo8AY8xrFlCDA1XEO69W7OEGBwquJIgkwUlHA0JMpsAD1frV4J4E0IheRQEnAX4DJlN
-        4LWPmQTrXiBTCexX6RoFvmcSZLJgXZZKoNEzyJAAcyfQEEMDRCGsb1uIweF7pZ0wbIqJ5IDpuQAAAABJ
-        RU5ErkJggg==
 </value>
   </data>
   <data name="DeclarationsDirectoryButton.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">

@@ -48,9 +48,8 @@ namespace Omniscient
             this.TypeLabel = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.InstrumentPanel = new System.Windows.Forms.Panel();
-            this.InstrumentParameterListPanel = new Omniscient.Controls.ParameterListPanel();
+            this.InstTypeTextBox = new System.Windows.Forms.TextBox();
             this.VirtualChannelGroupBox = new System.Windows.Forms.GroupBox();
-            this.VCParameterListPanel = new Omniscient.Controls.ParameterListPanel();
             this.ROIVCPanel = new System.Windows.Forms.Panel();
             this.label20 = new System.Windows.Forms.Label();
             this.BG2EndTextBox = new System.Windows.Forms.TextBox();
@@ -76,7 +75,7 @@ namespace Omniscient
             this.RemoveVirtualChannelButton = new System.Windows.Forms.Button();
             this.AddVirtualChannelButton = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
-            this.VirtualChannelsComboBox = new System.Windows.Forms.ComboBox();
+            this.ChannelsComboBox = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.NewButtonPanel = new System.Windows.Forms.Panel();
             this.NewInstrumentButton = new System.Windows.Forms.Button();
@@ -105,7 +104,13 @@ namespace Omniscient
             this.panel4 = new System.Windows.Forms.Panel();
             this.ExportButton = new System.Windows.Forms.Button();
             this.ImportButton = new System.Windows.Forms.Button();
-            this.InstTypeTextBox = new System.Windows.Forms.TextBox();
+            this.ChannelSettingsPanel = new System.Windows.Forms.Panel();
+            this.ChannelGroupBox = new System.Windows.Forms.GroupBox();
+            this.ChannelNameTextBox = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.VCParameterListPanel = new Omniscient.Controls.ParameterListPanel();
+            this.InstrumentParameterListPanel = new Omniscient.Controls.ParameterListPanel();
+            this.ChannelParameterListPanel = new Omniscient.Controls.ParameterListPanel();
             this.InstrumentPanel.SuspendLayout();
             this.VirtualChannelGroupBox.SuspendLayout();
             this.ROIVCPanel.SuspendLayout();
@@ -119,6 +124,8 @@ namespace Omniscient
             this.NamePanel.SuspendLayout();
             this.LeftRightPanel.SuspendLayout();
             this.panel4.SuspendLayout();
+            this.ChannelSettingsPanel.SuspendLayout();
+            this.ChannelGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // SitesTreeView
@@ -127,7 +134,7 @@ namespace Omniscient
             this.SitesTreeView.Location = new System.Drawing.Point(10, 10);
             this.SitesTreeView.Name = "SitesTreeView";
             this.SitesTreeView.ShowNodeToolTips = true;
-            this.SitesTreeView.Size = new System.Drawing.Size(380, 621);
+            this.SitesTreeView.Size = new System.Drawing.Size(380, 821);
             this.SitesTreeView.TabIndex = 0;
             this.SitesTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.SitesTreeView_AfterSelect);
             // 
@@ -166,13 +173,13 @@ namespace Omniscient
             // 
             // InstrumentPanel
             // 
+            this.InstrumentPanel.Controls.Add(this.ChannelSettingsPanel);
             this.InstrumentPanel.Controls.Add(this.InstTypeTextBox);
             this.InstrumentPanel.Controls.Add(this.InstrumentParameterListPanel);
-            this.InstrumentPanel.Controls.Add(this.VirtualChannelGroupBox);
             this.InstrumentPanel.Controls.Add(this.RemoveVirtualChannelButton);
             this.InstrumentPanel.Controls.Add(this.AddVirtualChannelButton);
             this.InstrumentPanel.Controls.Add(this.label6);
-            this.InstrumentPanel.Controls.Add(this.VirtualChannelsComboBox);
+            this.InstrumentPanel.Controls.Add(this.ChannelsComboBox);
             this.InstrumentPanel.Controls.Add(this.label3);
             this.InstrumentPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.InstrumentPanel.Location = new System.Drawing.Point(0, 126);
@@ -180,38 +187,26 @@ namespace Omniscient
             this.InstrumentPanel.Size = new System.Drawing.Size(362, 470);
             this.InstrumentPanel.TabIndex = 9;
             // 
-            // InstrumentParameterListPanel
+            // InstTypeTextBox
             // 
-            this.InstrumentParameterListPanel.AutoScroll = true;
-            this.InstrumentParameterListPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.InstrumentParameterListPanel.Location = new System.Drawing.Point(6, 34);
-            this.InstrumentParameterListPanel.Name = "InstrumentParameterListPanel";
-            this.InstrumentParameterListPanel.Padding = new System.Windows.Forms.Padding(5);
-            this.InstrumentParameterListPanel.Size = new System.Drawing.Size(350, 120);
-            this.InstrumentParameterListPanel.TabIndex = 22;
+            this.InstTypeTextBox.Enabled = false;
+            this.InstTypeTextBox.Location = new System.Drawing.Point(102, 8);
+            this.InstTypeTextBox.Name = "InstTypeTextBox";
+            this.InstTypeTextBox.Size = new System.Drawing.Size(160, 20);
+            this.InstTypeTextBox.TabIndex = 23;
             // 
             // VirtualChannelGroupBox
             // 
             this.VirtualChannelGroupBox.Controls.Add(this.VCParameterListPanel);
             this.VirtualChannelGroupBox.Controls.Add(this.ROIVCPanel);
             this.VirtualChannelGroupBox.Controls.Add(this.VCTopPanel);
-            this.VirtualChannelGroupBox.Location = new System.Drawing.Point(3, 189);
+            this.VirtualChannelGroupBox.Dock = System.Windows.Forms.DockStyle.Top;
+            this.VirtualChannelGroupBox.Location = new System.Drawing.Point(0, 100);
             this.VirtualChannelGroupBox.Name = "VirtualChannelGroupBox";
-            this.VirtualChannelGroupBox.Size = new System.Drawing.Size(356, 220);
+            this.VirtualChannelGroupBox.Size = new System.Drawing.Size(362, 220);
             this.VirtualChannelGroupBox.TabIndex = 21;
             this.VirtualChannelGroupBox.TabStop = false;
             this.VirtualChannelGroupBox.Text = "Virtual Channel";
-            // 
-            // VCParameterListPanel
-            // 
-            this.VCParameterListPanel.AutoScroll = true;
-            this.VCParameterListPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.VCParameterListPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.VCParameterListPanel.Location = new System.Drawing.Point(3, 194);
-            this.VCParameterListPanel.Name = "VCParameterListPanel";
-            this.VCParameterListPanel.Padding = new System.Windows.Forms.Padding(5);
-            this.VCParameterListPanel.Size = new System.Drawing.Size(350, 120);
-            this.VCParameterListPanel.TabIndex = 11;
             // 
             // ROIVCPanel
             // 
@@ -232,7 +227,7 @@ namespace Omniscient
             this.ROIVCPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.ROIVCPanel.Location = new System.Drawing.Point(3, 78);
             this.ROIVCPanel.Name = "ROIVCPanel";
-            this.ROIVCPanel.Size = new System.Drawing.Size(350, 116);
+            this.ROIVCPanel.Size = new System.Drawing.Size(356, 116);
             this.ROIVCPanel.TabIndex = 10;
             // 
             // label20
@@ -364,7 +359,7 @@ namespace Omniscient
             this.VCTopPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.VCTopPanel.Location = new System.Drawing.Point(3, 16);
             this.VCTopPanel.Name = "VCTopPanel";
-            this.VCTopPanel.Size = new System.Drawing.Size(350, 62);
+            this.VCTopPanel.Size = new System.Drawing.Size(356, 62);
             this.VCTopPanel.TabIndex = 6;
             // 
             // VirtualChannelTypeTextBox
@@ -443,21 +438,21 @@ namespace Omniscient
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(13, 168);
+            this.label6.Location = new System.Drawing.Point(41, 168);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(83, 13);
+            this.label6.Size = new System.Drawing.Size(51, 13);
             this.label6.TabIndex = 18;
-            this.label6.Text = "Virtual Channels";
+            this.label6.Text = "Channels";
             // 
-            // VirtualChannelsComboBox
+            // ChannelsComboBox
             // 
-            this.VirtualChannelsComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.VirtualChannelsComboBox.FormattingEnabled = true;
-            this.VirtualChannelsComboBox.Location = new System.Drawing.Point(102, 165);
-            this.VirtualChannelsComboBox.Name = "VirtualChannelsComboBox";
-            this.VirtualChannelsComboBox.Size = new System.Drawing.Size(159, 21);
-            this.VirtualChannelsComboBox.TabIndex = 17;
-            this.VirtualChannelsComboBox.SelectedIndexChanged += new System.EventHandler(this.VirtualChannelsComboBox_SelectedIndexChanged);
+            this.ChannelsComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.ChannelsComboBox.FormattingEnabled = true;
+            this.ChannelsComboBox.Location = new System.Drawing.Point(102, 165);
+            this.ChannelsComboBox.Name = "ChannelsComboBox";
+            this.ChannelsComboBox.Size = new System.Drawing.Size(159, 21);
+            this.ChannelsComboBox.TabIndex = 17;
+            this.ChannelsComboBox.SelectedIndexChanged += new System.EventHandler(this.VirtualChannelsComboBox_SelectedIndexChanged);
             // 
             // label2
             // 
@@ -526,7 +521,7 @@ namespace Omniscient
             this.BottomRightPanel.Controls.Add(this.SaveButton);
             this.BottomRightPanel.Controls.Add(this.ExitButton);
             this.BottomRightPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.BottomRightPanel.Location = new System.Drawing.Point(5, 576);
+            this.BottomRightPanel.Location = new System.Drawing.Point(5, 776);
             this.BottomRightPanel.Name = "BottomRightPanel";
             this.BottomRightPanel.Size = new System.Drawing.Size(408, 60);
             this.BottomRightPanel.TabIndex = 11;
@@ -568,7 +563,7 @@ namespace Omniscient
             this.LeftPanel.Location = new System.Drawing.Point(0, 0);
             this.LeftPanel.Name = "LeftPanel";
             this.LeftPanel.Padding = new System.Windows.Forms.Padding(10);
-            this.LeftPanel.Size = new System.Drawing.Size(400, 641);
+            this.LeftPanel.Size = new System.Drawing.Size(400, 841);
             this.LeftPanel.TabIndex = 12;
             // 
             // RightPanel
@@ -581,7 +576,7 @@ namespace Omniscient
             this.RightPanel.Location = new System.Drawing.Point(400, 0);
             this.RightPanel.Name = "RightPanel";
             this.RightPanel.Padding = new System.Windows.Forms.Padding(5);
-            this.RightPanel.Size = new System.Drawing.Size(418, 641);
+            this.RightPanel.Size = new System.Drawing.Size(418, 841);
             this.RightPanel.TabIndex = 13;
             // 
             // InnerRightPanel
@@ -593,7 +588,7 @@ namespace Omniscient
             this.InnerRightPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.InnerRightPanel.Location = new System.Drawing.Point(51, 35);
             this.InnerRightPanel.Name = "InnerRightPanel";
-            this.InnerRightPanel.Size = new System.Drawing.Size(362, 541);
+            this.InnerRightPanel.Size = new System.Drawing.Size(362, 741);
             this.InnerRightPanel.TabIndex = 13;
             // 
             // SystemPanel
@@ -686,7 +681,7 @@ namespace Omniscient
             this.LeftRightPanel.Location = new System.Drawing.Point(5, 35);
             this.LeftRightPanel.Name = "LeftRightPanel";
             this.LeftRightPanel.Padding = new System.Windows.Forms.Padding(2);
-            this.LeftRightPanel.Size = new System.Drawing.Size(46, 541);
+            this.LeftRightPanel.Size = new System.Drawing.Size(46, 741);
             this.LeftRightPanel.TabIndex = 14;
             // 
             // RemoveButton
@@ -701,7 +696,7 @@ namespace Omniscient
             // DownButton
             // 
             this.DownButton.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.DownButton.Location = new System.Drawing.Point(2, 495);
+            this.DownButton.Location = new System.Drawing.Point(2, 695);
             this.DownButton.Name = "DownButton";
             this.DownButton.Size = new System.Drawing.Size(38, 40);
             this.DownButton.TabIndex = 1;
@@ -748,19 +743,81 @@ namespace Omniscient
             this.ImportButton.UseVisualStyleBackColor = true;
             this.ImportButton.Click += new System.EventHandler(this.ImportButton_Click);
             // 
-            // InstTypeTextBox
+            // ChannelSettingsPanel
             // 
-            this.InstTypeTextBox.Enabled = false;
-            this.InstTypeTextBox.Location = new System.Drawing.Point(102, 8);
-            this.InstTypeTextBox.Name = "InstTypeTextBox";
-            this.InstTypeTextBox.Size = new System.Drawing.Size(160, 20);
-            this.InstTypeTextBox.TabIndex = 23;
+            this.ChannelSettingsPanel.Controls.Add(this.VirtualChannelGroupBox);
+            this.ChannelSettingsPanel.Controls.Add(this.ChannelGroupBox);
+            this.ChannelSettingsPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.ChannelSettingsPanel.Location = new System.Drawing.Point(0, 194);
+            this.ChannelSettingsPanel.Name = "ChannelSettingsPanel";
+            this.ChannelSettingsPanel.Size = new System.Drawing.Size(362, 276);
+            this.ChannelSettingsPanel.TabIndex = 24;
+            // 
+            // ChannelGroupBox
+            // 
+            this.ChannelGroupBox.Controls.Add(this.ChannelParameterListPanel);
+            this.ChannelGroupBox.Controls.Add(this.ChannelNameTextBox);
+            this.ChannelGroupBox.Controls.Add(this.label4);
+            this.ChannelGroupBox.Dock = System.Windows.Forms.DockStyle.Top;
+            this.ChannelGroupBox.Location = new System.Drawing.Point(0, 0);
+            this.ChannelGroupBox.Name = "ChannelGroupBox";
+            this.ChannelGroupBox.Size = new System.Drawing.Size(362, 100);
+            this.ChannelGroupBox.TabIndex = 22;
+            this.ChannelGroupBox.TabStop = false;
+            this.ChannelGroupBox.Text = "Channel";
+            // 
+            // ChannelNameTextBox
+            // 
+            this.ChannelNameTextBox.Location = new System.Drawing.Point(97, 19);
+            this.ChannelNameTextBox.Name = "ChannelNameTextBox";
+            this.ChannelNameTextBox.Size = new System.Drawing.Size(160, 20);
+            this.ChannelNameTextBox.TabIndex = 7;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(56, 23);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(35, 13);
+            this.label4.TabIndex = 6;
+            this.label4.Text = "Name";
+            // 
+            // VCParameterListPanel
+            // 
+            this.VCParameterListPanel.AutoScroll = true;
+            this.VCParameterListPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.VCParameterListPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.VCParameterListPanel.Location = new System.Drawing.Point(3, 194);
+            this.VCParameterListPanel.Name = "VCParameterListPanel";
+            this.VCParameterListPanel.Padding = new System.Windows.Forms.Padding(5);
+            this.VCParameterListPanel.Size = new System.Drawing.Size(356, 120);
+            this.VCParameterListPanel.TabIndex = 11;
+            // 
+            // InstrumentParameterListPanel
+            // 
+            this.InstrumentParameterListPanel.AutoScroll = true;
+            this.InstrumentParameterListPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.InstrumentParameterListPanel.Location = new System.Drawing.Point(6, 34);
+            this.InstrumentParameterListPanel.Name = "InstrumentParameterListPanel";
+            this.InstrumentParameterListPanel.Padding = new System.Windows.Forms.Padding(5);
+            this.InstrumentParameterListPanel.Size = new System.Drawing.Size(350, 120);
+            this.InstrumentParameterListPanel.TabIndex = 22;
+            // 
+            // ChannelParameterListPanel
+            // 
+            this.ChannelParameterListPanel.AutoScroll = true;
+            this.ChannelParameterListPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.ChannelParameterListPanel.Location = new System.Drawing.Point(6, 45);
+            this.ChannelParameterListPanel.Name = "ChannelParameterListPanel";
+            this.ChannelParameterListPanel.Padding = new System.Windows.Forms.Padding(5);
+            this.ChannelParameterListPanel.Size = new System.Drawing.Size(350, 49);
+            this.ChannelParameterListPanel.TabIndex = 23;
             // 
             // SiteManagerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(818, 641);
+            this.ClientSize = new System.Drawing.Size(818, 841);
             this.ControlBox = false;
             this.Controls.Add(this.RightPanel);
             this.Controls.Add(this.LeftPanel);
@@ -787,6 +844,9 @@ namespace Omniscient
             this.NamePanel.PerformLayout();
             this.LeftRightPanel.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
+            this.ChannelSettingsPanel.ResumeLayout(false);
+            this.ChannelGroupBox.ResumeLayout(false);
+            this.ChannelGroupBox.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -823,7 +883,7 @@ namespace Omniscient
         private System.Windows.Forms.Button RemoveVirtualChannelButton;
         private System.Windows.Forms.Button AddVirtualChannelButton;
         private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.ComboBox VirtualChannelsComboBox;
+        private System.Windows.Forms.ComboBox ChannelsComboBox;
         private System.Windows.Forms.GroupBox VirtualChannelGroupBox;
         private System.Windows.Forms.Panel VCTopPanel;
         private System.Windows.Forms.Label label8;
@@ -857,5 +917,10 @@ namespace Omniscient
         private System.Windows.Forms.TextBox VirtualChannelTypeTextBox;
         private Controls.ParameterListPanel InstrumentParameterListPanel;
         private System.Windows.Forms.TextBox InstTypeTextBox;
+        private System.Windows.Forms.Panel ChannelSettingsPanel;
+        private System.Windows.Forms.GroupBox ChannelGroupBox;
+        private System.Windows.Forms.TextBox ChannelNameTextBox;
+        private System.Windows.Forms.Label label4;
+        private Controls.ParameterListPanel ChannelParameterListPanel;
     }
 }
