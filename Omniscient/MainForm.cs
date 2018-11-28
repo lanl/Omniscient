@@ -528,6 +528,7 @@ namespace Omniscient
             DateTime end = GetRangeEnd();
             int eventCount = 0;
             Chart chart;
+            bool overHeightWarning = false;
             for (int chartNum = 0; chartNum < N_CHARTS; chartNum++)
             {               
                 chart = GetChart(chartNum);
@@ -570,14 +571,24 @@ namespace Omniscient
                             //    rect.AxisX.ValueToPixelPosition(eve.GetEndTime().ToOADate()) - rect.AxisX.ValueToPixelPosition(eve.GetStartTime().ToOADate()) :
                             //    rect.AxisX.ValueToPixelPosition((eve.GetStartTime() + TimeSpan.FromSeconds(5)).ToOADate()) - rect.AxisX.ValueToPixelPosition(eve.GetStartTime().ToOADate());
                             rect.Width = eve.GetEndTime().ToOADate() - eve.GetStartTime().ToOADate();
-                            rect.Height = rect.AxisY.Maximum - rect.AxisY.Minimum;
+                            double tempHeight = rect.AxisY.Maximum - rect.AxisY.Minimum;
+                            if (tempHeight < 290000000) rect.Height = rect.AxisY.Maximum - rect.AxisY.Minimum;
+                            else if(!double.IsNaN(tempHeight))
+                            {
+                                rect.Height = 290000000 - 1;
+                                overHeightWarning = true;
+                            }
                             chart.Annotations.Add(rect);
                             eventCount++;
                         }
                     }
                 }
             }
-            if (eventCount == MAX_HIGHLIGHTED_EVENTS)
+            if (overHeightWarning)
+            {
+                EventsWarningLabel.Text = "Warning: Y-Axis range may be too large to properly display highlighted events!";
+            }
+            else if (eventCount == MAX_HIGHLIGHTED_EVENTS)
                 EventsWarningLabel.Text = "Warning: Too many events in view. Not all are highlighted";
             else
                 EventsWarningLabel.Text = "";
@@ -608,6 +619,8 @@ namespace Omniscient
                 else
                 {
                     StripChartsLayoutPanel.RowStyles[chartNum].Height = 0;
+                    chart.ChartAreas[0].AxisY.Maximum = 1;
+                    chart.ChartAreas[0].AxisY.Minimum = 0;
                 }
             }
             StripChartsLayoutPanel.ResumeLayout();
@@ -1666,6 +1679,7 @@ namespace Omniscient
                 ((mouseDelta / range < 0.05) && (mouseDelta/range > -0.05)))
             {
                 // This is nothing - just do nothing
+                drawingZoomBox = false;
                 drawStatisticsBox = false;
                 return;
             }
