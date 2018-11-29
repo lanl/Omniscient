@@ -523,7 +523,6 @@ namespace Omniscient
 
         private void DrawSections()
         {
-            
             DateTime start = GetRangeStart();
             DateTime end = GetRangeEnd();
             int eventCount = 0;
@@ -1473,68 +1472,17 @@ namespace Omniscient
 
         private void exportToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if(activeInstruments.Count == 0)
+            {
+                MessageBox.Show("No active Instruments for exporting data!");
+                return;
+            }
             System.Windows.Forms.Cursor.Current = Cursors.WaitCursor;
-            // File for each active channel
-            foreach (ChannelPanel chanPan in chPanels)
-            {
-                bool plotChan = false;
-                for (int chartNum = 0; chartNum < 4; chartNum++)
-                {
-                    switch (chartNum)
-                    {
-                        case 0:
-                            if (chanPan.Chart1CheckBox.Checked)
-                                plotChan = true;
-                            break;
-                        case 1:
-                            if (chanPan.Chart2CheckBox.Checked)
-                                plotChan = true;
-                            break;
-                        case 2:
-                            if (chanPan.Chart3CheckBox.Checked)
-                                plotChan = true;
-                            break;
-                        case 3:
-                            if (chanPan.Chart4CheckBox.Checked)
-                                plotChan = true;
-                            break;
-                    }
-                }
-                if (plotChan)
-                {
-                    Channel chan = chanPan.GetChannel();
 
-                    List<DateTime> dates = chan.GetTimeStamps();
-                    List<double> vals = chan.GetValues();
-
-                    StreamWriter file = new StreamWriter(chan.GetName() + ".csv");
-
-                    for (int i = 0; i < dates.Count; i++)
-                    {
-                        file.WriteLine(dates[i].ToString() + "," + vals[i].ToString());
-                    }
-                    file.Close();
-                }
-            }
-
-            // File for each active instrument
-            foreach (Instrument inst in activeInstruments)
-            {
-                StreamWriter file = new StreamWriter(inst.GetName() + ".csv");
-                List<DateTime> dates = inst.GetChannels()[0].GetTimeStamps();
-                Channel[] channels = inst.GetChannels();
-                for (int i = 0; i < dates.Count; i++)
-                {
-                    file.Write(dates[i].ToString("yyyy-MM-dd HH:mm:ss"));
-                    for (int c = 0; c < channels.Length; c++)
-                    {
-                        file.Write("," + channels[c].GetValues()[i]);
-                    }
-                    file.Write("\r\n");
-                }
-                file.Close();
-            }
-            System.Windows.Forms.Cursor.Current = Cursors.Default;
+            ExportDataDialog dialog = new ExportDataDialog(activeInstruments, globalStart, globalEnd,
+                StartDatePicker.Value, StartTimePicker.Value, EndDatePicker.Value, EndTimePicker.Value);
+            dialog.ShowDialog();
+            return;
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)

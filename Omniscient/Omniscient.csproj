@@ -153,6 +153,12 @@
     <Compile Include="Controls\NuclearCompositionPanel.Designer.cs">
       <DependentUpon>NuclearCompositionPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="ExportDataDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ExportDataDialog.Designer.cs">
+      <DependentUpon>ExportDataDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Facility.cs" />
     <Compile Include="Inspectacles.cs">
       <SubType>Form</SubType>
@@ -271,6 +277,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\NuclearCompositionPanel.resx">
       <DependentUpon>NuclearCompositionPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ExportDataDialog.resx">
+      <DependentUpon>ExportDataDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Inspectacles.resx">
       <DependentUpon>Inspectacles.cs</DependentUpon>
