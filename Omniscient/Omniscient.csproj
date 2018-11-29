@@ -208,12 +208,6 @@
     <Compile Include="SiteManagerForm\VirtualChannelTypeDialog.Designer.cs">
       <DependentUpon>VirtualChannelTypeDialog.cs</DependentUpon>
     </Compile>
-    <Compile Include="SiteManagerForm\InstrumentTypeDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="SiteManagerForm\InstrumentTypeDialog.Designer.cs">
-      <DependentUpon>InstrumentTypeDialog.cs</DependentUpon>
-    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -292,9 +286,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="SiteManagerForm\VirtualChannelTypeDialog.resx">
       <DependentUpon>VirtualChannelTypeDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="SiteManagerForm\InstrumentTypeDialog.resx">
-      <DependentUpon>InstrumentTypeDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
