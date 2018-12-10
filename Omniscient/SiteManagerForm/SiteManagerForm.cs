@@ -554,9 +554,13 @@ namespace Omniscient
             UpdateSitesTree();
             siteManChanged = true;
             SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(nodeName, true)[0];
-            if(selectedVirtualChannel != null || selectedChannel != null)
+            if(selectedVirtualChannel != null)
             {
-                ChannelsComboBox.SelectedItem = chan.GetName();
+                ChannelsComboBox.SelectedItem = selectedVirtualChannel.GetName();
+            }
+            else if(selectedChannel != null)
+            {
+                ChannelsComboBox.SelectedItem = selectedChannel.GetName();
             }
         }
 
