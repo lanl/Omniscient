@@ -91,6 +91,7 @@ namespace Omniscient
             int endIndex = Array.FindIndex(isrDates.ToArray(), x => x >= endDate);
 
             if (endIndex == -1) endIndex = (isrDates.Length) - 1;
+            if (endIndex == -1) startIndex = 0;
 
             DateTime time;
             DataFile dataFile;

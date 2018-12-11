@@ -104,6 +104,11 @@ namespace Omniscient
             StripChart2.Paint += new PaintEventHandler(StripChart_Paint);
             StripChart3.Paint += new PaintEventHandler(StripChart_Paint);
 
+            StripChart0.SuppressExceptions = true;
+            StripChart1.SuppressExceptions = true;
+            StripChart2.SuppressExceptions = true;
+            StripChart3.SuppressExceptions = true;
+
             globalStart = DateTime.Today.AddDays(-1);
             GlobalStartTextBox.Text = globalStart.ToString("MMM dd, yyyy");
             globalEnd = DateTime.Today;

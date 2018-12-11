@@ -105,6 +105,7 @@ namespace Omniscient
             int endIndex = Array.FindIndex(chnDates.ToArray(), x => x >= endDate);
 
             if (endIndex == -1) endIndex = (chnDates.Length) - 1;
+            if (endIndex == -1) startIndex = 0;
 
             DateTime time;
             TimeSpan duration;

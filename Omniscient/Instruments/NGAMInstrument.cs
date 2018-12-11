@@ -99,6 +99,7 @@ namespace Omniscient
 
             if (startIndex == -1) return;
             if (endIndex == -1) endIndex = (vbfDates.Length) - 1;
+            if (endIndex == -1) startIndex = 0;
 
             DateTime time;
             DataFile dataFile;
