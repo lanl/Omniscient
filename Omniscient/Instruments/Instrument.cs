@@ -51,6 +51,7 @@ namespace Omniscient
             }
         }
 
+        public bool IncludeSubDirectories { get; set; }
         public Instrument(string newName)
         {
             name = newName;
@@ -74,6 +75,7 @@ namespace Omniscient
 
         public abstract void ScanDataFolder();
         public abstract void LoadData(DateTime startDate, DateTime endDate);
+        //public abstract ReturnCode IngestFile(string fileName);
         public abstract void ClearData();
 
         public void SetDataFolder(string newDataFolder)
@@ -118,7 +120,9 @@ namespace Omniscient
             List<Parameter> parameters = new List<Parameter>()
             {
                 new StringParameter("File Prefix") { Value = filePrefix },
-                new DirectoryParameter("Data Directory"){ Value = dataFolder }                
+                new DirectoryParameter("Data Directory"){ Value = dataFolder },
+                new BoolParameter("Include Subdirectories") {Value = IncludeSubDirectories ? 
+                                                                BoolParameter.True : BoolParameter.False}
             };
             return parameters;
         }
@@ -135,6 +139,9 @@ namespace Omniscient
                         break;
                     case "Data Directory":
                         instrument.SetDataFolder(param.Value);
+                        break;
+                    case "Include Subdirectories":
+                        instrument.IncludeSubDirectories = ((BoolParameter)param).ToBool();
                         break;
                 }
             }
@@ -180,7 +187,8 @@ namespace Omniscient
         public List<ParameterTemplate> TemplateParameters { get; set; } = new List<ParameterTemplate>()
         {
             new ParameterTemplate("File Prefix", ParameterType.String),
-            new ParameterTemplate("Data Directory", ParameterType.Directory)
+            new ParameterTemplate("Data Directory", ParameterType.Directory),
+            new ParameterTemplate("Include Subdirectories", ParameterType.Bool)
         };
     }
 }

@@ -118,6 +118,26 @@ namespace Omniscient
             LoadVirtualChannels();
         }
 
+        /*
+        public override ReturnCode IngestFile(string fileName)
+        {
+            ReturnCode returnCode = isrParser.ParseFile(fileName);
+            DataFile dataFile = new DataFile(fileName);
+            int numRecords = isrParser.GetNumRecords();
+            DateTime time;
+            for (int r = 0; r < numRecords; ++r)
+            {
+                time = isrParser.ISRTimeToDateTime(isrParser.GetRecord(r).time);
+                channels[TOTALS1].AddDataPoint(time, isrParser.GetRecord(r).totals1, dataFile);
+                channels[TOTALS2].AddDataPoint(time, isrParser.GetRecord(r).totals2, dataFile);
+                channels[TOTALS3].AddDataPoint(time, isrParser.GetRecord(r).totals3, dataFile);
+                channels[REALS_PLUS_ACC].AddDataPoint(time, isrParser.GetRecord(r).realsPlusAccidentals, dataFile);
+                channels[ACC].AddDataPoint(time, isrParser.GetRecord(r).accidentals, dataFile);
+            }
+            return ReturnCode.SUCCESS;
+        }
+        */
+
         public override void ClearData()
         {
             foreach (Channel ch in channels)
