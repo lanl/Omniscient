@@ -62,34 +62,13 @@ namespace Omniscient
             channels[COUNT_RATE] = new Channel(name + "-Count_Rate", this, Channel.ChannelType.DURATION_VALUE);
         }
 
-        public override void ScanDataFolder()
+        public override DateTime GetFileDate(string file)
         {
-            if (string.IsNullOrEmpty(dataFolder))  return;
-            List<string> chnFileList = new List<string>();
-            List<DateTime> chnDateList = new List<DateTime>();
-
-            string[] filesInDirectory = Directory.GetFiles(dataFolder);
-            foreach (string file in filesInDirectory)
+            if (spectrumParser.ParseSpectrumFile(file) == ReturnCode.SUCCESS)
             {
-                string fileAbrev = file.Substring(file.LastIndexOf('\\') + 1);
-                if (fileAbrev.Substring(fileAbrev.Length - 4).ToLower() == ("." + FileExtension) && fileAbrev.ToLower().StartsWith(filePrefix.ToLower()))
-                {
-                    if (spectrumParser.ParseSpectrumFile(file) == ReturnCode.SUCCESS)
-                    {
-                        chnFileList.Add(file);
-                        chnDateList.Add(spectrumParser.GetSpectrum().GetStartTime());
-                    }
-                    else
-                    {
-                        // Something should really go here...
-                    }
-                }
+                return spectrumParser.GetSpectrum().GetStartTime();
             }
-
-            dataFileNames = chnFileList.ToArray();
-            dataFileTimes = chnDateList.ToArray();
-
-            Array.Sort(dataFileTimes, dataFileNames);
+            return DateTime.MinValue;
         }
 
         public override ReturnCode IngestFile(string fileName)

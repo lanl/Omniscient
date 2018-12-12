@@ -11,10 +11,15 @@ namespace Omniscient
     {
         private const string FILE_EXTENSION = "csv";
 
+        private int _numberOfHeaders;
         public int NumberOfHeaders
         {
-            get;
-            set;
+            get { return _numberOfHeaders; }
+            set
+            {
+                _numberOfHeaders = value;
+                if(csvParser != null) csvParser.NumberOfHeaders = value;
+            }
         }
 
         CSVParser csvParser;
@@ -25,10 +30,10 @@ namespace Omniscient
             numChannels = nChannels;
             FileExtension = FILE_EXTENSION;
             filePrefix = "";
-            NumberOfHeaders = 0;
 
             csvParser = new CSVParser();
             csvParser.NumberOfColumns = numChannels + 1;
+            NumberOfHeaders = 0;
 
             channels = new Channel[numChannels];
             for (int i = 0; i < numChannels; i++)
@@ -45,6 +50,7 @@ namespace Omniscient
             csvParser.NumberOfColumns = numChannels + 1;
             return ReturnCode.SUCCESS;
         }
+
 
         public override void ClearData()
         {
@@ -71,34 +77,13 @@ namespace Omniscient
             return ReturnCode.SUCCESS;
         }
 
-        public override void ScanDataFolder()
+        public override DateTime GetFileDate(string file)
         {
-            if (string.IsNullOrEmpty(dataFolder)) return;
-            csvParser.NumberOfHeaders = NumberOfHeaders;
-            List<string> csvFileList = new List<string>();
-            List<DateTime> csvDateList = new List<DateTime>();
-
-            string[] filesInDirectory = Directory.GetFiles(dataFolder);
-            foreach (string file in filesInDirectory)
+            if (csvParser.ParseFirstEntry(file) == ReturnCode.SUCCESS)
             {
-                string fileAbrev = file.Substring(file.LastIndexOf('\\') + 1);
-                if (fileAbrev.Substring(fileAbrev.Length - 4).ToLower() == ("." + FileExtension) && fileAbrev.ToLower().StartsWith(filePrefix.ToLower()))
-                {
-                    if (csvParser.ParseFirstEntry(file) == ReturnCode.SUCCESS)
-                    {
-                        csvFileList.Add(file);
-                        csvDateList.Add(csvParser.TimeStamps[0]);
-                    }
-                    else
-                    {
-                        // Something should really go here...
-                    }
-                }
+                return csvParser.TimeStamps[0];
             }
-
-            dataFileNames = csvFileList.ToArray();
-            dataFileTimes = csvDateList.ToArray();
-            Array.Sort(dataFileTimes, dataFileNames);
+            return DateTime.MinValue;
         }
 
         public override List<Parameter> GetParameters()
@@ -126,7 +111,6 @@ namespace Omniscient
             }
         }
     }
-
 
     public class CSVInstrumentHookup : InstrumentHookup
     {

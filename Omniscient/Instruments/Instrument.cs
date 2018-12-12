@@ -13,6 +13,7 @@
 // THIS SOFTWARE IS PROVIDED BY LOS ALAMOS NATIONAL SECURITY, LLC AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL LOS ALAMOS NATIONAL SECURITY, LLC OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -78,7 +79,40 @@ namespace Omniscient
             name = newName;
         }
 
-        public abstract void ScanDataFolder();
+        public void ScanDataFolder()
+        {
+            if (string.IsNullOrEmpty(dataFolder)) return;
+            List<string> dataFileList = new List<string>();
+            List<DateTime> dataFileDateList = new List<DateTime>();
+
+            string[] filesInDirectory = Directory.GetFiles(dataFolder);
+
+            DateTime fileDate;
+            foreach (string file in filesInDirectory)
+            {
+                string fileAbrev = file.Substring(file.LastIndexOf('\\') + 1);
+                if (fileAbrev.Substring(fileAbrev.Length - 4).ToLower() == ("." + FileExtension) && fileAbrev.ToLower().StartsWith(filePrefix.ToLower()))
+                {
+                    fileDate = GetFileDate(file);
+                    if (fileDate>DateTime.MinValue)
+                    {
+                        dataFileList.Add(file);
+                        dataFileDateList.Add(fileDate);
+                    }
+                    else
+                    {
+                        // Something should really go here...
+                    }
+                }
+            }
+
+            dataFileNames = dataFileList.ToArray();
+            dataFileTimes = dataFileDateList.ToArray();
+
+            Array.Sort(dataFileTimes, dataFileNames);
+        }
+        public abstract DateTime GetFileDate(string file);
+
         public virtual void LoadData(DateTime startDate, DateTime endDate)
         {
             ReturnCode returnCode = ReturnCode.SUCCESS;

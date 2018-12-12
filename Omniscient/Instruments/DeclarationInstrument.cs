@@ -35,6 +35,7 @@ namespace Omniscient
         {
             InstrumentType = "Declaration";
             filePrefix = "";
+            FileExtension = "dec";
             decFiles = new string[0];
             decDates = new DateTime[0];
             decParser = new DECFile();
@@ -44,63 +45,24 @@ namespace Omniscient
             channels[DECLARATION] = new Channel(name + "-Declarations", this, Channel.ChannelType.DURATION_VALUE);
         }
 
-        public override void ScanDataFolder()
+        public override DateTime GetFileDate(string file)
         {
-            if (string.IsNullOrEmpty(dataFolder)) return;
-            List<string> decFileList = new List<string>();
-            List<DateTime> decDateList = new List<DateTime>();
-
-            string[] filesInDirectory = Directory.GetFiles(dataFolder);
-            foreach (string file in filesInDirectory)
+            if (decParser.ParseDeclarationFile(file) == ReturnCode.SUCCESS)
             {
-                string fileAbrev = file.Substring(file.LastIndexOf('\\') + 1);
-                if (fileAbrev.Substring(fileAbrev.Length - 4).ToLower() == ".dec" && fileAbrev.ToLower().StartsWith(filePrefix.ToLower()))
-                {
-                    if (decParser.ParseDeclarationFile(file) == ReturnCode.SUCCESS)
-                    {
-                        decFileList.Add(file);
-                        decDateList.Add(decParser.FromTime);
-                    }
-                    else
-                    {
-                        // Something should really go here...
-                    }
-                }
+                return decParser.FromTime;
             }
-
-            decFiles = decFileList.ToArray();
-            decDates = decDateList.ToArray();
-
-            Array.Sort(decDates, decFiles);
+            return DateTime.MinValue;
         }
 
-        public override void LoadData(DateTime startDate, DateTime endDate)
+        public override ReturnCode IngestFile(string fileName)
         {
-            ReturnCode returnCode = ReturnCode.SUCCESS;
+            ReturnCode returnCode = decParser.ParseDeclarationFile(fileName);
+            DateTime time = decParser.FromTime;
+            TimeSpan duration = decParser.ToTime - decParser.FromTime;
 
-            int startIndex = Array.FindIndex(decDates.ToArray(), x => x >= startDate);
-            int endIndex = Array.FindIndex(decDates.ToArray(), x => x >= endDate);
-
-            if (endIndex == -1) endIndex = (decDates.Length) - 1;
-            if (endIndex == -1) startIndex = 0;
-
-            DateTime time;
-            TimeSpan duration;
-            if (startIndex >= 0)
-            {
-                for (int i = startIndex; i <= endIndex; ++i)
-                {
-                    returnCode = decParser.ParseDeclarationFile(decFiles[i]);
-                    time = decParser.FromTime;
-                    duration = decParser.ToTime - decParser.FromTime;
-
-                    channels[DECLARATION].AddDataPoint(time, 1, duration, new DataFile(decFiles[i]));
-                }
-                channels[DECLARATION].Sort();
-                LoadVirtualChannels();
-            }
+            channels[DECLARATION].AddDataPoint(time, 1, duration, new DataFile(fileName));
+            return ReturnCode.FAIL;
         }
-        public override ReturnCode IngestFile(string fileName) { return ReturnCode.FAIL; }
 
         public override void ClearData()
         {

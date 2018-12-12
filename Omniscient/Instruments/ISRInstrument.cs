@@ -48,34 +48,13 @@ namespace Omniscient
             channels[ACC] = new Channel(name + "-Acc", this, Channel.ChannelType.COUNT_RATE);
         }
 
-        public override void ScanDataFolder()
+        public override DateTime GetFileDate(string file)
         {
-            if (string.IsNullOrEmpty(dataFolder)) return;
-            List<string> isrFileList = new List<string>();
-            List<DateTime> isrDateList = new List<DateTime>();
-
-            string[] filesInDirectory = Directory.GetFiles(dataFolder);
-            foreach(string file in filesInDirectory)
+            if (isrParser.ParseHeader(file) == ReturnCode.SUCCESS)
             {
-                string fileAbrev = file.Substring(file.LastIndexOf('\\') + 1);
-                if (fileAbrev.Substring(fileAbrev.Length - 4).ToLower() == ("." + FileExtension) && fileAbrev.ToLower().StartsWith(filePrefix.ToLower()))
-                {
-                    if (isrParser.ParseHeader(file) == ReturnCode.SUCCESS)
-                    {
-                        isrFileList.Add(file);
-                        isrDateList.Add(isrParser.GetDate());
-                    }
-                    else
-                    {
-                        // Something should really go here...
-                    }
-                }
+                return isrParser.GetDate();
             }
-
-            dataFileNames = isrFileList.ToArray();
-            dataFileTimes = isrDateList.ToArray();
-
-            Array.Sort(dataFileTimes, dataFileNames);
+            return DateTime.MinValue;
         }
 
         public override ReturnCode IngestFile(string fileName)

@@ -22,7 +22,7 @@ namespace Omniscient
 {
     class NGAMInstrument : Instrument
     {
-        private const string FILE_EXTENSION = "VBF";
+        private const string FILE_EXTENSION = "vbf";
 
         private const int NUM_CHANNELS = 8;
         private const int data0 = 0;
@@ -55,34 +55,13 @@ namespace Omniscient
             channels[data7] = new Channel(name + "-data7", this, Channel.ChannelType.COUNT_RATE);
         }
 
-        public override void ScanDataFolder()
+        public override DateTime GetFileDate(string file)
         {
-            if (string.IsNullOrEmpty(dataFolder)) return;
-            List<string> vbfFileList = new List<string>();
-            List<DateTime> vbfDateList = new List<DateTime>();
-
-            string[] filesInDirectory = Directory.GetFiles(dataFolder);
-            foreach (string file in filesInDirectory)
+            if (vbfParser.ParseHeader(file) == ReturnCode.SUCCESS)
             {
-                string fileAbrev = file.Substring(file.LastIndexOf('\\') + 1);
-                if (fileAbrev.Substring(fileAbrev.Length - 4).ToLower() == ".vbf" && fileAbrev.ToLower().StartsWith(filePrefix.ToLower()))
-                {
-                    if (vbfParser.ParseHeader(file) == ReturnCode.SUCCESS)
-                    {
-                        vbfFileList.Add(file);
-                        vbfDateList.Add(vbfParser.GetDate());
-                    }
-                    else
-                    {
-                        // Something should really go here...
-                    }
-                }
+                return vbfParser.GetDate();
             }
-
-            dataFileNames = vbfFileList.ToArray();
-            dataFileTimes = vbfDateList.ToArray();
-
-            Array.Sort(dataFileTimes, dataFileNames);
+            return DateTime.MinValue;
         }
 
         public override ReturnCode IngestFile(string fileName)
