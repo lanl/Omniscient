@@ -983,6 +983,7 @@ namespace Omniscient
             // Update Scrollbar
             StripChartScroll.Minimum =  DateTimeToReferenceSeconds(globalStart);
             StripChartScroll.Maximum = DateTimeToReferenceSeconds(globalEnd);
+            if (startSeconds < StripChartScroll.Minimum) startSeconds = StripChartScroll.Minimum;
             StripChartScroll.Value = startSeconds;
             StripChartScroll.SmallChange = endSeconds - startSeconds;
             StripChartScroll.LargeChange = endSeconds - startSeconds;

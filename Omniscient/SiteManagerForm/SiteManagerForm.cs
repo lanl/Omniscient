@@ -517,6 +517,7 @@ namespace Omniscient
                 {
                     selectedSystem.GetDeclarationInstrument().SetFilePrefix(DeclarationPrefixTextBox.Text);
                     selectedSystem.GetDeclarationInstrument().SetDataFolder(DeclarationDirectoryTextBox.Text);
+                    selectedSystem.GetDeclarationInstrument().ScanDataFolder();
                 }
             }
             else if (node.Tag is Instrument)

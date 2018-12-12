@@ -79,33 +79,54 @@ namespace Omniscient
             name = newName;
         }
 
+        public List<string> GetSubdirectories(string directory)
+        {
+            List<string> directories = new List<string>();
+            foreach(string d in Directory.GetDirectories(directory))
+            {
+                directories.Add(d);
+                directories.AddRange(GetSubdirectories(d));
+            }
+            return directories;
+        }
+
         public void ScanDataFolder()
         {
-            if (string.IsNullOrEmpty(dataFolder)) return;
+            if (string.IsNullOrEmpty(dataFolder) || !Directory.Exists(dataFolder)) return;
             List<string> dataFileList = new List<string>();
             List<DateTime> dataFileDateList = new List<DateTime>();
-
-            string[] filesInDirectory = Directory.GetFiles(dataFolder);
-
             DateTime fileDate;
-            foreach (string file in filesInDirectory)
+
+            List<string> directories = new List<string>();
+            directories.Add(dataFolder);
+            if(IncludeSubDirectories)
             {
-                string fileAbrev = file.Substring(file.LastIndexOf('\\') + 1);
-                if (fileAbrev.Substring(fileAbrev.Length - 4).ToLower() == ("." + FileExtension) && fileAbrev.ToLower().StartsWith(filePrefix.ToLower()))
+                directories.AddRange(GetSubdirectories(dataFolder));
+            }
+
+            string[] filesInDirectory;
+            foreach (string directory in directories)
+            {
+                filesInDirectory = Directory.GetFiles(directory);
+
+                foreach (string file in filesInDirectory)
                 {
-                    fileDate = GetFileDate(file);
-                    if (fileDate>DateTime.MinValue)
+                    string fileAbrev = file.Substring(file.LastIndexOf('\\') + 1);
+                    if (fileAbrev.Substring(fileAbrev.Length - 4).ToLower() == ("." + FileExtension) && fileAbrev.ToLower().StartsWith(filePrefix.ToLower()))
                     {
-                        dataFileList.Add(file);
-                        dataFileDateList.Add(fileDate);
-                    }
-                    else
-                    {
-                        // Something should really go here...
+                        fileDate = GetFileDate(file);
+                        if (fileDate > DateTime.MinValue)
+                        {
+                            dataFileList.Add(file);
+                            dataFileDateList.Add(fileDate);
+                        }
+                        else
+                        {
+                            // Something should really go here...
+                        }
                     }
                 }
             }
-
             dataFileNames = dataFileList.ToArray();
             dataFileTimes = dataFileDateList.ToArray();
 
@@ -120,6 +141,7 @@ namespace Omniscient
             int startIndex = Array.FindIndex(dataFileTimes.ToArray(), x => x >= startDate);
             int endIndex = Array.FindIndex(dataFileTimes.ToArray(), x => x >= endDate);
 
+            if (startIndex == -1) return;
             if (endIndex == -1) endIndex = (dataFileTimes.Length) - 1;
             if (endIndex == -1) startIndex = 0;
 
@@ -140,7 +162,6 @@ namespace Omniscient
         public void SetDataFolder(string newDataFolder)
         {
             dataFolder = newDataFolder;
-            if (dataFolder!="") ScanDataFolder();
         }
 
         public void SetFilePrefix(string newPrefix)
@@ -204,6 +225,7 @@ namespace Omniscient
                         break;
                 }
             }
+            instrument.ScanDataFolder();
         }
 
         public static InstrumentHookup GetHookup(string type)
