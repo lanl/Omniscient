@@ -177,7 +177,7 @@ namespace Omniscient
                     {
                         if (dates[i] >= start && dates[i] <= end)
                         {
-                            file.Write(dates[i].ToString("yyyy-MM-dd HH:mm:ss"));
+                            file.Write(dates[i].ToString("yyyy-MM-dd HH:mm:ss.fff"));
                             for (int c = 0; c < selectedChannels.Count; c++)
                             {
                                 file.Write("," + selectedChannels[c].GetValues()[i]);
