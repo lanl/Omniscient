@@ -406,6 +406,7 @@ namespace Omniscient
             System.Windows.Forms.Cursor.Current = Cursors.WaitCursor;
             Chart chart;
             chart = GetChart(chartNum);
+            chart.SuspendLayout();
 
             // Needed for speedy loading
             DateTime start = GetRangeStart();
@@ -523,7 +524,40 @@ namespace Omniscient
                     series.Points.ResumeUpdates();
                 }
             }
+
+            ScaleAxes(chartNum);
+            chart.ResumeLayout();
             System.Windows.Forms.Cursor.Current = Cursors.Default;
+        }
+
+        private void ScaleAxes(int chartNum)
+        {
+            Chart chart = GetChart(chartNum);
+            double maxOrderOfMagnitude = Math.Pow(10,Math.Floor(Math.Log10(chartMaxPointValue[chartNum])));
+            double firstDigit = Math.Floor(chartMaxPointValue[chartNum] / maxOrderOfMagnitude);
+            double maxMinRatio = chartMaxPointValue[chartNum] / chartMinPointValue[chartNum];
+
+            if(logScale[chartNum])
+            {
+                double minOrderOfMagnitude = Math.Pow(10, Math.Floor(Math.Log10(chartMinPointValue[chartNum])));
+                chart.ChartAreas[0].AxisY.Minimum = minOrderOfMagnitude;
+                chart.ChartAreas[0].AxisY.Maximum = maxOrderOfMagnitude * 10;
+            }
+            else if(maxMinRatio > 2)
+            {
+                chart.ChartAreas[0].AxisY.Minimum = 0;
+                chart.ChartAreas[0].AxisY.Maximum = (firstDigit+1)*maxOrderOfMagnitude;
+            }
+            else
+            {
+                double minOrderOfMagnitude = Math.Pow(10,Math.Floor(Math.Log10(chartMinPointValue[chartNum])));
+                double maxMinDifference = chartMaxPointValue[chartNum] - chartMinPointValue[chartNum];
+                double diffOoM = Math.Pow(10, Math.Floor(Math.Log10(maxMinDifference)));
+
+
+                chart.ChartAreas[0].AxisY.Minimum = Math.Floor(chartMinPointValue[chartNum] / (diffOoM)) * diffOoM;
+                chart.ChartAreas[0].AxisY.Maximum = Math.Ceiling(chartMaxPointValue[chartNum] / (diffOoM)) * diffOoM;
+            }
         }
 
         private void DrawSections()
