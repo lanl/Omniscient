@@ -36,6 +36,9 @@ namespace Omniscient
         protected string dataFolder;
         protected string filePrefix;
 
+        protected string[] dataFileNames;
+        protected DateTime[] dataFileTimes;
+
         protected int numChannels;
         protected Channel[] channels;
         protected List<VirtualChannel> virtualChannels;
@@ -56,6 +59,8 @@ namespace Omniscient
         {
             name = newName;
             virtualChannels = new List<VirtualChannel>();
+            dataFileNames = new string[0];
+            dataFileTimes = new DateTime[0];
         }
 
         public void LoadVirtualChannels()
@@ -74,8 +79,28 @@ namespace Omniscient
         }
 
         public abstract void ScanDataFolder();
-        public abstract void LoadData(DateTime startDate, DateTime endDate);
-        //public abstract ReturnCode IngestFile(string fileName);
+        public virtual void LoadData(DateTime startDate, DateTime endDate)
+        {
+            ReturnCode returnCode = ReturnCode.SUCCESS;
+
+            int startIndex = Array.FindIndex(dataFileTimes.ToArray(), x => x >= startDate);
+            int endIndex = Array.FindIndex(dataFileTimes.ToArray(), x => x >= endDate);
+
+            if (endIndex == -1) endIndex = (dataFileTimes.Length) - 1;
+            if (endIndex == -1) startIndex = 0;
+
+            for (int i = startIndex; i <= endIndex; ++i)
+            {
+                returnCode = IngestFile(dataFileNames[i]);
+                
+            }
+            for (int c = 0; c < numChannels; c++)
+            {
+                channels[c].Sort();
+            }
+            LoadVirtualChannels();
+        }
+        public abstract ReturnCode IngestFile(string fileName);
         public abstract void ClearData();
 
         public void SetDataFolder(string newDataFolder)

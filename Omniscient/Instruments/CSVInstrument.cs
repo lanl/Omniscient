@@ -19,9 +19,6 @@ namespace Omniscient
 
         CSVParser csvParser;
 
-        string[] csvFiles;
-        DateTime[] csvDates;
-
         public CSVInstrument(string newName, int nChannels) : base(newName)
         {
             InstrumentType = "CSV";
@@ -30,8 +27,6 @@ namespace Omniscient
             filePrefix = "";
             NumberOfHeaders = 0;
 
-            csvFiles = new string[0];
-            csvDates = new DateTime[0];
             csvParser = new CSVParser();
             csvParser.NumberOfColumns = numChannels + 1;
 
@@ -59,38 +54,21 @@ namespace Omniscient
             }
         }
 
-        public override void LoadData(DateTime startDate, DateTime endDate)
+        public override ReturnCode IngestFile(string fileName)
         {
-            csvParser.NumberOfHeaders = NumberOfHeaders;
-            ReturnCode returnCode = ReturnCode.SUCCESS;
-
-            int startIndex = Array.FindIndex(csvDates.ToArray(), x => x >= startDate);
-            int endIndex = Array.FindIndex(csvDates.ToArray(), x => x >= endDate);
-
-            if (endIndex == -1) endIndex = (csvDates.Length) - 1;
-            if (endIndex == -1) startIndex = 0;
-
+            ReturnCode returnCode = csvParser.ParseFile(fileName);
             DateTime time;
-            DataFile dataFile;
-            for (int i = startIndex; i <= endIndex; ++i)
+            DataFile dataFile = new DataFile(fileName);
+            int numRecords = csvParser.GetNumRecords();
+            for (int r = 0; r < numRecords; ++r)
             {
-                returnCode = csvParser.ParseFile(csvFiles[i]);
-                dataFile = new DataFile(csvFiles[i]);
-                int numRecords = csvParser.GetNumRecords();
-                for (int r = 0; r < numRecords; ++r)
+                time = csvParser.TimeStamps[r];
+                for (int c = 0; c < numChannels; c++)
                 {
-                    time = csvParser.TimeStamps[r];
-                    for (int c = 0; c < numChannels; c++)
-                    {
-                        channels[c].AddDataPoint(time, csvParser.Data[r, c], dataFile);
-                    }
+                    channels[c].AddDataPoint(time, csvParser.Data[r, c], dataFile);
                 }
             }
-            for (int c = 0; c < numChannels; c++)
-            {
-                channels[c].Sort();
-            }
-            LoadVirtualChannels();
+            return ReturnCode.SUCCESS;
         }
 
         public override void ScanDataFolder()
@@ -118,9 +96,9 @@ namespace Omniscient
                 }
             }
 
-            csvFiles = csvFileList.ToArray();
-            csvDates = csvDateList.ToArray();
-            Array.Sort(csvDates, csvFiles);
+            dataFileNames = csvFileList.ToArray();
+            dataFileTimes = csvDateList.ToArray();
+            Array.Sort(dataFileTimes, dataFileNames);
         }
 
         public override List<Parameter> GetParameters()

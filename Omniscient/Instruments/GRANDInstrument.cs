@@ -35,16 +35,11 @@ namespace Omniscient
 
         BIDParser bidParser;
 
-        string[] bidFiles;
-        DateTime[] bidDates;
-
         public GRANDInstrument(string newName) : base(newName)
         {
             InstrumentType = "GRAND";
             FileExtension = FILE_EXTENSION;
             filePrefix = "";
-            bidFiles = new string[0];
-            bidDates = new DateTime[0];
             bidParser = new BIDParser();
 
             numChannels = NUM_CHANNELS;
@@ -82,50 +77,30 @@ namespace Omniscient
                 }
             }
 
-            bidFiles = bidFileList.ToArray();
-            bidDates = bidDateList.ToArray();
+            dataFileNames = bidFileList.ToArray();
+            dataFileTimes = bidDateList.ToArray();
 
-            Array.Sort(bidDates, bidFiles);
+            Array.Sort(dataFileTimes, dataFileNames);
         }
 
-        public override void LoadData(DateTime startDate, DateTime endDate)
+        public override ReturnCode IngestFile(string fileName)
         {
-            ReturnCode returnCode = ReturnCode.SUCCESS;
-
-            int startIndex = Array.FindIndex(bidDates.ToArray(), x => x >= startDate);
-            int endIndex = Array.FindIndex(bidDates.ToArray(), x => x >= endDate);
-
-            if (startIndex == -1) return;
-            if (endIndex == -1) endIndex = (bidDates.Length) - 1;
-            if (endIndex == -1) startIndex = 0;
-
+            ReturnCode returnCode = bidParser.ParseFile(fileName);
+            DataFile dataFile = new DataFile(fileName);
+            int numRecords = bidParser.GetNumRecords();
             DateTime time;
-            DataFile dataFile;
-            for (int i = startIndex; i <= endIndex; ++i)
+            for (int r = 0; r < numRecords; ++r)
             {
-                returnCode = bidParser.ParseFile(bidFiles[i]);
-                dataFile = new DataFile(bidFiles[i]);
-                int numRecords = bidParser.GetNumRecords();
-                for (int r = 0; r < numRecords; ++r)
-                {
-                    time = bidParser.BIDTimeToDateTime(bidParser.GetRecord(r).time);
-                    channels[chACountRate].AddDataPoint(time, bidParser.GetRecord(r).chACountRate, dataFile);
-                    channels[chBCountRate].AddDataPoint(time, bidParser.GetRecord(r).chBCountRate, dataFile);
-                    channels[chCCountRate].AddDataPoint(time, bidParser.GetRecord(r).chCCountRate, dataFile);
-                    channels[gamInGamCh1].AddDataPoint(time, bidParser.GetRecord(r).gamInGamCh1, dataFile);
-                    channels[gamCh1Sigma].AddDataPoint(time, bidParser.GetRecord(r).gamCh1Sigma, dataFile);
-                    channels[gamInGamCh2].AddDataPoint(time, bidParser.GetRecord(r).gamInGamCh2, dataFile);
-                    channels[gamCh2Sigma].AddDataPoint(time, bidParser.GetRecord(r).gamCh2Sigma, dataFile);
-                }
+                time = bidParser.BIDTimeToDateTime(bidParser.GetRecord(r).time);
+                channels[chACountRate].AddDataPoint(time, bidParser.GetRecord(r).chACountRate, dataFile);
+                channels[chBCountRate].AddDataPoint(time, bidParser.GetRecord(r).chBCountRate, dataFile);
+                channels[chCCountRate].AddDataPoint(time, bidParser.GetRecord(r).chCCountRate, dataFile);
+                channels[gamInGamCh1].AddDataPoint(time, bidParser.GetRecord(r).gamInGamCh1, dataFile);
+                channels[gamCh1Sigma].AddDataPoint(time, bidParser.GetRecord(r).gamCh1Sigma, dataFile);
+                channels[gamInGamCh2].AddDataPoint(time, bidParser.GetRecord(r).gamInGamCh2, dataFile);
+                channels[gamCh2Sigma].AddDataPoint(time, bidParser.GetRecord(r).gamCh2Sigma, dataFile);
             }
-            channels[chACountRate].Sort();
-            channels[chBCountRate].Sort();
-            channels[chCCountRate].Sort();
-            channels[gamInGamCh1].Sort();
-            channels[gamCh1Sigma].Sort();
-            channels[gamInGamCh2].Sort();
-            channels[gamCh2Sigma].Sort();
-            LoadVirtualChannels();
+            return ReturnCode.SUCCESS;
         }
 
         public override void ClearData()

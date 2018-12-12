@@ -36,16 +36,11 @@ namespace Omniscient
 
         VBFParser vbfParser;
 
-        string[] vbfFiles;
-        DateTime[] vbfDates;
-
         public NGAMInstrument(string newName) : base(newName)
         {
             InstrumentType = "NGAM";
             FileExtension = FILE_EXTENSION;
-            filePrefix = "";
-            vbfFiles = new string[0];
-            vbfDates = new DateTime[0];
+            filePrefix = "";;
             vbfParser = new VBFParser();
 
             numChannels = NUM_CHANNELS;
@@ -84,52 +79,31 @@ namespace Omniscient
                 }
             }
 
-            vbfFiles = vbfFileList.ToArray();
-            vbfDates = vbfDateList.ToArray();
+            dataFileNames = vbfFileList.ToArray();
+            dataFileTimes = vbfDateList.ToArray();
 
-            Array.Sort(vbfDates, vbfFiles);
+            Array.Sort(dataFileTimes, dataFileNames);
         }
 
-        public override void LoadData(DateTime startDate, DateTime endDate)
+        public override ReturnCode IngestFile(string fileName)
         {
-            ReturnCode returnCode = ReturnCode.SUCCESS;
-
-            int startIndex = Array.FindIndex(vbfDates.ToArray(), x => x >= startDate);
-            int endIndex = Array.FindIndex(vbfDates.ToArray(), x => x >= endDate);
-
-            if (startIndex == -1) return;
-            if (endIndex == -1) endIndex = (vbfDates.Length) - 1;
-            if (endIndex == -1) startIndex = 0;
-
+            ReturnCode returnCode = vbfParser.ParseFile(fileName);
+            DataFile dataFile = new DataFile(fileName);
             DateTime time;
-            DataFile dataFile;
-            for (int i = startIndex; i <= endIndex; ++i)
+            int numRecords = vbfParser.GetNumRecords();
+            for (int r = 0; r < numRecords; ++r)
             {
-                returnCode = vbfParser.ParseFile(vbfFiles[i]);
-                dataFile = new DataFile(vbfFiles[i]);
-                int numRecords = vbfParser.GetNumRecords();
-                for (int r = 0; r < numRecords; ++r)
-                {
-                    time = vbfParser.VBFTimeToDateTime(vbfParser.GetRecord(r).time);
-                    channels[data0].AddDataPoint(time, vbfParser.GetRecord(r).data[0], dataFile);
-                    channels[data1].AddDataPoint(time, vbfParser.GetRecord(r).data[1], dataFile);
-                    channels[data2].AddDataPoint(time, vbfParser.GetRecord(r).data[2], dataFile);
-                    channels[data3].AddDataPoint(time, vbfParser.GetRecord(r).data[3], dataFile);
-                    channels[data4].AddDataPoint(time, vbfParser.GetRecord(r).data[4], dataFile);
-                    channels[data5].AddDataPoint(time, vbfParser.GetRecord(r).data[5], dataFile);
-                    channels[data6].AddDataPoint(time, vbfParser.GetRecord(r).data[6], dataFile);
-                    channels[data7].AddDataPoint(time, vbfParser.GetRecord(r).data[7], dataFile);
-                }
+                time = vbfParser.VBFTimeToDateTime(vbfParser.GetRecord(r).time);
+                channels[data0].AddDataPoint(time, vbfParser.GetRecord(r).data[0], dataFile);
+                channels[data1].AddDataPoint(time, vbfParser.GetRecord(r).data[1], dataFile);
+                channels[data2].AddDataPoint(time, vbfParser.GetRecord(r).data[2], dataFile);
+                channels[data3].AddDataPoint(time, vbfParser.GetRecord(r).data[3], dataFile);
+                channels[data4].AddDataPoint(time, vbfParser.GetRecord(r).data[4], dataFile);
+                channels[data5].AddDataPoint(time, vbfParser.GetRecord(r).data[5], dataFile);
+                channels[data6].AddDataPoint(time, vbfParser.GetRecord(r).data[6], dataFile);
+                channels[data7].AddDataPoint(time, vbfParser.GetRecord(r).data[7], dataFile);
             }
-            channels[data0].Sort();
-            channels[data1].Sort();
-            channels[data2].Sort();
-            channels[data3].Sort();
-            channels[data4].Sort();
-            channels[data5].Sort();
-            channels[data6].Sort();
-            channels[data7].Sort();
-            LoadVirtualChannels();
+            return ReturnCode.SUCCESS;
         }
 
         public override void ClearData()

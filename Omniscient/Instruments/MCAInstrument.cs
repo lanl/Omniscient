@@ -29,9 +29,6 @@ namespace Omniscient
 
         SpectrumParser spectrumParser;
 
-        string[] chnFiles;
-        DateTime[] chnDates;
-
         public override string FileExtension
         {
             get { return _fileExtension; }
@@ -58,8 +55,6 @@ namespace Omniscient
             InstrumentType = "MCA";
             FileExtension = FILE_EXTENSION;
             filePrefix = "";
-            chnFiles = new string[0];
-            chnDates = new DateTime[0];
             spectrumParser = new CHNParser();
 
             numChannels = NUM_CHANNELS;
@@ -91,52 +86,36 @@ namespace Omniscient
                 }
             }
 
-            chnFiles = chnFileList.ToArray();
-            chnDates = chnDateList.ToArray();
+            dataFileNames = chnFileList.ToArray();
+            dataFileTimes = chnDateList.ToArray();
 
-            Array.Sort(chnDates, chnFiles);
+            Array.Sort(dataFileTimes, dataFileNames);
         }
 
-        public override void LoadData(DateTime startDate, DateTime endDate)
+        public override ReturnCode IngestFile(string fileName)
         {
-            ReturnCode returnCode = ReturnCode.SUCCESS;
+            ReturnCode returnCode = spectrumParser.ParseSpectrumFile(fileName);
+            DataFile dataFile = new DataFile(fileName);
+            Spectrum spectrum = spectrumParser.GetSpectrum();
+            DateTime time = spectrum.GetStartTime();
+            TimeSpan duration = TimeSpan.FromSeconds(spectrum.GetRealTime());
 
-            int startIndex = Array.FindIndex(chnDates.ToArray(), x => x >= startDate);
-            int endIndex = Array.FindIndex(chnDates.ToArray(), x => x >= endDate);
-
-            if (endIndex == -1) endIndex = (chnDates.Length) - 1;
-            if (endIndex == -1) startIndex = 0;
-
-            DateTime time;
-            TimeSpan duration;
-            Spectrum spectrum;
-            DataFile dataFile;
-            for (int i = startIndex; i <= endIndex; ++i)
+            int counts = 0;
+            for (int ch = 0; ch < spectrum.GetNChannels(); ch++)
             {
-                returnCode = spectrumParser.ParseSpectrumFile(chnFiles[i]);
-                dataFile = new DataFile(chnFiles[i]);
-                spectrum = spectrumParser.GetSpectrum();
-                time = spectrum.GetStartTime();
-                duration = TimeSpan.FromSeconds(spectrum.GetRealTime());
+                counts += spectrum.GetCounts()[ch];
+            }
+            channels[COUNT_RATE].AddDataPoint(time, counts / spectrum.GetLiveTime(), duration, dataFile);
 
-                int counts = 0;
-                for (int ch=0; ch< spectrum.GetNChannels();ch++)
-                {
-                    counts += spectrum.GetCounts()[ch];
-                }
-                channels[COUNT_RATE].AddDataPoint(time, counts/ spectrum.GetLiveTime(), duration, dataFile);
 
-                
-                foreach(VirtualChannel chan in virtualChannels)
+            foreach (VirtualChannel chan in virtualChannels)
+            {
+                if (chan is ROIChannel)
                 {
-                    if (chan is ROIChannel)
-                    {
-                        ((ROIChannel)chan).AddDataPoint(time, spectrum, duration, dataFile);
-                    }
+                    ((ROIChannel)chan).AddDataPoint(time, spectrum, duration, dataFile);
                 }
             }
-            channels[COUNT_RATE].Sort();
-            LoadVirtualChannels();
+            return ReturnCode.SUCCESS;
         }
 
         public override void ClearData()

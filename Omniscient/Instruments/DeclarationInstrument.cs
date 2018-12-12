@@ -100,6 +100,7 @@ namespace Omniscient
                 LoadVirtualChannels();
             }
         }
+        public override ReturnCode IngestFile(string fileName) { return ReturnCode.FAIL; }
 
         public override void ClearData()
         {
