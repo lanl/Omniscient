@@ -25,8 +25,6 @@ namespace Omniscient
 {
     public partial class SiteManagerForm : Form
     {
-        string[] DEFAULT_VIRTUAL_CHANNEL_TYPES = {"Ratio", "Sum", "Difference", "Add Constant", "Scale", "Delay", "Convolve", "Local Max","Local Min"};
-
         // SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
         // State
         DetectionSystem selectedSystem;
@@ -46,6 +44,8 @@ namespace Omniscient
             siteMan = newSiteMan;
 
             selectedSystem = null;
+            selectedChannel = null;
+            selectedVirtualChannel = null;
 
             this.StartPosition = FormStartPosition.CenterParent;
             InitializeComponent();
@@ -532,16 +532,33 @@ namespace Omniscient
                 string name = NameTextBox.Text;
                 string type = inst.InstrumentType;
 
-                inst.SetName(name);
+                if(name != inst.GetName())
+                    inst.SetName(name);
                 inst.ApplyParameters(InstrumentParameterListPanel.Parameters);
-
+                // selectedChannel and selectedVirtualChannel might not exist anymore
 
                 if (selectedVirtualChannel != null)
                 {
+                    foreach(VirtualChannel vc in inst.GetVirtualChannels())
+                    {
+                        if (vc.GetName() == selectedVirtualChannel.GetName())
+                        {
+                            selectedVirtualChannel = vc;
+                            break;
+                        }
+                    }
                     chan = SaveVirtualChannel(inst, selectedVirtualChannel);
                 }
                 else if (selectedChannel != null)
                 {
+                    foreach (Channel c in inst.GetStandardChannels())
+                    {
+                        if (c.GetName() == selectedChannel.GetName())
+                        {
+                            selectedChannel = c;
+                            break;
+                        }
+                    }
                     chan = SaveChannel(inst, selectedChannel);
                 }
                 nodeName = inst.GetName();
