@@ -63,6 +63,9 @@ namespace Omniscient
             NewFacilityButton.Enabled = false;
             NewSystemButton.Enabled = false;
             NewInstrumentButton.Enabled = false;
+
+            if (this.Top < 1) this.Top = 1;
+            if (this.Height > Screen.PrimaryScreen.WorkingArea.Height) this.Height = Screen.PrimaryScreen.WorkingArea.Height;
         }
 
         /// <summary>
