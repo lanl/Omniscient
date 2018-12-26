@@ -73,13 +73,13 @@ namespace Omniscient
                     Preset newPreset = new Preset(presetNode.Attributes["name"]?.InnerText);
                     foreach (XmlNode siteNode in presetNode.ChildNodes)
                     {
-                        Site site = siteMan.GetSites().Single(s => s.GetName() == siteNode.Attributes["name"]?.InnerText);
+                        Site site = siteMan.GetSites().Single(s => s.Name == siteNode.Attributes["name"]?.InnerText);
                         foreach (XmlNode facilityNode in siteNode.ChildNodes)
                         {
-                            Facility fac = site.GetFacilities().Single(s => s.GetName() == facilityNode.Attributes["name"]?.InnerText);
+                            Facility fac = site.GetFacilities().Single(s => s.Name == facilityNode.Attributes["name"]?.InnerText);
                             foreach (XmlNode systemNode in facilityNode.ChildNodes)
                             {
-                                DetectionSystem sys = fac.GetSystems().Single(s => s.GetName() == systemNode.Attributes["name"]?.InnerText);
+                                DetectionSystem sys = fac.GetSystems().Single(s => s.Name == systemNode.Attributes["name"]?.InnerText);
                                 foreach (XmlNode instrumentNode in systemNode.ChildNodes)
                                 {
                                     if (instrumentNode.Name == "Instrument")
@@ -148,15 +148,15 @@ namespace Omniscient
                 foreach (Site site in siteMan.GetSites())
                 {
                     xmlWriter.WriteStartElement("Site");
-                    xmlWriter.WriteAttributeString("name", site.GetName());
+                    xmlWriter.WriteAttributeString("name", site.Name);
                     foreach (Facility fac in site.GetFacilities())
                     {
                         xmlWriter.WriteStartElement("Facility");
-                        xmlWriter.WriteAttributeString("name", fac.GetName());
+                        xmlWriter.WriteAttributeString("name", fac.Name);
                         foreach (DetectionSystem sys in fac.GetSystems())
                         {
                             xmlWriter.WriteStartElement("System");
-                            xmlWriter.WriteAttributeString("name", sys.GetName());
+                            xmlWriter.WriteAttributeString("name", sys.Name);
                             foreach (Instrument inst in sys.GetInstruments())
                             {
                                 xmlWriter.WriteStartElement("Instrument");

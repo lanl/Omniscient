@@ -22,13 +22,13 @@ using System.IO;
 
 namespace Omniscient
 {
-    public class SiteManager
+    public class SiteManager : Persister
     {
         private List<Site> sites;
         private string xmlFile;
         string omniscient_version;
 
-        public SiteManager(string newXMLFile, string version)
+        public SiteManager(string newXMLFile, string version) : base(null, "")
         {
             sites = new List<Site>();
             xmlFile = newXMLFile;
@@ -39,13 +39,13 @@ namespace Omniscient
         {
             foreach(Site site in sites)
             {
-                if (site.GetName() == name) return true;
+                if (site.Name == name) return true;
                 foreach(Facility fac in site.GetFacilities())
                 {
-                    if (fac.GetName() == name) return true;
+                    if (fac.Name == name) return true;
                     foreach(DetectionSystem sys in fac.GetSystems())
                     {
-                        if (sys.GetName() == name) return true;
+                        if (sys.Name == name) return true;
                         foreach(Instrument inst in sys.GetInstruments())
                         {
                             if (inst.GetName() == name) return true;
@@ -104,15 +104,15 @@ namespace Omniscient
             foreach (XmlNode siteNode in doc.DocumentElement.ChildNodes)
             {
                 if (siteNode.Name != "Site") return ReturnCode.CORRUPTED_FILE;
-                Site newSite = new Site(siteNode.Attributes["name"]?.InnerText);
+                Site newSite = new Site(this, siteNode.Attributes["name"]?.InnerText);
                 foreach (XmlNode facilityNode in siteNode.ChildNodes)
                 {
                     if (facilityNode.Name != "Facility") return ReturnCode.CORRUPTED_FILE;
-                    Facility newFacility = new Facility(facilityNode.Attributes["name"]?.InnerText);
+                    Facility newFacility = new Facility(newSite, facilityNode.Attributes["name"]?.InnerText);
                     foreach (XmlNode systemNode in facilityNode.ChildNodes)
                     {
                         if (systemNode.Name != "System") return ReturnCode.CORRUPTED_FILE;
-                        DetectionSystem newSystem = new DetectionSystem(systemNode.Attributes["name"]?.InnerText);
+                        DetectionSystem newSystem = new DetectionSystem(newFacility, systemNode.Attributes["name"]?.InnerText);
                         foreach (XmlNode instrumentNode in systemNode.ChildNodes)
                         {
                             if (instrumentNode.Name == "Instrument")
@@ -259,11 +259,8 @@ namespace Omniscient
                                 return ReturnCode.CORRUPTED_FILE;
                             }
                         }
-                        newFacility.AddSystem(newSystem);
                     }
-                    newSite.AddFacility(newFacility);
                 }
-                sites.Add(newSite);
             }
             return ReturnCode.SUCCESS;
         }
@@ -281,15 +278,15 @@ namespace Omniscient
             foreach (Site site in sites)
             {
                 xmlWriter.WriteStartElement("Site");
-                xmlWriter.WriteAttributeString("name", site.GetName());
+                xmlWriter.WriteAttributeString("name", site.Name);
                 foreach (Facility fac in site.GetFacilities())
                 {
                     xmlWriter.WriteStartElement("Facility");
-                    xmlWriter.WriteAttributeString("name", fac.GetName());
+                    xmlWriter.WriteAttributeString("name", fac.Name);
                     foreach (DetectionSystem sys in fac.GetSystems())
                     {
                         xmlWriter.WriteStartElement("System");
-                        xmlWriter.WriteAttributeString("name", sys.GetName());
+                        xmlWriter.WriteAttributeString("name", sys.Name);
                         foreach (Instrument inst in sys.GetInstruments())
                         {
                             Instrument.ToXML(xmlWriter, inst);

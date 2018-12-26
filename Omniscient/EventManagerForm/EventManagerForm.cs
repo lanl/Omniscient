@@ -66,24 +66,24 @@ namespace Omniscient
             SitesTreeView.Nodes.Clear();
             foreach (Site site in siteMan.GetSites())
             {
-                TreeNode siteNode = new TreeNode(site.GetName());
-                siteNode.Name = site.GetName();
+                TreeNode siteNode = new TreeNode(site.Name);
+                siteNode.Name = site.Name;
                 siteNode.Tag = site;
                 siteNode.ImageIndex = 0;
                 siteNode.SelectedImageIndex = 0;
                 siteNode.ToolTipText = siteNode.Text;
                 foreach (Facility fac in site.GetFacilities())
                 {
-                    TreeNode facNode = new TreeNode(fac.GetName());
-                    facNode.Name = fac.GetName();
+                    TreeNode facNode = new TreeNode(fac.Name);
+                    facNode.Name = fac.Name;
                     facNode.Tag = fac;
                     facNode.ImageIndex = 1;
                     facNode.SelectedImageIndex = 1;
                     facNode.ToolTipText = facNode.Text;
                     foreach (DetectionSystem sys in fac.GetSystems())
                     {
-                        TreeNode sysNode = new TreeNode(sys.GetName());
-                        sysNode.Name = sys.GetName();
+                        TreeNode sysNode = new TreeNode(sys.Name);
+                        sysNode.Name = sys.Name;
                         sysNode.Tag = sys;
                         sysNode.ImageIndex = 2;
                         sysNode.SelectedImageIndex = 2;
@@ -150,7 +150,7 @@ namespace Omniscient
 
             if (node.Tag is EventGenerator)
             {
-                EventWatcher eventWatcher = (EventWatcher)node.Parent.Tag;
+                DetectionSystem eventWatcher = (DetectionSystem)node.Parent.Tag;
 
                 NameTextBox.Enabled = true;
 
@@ -181,7 +181,7 @@ namespace Omniscient
                 DeleteButton.Enabled = true;
                 SaveButton.Enabled = true;
             }
-            else if (node.Tag is EventWatcher)
+            else if (node.Tag is DetectionSystem)
             {
                 NameTextBox.Text = "";
                 NameTextBox.Enabled = false;
@@ -235,7 +235,7 @@ namespace Omniscient
             if (node.Tag is EventGenerator)
             {
                 EventGenerator eg = (EventGenerator)node.Tag;
-                EventWatcher eventWatcher = (EventWatcher)node.Parent.Tag;
+                DetectionSystem eventWatcher = (DetectionSystem)node.Parent.Tag;
                 int index = eventWatcher.GetEventGenerators().IndexOf(eg);
                 if (index > 0)
                 {
@@ -257,7 +257,7 @@ namespace Omniscient
             if (node.Tag is EventGenerator)
             {
                 EventGenerator eg = (EventGenerator)node.Tag;
-                EventWatcher eventWatcher = (EventWatcher)node.Parent.Tag;
+                DetectionSystem eventWatcher = (DetectionSystem)node.Parent.Tag;
                 int index = eventWatcher.GetEventGenerators().IndexOf(eg);
                 if (index < eventWatcher.GetEventGenerators().Count-1)
                 {
@@ -299,16 +299,16 @@ namespace Omniscient
             if (result == DialogResult.Cancel) return;
 
             TreeNode node = SitesTreeView.SelectedNode;
-            EventWatcher eventWatcher;
+            DetectionSystem eventWatcher;
 
             int insertIndex = -1;
-            if (node.Tag is EventWatcher)
+            if (node.Tag is DetectionSystem)
             {
-                eventWatcher = (EventWatcher)node.Tag;
+                eventWatcher = (DetectionSystem)node.Tag;
             }
             else
             {
-                eventWatcher = (EventWatcher)node.Parent.Tag;
+                eventWatcher = (DetectionSystem)node.Parent.Tag;
                 insertIndex = eventWatcher.GetEventGenerators().IndexOf((EventGenerator)node.Tag) + 1;
             }
 
@@ -392,7 +392,7 @@ namespace Omniscient
         private void SaveAction(EventGenerator eg, Action action)
         {
             TreeNode node = SitesTreeView.SelectedNode;
-            EventWatcher eventWatcher = (EventWatcher)node.Parent.Tag;
+            DetectionSystem eventWatcher = (DetectionSystem)node.Parent.Tag;
             DetectionSystem sys = (DetectionSystem)eventWatcher;
 
             if (action.GetName() != ActionsComboBox.Text && siteMan.ContainsName(ActionsComboBox.Text))
@@ -461,7 +461,7 @@ namespace Omniscient
             Action act = null;
             if (node.Tag is EventGenerator)
             {
-                EventWatcher eventWatcher = (EventWatcher)node.Parent.Tag;
+                DetectionSystem eventWatcher = (DetectionSystem)node.Parent.Tag;
                 EventGenerator eg = (EventGenerator)node.Tag;
                 if (eg.GetName() != NameTextBox.Text && siteMan.ContainsName(NameTextBox.Text))
                 {
@@ -592,7 +592,7 @@ namespace Omniscient
         private void ActionTypeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             EventGenerator eg = (EventGenerator)SitesTreeView.SelectedNode.Tag;
-            EventWatcher eventWatcher = (EventWatcher)SitesTreeView.SelectedNode.Parent.Tag;
+            DetectionSystem eventWatcher = (DetectionSystem)SitesTreeView.SelectedNode.Parent.Tag;
             Action action = null;
             foreach(Action otherAction in eg.GetActions())
             {

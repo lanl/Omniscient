@@ -36,13 +36,13 @@ namespace Omniscient
             new GapEGHookup()
         };
 
-        protected EventWatcher eventWatcher;
+        protected DetectionSystem eventWatcher;
         protected string name;
         protected string eventGeneratorType;
         protected List<Event> events;
         protected List<Action> actions;
 
-        public EventGenerator(EventWatcher parent, string newName)
+        public EventGenerator(DetectionSystem parent, string newName)
         {
             eventWatcher = parent;
             name = newName;
@@ -65,7 +65,7 @@ namespace Omniscient
                     action.Execute(eve);
         }
 
-        public EventWatcher GetEventWatcher() { return eventWatcher; }
+        public DetectionSystem GetEventWatcher() { return eventWatcher; }
 
         public abstract List<Parameter> GetParameters();
 
@@ -105,7 +105,7 @@ namespace Omniscient
 
     public abstract class EventGeneratorHookup
     {
-        public abstract EventGenerator FromParameters(EventWatcher parent, string newName, List<Parameter> parameters);
+        public abstract EventGenerator FromParameters(DetectionSystem parent, string newName, List<Parameter> parameters);
         public abstract string Type { get; }
         public List<ParameterTemplate> TemplateParameters { get; set; }
     }

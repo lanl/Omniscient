@@ -75,24 +75,24 @@ namespace Omniscient
             SitesTreeView.Nodes.Clear();
             foreach (Site site in siteMan.GetSites())
             {
-                TreeNode siteNode = new TreeNode(site.GetName());
-                siteNode.Name = site.GetName();
+                TreeNode siteNode = new TreeNode(site.Name);
+                siteNode.Name = site.Name;
                 siteNode.Tag = site;
                 siteNode.ImageIndex = 0;
                 siteNode.SelectedImageIndex = 0;
                 siteNode.ToolTipText = siteNode.Text;
                 foreach (Facility fac in site.GetFacilities())
                 {
-                    TreeNode facNode = new TreeNode(fac.GetName());
-                    facNode.Name = fac.GetName();
+                    TreeNode facNode = new TreeNode(fac.Name);
+                    facNode.Name = fac.Name;
                     facNode.Tag = fac;
                     facNode.ImageIndex = 1;
                     facNode.SelectedImageIndex = 1;
                     facNode.ToolTipText = facNode.Text;
                     foreach (DetectionSystem sys in fac.GetSystems())
                     {
-                        TreeNode sysNode = new TreeNode(sys.GetName());
-                        sysNode.Name = sys.GetName();
+                        TreeNode sysNode = new TreeNode(sys.Name);
+                        sysNode.Name = sys.Name;
                         sysNode.Tag = sys;
                         sysNode.ImageIndex = 2;
                         sysNode.SelectedImageIndex = 2;
@@ -487,35 +487,35 @@ namespace Omniscient
             if (node.Tag is Site)
             {
                 Site site = (Site)node.Tag;
-                if(site.GetName() != NameTextBox.Text && siteMan.ContainsName(NameTextBox.Text))
+                if(site.Name != NameTextBox.Text && siteMan.ContainsName(NameTextBox.Text))
                 {
                     MessageBox.Show("All items in the Site Manager require a unique name!");
                     return;
                 }
-                site.SetName(NameTextBox.Text);
-                nodeName = site.GetName();
+                site.Name = NameTextBox.Text;
+                nodeName = site.Name;
             }
             else if (node.Tag is Facility)
             {
                 Facility fac = (Facility)node.Tag;
-                if (fac.GetName() != NameTextBox.Text && siteMan.ContainsName(NameTextBox.Text))
+                if (fac.Name != NameTextBox.Text && siteMan.ContainsName(NameTextBox.Text))
                 {
                     MessageBox.Show("All items in the Site Manager require a unique name!");
                     return;
                 }
-                fac.SetName(NameTextBox.Text);
-                nodeName = fac.GetName();
+                fac.Name = NameTextBox.Text;
+                nodeName = fac.Name;
             }
             else if (node.Tag is DetectionSystem)
             {
                 DetectionSystem sys = (DetectionSystem)node.Tag;
-                if (sys.GetName() != NameTextBox.Text && siteMan.ContainsName(NameTextBox.Text))
+                if (sys.Name != NameTextBox.Text && siteMan.ContainsName(NameTextBox.Text))
                 {
                     MessageBox.Show("All items in the Site Manager require a unique name!");
                     return;
                 }
-                sys.SetName(NameTextBox.Text);
-                nodeName = sys.GetName();
+                sys.Name = NameTextBox.Text;
+                nodeName = sys.Name;
                 if(DeclarationCheckBox.Checked)
                 {
                     selectedSystem.GetDeclarationInstrument().SetFilePrefix(DeclarationPrefixTextBox.Text);
@@ -595,7 +595,7 @@ namespace Omniscient
             if (node.Tag is Site)
             {
                 Site site = (Site)node.Tag;
-                siteMan.GetSites().Remove(site);
+                site.Delete();
                 // G - Turn off other buttons if there are no longer any sites
                 if (siteMan.GetSites().Count == 0)
                 {
@@ -606,14 +606,12 @@ namespace Omniscient
             else if (node.Tag is Facility)
             {
                 Facility fac = (Facility)node.Tag;
-                Site site = (Site)node.Parent.Tag;
-                site.GetFacilities().Remove(fac);
+                fac.Delete();
             }
             else if (node.Tag is DetectionSystem)
             {
                 DetectionSystem sys = (DetectionSystem)node.Tag;
-                Facility fac = (Facility)node.Parent.Tag;
-                fac.GetSystems().Remove(sys);
+                sys.Delete();
             }
             else if (node.Tag is Instrument)
             {
@@ -648,7 +646,7 @@ namespace Omniscient
                 name = "New-Site-" + iteration.ToString();
                 uniqueName = !siteMan.ContainsName(name);
             }
-            siteMan.GetSites().Add(new Site(name));
+            Site newSite = new Site(siteMan, name);
             siteMan.Save();
             UpdateSitesTree();
             siteManChanged = true;
@@ -697,7 +695,8 @@ namespace Omniscient
                 name = "New-Facility-" + iteration.ToString();
                 uniqueName = !siteMan.ContainsName(name);
             }
-            site.GetFacilities().Insert(index, new Facility(name));
+            Facility newFacility = new Facility(site, name);
+            newFacility.SetIndex(index);
             siteMan.Save();
             UpdateSitesTree();
             siteManChanged = true;
@@ -740,7 +739,8 @@ namespace Omniscient
                 name = "New-System-" + iteration.ToString();
                 uniqueName = !siteMan.ContainsName(name);
             }
-            fac.GetSystems().Insert(index, new DetectionSystem(name));
+            DetectionSystem newSys = new DetectionSystem(fac, name);
+            newSys.SetIndex(index);
             siteMan.Save();
             UpdateSitesTree();
             siteManChanged = true;
@@ -975,13 +975,12 @@ namespace Omniscient
                 int index = siteMan.GetSites().IndexOf(site);
                 if (index > 0)
                 {
-                    siteMan.GetSites().RemoveAt(index);
-                    siteMan.GetSites().Insert(index - 1, site);
-
+                    site.SetIndex(index - 1);
+                    
                     siteMan.Save();
                     UpdateSitesTree();
                     siteManChanged = true;
-                    SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(site.GetName(), true)[0];
+                    SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(site.Name, true)[0];
                 }
             }
             else if (node.Tag is Facility)
@@ -991,13 +990,12 @@ namespace Omniscient
                 int index = site.GetFacilities().IndexOf(fac);
                 if (index > 0)
                 {
-                    site.GetFacilities().RemoveAt(index);
-                    site.GetFacilities().Insert(index - 1, fac);
-
+                    fac.SetIndex(index - 1);
+                    
                     siteMan.Save();
                     UpdateSitesTree();
                     siteManChanged = true;
-                    SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(fac.GetName(), true)[0];
+                    SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(fac.Name, true)[0];
                 }
             }
             else if (node.Tag is DetectionSystem)
@@ -1007,13 +1005,12 @@ namespace Omniscient
                 int index = fac.GetSystems().IndexOf(sys);
                 if (index > 0)
                 {
-                    fac.GetSystems().RemoveAt(index);
-                    fac.GetSystems().Insert(index - 1, sys);
+                    sys.SetIndex(index - 1);
 
                     siteMan.Save();
                     UpdateSitesTree();
                     siteManChanged = true;
-                    SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(sys.GetName(), true)[0];
+                    SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(sys.Name, true)[0];
                 }
             }
             else if (node.Tag is Instrument)
@@ -1044,13 +1041,12 @@ namespace Omniscient
                 int index = siteMan.GetSites().IndexOf(site);
                 if (index < siteMan.GetSites().Count - 1)
                 {
-                    siteMan.GetSites().RemoveAt(index);
-                    siteMan.GetSites().Insert(index + 1, site);
-
+                    site.SetIndex(index + 1);
+                    
                     siteMan.Save();
                     UpdateSitesTree();
                     siteManChanged = true;
-                    SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(site.GetName(), true)[0];
+                    SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(site.Name, true)[0];
                 }
             }
             else if (node.Tag is Facility)
@@ -1060,13 +1056,12 @@ namespace Omniscient
                 int index = site.GetFacilities().IndexOf(fac);
                 if (index < site.GetFacilities().Count - 1)
                 {
-                    site.GetFacilities().RemoveAt(index);
-                    site.GetFacilities().Insert(index + 1, fac);
-
+                    site.SetIndex(index + 1);
+                    
                     siteMan.Save();
                     UpdateSitesTree();
                     siteManChanged = true;
-                    SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(fac.GetName(), true)[0];
+                    SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(fac.Name, true)[0];
                 }
             }
             else if (node.Tag is DetectionSystem)
@@ -1076,13 +1071,12 @@ namespace Omniscient
                 int index = fac.GetSystems().IndexOf(sys);
                 if (index < fac.GetSystems().Count - 1)
                 {
-                    fac.GetSystems().RemoveAt(index);
-                    fac.GetSystems().Insert(index + 1, sys);
-
+                    fac.SetIndex(index + 1);
+                    
                     siteMan.Save();
                     UpdateSitesTree();
                     siteManChanged = true;
-                    SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(sys.GetName(), true)[0];
+                    SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(sys.Name, true)[0];
                 }
             }
             else if (node.Tag is Instrument)
@@ -1168,7 +1162,7 @@ namespace Omniscient
         {
             if (DeclarationCheckBox.Checked)
             {
-                selectedSystem.SetDeclarationInstrument(new DeclarationInstrument(selectedSystem.GetName() + "_Declarations"));
+                selectedSystem.SetDeclarationInstrument(new DeclarationInstrument(selectedSystem.Name + "_Declarations"));
                 SetupSystemPanel();
             }
             else

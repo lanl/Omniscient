@@ -230,24 +230,24 @@ namespace Omniscient
             SitesTreeView.Nodes.Clear();
             foreach (Site site in siteMan.GetSites())
             {
-                TreeNode siteNode = new TreeNode(site.GetName());
-                siteNode.Name = site.GetName();
+                TreeNode siteNode = new TreeNode(site.Name);
+                siteNode.Name = site.Name;
                 siteNode.Tag = site;
                 siteNode.ImageIndex = 0;
                 siteNode.SelectedImageIndex = 0;
                 siteNode.ToolTipText = siteNode.Text;
                 foreach (Facility fac in site.GetFacilities())
                 {
-                    TreeNode facNode = new TreeNode(fac.GetName());
-                    facNode.Name = fac.GetName();
+                    TreeNode facNode = new TreeNode(fac.Name);
+                    facNode.Name = fac.Name;
                     facNode.Tag = fac;
                     facNode.ImageIndex = 1;
                     facNode.SelectedImageIndex = 1;
                     facNode.ToolTipText = facNode.Text;
                     foreach (DetectionSystem sys in fac.GetSystems())
                     {
-                        TreeNode sysNode = new TreeNode(sys.GetName());
-                        sysNode.Name = sys.GetName();
+                        TreeNode sysNode = new TreeNode(sys.Name);
+                        sysNode.Name = sys.Name;
                         sysNode.Tag = sys;
                         sysNode.ImageIndex = 2;
                         sysNode.SelectedImageIndex = 2;

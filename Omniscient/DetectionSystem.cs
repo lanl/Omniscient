@@ -19,17 +19,20 @@ using System.Threading.Tasks;
 
 namespace Omniscient
 {
-    public class DetectionSystem : EventWatcher
+    public class DetectionSystem : Persister
     {
         List<Instrument> instruments;
         private DeclarationInstrument declarationInstrument;
-        string name;
 
-        public DetectionSystem(string newName) : base()
+        public DetectionSystem(Facility parent, string name) : base(parent, name)
         {
-            name = newName;
+            parent.GetSystems().Add(this);
+
             instruments = new List<Instrument>();
             declarationInstrument = null;
+
+            eventGenerators = new List<EventGenerator>();
+            events = new List<Event>();
         }
 
         public void AddInstrument(Instrument newInstrument)
@@ -44,13 +47,6 @@ namespace Omniscient
         {
             return instruments;
         }
-
-        public void SetName(string newName)
-        {
-            name = newName;
-        }
-
-        public string GetName() { return name; }
 
         public void SetDeclarationInstrument(DeclarationInstrument inst)
         {
@@ -77,6 +73,31 @@ namespace Omniscient
         {
             if (declarationInstrument == null) return false;
             return true;
+        }
+
+        List<EventGenerator> eventGenerators;
+        List<Event> events;
+
+        public void GenerateEvents(DateTime start, DateTime end)
+        {
+            foreach (EventGenerator eg in eventGenerators)
+                events.AddRange(eg.GenerateEvents(start, end));
+        }
+
+        public List<EventGenerator> GetEventGenerators() { return eventGenerators; }
+        public List<Event> GetEvents() { return events; }
+
+        public override bool SetIndex(int index)
+        {
+            base.SetIndex(index);
+            (Parent as Facility).GetSystems().Remove(this);
+            (Parent as Facility).GetSystems().Insert(index, this);
+            return true;
+        }
+        public override void Delete()
+        {
+            base.Delete();
+            (Parent as Facility).GetSystems().Remove(this);
         }
     }
 }

@@ -26,7 +26,7 @@ namespace Omniscient
         TimeSpan interval;
         Channel channel;
 
-        public GapEG(EventWatcher parent, string newName, Channel newChannel, double newInterval) : base(parent, newName)
+        public GapEG(DetectionSystem parent, string newName, Channel newChannel, double newInterval) : base(parent, newName)
         {
             eventGeneratorType = "Gap";
             channel = newChannel;
@@ -83,7 +83,7 @@ namespace Omniscient
 
     public class GapEGHookup : EventGeneratorHookup
     {
-        public override EventGenerator FromParameters(EventWatcher parent, string newName, List<Parameter> parameters)
+        public override EventGenerator FromParameters(DetectionSystem parent, string newName, List<Parameter> parameters)
         {
             Channel channel = null;
             double interval = 0;

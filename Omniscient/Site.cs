@@ -19,20 +19,20 @@ using System.Threading.Tasks;
 
 namespace Omniscient
 {
-    public class Site
+    public class Site : Persister
     {
         private List<Facility> facilities;
-        private string name;
 
-        public Site(string newName)
+        public Site(SiteManager parent, string name) : base(parent, name)
         {
-            name = newName;
+            parent.GetSites().Add(this);
             facilities = new List<Facility>();
         }
 
         public void AddFacility(Facility newFac)
         {
             facilities.Add(newFac);
+            Children.Add(newFac);
         }
 
         public List<Facility> GetFacilities()
@@ -40,12 +40,18 @@ namespace Omniscient
             return facilities;
         }
 
-        public void SetName(string newName)
+        public override bool SetIndex(int index)
         {
-            name = newName;
+            base.SetIndex(index);
+            (Parent as SiteManager).GetSites().Remove(this);
+            (Parent as SiteManager).GetSites().Insert(index, this);
+            return true;
         }
 
-        public string GetName() { return name; }
-
+        public override void Delete()
+        {
+            base.Delete();
+            (Parent as SiteManager).GetSites().Remove(this);
+        }
     }
 }
