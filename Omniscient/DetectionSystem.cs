@@ -21,6 +21,8 @@ namespace Omniscient
 {
     public class DetectionSystem : Persister
     {
+        public override string Species { get { return "System"; } }
+
         List<Instrument> instruments;
         private DeclarationInstrument declarationInstrument;
 

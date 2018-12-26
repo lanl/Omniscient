@@ -23,6 +23,8 @@ namespace Omniscient
 {
     public abstract class Instrument : Persister
     {
+        public override string Species { get { return "Instrument"; } }
+
         public static readonly InstrumentHookup[] Hookups = new InstrumentHookup[]
         {
             new CSVInstrumentHookup(),

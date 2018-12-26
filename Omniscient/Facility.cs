@@ -21,6 +21,8 @@ namespace Omniscient
 {
     public class Facility : Persister
     {
+        public override string Species { get { return "Facility"; } }
+
         List<DetectionSystem> systems;
 
         public Facility(Site parent, string name) : base(parent, name)

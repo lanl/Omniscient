@@ -48,6 +48,7 @@ namespace Omniscient
             set { _name = value; }
         }
 
+        public abstract string Species { get; }
         public virtual Persister Parent { get; set; }
         public virtual List<Persister> Children { get; set; }
         /// <summary>
