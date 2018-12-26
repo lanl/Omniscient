@@ -90,8 +90,8 @@ namespace Omniscient
                         sysNode.ToolTipText = sysNode.Text;
                         foreach (Instrument inst in sys.GetInstruments())
                         {
-                            TreeNode instNode = new TreeNode(inst.GetName());
-                            instNode.Name = inst.GetName();
+                            TreeNode instNode = new TreeNode(inst.Name);
+                            instNode.Name = inst.Name;
                             instNode.Tag = inst;
                             instNode.ImageIndex = 3;
                             instNode.SelectedImageIndex = 3;

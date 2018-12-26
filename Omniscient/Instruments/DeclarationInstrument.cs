@@ -31,7 +31,7 @@ namespace Omniscient
         string[] decFiles;
         DateTime[] decDates;
 
-        public DeclarationInstrument(string newName) : base(newName)
+        public DeclarationInstrument(DetectionSystem parent, string name) : base(parent, name)
         {
             InstrumentType = "Declaration";
             filePrefix = "";
@@ -42,7 +42,7 @@ namespace Omniscient
 
             numChannels = NUM_CHANNELS;
             channels = new Channel[numChannels];
-            channels[DECLARATION] = new Channel(name + "-Declarations", this, Channel.ChannelType.DURATION_VALUE);
+            channels[DECLARATION] = new Channel(Name + "-Declarations", this, Channel.ChannelType.DURATION_VALUE);
         }
 
         public override DateTime GetFileDate(string file)
@@ -89,9 +89,9 @@ namespace Omniscient
 
         public override string Type { get { return "Declaration"; } }
 
-        public override Instrument FromParameters(string newName, List<Parameter> parameters)
+        public override Instrument FromParameters(DetectionSystem parent, string newName, List<Parameter> parameters)
         {
-            DeclarationInstrument instrument = new DeclarationInstrument(newName);
+            DeclarationInstrument instrument = new DeclarationInstrument(parent, newName);
             Instrument.ApplyStandardInstrumentParameters(instrument, parameters);
             return instrument;
         }

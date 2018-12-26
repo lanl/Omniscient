@@ -254,8 +254,8 @@ namespace Omniscient
                         sysNode.ToolTipText = sysNode.Text;
                         foreach (Instrument inst in sys.GetInstruments())
                         {
-                            TreeNode instNode = new TreeNode(inst.GetName());
-                            instNode.Name = inst.GetName();
+                            TreeNode instNode = new TreeNode(inst.Name);
+                            instNode.Name = inst.Name;
                             instNode.Tag = inst;
                             instNode.ImageIndex = 3;
                             instNode.SelectedImageIndex = 3;
@@ -1322,7 +1322,7 @@ namespace Omniscient
 
             foreach (Instrument inst in preset.GetActiveInstruments())
             {
-                SitesTreeView.Nodes.Find(inst.GetName(), true)[0].Checked = true;
+                SitesTreeView.Nodes.Find(inst.Name, true)[0].Checked = true;
             }
 
             // So, this next part could probably be more elegant...

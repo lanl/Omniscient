@@ -101,8 +101,8 @@ namespace Omniscient
                         {
                             if (!(inst is DeclarationInstrument))
                             {
-                                TreeNode instNode = new TreeNode(inst.GetName());
-                                instNode.Name = inst.GetName();
+                                TreeNode instNode = new TreeNode(inst.Name);
+                                instNode.Name = inst.Name;
                                 instNode.Tag = inst;
                                 instNode.ImageIndex = 3;
                                 instNode.SelectedImageIndex = 3;
@@ -526,7 +526,7 @@ namespace Omniscient
             else if (node.Tag is Instrument)
             {
                 Instrument inst = (Instrument)node.Tag;
-                if (inst.GetName() != NameTextBox.Text && siteMan.ContainsName(NameTextBox.Text))
+                if (inst.Name != NameTextBox.Text && siteMan.ContainsName(NameTextBox.Text))
                 {
                     MessageBox.Show("All items in the Site Manager require a unique name!");
                     return;
@@ -535,8 +535,8 @@ namespace Omniscient
                 string name = NameTextBox.Text;
                 string type = inst.InstrumentType;
 
-                if(name != inst.GetName())
-                    inst.SetName(name);
+                if(name != inst.Name)
+                    inst.Name = name;
                 inst.ApplyParameters(InstrumentParameterListPanel.Parameters);
                 // selectedChannel and selectedVirtualChannel might not exist anymore
 
@@ -564,7 +564,7 @@ namespace Omniscient
                     }
                     chan = SaveChannel(inst, selectedChannel);
                 }
-                nodeName = inst.GetName();
+                nodeName = inst.Name;
             }
             else if (node.Tag is EventGenerator)
             {
@@ -616,8 +616,7 @@ namespace Omniscient
             else if (node.Tag is Instrument)
             {
                 Instrument inst = (Instrument)node.Tag;
-                DetectionSystem sys = (DetectionSystem)node.Parent.Tag;
-                sys.GetInstruments().Remove(inst);
+                inst.Delete();
             }
             else if (node.Tag is EventGenerator)
             {
@@ -814,9 +813,8 @@ namespace Omniscient
                         break;
                 }
             }
-            Instrument newInstrument = hookup.FromParameters(name, parameters);
-
-            sys.GetInstruments().Insert(index, newInstrument);
+            Instrument newInstrument = hookup.FromParameters(sys, name, parameters);
+            
             siteMan.Save();
             UpdateSitesTree();
             siteManChanged = true;
@@ -854,7 +852,7 @@ namespace Omniscient
                 siteMan.Save();
                 UpdateSitesTree();
                 siteManChanged = true;
-                SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(inst.GetName(), true)[0];
+                SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(inst.Name, true)[0];
                 ChannelsComboBox.SelectedItem = name;
                 selectedVirtualChannel = roiChannel;
                 return;
@@ -898,7 +896,7 @@ namespace Omniscient
             siteMan.Save();
             UpdateSitesTree();
             siteManChanged = true;
-            SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(inst.GetName(), true)[0];
+            SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(inst.Name, true)[0];
             ChannelsComboBox.SelectedItem = name;
             selectedVirtualChannel = virtualChannel;
         }
@@ -961,7 +959,7 @@ namespace Omniscient
             siteMan.Save();
             UpdateSitesTree();
             siteManChanged = true;
-            SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(inst.GetName(), true)[0];
+            SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(inst.Name, true)[0];
             ResetFields();
         }
 
@@ -1020,13 +1018,12 @@ namespace Omniscient
                 int index = sys.GetInstruments().IndexOf(inst);
                 if (index > 0)
                 {
-                    sys.GetInstruments().RemoveAt(index);
-                    sys.GetInstruments().Insert(index - 1, inst);
+                    inst.SetIndex(index - 1);
 
                     siteMan.Save();
                     UpdateSitesTree();
                     siteManChanged = true;
-                    SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(inst.GetName(), true)[0];
+                    SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(inst.Name, true)[0];
                 }
             }
         }
@@ -1086,13 +1083,12 @@ namespace Omniscient
                 int index = sys.GetInstruments().IndexOf(inst);
                 if (index < sys.GetInstruments().Count - 1)
                 {
-                    sys.GetInstruments().RemoveAt(index);
-                    sys.GetInstruments().Insert(index + 1, inst);
+                    inst.SetIndex(index + 1);
 
                     siteMan.Save();
                     UpdateSitesTree();
                     siteManChanged = true;
-                    SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(inst.GetName(), true)[0];
+                    SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(inst.Name, true)[0];
                 }
             }
         }
@@ -1122,7 +1118,7 @@ namespace Omniscient
                 siteMan.Save();
                 UpdateSitesTree();
                 siteManChanged = true;
-                SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(inst.GetName(), true)[0];
+                SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(inst.Name, true)[0];
                 ChannelsComboBox.SelectedItem = chan.GetName();
             }
         }
@@ -1153,7 +1149,7 @@ namespace Omniscient
                 siteMan.Save();
                 UpdateSitesTree();
                 siteManChanged = true;
-                SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(inst.GetName(), true)[0];
+                SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(inst.Name, true)[0];
                 ChannelsComboBox.SelectedItem = chan.GetName();
             }
         }
@@ -1162,7 +1158,7 @@ namespace Omniscient
         {
             if (DeclarationCheckBox.Checked)
             {
-                selectedSystem.SetDeclarationInstrument(new DeclarationInstrument(selectedSystem.Name + "_Declarations"));
+                selectedSystem.SetDeclarationInstrument(new DeclarationInstrument(selectedSystem, selectedSystem.Name + "_Declarations"));
                 SetupSystemPanel();
             }
             else

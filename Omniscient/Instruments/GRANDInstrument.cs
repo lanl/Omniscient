@@ -35,7 +35,7 @@ namespace Omniscient
 
         BIDParser bidParser;
 
-        public GRANDInstrument(string newName) : base(newName)
+        public GRANDInstrument(DetectionSystem parent, string name) : base(parent, name)
         {
             InstrumentType = "GRAND";
             FileExtension = FILE_EXTENSION;
@@ -45,13 +45,13 @@ namespace Omniscient
 
             numChannels = NUM_CHANNELS;
             channels = new Channel[numChannels];
-            channels[chACountRate] = new Channel(name + "-Neutrons-A", this, Channel.ChannelType.COUNT_RATE);
-            channels[chBCountRate] = new Channel(name + "-Neutrons-B", this, Channel.ChannelType.COUNT_RATE);
-            channels[chCCountRate] = new Channel(name + "-Neutrons-C", this, Channel.ChannelType.COUNT_RATE);
-            channels[gamInGamCh1] = new Channel(name + "-Gammas-1", this, Channel.ChannelType.COUNT_RATE);
-            channels[gamCh1Sigma] = new Channel(name + "-Gammas-1-Sigma", this, Channel.ChannelType.COUNT_RATE);
-            channels[gamInGamCh2] = new Channel(name + "-Gammas-2", this, Channel.ChannelType.COUNT_RATE);
-            channels[gamCh2Sigma] = new Channel(name + "-Gammas-2-Sigma", this, Channel.ChannelType.COUNT_RATE);
+            channels[chACountRate] = new Channel(Name + "-Neutrons-A", this, Channel.ChannelType.COUNT_RATE);
+            channels[chBCountRate] = new Channel(Name + "-Neutrons-B", this, Channel.ChannelType.COUNT_RATE);
+            channels[chCCountRate] = new Channel(Name + "-Neutrons-C", this, Channel.ChannelType.COUNT_RATE);
+            channels[gamInGamCh1] = new Channel(Name + "-Gammas-1", this, Channel.ChannelType.COUNT_RATE);
+            channels[gamCh1Sigma] = new Channel(Name + "-Gammas-1-Sigma", this, Channel.ChannelType.COUNT_RATE);
+            channels[gamInGamCh2] = new Channel(Name + "-Gammas-2", this, Channel.ChannelType.COUNT_RATE);
+            channels[gamCh2Sigma] = new Channel(Name + "-Gammas-2-Sigma", this, Channel.ChannelType.COUNT_RATE);
         }
 
         public override DateTime GetFileDate(string file)
@@ -107,9 +107,9 @@ namespace Omniscient
 
         public override string Type { get { return "GRAND"; } }
 
-        public override Instrument FromParameters(string newName, List<Parameter> parameters)
+        public override Instrument FromParameters(DetectionSystem parent, string newName, List<Parameter> parameters)
         {
-            GRANDInstrument instrument = new GRANDInstrument(newName);
+            GRANDInstrument instrument = new GRANDInstrument(parent, newName);
             Instrument.ApplyStandardInstrumentParameters(instrument, parameters);
             return instrument;
         }

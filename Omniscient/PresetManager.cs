@@ -84,7 +84,7 @@ namespace Omniscient
                                 {
                                     if (instrumentNode.Name == "Instrument")
                                     {
-                                        Instrument inst = sys.GetInstruments().Single(i => i.GetName() == instrumentNode.Attributes["name"]?.InnerText);
+                                        Instrument inst = sys.GetInstruments().Single(i => i.Name == instrumentNode.Attributes["name"]?.InnerText);
                                         if (instrumentNode.Attributes["checked"] != null)
                                         {
                                             if (instrumentNode.Attributes["checked"].InnerText == "true")
@@ -160,7 +160,7 @@ namespace Omniscient
                             foreach (Instrument inst in sys.GetInstruments())
                             {
                                 xmlWriter.WriteStartElement("Instrument");
-                                xmlWriter.WriteAttributeString("name", inst.GetName());
+                                xmlWriter.WriteAttributeString("name", inst.Name);
                                 if (preset.GetActiveInstruments().Contains(inst))
                                 {
                                     xmlWriter.WriteAttributeString("checked", "true");

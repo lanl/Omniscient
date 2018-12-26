@@ -50,7 +50,7 @@ namespace Omniscient
             }
         }
 
-        public MCAInstrument(string newName) : base(newName)
+        public MCAInstrument(DetectionSystem parent, string name) : base(parent, name)
         {
             InstrumentType = "MCA";
             FileExtension = FILE_EXTENSION;
@@ -59,7 +59,7 @@ namespace Omniscient
 
             numChannels = NUM_CHANNELS;
             channels = new Channel[numChannels];
-            channels[COUNT_RATE] = new Channel(name + "-Count_Rate", this, Channel.ChannelType.DURATION_VALUE);
+            channels[COUNT_RATE] = new Channel(Name + "-Count_Rate", this, Channel.ChannelType.DURATION_VALUE);
         }
 
         public override DateTime GetFileDate(string file)
@@ -143,9 +143,9 @@ namespace Omniscient
 
         public override string Type { get { return "MCA"; } }
 
-        public override Instrument FromParameters(string newName, List<Parameter> parameters)
+        public override Instrument FromParameters(DetectionSystem parent, string newName, List<Parameter> parameters)
         {
-            MCAInstrument instrument = new MCAInstrument(newName);
+            MCAInstrument instrument = new MCAInstrument(parent, newName);
             Instrument.ApplyStandardInstrumentParameters(instrument, parameters);
             foreach (Parameter param in parameters)
             {

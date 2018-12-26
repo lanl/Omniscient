@@ -32,7 +32,7 @@ namespace Omniscient
 
         ISRParser isrParser;
 
-        public ISRInstrument(string newName) : base(newName)
+        public ISRInstrument(DetectionSystem parent, string name) : base(parent, name)
         {
             InstrumentType = "ISR";
             FileExtension = FILE_EXTENSION;
@@ -41,11 +41,11 @@ namespace Omniscient
 
             numChannels = NUM_CHANNELS;
             channels = new Channel[numChannels];
-            channels[TOTALS1] = new Channel(name+"-Totals-1", this, Channel.ChannelType.COUNT_RATE);
-            channels[TOTALS2] = new Channel(name + "-Totals-2", this, Channel.ChannelType.COUNT_RATE);
-            channels[TOTALS3] = new Channel(name + "-Totals-3", this, Channel.ChannelType.COUNT_RATE);
-            channels[REALS_PLUS_ACC] = new Channel(name + "-Real+Acc", this, Channel.ChannelType.COUNT_RATE);
-            channels[ACC] = new Channel(name + "-Acc", this, Channel.ChannelType.COUNT_RATE);
+            channels[TOTALS1] = new Channel(Name+"-Totals-1", this, Channel.ChannelType.COUNT_RATE);
+            channels[TOTALS2] = new Channel(Name + "-Totals-2", this, Channel.ChannelType.COUNT_RATE);
+            channels[TOTALS3] = new Channel(Name + "-Totals-3", this, Channel.ChannelType.COUNT_RATE);
+            channels[REALS_PLUS_ACC] = new Channel(Name + "-Real+Acc", this, Channel.ChannelType.COUNT_RATE);
+            channels[ACC] = new Channel(Name + "-Acc", this, Channel.ChannelType.COUNT_RATE);
         }
 
         public override DateTime GetFileDate(string file)
@@ -120,9 +120,9 @@ namespace Omniscient
 
         public override string Type { get { return "ISR"; } }
 
-        public override Instrument FromParameters(string newName, List<Parameter> parameters)
+        public override Instrument FromParameters(DetectionSystem parent, string newName, List<Parameter> parameters)
         {
-            ISRInstrument instrument = new ISRInstrument(newName);
+            ISRInstrument instrument = new ISRInstrument(parent, newName);
             Instrument.ApplyStandardInstrumentParameters(instrument, parameters);
             foreach (Parameter param in parameters)
             {

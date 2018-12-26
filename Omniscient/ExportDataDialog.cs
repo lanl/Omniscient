@@ -49,7 +49,7 @@ namespace Omniscient
             InstrumentComboBox.Items.Clear();
             foreach(Instrument instrument in Instruments)
             {
-                InstrumentComboBox.Items.Add(instrument.GetName());
+                InstrumentComboBox.Items.Add(instrument.Name);
             }
             InstrumentComboBox.SelectedIndex = 0;
 
@@ -87,7 +87,7 @@ namespace Omniscient
         {
             foreach(Instrument instrument in Instruments)
             {
-                if (instrument.GetName() == InstrumentComboBox.Text)
+                if (instrument.Name == InstrumentComboBox.Text)
                 {
                     SelectedInstrument = instrument;
                     break;

@@ -36,7 +36,7 @@ namespace Omniscient
 
         VBFParser vbfParser;
 
-        public NGAMInstrument(string newName) : base(newName)
+        public NGAMInstrument(DetectionSystem parent, string name) : base(parent, name)
         {
             InstrumentType = "NGAM";
             FileExtension = FILE_EXTENSION;
@@ -45,14 +45,14 @@ namespace Omniscient
 
             numChannels = NUM_CHANNELS;
             channels = new Channel[numChannels];
-            channels[data0] = new Channel(name + "-data0", this, Channel.ChannelType.COUNT_RATE);
-            channels[data1] = new Channel(name + "-data1", this, Channel.ChannelType.COUNT_RATE);
-            channels[data2] = new Channel(name + "-data2", this, Channel.ChannelType.COUNT_RATE);
-            channels[data3] = new Channel(name + "-data3", this, Channel.ChannelType.COUNT_RATE);
-            channels[data4] = new Channel(name + "-data4", this, Channel.ChannelType.COUNT_RATE);
-            channels[data5] = new Channel(name + "-data5", this, Channel.ChannelType.COUNT_RATE);
-            channels[data6] = new Channel(name + "-data6", this, Channel.ChannelType.COUNT_RATE);
-            channels[data7] = new Channel(name + "-data7", this, Channel.ChannelType.COUNT_RATE);
+            channels[data0] = new Channel(Name + "-data0", this, Channel.ChannelType.COUNT_RATE);
+            channels[data1] = new Channel(Name + "-data1", this, Channel.ChannelType.COUNT_RATE);
+            channels[data2] = new Channel(Name + "-data2", this, Channel.ChannelType.COUNT_RATE);
+            channels[data3] = new Channel(Name + "-data3", this, Channel.ChannelType.COUNT_RATE);
+            channels[data4] = new Channel(Name + "-data4", this, Channel.ChannelType.COUNT_RATE);
+            channels[data5] = new Channel(Name + "-data5", this, Channel.ChannelType.COUNT_RATE);
+            channels[data6] = new Channel(Name + "-data6", this, Channel.ChannelType.COUNT_RATE);
+            channels[data7] = new Channel(Name + "-data7", this, Channel.ChannelType.COUNT_RATE);
         }
 
         public override DateTime GetFileDate(string file)
@@ -109,9 +109,9 @@ namespace Omniscient
 
         public override string Type { get { return "NGAM"; } }
 
-        public override Instrument FromParameters(string newName, List<Parameter> parameters)
+        public override Instrument FromParameters(DetectionSystem parent, string newName, List<Parameter> parameters)
         {
-            NGAMInstrument instrument = new NGAMInstrument(newName);
+            NGAMInstrument instrument = new NGAMInstrument(parent, newName);
             Instrument.ApplyStandardInstrumentParameters(instrument, parameters);
             return instrument;
         }

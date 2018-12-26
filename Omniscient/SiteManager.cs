@@ -48,7 +48,7 @@ namespace Omniscient
                         if (sys.Name == name) return true;
                         foreach(Instrument inst in sys.GetInstruments())
                         {
-                            if (inst.GetName() == name) return true;
+                            if (inst.Name == name) return true;
                             foreach(Channel chan in inst.GetChannels())
                                 if (chan.GetName() == name) return true;
                         }
@@ -171,7 +171,6 @@ namespace Omniscient
                                         }
                                         else return ReturnCode.CORRUPTED_FILE;
                                     }
-                                    newSystem.AddInstrument(newInstrument);
                                 }
                             }
                             else if (instrumentNode.Name == "EventGenerator")

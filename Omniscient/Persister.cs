@@ -38,10 +38,15 @@ namespace Omniscient
             }
         }
 
+        protected string _name;
         /// <summary>
         /// A name for user interaction and identification of the object
         /// </summary>
-        public string Name { get; set; }
+        public virtual string Name
+        {
+            get { return _name; }
+            set { _name = value; }
+        }
 
         public virtual Persister Parent { get; set; }
         public virtual List<Persister> Children { get; set; }

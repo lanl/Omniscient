@@ -21,7 +21,7 @@ using System.Xml;
 
 namespace Omniscient
 {
-    public abstract class Instrument
+    public abstract class Instrument : Persister
     {
         public static readonly InstrumentHookup[] Hookups = new InstrumentHookup[]
         {
@@ -32,7 +32,22 @@ namespace Omniscient
             new NGAMInstrumentHookup()
         };
 
-        protected string name;
+        public override string Name
+        {
+            get => base.Name;
+            set
+            {
+                if (channels != null)
+                {
+                    foreach (Channel channel in GetStandardChannels())
+                    {
+                        channel.SetName(channel.GetName().Replace(_name, value));
+                    }
+                }
+                base.Name = value;
+            }
+        }
+
         public string InstrumentType { get; protected set; }
         protected string dataFolder;
         protected string filePrefix;
@@ -41,7 +56,7 @@ namespace Omniscient
         protected DateTime[] dataFileTimes;
 
         protected int numChannels;
-        protected Channel[] channels;
+        protected Channel[] channels = null;
         protected List<VirtualChannel> virtualChannels;
 
         protected string _fileExtension;
@@ -56,9 +71,9 @@ namespace Omniscient
         }
 
         public bool IncludeSubDirectories { get; set; }
-        public Instrument(string newName)
+        public Instrument(DetectionSystem parent, string name) : base(parent, name)
         {
-            name = newName;
+            parent.GetInstruments().Add(this);
             virtualChannels = new List<VirtualChannel>();
             dataFileNames = new string[0];
             dataFileTimes = new DateTime[0];
@@ -68,15 +83,6 @@ namespace Omniscient
         {
             foreach (VirtualChannel chan in virtualChannels)
                 chan.CalculateValues();
-        }
-
-        public void SetName(string newName)
-        {
-            foreach (Channel channel in GetStandardChannels())
-            {
-                channel.SetName(channel.GetName().Replace(name, newName));
-            }
-            name = newName;
         }
 
         public List<string> GetSubdirectories(string directory)
@@ -168,8 +174,7 @@ namespace Omniscient
         {
             filePrefix = newPrefix;
         }
-
-        public string GetName() { return name; }
+        
         public string GetInstrumentType() { return InstrumentType; }
         public string GetDataFolder() { return dataFolder; }
         public string GetFilePrefix() { return filePrefix; }
@@ -228,6 +233,19 @@ namespace Omniscient
             instrument.ScanDataFolder();
         }
 
+        public override bool SetIndex(int index)
+        {
+            base.SetIndex(index);
+            (Parent as DetectionSystem).GetInstruments().Remove(this);
+            (Parent as DetectionSystem).GetInstruments().Insert(index, this);
+            return true;
+        }
+        public override void Delete()
+        {
+            base.Delete();
+            (Parent as DetectionSystem).GetInstruments().Remove(this);
+        }
+
         public static InstrumentHookup GetHookup(string type)
         {
             foreach (InstrumentHookup hookup in Hookups)
@@ -245,13 +263,13 @@ namespace Omniscient
             string name = node.Attributes["Name"]?.InnerText;
             InstrumentHookup hookup = GetHookup(node.Attributes["Type"]?.InnerText);
             List<Parameter> parameters = Parameter.FromXML(node, hookup.TemplateParameters, system);
-            return hookup?.FromParameters(name, parameters);
+            return hookup?.FromParameters(system, name, parameters);
         }
 
         public static void ToXML(XmlWriter xmlWriter, Instrument instrument)
         {
             xmlWriter.WriteStartElement("Instrument");
-            xmlWriter.WriteAttributeString("Name", instrument.GetName());
+            xmlWriter.WriteAttributeString("Name", instrument.Name);
             xmlWriter.WriteAttributeString("Type", instrument.GetInstrumentType());
             List<Parameter> parameters = instrument.GetParameters();
             foreach (Parameter param in parameters)
@@ -263,7 +281,7 @@ namespace Omniscient
 
     public abstract class InstrumentHookup
     {
-        public abstract Instrument FromParameters(string newName, List<Parameter> parameters);
+        public abstract Instrument FromParameters(DetectionSystem parent, string newName, List<Parameter> parameters);
         public abstract string Type { get; }
         public List<ParameterTemplate> TemplateParameters { get; set; } = new List<ParameterTemplate>()
         {
