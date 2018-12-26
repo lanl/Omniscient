@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.IO;
 
 namespace Omniscient
 {
@@ -35,6 +36,9 @@ namespace Omniscient
 
         public CacheManager()
         {
+            // Make sure a Cache directory exists
+            if (!Directory.Exists("Cache")) Directory.CreateDirectory("Cache");
+
             Tasks = new LinkedList<CacheTask>();
             TaskAtHand = null;
         }

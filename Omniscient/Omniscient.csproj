@@ -94,7 +94,10 @@
     <Compile Include="Analysis\FRAMUraniumResultParser.cs" />
     <Compile Include="Analysis\ResultParser.cs" />
     <Compile Include="Analysis\SpectrumCompiler.cs" />
+    <Compile Include="Cache\CacheLevelData.cs" />
     <Compile Include="Cache\CacheManager.cs" />
+    <Compile Include="Cache\DataMonitor.cs" />
+    <Compile Include="Cache\InstrumentCache.cs" />
     <Compile Include="Controls\ParameterListPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>

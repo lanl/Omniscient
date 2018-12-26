@@ -66,6 +66,7 @@ namespace Omniscient
         private double markerValue = 0;
 
         List<Event> events;
+        CacheManager cache;
         ///////////////////////////////////////////////////////////////////////
 
         /// <summary>
@@ -73,13 +74,12 @@ namespace Omniscient
         /// </summary>
         public MainForm()
         {
-            
             Core = new OmniscientCore();
             if (Core.ErrorMessage != "")
             {
                 MessageBox.Show(Core.ErrorMessage);
             }
-
+            cache = new CacheManager();
             logScale = new bool[N_CHARTS];
             autoScale = new bool[N_CHARTS];
             for (int c = 0; c < N_CHARTS; c++)
