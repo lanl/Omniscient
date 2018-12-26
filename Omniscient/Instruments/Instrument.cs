@@ -43,7 +43,7 @@ namespace Omniscient
                 {
                     foreach (Channel channel in GetStandardChannels())
                     {
-                        channel.SetName(channel.GetName().Replace(_name, value));
+                        channel.Name = channel.Name.Replace(_name, value);
                     }
                 }
                 base.Name = value;

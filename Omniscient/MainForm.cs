@@ -448,7 +448,7 @@ namespace Omniscient
                     List<DateTime> dates = chan.GetTimeStamps();
                     List<double> vals = chan.GetValues();
 
-                    Series series = new Series(chan.GetName());
+                    Series series = new Series(chan.Name);
                     series.Points.SuspendUpdates();
                     series.ChartType = SeriesChartType.FastLine;
                     series.XValueType = ChartValueType.DateTime;
@@ -1192,14 +1192,14 @@ namespace Omniscient
                             {
                                 if (chan.GetInstrument() is MCAInstrument)
                                 {
-                                    MenuItem menuItem = new MenuItem("View " + chan.GetName() + " in Inspectrum");
+                                    MenuItem menuItem = new MenuItem("View " + chan.Name + " in Inspectrum");
                                     menuItem.Tag = chan.GetFiles()[meas].FileName;
                                     menuItem.Click += PlotSpectrumMenuItem_Click;
                                     chartMenu.MenuItems.Add(menuItem);
                                 }
                                 else if(chan.GetInstrument() is DeclarationInstrument)
                                 {
-                                    MenuItem menuItem = new MenuItem("View " + chan.GetName() + " in Declaration Editor");
+                                    MenuItem menuItem = new MenuItem("View " + chan.Name + " in Declaration Editor");
                                     menuItem.Tag = chan.GetFiles()[meas].FileName;
                                     menuItem.Click += DeclarationMenuItem_Click;
                                     chartMenu.MenuItems.Add(menuItem);
@@ -1606,7 +1606,7 @@ namespace Omniscient
                 if(plotChan)
                 {
                     Channel ch = chanPan.GetChannel();
-                    boxData += "--" + ch.GetName() + "--\n";
+                    boxData += "--" + ch.Name + "--\n";
                     boxData += "μ: " + ch.GetAverage(start, end).ToString("G6") + "\n";
                     boxData += "σ: " + ch.GetStandardDeviation(start, end).ToString("G6") + "\n";
                     boxData += "Max: " + ch.GetMax(start, end).ToString("G6") + "\n";

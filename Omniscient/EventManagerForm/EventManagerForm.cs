@@ -329,7 +329,7 @@ namespace Omniscient
             {
                 foreach(Channel chan in inst.GetChannels())
                 {
-                    validSystemChannels.Add(chan.GetName());
+                    validSystemChannels.Add(chan.Name);
                 }
             }
 
@@ -410,7 +410,7 @@ namespace Omniscient
                     {
                         foreach (Channel ch in inst.GetChannels())
                         {
-                            if (ch.GetName() == DataCompilerPanel1.ChannelComboBox.Text)
+                            if (ch.Name == DataCompilerPanel1.ChannelComboBox.Text)
                             {
                                 analysisAction.AddChannel(ch);
                                 break;
@@ -557,10 +557,10 @@ namespace Omniscient
             {
                 foreach (Channel ch in inst.GetChannels())
                 {
-                    compilerPanel.ChannelComboBox.Items.Add(ch.GetName());
+                    compilerPanel.ChannelComboBox.Items.Add(ch.Name);
                 }
             }
-            compilerPanel.ChannelComboBox.Text = action.GetChannels()[compiler].GetName();
+            compilerPanel.ChannelComboBox.Text = action.GetChannels()[compiler].Name;
         }
 
         private void PopulateAnalysisPanels(AnalysisAction action, EventGenerator eg)
@@ -574,7 +574,7 @@ namespace Omniscient
             }
 
             selectedActionChannel = action.GetChannels()[0];
-            DataCompilerPanel1.ChannelComboBox.Text = action.GetChannels()[0].GetName();
+            DataCompilerPanel1.ChannelComboBox.Text = action.GetChannels()[0].Name;
             AnalysisCommandTextBox.Text = action.GetAnalysis().GetCommand();
             DataCompilerPanel1.CompiledFileTextBox.Text = action.GetCompiledFileName();
             ResultFileTextBox.Text = action.GetAnalysis().GetResultsFile();
@@ -683,7 +683,7 @@ namespace Omniscient
             {
                 foreach(Channel chan in inst.GetChannels())
                 {
-                    if (chan.GetName() == DataCompilerPanel1.ChannelComboBox.Text)
+                    if (chan.Name == DataCompilerPanel1.ChannelComboBox.Text)
                     {
                         selectedActionChannel = chan;
                         breakout = true;

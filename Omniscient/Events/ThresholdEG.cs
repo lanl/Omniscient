@@ -69,7 +69,7 @@ namespace Omniscient
                     {
                         eve = new Event(this);
                         eve.SetStartTime(times[i]);
-                        eve.SetComment(channel.GetName() + " is above threshold.");
+                        eve.SetComment(channel.Name + " is above threshold.");
                         maxValue = vals[i];
                         maxTime = times[i];
                         inEvent = true;
@@ -100,7 +100,7 @@ namespace Omniscient
                         {
                             eve = new Event(this);
                             eve.SetStartTime(times[i]);
-                            eve.SetComment(channel.GetName() + " is above threshold.");
+                            eve.SetComment(channel.Name + " is above threshold.");
                             maxValue = vals[i];
                             maxTime = times[i];
                             inEvent = true;
@@ -175,7 +175,7 @@ namespace Omniscient
         {
             List<Parameter> parameters = new List<Parameter>()
             {
-                new SystemChannelParameter("Channel", (DetectionSystem)eventWatcher){ Value = channel.GetName() },
+                new SystemChannelParameter("Channel", (DetectionSystem)eventWatcher){ Value = channel.Name },
                 new DoubleParameter("Threshold") { Value = threshold.ToString() },
                 new TimeSpanParameter("Debounce Time") { Value = debounceTime.TotalSeconds.ToString() }
             };

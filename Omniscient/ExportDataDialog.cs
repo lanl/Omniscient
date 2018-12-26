@@ -97,7 +97,7 @@ namespace Omniscient
             ChannelTreeView.Nodes.Clear();
             foreach(Channel channel in SelectedInstrument.GetChannels())
             {
-                TreeNode cNode = new TreeNode(channel.GetName());
+                TreeNode cNode = new TreeNode(channel.Name);
                 cNode.Tag = channel;
                 cNode.Checked = true;
                 ChannelTreeView.Nodes.Add(cNode);
@@ -167,7 +167,7 @@ namespace Omniscient
                         file.Write("Time Stamp");
                         for (int c = 0; c < selectedChannels.Count; c++)
                         {
-                            file.Write("," + selectedChannels[c].GetName());
+                            file.Write("," + selectedChannels[c].Name);
                         }
                         file.Write("\r\n");
                     }

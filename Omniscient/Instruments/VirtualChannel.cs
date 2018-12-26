@@ -26,6 +26,8 @@ namespace Omniscient
     /// corresponding to the same timestamps.</remarks>
     public abstract class VirtualChannel : Channel
     {
+        public override string Species { get { return "Virtual Channel"; } }
+
         public static readonly VirtualChannelHookup[] Hookups = new VirtualChannelHookup[]
         {
             new ConvolveVCHookup(),
@@ -44,6 +46,7 @@ namespace Omniscient
 
         public VirtualChannel(string newName, Instrument parent, ChannelType newType) : base(newName, parent, newType)
         {
+            parent.GetVirtualChannels().Add(this);
             Dependencies = new List<Channel>();
         }
 
@@ -74,13 +77,28 @@ namespace Omniscient
         public static void ToXML(XmlWriter xmlWriter, VirtualChannel channel)
         {
             xmlWriter.WriteStartElement("VirtualChannel");
-            xmlWriter.WriteAttributeString("Name", channel.GetName());
+            xmlWriter.WriteAttributeString("Name", channel.Name);
             xmlWriter.WriteAttributeString("Type", channel.VCType);
             List<Parameter> parameters = channel.GetParameters();
             foreach (Parameter param in parameters)
             {
                 xmlWriter.WriteAttributeString(param.Name.Replace(' ', '_'), param.Value);
             }
+        }
+
+        public override bool SetIndex(int index)
+        {
+            instrument.Children.Remove(this);
+            instrument.Children.Insert(index + instrument.GetStandardChannels().Length, this);
+            instrument.GetVirtualChannels().Remove(this);
+            instrument.GetVirtualChannels().Insert(index, this);
+            return true;
+        }
+
+        public override void Delete()
+        {
+            instrument.GetVirtualChannels().Remove(this);
+            base.Delete();
         }
     }
 
@@ -215,11 +233,11 @@ namespace Omniscient
                 },
                 new InstrumentChannelParameter("Channel A", instrument, cIndex-1)
                 {
-                    Value = ChannelA.GetName()
+                    Value = ChannelA.Name
                 },
                 new InstrumentChannelParameter("Channel B", instrument, cIndex-1)
                 {
-                    Value = ChannelB.GetName()
+                    Value = ChannelB.Name
                 }
             };
         }
@@ -372,7 +390,7 @@ namespace Omniscient
                 },
                 new InstrumentChannelParameter("Channel", instrument, cIndex-1)
                 {
-                    Value = Channel.GetName()
+                    Value = Channel.Name
                 },
                 new DoubleParameter("Constant")
                 {
@@ -487,7 +505,7 @@ namespace Omniscient
             {
                 new InstrumentChannelParameter("Channel", instrument, cIndex-1)
                 {
-                    Value = Channel.GetName()
+                    Value = Channel.Name
                 },
                 new TimeSpanParameter("Delay")
                 {
@@ -584,7 +602,7 @@ namespace Omniscient
             {
                 new InstrumentChannelParameter("Channel", instrument, cIndex-1)
                 {
-                    Value = Channel.GetName()
+                    Value = Channel.Name
                 },
                 new FileNameParameter("File")
                 {
@@ -784,7 +802,7 @@ namespace Omniscient
                 },
                 new InstrumentChannelParameter("Channel", instrument, cIndex-1)
                 {
-                    Value = Channel.GetName()
+                    Value = Channel.Name
                 },
                 new IntParameter("Period") { Value = Period.ToString() }
             };
@@ -1056,7 +1074,7 @@ namespace Omniscient
                 },
                 new InstrumentChannelParameter("Channel", instrument, cIndex-1)
                 {
-                    Value = Channel.GetName()
+                    Value = Channel.Name
                 }
             };
         }

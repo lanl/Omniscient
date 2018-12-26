@@ -24,6 +24,8 @@ namespace Omniscient
 {
     public class SiteManager : Persister
     {
+        public override string Species { get { return "Site Manager"; } }
+
         private List<Site> sites;
         private string xmlFile;
         string omniscient_version;
@@ -50,7 +52,7 @@ namespace Omniscient
                         {
                             if (inst.Name == name) return true;
                             foreach(Channel chan in inst.GetChannels())
-                                if (chan.GetName() == name) return true;
+                                if (chan.Name == name) return true;
                         }
                         foreach (EventGenerator eventGenerator in sys.GetEventGenerators())
                         {
@@ -137,7 +139,6 @@ namespace Omniscient
                                                 if (chanNode.Attributes["type"]?.InnerText != "ROI")
                                                 {
                                                     VirtualChannel chan = VirtualChannel.FromXML(chanNode, newInstrument);
-                                                    newInstrument.GetVirtualChannels().Add(chan);
                                                 }
                                                 else
                                                 {
@@ -164,7 +165,6 @@ namespace Omniscient
                                                         default:
                                                             return ReturnCode.CORRUPTED_FILE;
                                                     }
-                                                    newInstrument.GetVirtualChannels().Add(chan);
                                                 }
                                             }
                                             catch { return ReturnCode.CORRUPTED_FILE; }
@@ -191,7 +191,7 @@ namespace Omniscient
                                             {
                                                 foreach (Channel ch in inst.GetChannels())
                                                 {
-                                                    if (ch.GetName() == actionNode.Attributes["channel"]?.InnerText)
+                                                    if (ch.Name == actionNode.Attributes["channel"]?.InnerText)
                                                         analysisAction.AddChannel(ch);
                                                 }
                                             }
@@ -299,7 +299,7 @@ namespace Omniscient
                                 if (chan is ROIChannel)
                                 {
                                     xmlWriter.WriteStartElement("VirtualChannel");
-                                    xmlWriter.WriteAttributeString("name", chan.GetName());
+                                    xmlWriter.WriteAttributeString("name", chan.Name);
                                     xmlWriter.WriteAttributeString("type", chan.VCType);
                                     xmlWriter.WriteAttributeString("roi_start", ((ROIChannel)chan).GetROI().GetROIStart().ToString());
                                     xmlWriter.WriteAttributeString("roi_end", ((ROIChannel)chan).GetROI().GetROIEnd().ToString());
@@ -328,7 +328,7 @@ namespace Omniscient
                                 if (action is AnalysisAction)
                                 {
                                     xmlWriter.WriteAttributeString("command", ((AnalysisAction)action).GetAnalysis().GetCommand());
-                                    xmlWriter.WriteAttributeString("channel", ((AnalysisAction)action).GetChannels()[0].GetName());
+                                    xmlWriter.WriteAttributeString("channel", ((AnalysisAction)action).GetChannels()[0].Name);
                                     xmlWriter.WriteAttributeString("compiled_file", ((AnalysisAction)action).GetCompiledFileName());
                                     xmlWriter.WriteAttributeString("result_file", ((AnalysisAction)action).GetAnalysis().GetResultsFile());
                                     if(((AnalysisAction)action).GetAnalysis().GetResultParser() is FRAMPlutoniumResultParser)

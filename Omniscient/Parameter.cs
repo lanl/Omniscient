@@ -239,7 +239,7 @@ namespace Omniscient
             {
                 foreach (Channel ch in inst.GetChannels())
                 {
-                    ValidValues.Add(ch.GetName());
+                    ValidValues.Add(ch.Name);
                 }
             }
         }
@@ -250,7 +250,7 @@ namespace Omniscient
             {
                 foreach (Channel ch in inst.GetChannels())
                 {
-                    if (Value == ch.GetName()) return ch;
+                    if (Value == ch.Name) return ch;
                 }
             }
             return null;
@@ -328,7 +328,7 @@ namespace Omniscient
             if (maxChannel > nChannels - 1) maxChannel = nChannels - 1;
             for (int i=0; i<=maxChannel; i++)
             {
-                ValidValues.Add(channels[i].GetName());
+                ValidValues.Add(channels[i].Name);
             }
         }
 
@@ -336,7 +336,7 @@ namespace Omniscient
         {
             foreach (Channel ch in Instrument.GetChannels())
             {
-                if (Value == ch.GetName()) return ch;
+                if (Value == ch.Name) return ch;
             }
             return null;
         }

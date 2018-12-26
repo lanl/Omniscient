@@ -92,7 +92,7 @@ namespace Omniscient
                                                 newPreset.GetActiveInstruments().Add(inst);
                                                 foreach (XmlNode chanNode in instrumentNode.ChildNodes)
                                                 {
-                                                    Channel chan = inst.GetChannels().Single(c => c.GetName() == chanNode.Attributes["name"]?.InnerText);
+                                                    Channel chan = inst.GetChannels().Single(c => c.Name == chanNode.Attributes["name"]?.InnerText);
                                                     foreach (XmlNode checkNode in chanNode.ChildNodes)
                                                     {
                                                         if (checkNode.Attributes["checked"] != null)
@@ -167,7 +167,7 @@ namespace Omniscient
                                     foreach (Channel ch in inst.GetChannels())
                                     {
                                         xmlWriter.WriteStartElement("Channel");
-                                        xmlWriter.WriteAttributeString("name", ch.GetName());
+                                        xmlWriter.WriteAttributeString("name", ch.Name);
                                         for (int chart = 0; chart<N_CHARTS; chart++)
                                         {
                                             if (preset.GetActiveChannels()[chart].Contains(ch))

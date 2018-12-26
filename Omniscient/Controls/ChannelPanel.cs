@@ -38,7 +38,7 @@ namespace Omniscient
 
         private void ChannelPanel_Load(object sender, EventArgs e)
         {
-            NameTextBox.Text = channel.GetName();
+            NameTextBox.Text = channel.Name;
             Chart1CheckBox.Tag = 0;
             Chart2CheckBox.Tag = 1;
             Chart3CheckBox.Tag = 2;

@@ -20,12 +20,13 @@ using System.Xml;
 
 namespace Omniscient
 {
-    public class Channel
+    public class Channel : Persister
     {
+        public override string Species { get { return "Channel"; } }
+
         public enum ChannelType { COUNT_RATE, DURATION_VALUE, GAMMA_SPECTRUM, VIDEO};
 
         protected Instrument instrument;
-        protected string name;
         protected ChannelType channelType;
         protected List<DateTime> timeStamps;
         protected List<TimeSpan> durations;
@@ -38,10 +39,11 @@ namespace Omniscient
         /// </summary>
         public bool Hidden { get; set; }
 
-        public Channel(string newName, Instrument parent, ChannelType newType)
+        public Channel(string newName, Instrument parent, ChannelType newType) : base(parent, newName)
         {
-            name = newName;
             instrument = parent;
+
+
             channelType = newType;
             timeStamps = new List<DateTime>();
             durations = new List<TimeSpan>();
@@ -106,13 +108,7 @@ namespace Omniscient
             }
             return outFiles;
         }
-
-        public void SetName(string newName)
-        {
-            name = newName;
-        }
-
-        public string GetName() { return name; }
+        
         public ChannelType GetChannelType() { return channelType; }
         public List<DateTime> GetTimeStamps() { return timeStamps; }
         public List<TimeSpan> GetDurations() { return durations; }
@@ -249,7 +245,7 @@ namespace Omniscient
         public void ToXML(XmlWriter xmlWriter)
         {
             xmlWriter.WriteStartElement("Channel");
-            xmlWriter.WriteAttributeString("Name", GetName());
+            xmlWriter.WriteAttributeString("Name", Name);
             List<Parameter> parameters = GetParameters();
             foreach (Parameter param in parameters)
             {
@@ -259,9 +255,14 @@ namespace Omniscient
 
         public void ApplyXML(XmlNode node)
         {
-            SetName(node.Attributes["Name"]?.InnerText);
+            Name = node.Attributes["Name"]?.InnerText;
             List<Parameter> parameters = Parameter.FromXML(node, TemplateParameters);
             ApplyParameters(parameters);
+        }
+
+        public override bool SetIndex(int index)
+        {
+            throw new InvalidOperationException("Standard channels have fixed indices!");
         }
     }
 }

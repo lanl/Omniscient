@@ -173,7 +173,7 @@ namespace Omniscient
                     break;
                 }
             }
-            VirtualChannelNameTextBox.Text = chan.GetName();
+            VirtualChannelNameTextBox.Text = chan.Name;
             VirtualChannelTypeTextBox.Text = chan.VCType;
             if (chan.VCType == "ROI")
             {
@@ -196,7 +196,7 @@ namespace Omniscient
 
         private void SetupChannelGroupBox()
         {
-            ChannelNameTextBox.Text = selectedChannel.GetName();
+            ChannelNameTextBox.Text = selectedChannel.Name;
 
             List<Parameter> parameters = selectedChannel.GetParameters();
             ChannelParameterListPanel.LoadParameters(parameters);
@@ -281,19 +281,19 @@ namespace Omniscient
                 if (channels.Length > 0)
                 {
                     foreach (Channel channel in channels)
-                        ChannelsComboBox.Items.Add(channel.GetName());
+                        ChannelsComboBox.Items.Add(channel.Name);
                     if (channels[0] is VirtualChannel)
                     {
                         selectedChannel = null;
                         selectedVirtualChannel = (VirtualChannel)channels[0];
-                        ChannelsComboBox.SelectedItem = selectedVirtualChannel.GetName();
+                        ChannelsComboBox.SelectedItem = selectedVirtualChannel.Name;
                         SetupVirtualChannelGroupBox();
                     }
                     else
                     {
                         selectedChannel = channels[0];
                         selectedVirtualChannel = null;
-                        ChannelsComboBox.SelectedItem = selectedChannel.GetName();
+                        ChannelsComboBox.SelectedItem = selectedChannel.Name;
                         SetupChannelGroupBox();
                     }
                 }
@@ -390,7 +390,7 @@ namespace Omniscient
         private Channel SaveChannel(Instrument inst, Channel chan)
         {
             // Validate input
-            if (chan.GetName() != ChannelNameTextBox.Text && siteMan.ContainsName(ChannelNameTextBox.Text))
+            if (chan.Name != ChannelNameTextBox.Text && siteMan.ContainsName(ChannelNameTextBox.Text))
             {
                 MessageBox.Show("All items in the Site Manager require a unique name!");
                 return null;
@@ -398,7 +398,7 @@ namespace Omniscient
             if (!ChannelParameterListPanel.ValidateInput()) return null;
 
             // Apply new settings
-            chan.SetName(ChannelNameTextBox.Text);
+            chan.Name = ChannelNameTextBox.Text;
             chan.ApplyParameters(ChannelParameterListPanel.Parameters);
 
             return chan;
@@ -406,7 +406,7 @@ namespace Omniscient
 
         private VirtualChannel SaveVirtualChannel(Instrument inst, VirtualChannel chan)
         {
-            if (chan.GetName() != VirtualChannelNameTextBox.Text && siteMan.ContainsName(VirtualChannelNameTextBox.Text))
+            if (chan.Name != VirtualChannelNameTextBox.Text && siteMan.ContainsName(VirtualChannelNameTextBox.Text))
             {
                 MessageBox.Show("All items in the Site Manager require a unique name!");
                 return null;
@@ -464,9 +464,9 @@ namespace Omniscient
                     }
                 }
 
-                virtualChannels.RemoveAt(index);
+                chan.Delete();
                 chan = hookup.FromParameters(inst, name, VCParameterListPanel.Parameters);
-                virtualChannels.Insert(index, chan);
+                chan.SetIndex(index);
             }
             return chan;
         }
@@ -544,7 +544,7 @@ namespace Omniscient
                 {
                     foreach(VirtualChannel vc in inst.GetVirtualChannels())
                     {
-                        if (vc.GetName() == selectedVirtualChannel.GetName())
+                        if (vc.Name == selectedVirtualChannel.Name)
                         {
                             selectedVirtualChannel = vc;
                             break;
@@ -556,7 +556,7 @@ namespace Omniscient
                 {
                     foreach (Channel c in inst.GetStandardChannels())
                     {
-                        if (c.GetName() == selectedChannel.GetName())
+                        if (c.Name == selectedChannel.Name)
                         {
                             selectedChannel = c;
                             break;
@@ -577,11 +577,11 @@ namespace Omniscient
             SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(nodeName, true)[0];
             if(selectedVirtualChannel != null)
             {
-                ChannelsComboBox.SelectedItem = selectedVirtualChannel.GetName();
+                ChannelsComboBox.SelectedItem = selectedVirtualChannel.Name;
             }
             else if(selectedChannel != null)
             {
-                ChannelsComboBox.SelectedItem = selectedChannel.GetName();
+                ChannelsComboBox.SelectedItem = selectedChannel.Name;
             }
         }
 
@@ -848,7 +848,6 @@ namespace Omniscient
             if (dialog.vcType == "ROI")
             {
                 VirtualChannel roiChannel = new ROIChannel(name, (MCAInstrument)inst, Channel.ChannelType.DURATION_VALUE);
-                inst.GetVirtualChannels().Add(roiChannel);
                 siteMan.Save();
                 UpdateSitesTree();
                 siteManChanged = true;
@@ -863,7 +862,7 @@ namespace Omniscient
             List<string> validInstrumentChannels = new List<string>();
             foreach (Channel chan in inst.GetChannels())
             {
-                validInstrumentChannels.Add(chan.GetName());
+                validInstrumentChannels.Add(chan.Name);
             }
             
             List<Parameter> parameters = new List<Parameter>();
@@ -892,7 +891,6 @@ namespace Omniscient
                 }
             }
             VirtualChannel virtualChannel = hookup.FromParameters(inst, name, parameters);
-            inst.GetVirtualChannels().Add(virtualChannel);
             siteMan.Save();
             UpdateSitesTree();
             siteManChanged = true;
@@ -932,7 +930,7 @@ namespace Omniscient
             Instrument inst = (Instrument)SitesTreeView.SelectedNode.Tag;
             foreach (Channel otherChan in inst.GetChannels())
             {
-                if (otherChan.GetName() == ChannelsComboBox.Text)
+                if (otherChan.Name == ChannelsComboBox.Text)
                 {
                     if (otherChan is VirtualChannel)
                     {
@@ -1112,14 +1110,13 @@ namespace Omniscient
                 }
 
                 // Ok, move the channel up
-                inst.GetVirtualChannels().RemoveAt(index);
-                inst.GetVirtualChannels().Insert(index - 1, chan);
-
+                chan.SetIndex(index - 1);
+                
                 siteMan.Save();
                 UpdateSitesTree();
                 siteManChanged = true;
                 SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(inst.Name, true)[0];
-                ChannelsComboBox.SelectedItem = chan.GetName();
+                ChannelsComboBox.SelectedItem = chan.Name;
             }
         }
 
@@ -1141,16 +1138,15 @@ namespace Omniscient
                         return;
                     }
                 }
-                
-                // Ok, move the channel up
-                inst.GetVirtualChannels().RemoveAt(index);
-                inst.GetVirtualChannels().Insert(index + 1, chan);
 
+                // Ok, move the channel up
+                chan.SetIndex(index + 1);
+                
                 siteMan.Save();
                 UpdateSitesTree();
                 siteManChanged = true;
                 SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(inst.Name, true)[0];
-                ChannelsComboBox.SelectedItem = chan.GetName();
+                ChannelsComboBox.SelectedItem = chan.Name;
             }
         }
 

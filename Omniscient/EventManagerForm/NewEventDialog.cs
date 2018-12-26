@@ -48,7 +48,7 @@ namespace Omniscient
             {
                 foreach (Channel ch in inst.GetChannels())
                 {
-                    ChannelComboBox.Items.Add(ch.GetName());
+                    ChannelComboBox.Items.Add(ch.Name);
                 }
             }
         }
@@ -78,7 +78,7 @@ namespace Omniscient
             {
                 foreach (Channel ch in inst.GetChannels())
                 {
-                    if (ch.GetName() == ChannelComboBox.Text)
+                    if (ch.Name == ChannelComboBox.Text)
                     {
                         channel = ch;
                         break;
