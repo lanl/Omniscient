@@ -33,7 +33,6 @@ namespace Omniscient
             new MCAInstrumentHookup(),
             new NGAMInstrumentHookup()
         };
-
         public override string Name
         {
             get => base.Name;
@@ -49,7 +48,7 @@ namespace Omniscient
                 base.Name = value;
             }
         }
-
+		
         public string InstrumentType { get; protected set; }
         protected string dataFolder;
         protected string filePrefix;
@@ -79,6 +78,12 @@ namespace Omniscient
             virtualChannels = new List<VirtualChannel>();
             dataFileNames = new string[0];
             dataFileTimes = new DateTime[0];
+
+            // Assign an ID
+            _id = (uint)(random.NextDouble() * uint.MaxValue);
+            while(TakenIDs.BinarySearch(ID) >=0) _id = (uint)(random.NextDouble() * uint.MaxValue);
+            TakenIDs.Add(_id);
+            TakenIDs.Sort();
         }
 
         public void LoadVirtualChannels()
@@ -275,6 +280,7 @@ namespace Omniscient
             StartToXML(xmlWriter);
             xmlWriter.WriteAttributeString("Type", GetInstrumentType());
             List<Parameter> parameters = GetParameters();
+
             foreach (Parameter param in parameters)
             {
                 xmlWriter.WriteAttributeString(param.Name.Replace(' ', '_'), param.Value);

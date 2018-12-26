@@ -103,6 +103,7 @@ namespace Omniscient
             doc.Load(fileName);
             Persister.TakenIDs.Clear();
             sites.Clear();
+            Instrument.Reset();
 
             if(doc.DocumentElement.Attributes["Omniscient_Version"] == null)
             {
