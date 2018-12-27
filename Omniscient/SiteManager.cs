@@ -37,6 +37,11 @@ namespace Omniscient
             omniscient_version = version;
         }
 
+        public override void ToXML(XmlWriter xmlWriter)
+        {
+            throw new NotImplementedException();
+        }
+
         public bool ContainsName(string name)
         {
             foreach(Site site in sites)
@@ -96,6 +101,7 @@ namespace Omniscient
             if (!File.Exists(fileName)) return ReturnCode.FILE_DOESNT_EXIST;
             XmlDocument doc = new XmlDocument();
             doc.Load(fileName);
+            Persister.TakenIDs.Clear();
             sites.Clear();
 
             if(doc.DocumentElement.Attributes["Omniscient_Version"] == null)
@@ -208,98 +214,7 @@ namespace Omniscient
             xmlWriter.WriteAttributeString("Omniscient_Version", omniscient_version);
             foreach (Site site in sites)
             {
-                xmlWriter.WriteStartElement("Site");
-                xmlWriter.WriteAttributeString("name", site.Name);
-                foreach (Facility fac in site.GetFacilities())
-                {
-                    xmlWriter.WriteStartElement("Facility");
-                    xmlWriter.WriteAttributeString("name", fac.Name);
-                    foreach (DetectionSystem sys in fac.GetSystems())
-                    {
-                        xmlWriter.WriteStartElement("System");
-                        xmlWriter.WriteAttributeString("name", sys.Name);
-                        foreach (Instrument inst in sys.GetInstruments())
-                        {
-                            Instrument.ToXML(xmlWriter, inst);
-                            foreach (Channel chan in inst.GetStandardChannels())
-                            {
-                                chan.ToXML(xmlWriter);
-                                xmlWriter.WriteEndElement();
-                            }
-                            foreach (VirtualChannel chan in inst.GetVirtualChannels())
-                            {
-                                if (chan is ROIChannel)
-                                {
-                                    xmlWriter.WriteStartElement("VirtualChannel");
-                                    xmlWriter.WriteAttributeString("name", chan.Name);
-                                    xmlWriter.WriteAttributeString("type", chan.VCType);
-                                    xmlWriter.WriteAttributeString("roi_start", ((ROIChannel)chan).GetROI().GetROIStart().ToString());
-                                    xmlWriter.WriteAttributeString("roi_end", ((ROIChannel)chan).GetROI().GetROIEnd().ToString());
-                                    xmlWriter.WriteAttributeString("bg1_start", ((ROIChannel)chan).GetROI().GetBG1Start().ToString());
-                                    xmlWriter.WriteAttributeString("bg1_end", ((ROIChannel)chan).GetROI().GetBG1End().ToString());
-                                    xmlWriter.WriteAttributeString("bg2_start", ((ROIChannel)chan).GetROI().GetBG2Start().ToString());
-                                    xmlWriter.WriteAttributeString("bg2_end", ((ROIChannel)chan).GetROI().GetBG2End().ToString());
-                                    xmlWriter.WriteAttributeString("bg_type", (ROI.BGTypeToString(((ROIChannel)chan).GetROI().GetBGType())));
-                                }
-                                else
-                                {
-                                    VirtualChannel.ToXML(xmlWriter, chan);
-                                }
-                                xmlWriter.WriteEndElement();
-                            }
-                            xmlWriter.WriteEndElement();
-                        }
-                        foreach (EventGenerator eg in sys.GetEventGenerators())
-                        {
-                            EventGenerator.ToXML(xmlWriter, eg);
-                            foreach(Action action in eg.GetActions())
-                            {
-                                xmlWriter.WriteStartElement("Action");
-                                xmlWriter.WriteAttributeString("name", action.Name);
-                                xmlWriter.WriteAttributeString("type", action.GetActionType());
-                                if (action is AnalysisAction)
-                                {
-                                    xmlWriter.WriteAttributeString("command", ((AnalysisAction)action).GetAnalysis().GetCommand());
-                                    xmlWriter.WriteAttributeString("channel", ((AnalysisAction)action).GetChannels()[0].Name);
-                                    xmlWriter.WriteAttributeString("compiled_file", ((AnalysisAction)action).GetCompiledFileName());
-                                    xmlWriter.WriteAttributeString("result_file", ((AnalysisAction)action).GetAnalysis().GetResultsFile());
-                                    if(((AnalysisAction)action).GetAnalysis().GetResultParser() is FRAMPlutoniumResultParser)
-                                    {
-                                        xmlWriter.WriteAttributeString("result_parser", "FRAM-Pu");
-                                    }
-                                    else if (((AnalysisAction)action).GetAnalysis().GetResultParser() is FRAMUraniumResultParser)
-                                    {
-                                        xmlWriter.WriteAttributeString("result_parser", "FRAM-U");
-                                    }
-                                    foreach (DataCompiler dataCompiler in ((AnalysisAction)action).GetDataCompilers())
-                                    {
-                                        xmlWriter.WriteStartElement("DataCompiler");
-                                        if(dataCompiler is SpectrumCompiler)
-                                        {
-                                            xmlWriter.WriteAttributeString("type", "SpectrumCompiler");
-                                            xmlWriter.WriteAttributeString("parser", ((SpectrumCompiler)dataCompiler).GetSpectrumParser().GetParserType());
-                                            xmlWriter.WriteAttributeString("writer", ((SpectrumCompiler)dataCompiler).GetSpectrumWriter().GetWriterType());
-                                        }
-                                        else if(dataCompiler is FileListCompiler)
-                                        {
-                                            xmlWriter.WriteAttributeString("type", "FileListCompiler");
-                                        }
-                                        xmlWriter.WriteEndElement();
-                                    }
-                                }
-                                else if (action is CommandAction)
-                                {
-                                    xmlWriter.WriteAttributeString("command", ((CommandAction)action).GetCommand());
-                                }
-                                xmlWriter.WriteEndElement();
-                            }
-                            xmlWriter.WriteEndElement();
-                        }
-                        xmlWriter.WriteEndElement();
-                    }
-                    xmlWriter.WriteEndElement();
-                }
-                xmlWriter.WriteEndElement();
+                site.ToXML(xmlWriter);
             }
             xmlWriter.WriteEndDocument();
             xmlWriter.Close();

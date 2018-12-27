@@ -76,16 +76,29 @@ namespace Omniscient
             return hookup?.FromParameters(instrument, name, parameters, id);
         }
 
-        public static void ToXML(XmlWriter xmlWriter, VirtualChannel channel)
+        public override void ToXML(XmlWriter xmlWriter)
         {
-            xmlWriter.WriteStartElement("VirtualChannel");
-            xmlWriter.WriteAttributeString("Name", channel.Name);
-            xmlWriter.WriteAttributeString("Type", channel.VCType);
-            List<Parameter> parameters = channel.GetParameters();
-            foreach (Parameter param in parameters)
+            StartToXML(xmlWriter);
+            xmlWriter.WriteAttributeString("Type", VCType);
+            if (this is ROIChannel)
             {
-                xmlWriter.WriteAttributeString(param.Name.Replace(' ', '_'), param.Value);
+                xmlWriter.WriteAttributeString("roi_start", ((ROIChannel)this).GetROI().GetROIStart().ToString());
+                xmlWriter.WriteAttributeString("roi_end", ((ROIChannel)this).GetROI().GetROIEnd().ToString());
+                xmlWriter.WriteAttributeString("bg1_start", ((ROIChannel)this).GetROI().GetBG1Start().ToString());
+                xmlWriter.WriteAttributeString("bg1_end", ((ROIChannel)this).GetROI().GetBG1End().ToString());
+                xmlWriter.WriteAttributeString("bg2_start", ((ROIChannel)this).GetROI().GetBG2Start().ToString());
+                xmlWriter.WriteAttributeString("bg2_end", ((ROIChannel)this).GetROI().GetBG2End().ToString());
+                xmlWriter.WriteAttributeString("bg_type", (ROI.BGTypeToString(((ROIChannel)this).GetROI().GetBGType())));
             }
+            else
+            {
+                List<Parameter> parameters = GetParameters();
+                foreach (Parameter param in parameters)
+                {
+                    xmlWriter.WriteAttributeString(param.Name.Replace(' ', '_'), param.Value);
+                }
+            }
+            xmlWriter.WriteEndElement();
         }
 
         public override bool SetIndex(int index)

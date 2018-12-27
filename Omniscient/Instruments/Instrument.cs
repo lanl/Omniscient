@@ -270,16 +270,24 @@ namespace Omniscient
             return hookup?.FromParameters(system, name, parameters, id);
         }
 
-        public static void ToXML(XmlWriter xmlWriter, Instrument instrument)
+        public override void ToXML(XmlWriter xmlWriter)
         {
-            xmlWriter.WriteStartElement("Instrument");
-            xmlWriter.WriteAttributeString("Name", instrument.Name);
-            xmlWriter.WriteAttributeString("Type", instrument.GetInstrumentType());
-            List<Parameter> parameters = instrument.GetParameters();
+            StartToXML(xmlWriter);
+            xmlWriter.WriteAttributeString("Type", GetInstrumentType());
+            List<Parameter> parameters = GetParameters();
             foreach (Parameter param in parameters)
             {
                 xmlWriter.WriteAttributeString(param.Name.Replace(' ', '_'), param.Value);
             }
+            foreach (Channel chan in GetStandardChannels())
+            {
+                chan.ToXML(xmlWriter);
+            }
+            foreach (VirtualChannel chan in GetVirtualChannels())
+            {
+                chan.ToXML(xmlWriter);
+            }
+            xmlWriter.WriteEndElement();
         }
     }
 

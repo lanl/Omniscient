@@ -38,6 +38,47 @@ namespace Omniscient
         public string GetActionType() { return actionType; }
         public EventGenerator GetEventGenerator() { return eventGenerator; }
 
+        public override void ToXML(XmlWriter xmlWriter)
+        {
+            StartToXML(xmlWriter);
+            xmlWriter.WriteAttributeString("type", GetActionType());
+            if (this is AnalysisAction)
+            {
+                xmlWriter.WriteAttributeString("command", ((AnalysisAction)this).GetAnalysis().GetCommand());
+                xmlWriter.WriteAttributeString("channel", ((AnalysisAction)this).GetChannels()[0].Name);
+                xmlWriter.WriteAttributeString("compiled_file", ((AnalysisAction)this).GetCompiledFileName());
+                xmlWriter.WriteAttributeString("result_file", ((AnalysisAction)this).GetAnalysis().GetResultsFile());
+                if (((AnalysisAction)this).GetAnalysis().GetResultParser() is FRAMPlutoniumResultParser)
+                {
+                    xmlWriter.WriteAttributeString("result_parser", "FRAM-Pu");
+                }
+                else if (((AnalysisAction)this).GetAnalysis().GetResultParser() is FRAMUraniumResultParser)
+                {
+                    xmlWriter.WriteAttributeString("result_parser", "FRAM-U");
+                }
+                foreach (DataCompiler dataCompiler in ((AnalysisAction)this).GetDataCompilers())
+                {
+                    xmlWriter.WriteStartElement("DataCompiler");
+                    if (dataCompiler is SpectrumCompiler)
+                    {
+                        xmlWriter.WriteAttributeString("type", "SpectrumCompiler");
+                        xmlWriter.WriteAttributeString("parser", ((SpectrumCompiler)dataCompiler).GetSpectrumParser().GetParserType());
+                        xmlWriter.WriteAttributeString("writer", ((SpectrumCompiler)dataCompiler).GetSpectrumWriter().GetWriterType());
+                    }
+                    else if (dataCompiler is FileListCompiler)
+                    {
+                        xmlWriter.WriteAttributeString("type", "FileListCompiler");
+                    }
+                    xmlWriter.WriteEndElement();
+                }
+            }
+            else if (this is CommandAction)
+            {
+                xmlWriter.WriteAttributeString("command", ((CommandAction)this).GetCommand());
+            }
+            xmlWriter.WriteEndElement();
+        }
+
         public static Action FromXML(XmlNode actionNode, EventGenerator eg)
         {
             Action action;

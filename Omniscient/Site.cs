@@ -52,6 +52,16 @@ namespace Omniscient
             return newSite;
         }
 
+        public override void ToXML(XmlWriter xmlWriter)
+        {
+            StartToXML(xmlWriter);
+            foreach (Facility fac in GetFacilities())
+            {
+                fac.ToXML(xmlWriter);
+            }
+            xmlWriter.WriteEndElement();
+        }
+
         public override bool SetIndex(int index)
         {
             base.SetIndex(index);

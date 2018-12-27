@@ -91,17 +91,21 @@ namespace Omniscient
             return hookup?.FromParameters(system, name, parameters, id);
         }
 
-        public static void ToXML(XmlWriter xmlWriter, EventGenerator eg)
+        public override void ToXML(XmlWriter xmlWriter)
         {
-            xmlWriter.WriteStartElement("EventGenerator");
-            xmlWriter.WriteAttributeString("Name", eg.Name);
-            xmlWriter.WriteAttributeString("Type", eg.GetEventGeneratorType());
-            List<Parameter> parameters = eg.GetParameters();
+            StartToXML(xmlWriter);
+            xmlWriter.WriteAttributeString("Type", GetEventGeneratorType());
+            List<Parameter> parameters = GetParameters();
             foreach (Parameter param in parameters)
             {
                 xmlWriter.WriteAttributeString(param.Name.Replace(' ','_'), param.Value);
             }
-            //hookup.GenerateXML(xmlWriter, eg);
+
+            foreach (Action action in GetActions())
+            {
+                action.ToXML(xmlWriter);
+            }
+            xmlWriter.WriteEndElement();
         }
 
         public override bool SetIndex(int index)

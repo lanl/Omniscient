@@ -79,7 +79,7 @@ namespace Omniscient
         /// Writes the Persisters to an XML node
         /// </summary>
         /// <param name="xmlWriter"></param>
-        //public abstract void ToXML(XmlWriter xmlWriter);
+        public abstract void ToXML(XmlWriter xmlWriter);
 
         /// <summary>
         /// Reads the common elements of a Persister from XML
@@ -136,6 +136,7 @@ namespace Omniscient
         /// </summary>
         public virtual void Delete()
         {
+            foreach (Persister child in Children) child.Delete();
             if (Parent != null)
             {
                 Parent.Children.Remove(this);

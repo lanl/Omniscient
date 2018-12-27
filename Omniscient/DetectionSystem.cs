@@ -90,6 +90,20 @@ namespace Omniscient
         public List<EventGenerator> GetEventGenerators() { return eventGenerators; }
         public List<Event> GetEvents() { return events; }
 
+        public override void ToXML(XmlWriter xmlWriter)
+        {
+            StartToXML(xmlWriter);
+            foreach (Instrument inst in GetInstruments())
+            {
+                inst.ToXML(xmlWriter);
+            }
+            foreach (EventGenerator eg in GetEventGenerators())
+            {
+                eg.ToXML(xmlWriter);
+            }
+            xmlWriter.WriteEndElement();
+        }
+
         public static DetectionSystem FromXML(XmlNode node, Facility parent)
         {
             string name;

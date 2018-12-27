@@ -242,15 +242,15 @@ namespace Omniscient
             new ParameterTemplate("Hidden", ParameterType.Bool)
         };
 
-        public void ToXML(XmlWriter xmlWriter)
+        public override void ToXML(XmlWriter xmlWriter)
         {
-            xmlWriter.WriteStartElement("Channel");
-            xmlWriter.WriteAttributeString("Name", Name);
+            StartToXML(xmlWriter);
             List<Parameter> parameters = GetParameters();
             foreach (Parameter param in parameters)
             {
                 xmlWriter.WriteAttributeString(param.Name.Replace(' ', '_'), param.Value);
             }
+            xmlWriter.WriteEndElement();
         }
 
         public void ApplyXML(XmlNode node)

@@ -57,6 +57,16 @@ namespace Omniscient
             (Parent as Site).GetFacilities().Remove(this);
         }
 
+        public override void ToXML(XmlWriter xmlWriter)
+        {
+            StartToXML(xmlWriter);
+            foreach (DetectionSystem sys in GetSystems())
+            {
+                sys.ToXML(xmlWriter);
+            }
+            xmlWriter.WriteEndElement();
+        }
+
         public static Facility FromXML(XmlNode node, Site parent)
         {
             string name;
