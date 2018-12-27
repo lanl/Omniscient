@@ -73,7 +73,7 @@ namespace Omniscient
         }
 
         public bool IncludeSubDirectories { get; set; }
-        public Instrument(DetectionSystem parent, string name) : base(parent, name)
+        public Instrument(DetectionSystem parent, string name, uint id) : base(parent, name, id)
         {
             parent.GetInstruments().Add(this);
             virtualChannels = new List<VirtualChannel>();
@@ -262,10 +262,12 @@ namespace Omniscient
 
         public static Instrument FromXML(XmlNode node, DetectionSystem system)
         {
-            string name = node.Attributes["Name"]?.InnerText;
+            string name;
+            uint id;
+            Persister.StartFromXML(node, out name, out id);
             InstrumentHookup hookup = GetHookup(node.Attributes["Type"]?.InnerText);
             List<Parameter> parameters = Parameter.FromXML(node, hookup.TemplateParameters, system);
-            return hookup?.FromParameters(system, name, parameters);
+            return hookup?.FromParameters(system, name, parameters, id);
         }
 
         public static void ToXML(XmlWriter xmlWriter, Instrument instrument)
@@ -283,7 +285,7 @@ namespace Omniscient
 
     public abstract class InstrumentHookup
     {
-        public abstract Instrument FromParameters(DetectionSystem parent, string newName, List<Parameter> parameters);
+        public abstract Instrument FromParameters(DetectionSystem parent, string newName, List<Parameter> parameters, uint id);
         public abstract string Type { get; }
         public List<ParameterTemplate> TemplateParameters { get; set; } = new List<ParameterTemplate>()
         {

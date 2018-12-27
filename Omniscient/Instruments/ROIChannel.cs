@@ -23,7 +23,7 @@ namespace Omniscient
     {
         ROI roi;
 
-        public ROIChannel(string newName, MCAInstrument parent, ChannelType newType) : base(newName, parent, newType)
+        public ROIChannel(string newName, MCAInstrument parent, ChannelType newType, uint id) : base(newName, parent, newType, id)
         {
             VCType = "ROI";
             roi = new ROI();

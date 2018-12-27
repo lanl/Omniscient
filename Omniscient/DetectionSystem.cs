@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace Omniscient
 {
@@ -26,7 +27,7 @@ namespace Omniscient
         List<Instrument> instruments;
         private DeclarationInstrument declarationInstrument;
 
-        public DetectionSystem(Facility parent, string name) : base(parent, name)
+        public DetectionSystem(Facility parent, string name, uint id) : base(parent, name, id)
         {
             parent.GetSystems().Add(this);
 
@@ -88,6 +89,15 @@ namespace Omniscient
 
         public List<EventGenerator> GetEventGenerators() { return eventGenerators; }
         public List<Event> GetEvents() { return events; }
+
+        public static DetectionSystem FromXML(XmlNode node, Facility parent)
+        {
+            string name;
+            uint id;
+            Persister.StartFromXML(node, out name, out id);
+            DetectionSystem system = new DetectionSystem(parent, name, id);
+            return system;
+        }
 
         public override bool SetIndex(int index)
         {

@@ -29,7 +29,7 @@ namespace Omniscient
         double threshold;
         TimeSpan debounceTime;
 
-        public ThresholdEG(DetectionSystem parent, string newName, Channel newChannel, double newThreshold, TimeSpan newDebounceTime) : base(parent, newName)
+        public ThresholdEG(DetectionSystem parent, string newName, Channel newChannel, double newThreshold, TimeSpan newDebounceTime, uint id) : base(parent, newName, id)
         {
             eventGeneratorType = "Threshold";
             channel = newChannel;
@@ -37,7 +37,7 @@ namespace Omniscient
             debounceTime = newDebounceTime;
         }
 
-        public ThresholdEG(DetectionSystem parent, string newName, Channel newChannel, double newThreshold) : base(parent, newName)
+        public ThresholdEG(DetectionSystem parent, string newName, Channel newChannel, double newThreshold, uint id) : base(parent, newName, id)
         {
             eventGeneratorType = "Threshold";
             channel = newChannel;
@@ -187,7 +187,7 @@ namespace Omniscient
 
         public override string Type { get { return "Threshold"; } }
 
-        public override EventGenerator FromParameters(DetectionSystem parent, string newName, List<Parameter> parameters)
+        public override EventGenerator FromParameters(DetectionSystem parent, string newName, List<Parameter> parameters, uint id)
         {
             Channel channel = null;
             double threshold = 0;
@@ -207,7 +207,7 @@ namespace Omniscient
                         break;
                 }
             }
-            return new ThresholdEG(parent, newName, channel, threshold, debounceTime);
+            return new ThresholdEG(parent, newName, channel, threshold, debounceTime, id);
         }
     }
 }

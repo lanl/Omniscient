@@ -26,7 +26,7 @@ namespace Omniscient
         List<Channel> channels;
         string compiledFileName;
 
-        public AnalysisAction(EventGenerator parent, string newName) : base(parent, newName)
+        public AnalysisAction(EventGenerator parent, string newName, uint id) : base(parent, newName, id)
         {
             actionType = "Analysis";
             dataCompilers = new List<DataCompiler>();

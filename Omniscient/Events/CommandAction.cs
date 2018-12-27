@@ -23,7 +23,7 @@ namespace Omniscient
     {
         string command;
 
-        public CommandAction(EventGenerator parent, string newName) : base(parent, newName)
+        public CommandAction(EventGenerator parent, string newName, uint id) : base(parent, newName, id)
         {
             actionType = "Command";
             command = "";

@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace Omniscient
 {
@@ -26,7 +27,7 @@ namespace Omniscient
         protected string actionType;
         protected EventGenerator eventGenerator;
 
-        public Action(EventGenerator parent, string name) : base(parent, name)
+        public Action(EventGenerator parent, string name, uint id) : base(parent, name, id)
         {
             eventGenerator = parent;
             eventGenerator.GetActions().Add(this);
@@ -36,6 +37,82 @@ namespace Omniscient
         
         public string GetActionType() { return actionType; }
         public EventGenerator GetEventGenerator() { return eventGenerator; }
+
+        public static Action FromXML(XmlNode actionNode, EventGenerator eg)
+        {
+            Action action;
+            string name;
+            uint id;
+            Persister.StartFromXML(actionNode, out name, out id);
+            switch (actionNode.Attributes["type"]?.InnerText)
+            {
+                case "Analysis":
+                    AnalysisAction analysisAction = new AnalysisAction(eg, name, id);
+                    analysisAction.GetAnalysis().SetCommand(actionNode.Attributes["command"]?.InnerText);
+                    foreach (Instrument inst in (eg.Parent as DetectionSystem).GetInstruments())
+                    {
+                        foreach (Channel ch in inst.GetChannels())
+                        {
+                            if (ch.Name == actionNode.Attributes["channel"]?.InnerText)
+                                analysisAction.AddChannel(ch);
+                        }
+                    }
+                    analysisAction.SetCompiledFileName(actionNode.Attributes["compiled_file"]?.InnerText);
+                    analysisAction.GetAnalysis().SetResultsFile(actionNode.Attributes["result_file"]?.InnerText);
+                    switch (actionNode.Attributes["result_parser"]?.InnerText)
+                    {
+                        case "FRAM-Pu":
+                            analysisAction.GetAnalysis().SetResultParser(new FRAMPlutoniumResultParser());
+                            break;
+                        case "FRAM-U":
+                            analysisAction.GetAnalysis().SetResultParser(new FRAMUraniumResultParser());
+                            break;
+                        default:
+                            throw new ApplicationException("Corrupted XML node!");
+                    }
+                    foreach (XmlNode dataCompilerNode in actionNode.ChildNodes)
+                    {
+                        if (dataCompilerNode.Name != "DataCompiler") throw new ApplicationException("Corrupted XML node!");
+                        switch (dataCompilerNode.Attributes["type"]?.InnerText)
+                        {
+                            case "SpectrumCompiler":
+                                SpectrumCompiler spectrumCompiler = new SpectrumCompiler("");
+                                switch (dataCompilerNode.Attributes["parser"]?.InnerText)
+                                {
+                                    case "CHN":
+                                        spectrumCompiler.SetSpectrumParser(new CHNParser());
+                                        break;
+                                    default:
+                                        throw new ApplicationException("Corrupted XML node!");
+                                }
+                                switch (dataCompilerNode.Attributes["writer"]?.InnerText)
+                                {
+                                    case "CHN":
+                                        spectrumCompiler.SetSpectrumWriter(new CHNWriter());
+                                        break;
+                                    default:
+                                        throw new ApplicationException("Corrupted XML node!");
+                                }
+                                analysisAction.GetDataCompilers().Add(spectrumCompiler);
+                                break;
+                            case "FileListCompiler":
+                                analysisAction.GetDataCompilers().Add(new FileListCompiler(""));
+                                break;
+                            default:
+                                throw new ApplicationException("Corrupted XML node!");
+                        }
+                    }
+                    action = analysisAction;
+                    break;
+                case "Command":
+                    action = new CommandAction(eg, name, id);
+                    ((CommandAction)action).SetCommand(actionNode.Attributes["command"]?.InnerText);
+                    break;
+                default:
+                    throw new ApplicationException("Corrupted XML node!");
+            }
+            return action;
+        }
 
         public override bool SetIndex(int index)
         {

@@ -44,7 +44,7 @@ namespace Omniscient
 
         public List<Channel> Dependencies { get; protected set; }
 
-        public VirtualChannel(string newName, Instrument parent, ChannelType newType) : base(newName, parent, newType)
+        public VirtualChannel(string newName, Instrument parent, ChannelType newType, uint id) : base(newName, parent, newType, id)
         {
             parent.GetVirtualChannels().Add(this);
             Dependencies = new List<Channel>();
@@ -68,10 +68,12 @@ namespace Omniscient
 
         public static VirtualChannel FromXML(XmlNode node, Instrument instrument)
         {
-            string name = node.Attributes["Name"]?.InnerText;
+            string name;
+            uint id;
+            Persister.StartFromXML(node, out name, out id);
             VirtualChannelHookup hookup = GetHookup(node.Attributes["Type"]?.InnerText);
             List<Parameter> parameters = Parameter.FromXML(node, hookup.TemplateParameters, null, instrument);
-            return hookup?.FromParameters(instrument, name, parameters);
+            return hookup?.FromParameters(instrument, name, parameters, id);
         }
 
         public static void ToXML(XmlWriter xmlWriter, VirtualChannel channel)
@@ -104,7 +106,7 @@ namespace Omniscient
 
     public abstract class VirtualChannelHookup
     {
-        public abstract VirtualChannel FromParameters(Instrument parent, string newName, List<Parameter> parameters);
+        public abstract VirtualChannel FromParameters(Instrument parent, string newName, List<Parameter> parameters, uint id);
         public abstract string Type { get; }
         public List<ParameterTemplate> TemplateParameters { get; set; }
     }
@@ -155,7 +157,7 @@ namespace Omniscient
 
         public OperationType Operation { get; set; }
 
-        public TwoChannelVC(string newName, Instrument parent, ChannelType newType) : base(newName, parent, newType)
+        public TwoChannelVC(string newName, Instrument parent, ChannelType newType, uint id) : base(newName, parent, newType, id)
         {
             VCType = "Two Channel";
             Operation = OperationType.Sum;
@@ -256,7 +258,7 @@ namespace Omniscient
         }
 
         public override string Type { get { return "Two Channel"; } }
-        public override VirtualChannel FromParameters(Instrument parent, string newName, List<Parameter> parameters)
+        public override VirtualChannel FromParameters(Instrument parent, string newName, List<Parameter> parameters, uint id)
         {
             Channel channelA = null;
             Channel channelB = null;
@@ -290,7 +292,7 @@ namespace Omniscient
                         break;
                 }
             }
-            return new TwoChannelVC(newName, parent, channelA.GetChannelType())
+            return new TwoChannelVC(newName, parent, channelA.GetChannelType(), id)
             {
                 Operation = operation,
                 ChannelA = channelA,
@@ -321,7 +323,7 @@ namespace Omniscient
         public double Constant { get; set; }
         public OperationType Operation { get; set; }
 
-        public ScalarOperationVC(string newName, Instrument parent, ChannelType newType) : base(newName, parent, newType)
+        public ScalarOperationVC(string newName, Instrument parent, ChannelType newType, uint id) : base(newName, parent, newType, id)
         {
             VCType = "Scalar Operation";
             Channel = null;
@@ -414,7 +416,7 @@ namespace Omniscient
 
         public override string Type { get { return "Scalar Operation"; } }
 
-        public override VirtualChannel FromParameters(Instrument parent, string newName, List<Parameter> parameters)
+        public override VirtualChannel FromParameters(Instrument parent, string newName, List<Parameter> parameters, uint id)
         {
             Channel channel = null;
             double constant = double.NaN;
@@ -445,7 +447,7 @@ namespace Omniscient
                         break;
                 }
             }
-            return new ScalarOperationVC(newName, parent, channel.GetChannelType())
+            return new ScalarOperationVC(newName, parent, channel.GetChannelType(), id)
             {
                 Operation = operation,
                 Channel = channel,
@@ -459,7 +461,7 @@ namespace Omniscient
     /// </summary>
     public class DelayVC : VirtualChannel
     {
-        public DelayVC(string newName, Instrument parent, ChannelType newType) : base(newName, parent, newType)
+        public DelayVC(string newName, Instrument parent, ChannelType newType, uint id) : base(newName, parent, newType, id)
         {
             VCType = "Delay";
             Channel = null;
@@ -528,7 +530,7 @@ namespace Omniscient
 
         public override string Type { get { return "Delay"; } }
 
-        public override VirtualChannel FromParameters(Instrument parent, string newName, List<Parameter> parameters)
+        public override VirtualChannel FromParameters(Instrument parent, string newName, List<Parameter> parameters, uint id)
         {
             Channel channel = null;
             TimeSpan delay = TimeSpan.FromTicks(0);
@@ -544,7 +546,7 @@ namespace Omniscient
                         break;
                 }
             }
-            return new DelayVC(newName, parent, channel.GetChannelType())
+            return new DelayVC(newName, parent, channel.GetChannelType(), id)
             {
                 Channel = channel,
                 Delay = delay
@@ -557,7 +559,7 @@ namespace Omniscient
     /// </summary>
     public class ConvolveVC : VirtualChannel
     {
-        public ConvolveVC(string newName, Instrument parent, ChannelType newType) : base(newName, parent, newType)
+        public ConvolveVC(string newName, Instrument parent, ChannelType newType, uint id) : base(newName, parent, newType, id)
         {
             VCType = "Convolve";
             Channel = null;
@@ -625,7 +627,7 @@ namespace Omniscient
 
         public override string Type { get { return "Convolve"; } }
 
-        public override VirtualChannel FromParameters(Instrument parent, string newName, List<Parameter> parameters)
+        public override VirtualChannel FromParameters(Instrument parent, string newName, List<Parameter> parameters, uint id)
         {
             Channel channel = null;
             string file = "";
@@ -641,7 +643,7 @@ namespace Omniscient
                         break;
                 }
             }
-            return new ConvolveVC(newName, parent, channel.GetChannelType())
+            return new ConvolveVC(newName, parent, channel.GetChannelType(), id)
             {
                 Channel = channel,
                 File = file
@@ -670,7 +672,7 @@ namespace Omniscient
         public int Period { get; set; }
         public StatisticType Statistic { get; set; }
 
-        public LocalStatisticVC(string newName, Instrument parent, ChannelType newType) : base(newName, parent, newType)
+        public LocalStatisticVC(string newName, Instrument parent, ChannelType newType, uint id) : base(newName, parent, newType, id)
         {
             VCType = "Local Statistic";
             Channel = null;
@@ -823,7 +825,7 @@ namespace Omniscient
 
         public override string Type { get { return "Local Statistic"; } }
         
-        public override VirtualChannel FromParameters(Instrument parent, string newName, List<Parameter> parameters)
+        public override VirtualChannel FromParameters(Instrument parent, string newName, List<Parameter> parameters, uint id)
         {
             Channel channel = null;
             int period = 0;
@@ -857,7 +859,7 @@ namespace Omniscient
                         break;
                 }
             }
-            return new LocalStatisticVC(newName, parent, channel.GetChannelType())
+            return new LocalStatisticVC(newName, parent, channel.GetChannelType(), id)
             {
                 Statistic = statistic,
                 Channel = channel,
@@ -887,7 +889,7 @@ namespace Omniscient
 
         public OperationType Operation { get; set; }
 
-        public TranscendentalVC(string newName, Instrument parent, ChannelType newType) : base(newName, parent, newType)
+        public TranscendentalVC(string newName, Instrument parent, ChannelType newType, uint id) : base(newName, parent, newType, id)
         {
             VCType = "Transcendental";
             Channel = null;
@@ -1093,7 +1095,7 @@ namespace Omniscient
 
         public override string Type { get { return "Transcendental"; } }
 
-        public override VirtualChannel FromParameters(Instrument parent, string newName, List<Parameter> parameters)
+        public override VirtualChannel FromParameters(Instrument parent, string newName, List<Parameter> parameters, uint id)
         {
             Channel channel = null;
             TranscendentalVC.OperationType operation = TranscendentalVC.OperationType.Sqrt;
@@ -1156,7 +1158,7 @@ namespace Omniscient
                         break;
                 }
             }
-            return new TranscendentalVC(newName, parent, channel.GetChannelType())
+            return new TranscendentalVC(newName, parent, channel.GetChannelType(), id)
             {
                 Operation = operation,
                 Channel = channel

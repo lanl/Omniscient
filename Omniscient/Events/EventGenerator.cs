@@ -43,7 +43,7 @@ namespace Omniscient
         protected List<Event> events;
         protected List<Action> actions;
 
-        public EventGenerator(DetectionSystem parent, string name) : base(parent, name)
+        public EventGenerator(DetectionSystem parent, string name, uint id) : base(parent, name, id)
         {
             parent.GetEventGenerators().Add(this);
 
@@ -83,10 +83,12 @@ namespace Omniscient
 
         public static EventGenerator FromXML(XmlNode eventNode, DetectionSystem system)
         {
-            string name = eventNode.Attributes["Name"]?.InnerText;
+            string name;
+            uint id;
+            Persister.StartFromXML(eventNode, out name, out id);
             EventGeneratorHookup hookup = GetHookup(eventNode.Attributes["Type"]?.InnerText);
             List<Parameter> parameters = Parameter.FromXML(eventNode, hookup.TemplateParameters, system);
-            return hookup?.FromParameters(system, name, parameters);
+            return hookup?.FromParameters(system, name, parameters, id);
         }
 
         public static void ToXML(XmlWriter xmlWriter, EventGenerator eg)
@@ -120,7 +122,7 @@ namespace Omniscient
 
     public abstract class EventGeneratorHookup
     {
-        public abstract EventGenerator FromParameters(DetectionSystem parent, string newName, List<Parameter> parameters);
+        public abstract EventGenerator FromParameters(DetectionSystem parent, string newName, List<Parameter> parameters, uint id);
         public abstract string Type { get; }
         public List<ParameterTemplate> TemplateParameters { get; set; }
     }

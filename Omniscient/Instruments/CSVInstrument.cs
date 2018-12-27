@@ -24,7 +24,7 @@ namespace Omniscient
 
         CSVParser csvParser;
 
-        public CSVInstrument(DetectionSystem parent, string newName, int nChannels) : base(parent, newName)
+        public CSVInstrument(DetectionSystem parent, string newName, int nChannels, uint id) : base(parent, newName, id)
         {
             InstrumentType = "CSV";
             numChannels = nChannels;
@@ -37,7 +37,7 @@ namespace Omniscient
 
             channels = new Channel[numChannels];
             for (int i = 0; i < numChannels; i++)
-                channels[i] = new Channel(Name + "-" + i.ToString(), this, Channel.ChannelType.COUNT_RATE);
+                channels[i] = new Channel(Name + "-" + i.ToString(), this, Channel.ChannelType.COUNT_RATE, 0);
         }
 
         public ReturnCode SetNumberOfChannels(int nChannels)
@@ -46,7 +46,7 @@ namespace Omniscient
             numChannels = nChannels;
             channels = new Channel[numChannels];
             for (int i = 0; i < numChannels; i++)
-                channels[i] = new Channel(Name + "-" + i.ToString(), this, Channel.ChannelType.COUNT_RATE);
+                channels[i] = new Channel(Name + "-" + i.ToString(), this, Channel.ChannelType.COUNT_RATE, 0);
             csvParser.NumberOfColumns = numChannels + 1;
             return ReturnCode.SUCCESS;
         }
@@ -124,7 +124,7 @@ namespace Omniscient
 
         public override string Type { get { return "CSV"; } }
 
-        public override Instrument FromParameters(DetectionSystem parent, string newName, List<Parameter> parameters)
+        public override Instrument FromParameters(DetectionSystem parent, string newName, List<Parameter> parameters, uint id)
         {
             int nHeaders = 0;
             int nChannels = 0;
@@ -140,7 +140,7 @@ namespace Omniscient
                         break;
                 }
             }
-            CSVInstrument instrument = new CSVInstrument(parent, newName, nChannels);
+            CSVInstrument instrument = new CSVInstrument(parent, newName, nChannels, id);
             instrument.NumberOfHeaders = nHeaders;
             Instrument.ApplyStandardInstrumentParameters(instrument, parameters);
             return instrument;

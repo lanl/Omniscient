@@ -32,7 +32,7 @@ namespace Omniscient
 
         ISRParser isrParser;
 
-        public ISRInstrument(DetectionSystem parent, string name) : base(parent, name)
+        public ISRInstrument(DetectionSystem parent, string name, uint id) : base(parent, name, id)
         {
             InstrumentType = "ISR";
             FileExtension = FILE_EXTENSION;
@@ -41,11 +41,11 @@ namespace Omniscient
 
             numChannels = NUM_CHANNELS;
             channels = new Channel[numChannels];
-            channels[TOTALS1] = new Channel(Name+"-Totals-1", this, Channel.ChannelType.COUNT_RATE);
-            channels[TOTALS2] = new Channel(Name + "-Totals-2", this, Channel.ChannelType.COUNT_RATE);
-            channels[TOTALS3] = new Channel(Name + "-Totals-3", this, Channel.ChannelType.COUNT_RATE);
-            channels[REALS_PLUS_ACC] = new Channel(Name + "-Real+Acc", this, Channel.ChannelType.COUNT_RATE);
-            channels[ACC] = new Channel(Name + "-Acc", this, Channel.ChannelType.COUNT_RATE);
+            channels[TOTALS1] = new Channel(Name+"-Totals-1", this, Channel.ChannelType.COUNT_RATE, 0);
+            channels[TOTALS2] = new Channel(Name + "-Totals-2", this, Channel.ChannelType.COUNT_RATE, 0);
+            channels[TOTALS3] = new Channel(Name + "-Totals-3", this, Channel.ChannelType.COUNT_RATE, 0);
+            channels[REALS_PLUS_ACC] = new Channel(Name + "-Real+Acc", this, Channel.ChannelType.COUNT_RATE, 0);
+            channels[ACC] = new Channel(Name + "-Acc", this, Channel.ChannelType.COUNT_RATE, 0);
         }
 
         public override DateTime GetFileDate(string file)
@@ -120,9 +120,9 @@ namespace Omniscient
 
         public override string Type { get { return "ISR"; } }
 
-        public override Instrument FromParameters(DetectionSystem parent, string newName, List<Parameter> parameters)
+        public override Instrument FromParameters(DetectionSystem parent, string newName, List<Parameter> parameters, uint id)
         {
-            ISRInstrument instrument = new ISRInstrument(parent, newName);
+            ISRInstrument instrument = new ISRInstrument(parent, newName, id);
             Instrument.ApplyStandardInstrumentParameters(instrument, parameters);
             foreach (Parameter param in parameters)
             {

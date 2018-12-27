@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace Omniscient
 {
@@ -26,7 +27,7 @@ namespace Omniscient
         public uint ID
         {
             get { return _id; }
-            private set
+            protected set
             {
                 if(TakenIDs.BinarySearch(value) >=0)
                 {
@@ -54,20 +55,68 @@ namespace Omniscient
         /// <summary>
         /// Constructor
         /// </summary>
-        public Persister(Persister parent, string name)
+        public Persister(Persister parent, string name, uint id)
         {
             Parent = parent;
             if (Parent !=null) Parent.Children.Add(this);
 
-            // Assign an ID
-            _id = (uint)(random.NextDouble() * uint.MaxValue);
-            while (TakenIDs.BinarySearch(ID) >= 0) _id = (uint)(random.NextDouble() * uint.MaxValue);
-            TakenIDs.Add(_id);
-            TakenIDs.Sort();
+            if (id == 0)
+            {
+                // Assign an ID (not 0)
+                _id = (uint)(random.NextDouble() * uint.MaxValue);
+                while (TakenIDs.BinarySearch(_id) >= 0 || _id == 0) _id = (uint)(random.NextDouble() * uint.MaxValue);
+                TakenIDs.Add(_id);
+                TakenIDs.Sort();
+            }
+            else _id = id;
 
             Name = name;
 
             Children = new List<Persister>();
+        }
+
+        /// <summary>
+        /// Writes the Persisters to an XML node
+        /// </summary>
+        /// <param name="xmlWriter"></param>
+        //public abstract void ToXML(XmlWriter xmlWriter);
+
+        /// <summary>
+        /// Reads the common elements of a Persister from XML
+        /// </summary>
+        protected static ReturnCode StartFromXML(XmlNode node, out string name, out uint id)
+        {
+            if (node.Attributes["Name"] != null)
+            {
+                name = node.Attributes["Name"]?.InnerText;
+            } else if (node.Attributes["name"] != null)
+            {
+                name = node.Attributes["name"]?.InnerText;
+            } else
+            {
+                throw new ApplicationException("No name in XML node!");
+            }
+
+            if (node.Attributes["ID"] == null)
+            {
+                id = 0;
+            }
+            else
+            {
+                id = uint.Parse(node.Attributes["ID"].InnerText, System.Globalization.NumberStyles.HexNumber);
+            }
+            return ReturnCode.SUCCESS;
+        }
+
+        /// <summary>
+        /// Writes the common elements of a Persister to XML
+        /// </summary>
+        /// <param name="xmlWriter"></param>
+        protected void StartToXML(XmlWriter xmlWriter)
+        {
+            xmlWriter.WriteStartElement(Species.Replace(" ", ""));
+            xmlWriter.WriteAttributeString("ID", ID.ToString("X8"));
+            xmlWriter.WriteAttributeString("Name", Name);
         }
 
         /// <summary>
@@ -91,6 +140,7 @@ namespace Omniscient
             {
                 Parent.Children.Remove(this);
             }
+            TakenIDs.Remove(ID);
         }
     }
 }

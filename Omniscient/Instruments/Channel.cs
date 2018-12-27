@@ -39,7 +39,7 @@ namespace Omniscient
         /// </summary>
         public bool Hidden { get; set; }
 
-        public Channel(string newName, Instrument parent, ChannelType newType) : base(parent, newName)
+        public Channel(string newName, Instrument parent, ChannelType newType, uint id) : base(parent, newName, id)
         {
             instrument = parent;
 
@@ -255,7 +255,11 @@ namespace Omniscient
 
         public void ApplyXML(XmlNode node)
         {
-            Name = node.Attributes["Name"]?.InnerText;
+            string name;
+            uint id;
+            Persister.StartFromXML(node, out name, out id);
+            Name = name;
+            if(id>0) ID = id;
             List<Parameter> parameters = Parameter.FromXML(node, TemplateParameters);
             ApplyParameters(parameters);
         }

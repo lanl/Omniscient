@@ -30,7 +30,7 @@ namespace Omniscient
         private string xmlFile;
         string omniscient_version;
 
-        public SiteManager(string newXMLFile, string version) : base(null, "")
+        public SiteManager(string newXMLFile, string version) : base(null, "", 0)
         {
             sites = new List<Site>();
             xmlFile = newXMLFile;
@@ -106,15 +106,15 @@ namespace Omniscient
             foreach (XmlNode siteNode in doc.DocumentElement.ChildNodes)
             {
                 if (siteNode.Name != "Site") return ReturnCode.CORRUPTED_FILE;
-                Site newSite = new Site(this, siteNode.Attributes["name"]?.InnerText);
+                Site newSite = Site.FromXML(siteNode, this);
                 foreach (XmlNode facilityNode in siteNode.ChildNodes)
                 {
                     if (facilityNode.Name != "Facility") return ReturnCode.CORRUPTED_FILE;
-                    Facility newFacility = new Facility(newSite, facilityNode.Attributes["name"]?.InnerText);
+                    Facility newFacility = Facility.FromXML(facilityNode, newSite);
                     foreach (XmlNode systemNode in facilityNode.ChildNodes)
                     {
                         if (systemNode.Name != "System") return ReturnCode.CORRUPTED_FILE;
-                        DetectionSystem newSystem = new DetectionSystem(newFacility, systemNode.Attributes["name"]?.InnerText);
+                        DetectionSystem newSystem = DetectionSystem.FromXML(systemNode, newFacility);
                         foreach (XmlNode instrumentNode in systemNode.ChildNodes)
                         {
                             if (instrumentNode.Name == "Instrument")
@@ -143,7 +143,8 @@ namespace Omniscient
                                                 else
                                                 {
                                                     ROIChannel chan = new ROIChannel(chanNode.Attributes["name"]?.InnerText,
-                                                                                            (MCAInstrument)newInstrument, Channel.ChannelType.DURATION_VALUE);
+                                                                                            (MCAInstrument)newInstrument, Channel.ChannelType.DURATION_VALUE,
+                                                                                            uint.Parse(siteNode.Attributes["ID"]?.InnerText, System.Globalization.NumberStyles.HexNumber));
                                                     ROI roi = chan.GetROI();
                                                     roi.SetROIStart(double.Parse(chanNode.Attributes["roi_start"]?.InnerText));
                                                     roi.SetROIEnd(double.Parse(chanNode.Attributes["roi_end"]?.InnerText));
@@ -181,74 +182,7 @@ namespace Omniscient
                                 foreach (XmlNode actionNode in eventNode.ChildNodes)
                                 {
                                     if (actionNode.Name != "Action") return ReturnCode.CORRUPTED_FILE;
-                                    Action action;
-                                    switch(actionNode.Attributes["type"]?.InnerText)
-                                    {
-                                        case "Analysis":
-                                            AnalysisAction analysisAction = new AnalysisAction(eg, actionNode.Attributes["name"]?.InnerText);
-                                            analysisAction.GetAnalysis().SetCommand(actionNode.Attributes["command"]?.InnerText);
-                                            foreach (Instrument inst in newSystem.GetInstruments())
-                                            {
-                                                foreach (Channel ch in inst.GetChannels())
-                                                {
-                                                    if (ch.Name == actionNode.Attributes["channel"]?.InnerText)
-                                                        analysisAction.AddChannel(ch);
-                                                }
-                                            }
-                                            analysisAction.SetCompiledFileName(actionNode.Attributes["compiled_file"]?.InnerText);
-                                            analysisAction.GetAnalysis().SetResultsFile(actionNode.Attributes["result_file"]?.InnerText);
-                                            switch(actionNode.Attributes["result_parser"]?.InnerText)
-                                            {
-                                                case "FRAM-Pu":
-                                                    analysisAction.GetAnalysis().SetResultParser(new FRAMPlutoniumResultParser());
-                                                    break;
-                                                case "FRAM-U":
-                                                    analysisAction.GetAnalysis().SetResultParser(new FRAMUraniumResultParser());
-                                                    break;
-                                                default:
-                                                    return ReturnCode.CORRUPTED_FILE;
-                                            }
-                                            foreach (XmlNode dataCompilerNode in actionNode.ChildNodes)
-                                            {
-                                                if (dataCompilerNode.Name != "DataCompiler") return ReturnCode.CORRUPTED_FILE;
-                                                switch (dataCompilerNode.Attributes["type"]?.InnerText)
-                                                {
-                                                    case "SpectrumCompiler":
-                                                        SpectrumCompiler spectrumCompiler = new SpectrumCompiler("");
-                                                        switch(dataCompilerNode.Attributes["parser"]?.InnerText)
-                                                        {
-                                                            case "CHN":
-                                                                spectrumCompiler.SetSpectrumParser(new CHNParser());
-                                                                break;
-                                                            default:
-                                                                return ReturnCode.CORRUPTED_FILE;
-                                                        }
-                                                        switch(dataCompilerNode.Attributes["writer"]?.InnerText)
-                                                        {
-                                                            case "CHN":
-                                                                spectrumCompiler.SetSpectrumWriter(new CHNWriter());
-                                                                break;
-                                                            default:
-                                                                return ReturnCode.CORRUPTED_FILE;
-                                                        }
-                                                        analysisAction.GetDataCompilers().Add(spectrumCompiler);
-                                                        break;
-                                                    case "FileListCompiler":
-                                                        analysisAction.GetDataCompilers().Add(new FileListCompiler(""));
-                                                        break;
-                                                    default:
-                                                        return ReturnCode.CORRUPTED_FILE;
-                                                }
-                                            }
-                                            action = analysisAction;
-                                            break;
-                                        case "Command":
-                                            action = new CommandAction(eg, actionNode.Attributes["name"]?.InnerText);
-                                            ((CommandAction)action).SetCommand(actionNode.Attributes["command"]?.InnerText);
-                                            break;
-                                        default:
-                                            return ReturnCode.CORRUPTED_FILE;
-                                    }
+                                    Action action = Action.FromXML(actionNode, eg);
                                 }
                             }
                             else

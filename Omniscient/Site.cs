@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace Omniscient
 {
@@ -25,7 +26,7 @@ namespace Omniscient
 
         private List<Facility> facilities;
 
-        public Site(SiteManager parent, string name) : base(parent, name)
+        public Site(SiteManager parent, string name, uint id) : base(parent, name, id)
         {
             parent.GetSites().Add(this);
             facilities = new List<Facility>();
@@ -40,6 +41,15 @@ namespace Omniscient
         public List<Facility> GetFacilities()
         {
             return facilities;
+        }
+
+        public static Site FromXML(XmlNode node, SiteManager parent)
+        {
+            string name;
+            uint id;
+            Persister.StartFromXML(node, out name, out id);
+            Site newSite = new Site(parent, name, id);
+            return newSite;
         }
 
         public override bool SetIndex(int index)

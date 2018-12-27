@@ -37,7 +37,7 @@ namespace Omniscient
         TimeSpan window;
         TimeSpan minDifference;
 
-        public CoincidenceEG(DetectionSystem parent, string newName) : base(parent, newName)
+        public CoincidenceEG(DetectionSystem parent, string newName, uint id) : base(parent, newName, id)
         {
             eventGeneratorType = "Coincidence";
             coincidenceType = CoincidenceType.A_THEN_B;
@@ -48,7 +48,7 @@ namespace Omniscient
             minDifference = TimeSpan.FromTicks(0);
         }
 
-        public CoincidenceEG(DetectionSystem parent, string newName, CoincidenceType newCoincidenceType, TimingType newTimingType) : base(parent, newName)
+        public CoincidenceEG(DetectionSystem parent, string newName, CoincidenceType newCoincidenceType, TimingType newTimingType, uint id) : base(parent, newName, id)
         {
             eventGeneratorType = "Coincidence";
             coincidenceType = newCoincidenceType;
@@ -231,7 +231,7 @@ namespace Omniscient
             };
         }
 
-        public override EventGenerator FromParameters(DetectionSystem parent, string newName, List<Parameter> parameters)
+        public override EventGenerator FromParameters(DetectionSystem parent, string newName, List<Parameter> parameters, uint id)
         {
             CoincidenceEG.CoincidenceType coincidenceType = CoincidenceEG.CoincidenceType.A_THEN_B;
             CoincidenceEG.TimingType timingType = CoincidenceEG.TimingType.END_TO_END;
@@ -264,7 +264,7 @@ namespace Omniscient
                         break;
                 }
             }
-            CoincidenceEG eg = new CoincidenceEG(parent, newName, coincidenceType, timingType);
+            CoincidenceEG eg = new CoincidenceEG(parent, newName, coincidenceType, timingType, id);
             eg.SetEventGeneratorA(egA);
             eg.SetEventGeneratorB(egB);
             eg.SetWindow(window);

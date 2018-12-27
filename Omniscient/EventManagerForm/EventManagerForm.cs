@@ -378,7 +378,7 @@ namespace Omniscient
                 }
             }
 
-            EventGenerator eg = hookup.FromParameters(eventWatcher, name, parameters);
+            EventGenerator eg = hookup.FromParameters(eventWatcher, name, parameters, 0);
 
             siteMan.Save();
             UpdateSitesTree();
@@ -479,7 +479,7 @@ namespace Omniscient
                     }
                 }
                 eg.Delete();
-                eg = hookup.FromParameters(eventWatcher, NameTextBox.Text, ParamListPanel.Parameters);
+                eg = hookup.FromParameters(eventWatcher, NameTextBox.Text, ParamListPanel.Parameters, eg.ID);
                 eg.SetIndex(index);
 
                 foreach (Action action in eg.GetActions())
@@ -515,7 +515,7 @@ namespace Omniscient
                 name = "New-Action-" + iteration.ToString();
                 uniqueName = !siteMan.ContainsName(name);
             }
-            CommandAction action = new CommandAction(eg, name);
+            CommandAction action = new CommandAction(eg, name, 0);
             siteMan.Save();
             UpdateSitesTree();
             siteManChanged = true;
@@ -620,7 +620,7 @@ namespace Omniscient
                         }
                         action.Delete();
 
-                        AnalysisAction analysisAction = new AnalysisAction(eg, action.Name);
+                        AnalysisAction analysisAction = new AnalysisAction(eg, action.Name, 0);
                         analysisAction.AddChannel(((DetectionSystem)eventWatcher).GetInstruments()[0].GetChannels()[0]);
                         analysisAction.GetDataCompilers().Add(new SpectrumCompiler("", new CHNParser(), new CHNWriter()));
                         analysisAction.GetAnalysis().SetResultParser(new FRAMPlutoniumResultParser());
@@ -641,7 +641,7 @@ namespace Omniscient
                             return;
                         }
                         action.Delete();
-                        CommandAction analysisAction = new CommandAction(eg, action.Name);
+                        CommandAction analysisAction = new CommandAction(eg, action.Name, 0);
                         action = analysisAction;
                     }
                     PopulateCommandPanels((CommandAction)action, eg);

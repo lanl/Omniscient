@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace Omniscient
 {
@@ -25,7 +26,7 @@ namespace Omniscient
 
         List<DetectionSystem> systems;
 
-        public Facility(Site parent, string name) : base(parent, name)
+        public Facility(Site parent, string name, uint id) : base(parent, name, id)
         {
             parent.GetFacilities().Add(this);
             systems = new List<DetectionSystem>();
@@ -54,6 +55,15 @@ namespace Omniscient
         {
             base.Delete();
             (Parent as Site).GetFacilities().Remove(this);
+        }
+
+        public static Facility FromXML(XmlNode node, Site parent)
+        {
+            string name;
+            uint id;
+            Persister.StartFromXML(node, out name, out id);
+            Facility facility = new Facility(parent, name, id);
+            return facility;
         }
     }
 }

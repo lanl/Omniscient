@@ -465,7 +465,7 @@ namespace Omniscient
                 }
 
                 chan.Delete();
-                chan = hookup.FromParameters(inst, name, VCParameterListPanel.Parameters);
+                chan = hookup.FromParameters(inst, name, VCParameterListPanel.Parameters, chan.ID);
                 chan.SetIndex(index);
             }
             return chan;
@@ -645,7 +645,7 @@ namespace Omniscient
                 name = "New-Site-" + iteration.ToString();
                 uniqueName = !siteMan.ContainsName(name);
             }
-            Site newSite = new Site(siteMan, name);
+            Site newSite = new Site(siteMan, name, 0);
             siteMan.Save();
             UpdateSitesTree();
             siteManChanged = true;
@@ -694,7 +694,7 @@ namespace Omniscient
                 name = "New-Facility-" + iteration.ToString();
                 uniqueName = !siteMan.ContainsName(name);
             }
-            Facility newFacility = new Facility(site, name);
+            Facility newFacility = new Facility(site, name, 0);
             newFacility.SetIndex(index);
             siteMan.Save();
             UpdateSitesTree();
@@ -738,7 +738,7 @@ namespace Omniscient
                 name = "New-System-" + iteration.ToString();
                 uniqueName = !siteMan.ContainsName(name);
             }
-            DetectionSystem newSys = new DetectionSystem(fac, name);
+            DetectionSystem newSys = new DetectionSystem(fac, name, 0);
             newSys.SetIndex(index);
             siteMan.Save();
             UpdateSitesTree();
@@ -813,7 +813,7 @@ namespace Omniscient
                         break;
                 }
             }
-            Instrument newInstrument = hookup.FromParameters(sys, name, parameters);
+            Instrument newInstrument = hookup.FromParameters(sys, name, parameters, 0);
             
             siteMan.Save();
             UpdateSitesTree();
@@ -847,7 +847,7 @@ namespace Omniscient
 
             if (dialog.vcType == "ROI")
             {
-                VirtualChannel roiChannel = new ROIChannel(name, (MCAInstrument)inst, Channel.ChannelType.DURATION_VALUE);
+                VirtualChannel roiChannel = new ROIChannel(name, (MCAInstrument)inst, Channel.ChannelType.DURATION_VALUE, 0);
                 siteMan.Save();
                 UpdateSitesTree();
                 siteManChanged = true;
@@ -890,7 +890,7 @@ namespace Omniscient
                         break;
                 }
             }
-            VirtualChannel virtualChannel = hookup.FromParameters(inst, name, parameters);
+            VirtualChannel virtualChannel = hookup.FromParameters(inst, name, parameters, 0);
             siteMan.Save();
             UpdateSitesTree();
             siteManChanged = true;
@@ -1154,7 +1154,7 @@ namespace Omniscient
         {
             if (DeclarationCheckBox.Checked)
             {
-                selectedSystem.SetDeclarationInstrument(new DeclarationInstrument(selectedSystem, selectedSystem.Name + "_Declarations"));
+                selectedSystem.SetDeclarationInstrument(new DeclarationInstrument(selectedSystem, selectedSystem.Name + "_Declarations", 0));
                 SetupSystemPanel();
             }
             else
