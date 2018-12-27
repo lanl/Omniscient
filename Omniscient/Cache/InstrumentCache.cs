@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,10 +25,17 @@ namespace Omniscient
         public long MemoryAllocation { get; set; }
         LinkedList<DayCache> Days { get; set; }
 
+        private string cacheDirectory;
+
         public InstrumentCache(Instrument instrument)
         {
             this.Instrument = instrument;
             MemoryUsed = 0;
+
+            cacheDirectory = "Cache\\" + Instrument.ID.ToString("X8");
+
+            if (!Directory.Exists("Cache")) Directory.CreateDirectory("Cache");
+            if (!Directory.Exists(cacheDirectory)) Directory.CreateDirectory(cacheDirectory);
 
             monitor = new DataMonitor();
             monitor.DirectoryToMonitor = Instrument.GetDataFolder();
