@@ -125,11 +125,11 @@ namespace Omniscient
             Action action = null;
             foreach(Action otherAction in eg.GetActions())
             {
-                if (otherAction.GetName() == ActionsComboBox.Text)
+                if (otherAction.Name == ActionsComboBox.Text)
                     action = otherAction;
             }
             selectedAction = action;
-            ActionNameTextBox.Text = action.GetName();
+            ActionNameTextBox.Text = action.Name;
             if(action is AnalysisAction)
             {
                 ActionTypeComboBox.Text = "Analysis";
@@ -166,8 +166,8 @@ namespace Omniscient
                 if (eg.GetActions().Count > 0)
                 {
                     foreach (Action action in eg.GetActions())
-                        ActionsComboBox.Items.Add(action.GetName());
-                    ActionsComboBox.Text = eg.GetActions()[0].GetName();
+                        ActionsComboBox.Items.Add(action.Name);
+                    ActionsComboBox.Text = eg.GetActions()[0].Name;
                     selectedAction = eg.GetActions()[0];
                     SetupActionGroupBox();
                     ActionGroupBox.Visible = true;
@@ -392,12 +392,12 @@ namespace Omniscient
             DetectionSystem eventWatcher = (DetectionSystem)node.Parent.Tag;
             DetectionSystem sys = (DetectionSystem)eventWatcher;
 
-            if (action.GetName() != ActionsComboBox.Text && siteMan.ContainsName(ActionsComboBox.Text))
+            if (action.Name != ActionsComboBox.Text && siteMan.ContainsName(ActionsComboBox.Text))
             {
                 MessageBox.Show("All items in the Site Manager require a unique name!");
                 return;
             }
-            action.SetName(ActionNameTextBox.Text);
+            action.Name = ActionNameTextBox.Text;
             switch (ActionTypeComboBox.Text)
             {
                 case "Analysis":
@@ -484,7 +484,7 @@ namespace Omniscient
 
                 foreach (Action action in eg.GetActions())
                 {
-                    if(action.GetName() == ActionsComboBox.Text)
+                    if(action.Name == ActionsComboBox.Text)
                     {
                         SaveAction(eg, action);
                         act = action;
@@ -498,7 +498,7 @@ namespace Omniscient
                 SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(eg.Name, true)[0];
                 if(act!=null)
                 {
-                    ActionsComboBox.Text = act.GetName();
+                    ActionsComboBox.Text = act.Name;
                 }
             }
         }
@@ -516,7 +516,6 @@ namespace Omniscient
                 uniqueName = !siteMan.ContainsName(name);
             }
             CommandAction action = new CommandAction(eg, name);
-            eg.GetActions().Add(action);
             siteMan.Save();
             UpdateSitesTree();
             siteManChanged = true;
@@ -536,10 +535,10 @@ namespace Omniscient
             Action action = null;
             foreach (Action otherAction in eg.GetActions())
             {
-                if (otherAction.GetName() == ActionsComboBox.Text)
+                if (otherAction.Name == ActionsComboBox.Text)
                     action = otherAction;
             }
-            eg.GetActions().Remove(action);
+            action.Delete();
             siteMan.Save();
             UpdateSitesTree();
             siteManChanged = true;
@@ -604,7 +603,7 @@ namespace Omniscient
             Action action = null;
             foreach(Action otherAction in eg.GetActions())
             {
-                if (otherAction.GetName() == ActionsComboBox.Text)
+                if (otherAction.Name == ActionsComboBox.Text)
                     action = otherAction;
             }
             selectedAction = action;
@@ -619,14 +618,13 @@ namespace Omniscient
                             ActionTypeComboBox.Text = action.GetActionType();
                             return;
                         }
-                        eg.GetActions().Remove(action);
+                        action.Delete();
 
-                        AnalysisAction analysisAction = new AnalysisAction(eg, action.GetName());
+                        AnalysisAction analysisAction = new AnalysisAction(eg, action.Name);
                         analysisAction.AddChannel(((DetectionSystem)eventWatcher).GetInstruments()[0].GetChannels()[0]);
                         analysisAction.GetDataCompilers().Add(new SpectrumCompiler("", new CHNParser(), new CHNWriter()));
                         analysisAction.GetAnalysis().SetResultParser(new FRAMPlutoniumResultParser());
 
-                        eg.GetActions().Add(analysisAction);
                         action = analysisAction;
                     }
                     PopulateAnalysisPanels((AnalysisAction)action, eg);
@@ -642,9 +640,8 @@ namespace Omniscient
                             ActionTypeComboBox.Text = action.GetActionType();
                             return;
                         }
-                        eg.GetActions().Remove(action);
-                        CommandAction analysisAction = new CommandAction(eg, action.GetName());
-                        eg.GetActions().Add(analysisAction);
+                        action.Delete();
+                        CommandAction analysisAction = new CommandAction(eg, action.Name);
                         action = analysisAction;
                     }
                     PopulateCommandPanels((CommandAction)action, eg);

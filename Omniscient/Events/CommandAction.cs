@@ -43,8 +43,6 @@ namespace Omniscient
         }
 
         public string GetCommand() { return command; }
-
-        public override void SetName(string newName) { name = newName; }
         public void SetCommand(string newCommand) { command = newCommand; }
     }
 }

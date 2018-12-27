@@ -58,7 +58,7 @@ namespace Omniscient
                         {
                             if (eventGenerator.Name == name) return true;
                             foreach (Action action in eventGenerator.GetActions())
-                                if (action.GetName() == name) return true;
+                                if (action.Name == name) return true;
                         }
                     }
                 }
@@ -249,7 +249,6 @@ namespace Omniscient
                                         default:
                                             return ReturnCode.CORRUPTED_FILE;
                                     }
-                                    eg.GetActions().Add(action);
                                 }
                             }
                             else
@@ -322,7 +321,7 @@ namespace Omniscient
                             foreach(Action action in eg.GetActions())
                             {
                                 xmlWriter.WriteStartElement("Action");
-                                xmlWriter.WriteAttributeString("name", action.GetName());
+                                xmlWriter.WriteAttributeString("name", action.Name);
                                 xmlWriter.WriteAttributeString("type", action.GetActionType());
                                 if (action is AnalysisAction)
                                 {

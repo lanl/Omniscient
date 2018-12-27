@@ -58,11 +58,6 @@ namespace Omniscient
             eve.AddAnalysisResults(analysis.GetResults());
         }
 
-        public override void SetName(string newName)
-        {
-            name = newName;
-        }
-
         public void AddChannel(Channel chan) { channels.Add(chan); }
         public void RemoveChannel(Channel chan) { channels.Remove(chan); }
 

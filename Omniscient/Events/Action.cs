@@ -19,24 +19,35 @@ using System.Threading.Tasks;
 
 namespace Omniscient
 {
-    public abstract class Action
+    public abstract class Action : Persister
     {
-        protected string name;
+        public override string Species { get { return "Action"; } }
+
         protected string actionType;
         protected EventGenerator eventGenerator;
 
-        public Action(EventGenerator parent, string newName)
+        public Action(EventGenerator parent, string name) : base(parent, name)
         {
             eventGenerator = parent;
-            name = newName;
+            eventGenerator.GetActions().Add(this);
         }
 
         public abstract void Execute(Event eve);
-
-        public abstract void SetName(string newName);
-
-        public string GetName() { return name; }
+        
         public string GetActionType() { return actionType; }
         public EventGenerator GetEventGenerator() { return eventGenerator; }
+
+        public override bool SetIndex(int index)
+        {
+            eventGenerator.GetActions().Remove(this);
+            eventGenerator.GetActions().Insert(index, this);
+            return base.SetIndex(index);
+        }
+
+        public override void Delete()
+        {
+            eventGenerator.GetActions().Remove(this);
+            base.Delete();
+        }
     }
 }
