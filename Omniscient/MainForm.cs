@@ -264,8 +264,8 @@ namespace Omniscient
                         }
                         foreach (EventGenerator eg in sys.GetEventGenerators())
                         {
-                            TreeNode egNode = new TreeNode(eg.GetName());
-                            egNode.Name = eg.GetName();
+                            TreeNode egNode = new TreeNode(eg.Name);
+                            egNode.Name = eg.Name;
                             egNode.Tag = eg;
                             egNode.ImageIndex = 4;
                             egNode.SelectedImageIndex = 4;
@@ -1353,7 +1353,7 @@ namespace Omniscient
 
             foreach (EventGenerator eventGenerator in preset.GetActiveEventGenerators())
             {
-                SitesTreeView.Nodes.Find(eventGenerator.GetName(), true)[0].Checked = true;
+                SitesTreeView.Nodes.Find(eventGenerator.Name, true)[0].Checked = true;
             }
 
             PresetNameTextBox.Text = preset.GetName();
@@ -1465,7 +1465,7 @@ namespace Omniscient
             for (int i=0; i < events.Count(); i++)
             {
                 EventGridView.Rows.Add(
-                    events[i].GetEventGenerator().GetName(),
+                    events[i].GetEventGenerator().Name,
                     events[i].GetStartTime().ToString("MM/dd/yy HH:mm:ss"),
                     events[i].GetEndTime().ToString("MM/dd/yy HH:mm:ss"),
                     events[i].GetDuration().TotalSeconds,

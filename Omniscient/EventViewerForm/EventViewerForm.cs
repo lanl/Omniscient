@@ -35,7 +35,7 @@ namespace Omniscient
 
         private void EventViewerForm_Load(object sender, EventArgs e)
         {
-            EventGeneratorTextBox.Text = eve.GetEventGenerator().GetName();
+            EventGeneratorTextBox.Text = eve.GetEventGenerator().Name;
             StartTimeTextBox.Text = eve.GetStartTime().ToString("MM/dd/yy HH:mm:ss");
             EndTimeTextBox.Text = eve.GetEndTime().ToString("MM/dd/yy HH:mm:ss");
             DurationTextBox.Text = eve.GetDuration().TotalSeconds.ToString() + " s";

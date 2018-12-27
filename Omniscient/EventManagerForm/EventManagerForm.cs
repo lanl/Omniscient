@@ -100,8 +100,8 @@ namespace Omniscient
                         }
                         foreach (EventGenerator eg in sys.GetEventGenerators())
                         {
-                            TreeNode egNode = new TreeNode(eg.GetName());
-                            egNode.Name = eg.GetName();
+                            TreeNode egNode = new TreeNode(eg.Name);
+                            egNode.Name = eg.Name;
                             egNode.NodeFont = new Font(SitesTreeView.Font, FontStyle.Bold);
                             egNode.Tag = eg;
                             egNode.ImageIndex = 4;
@@ -158,7 +158,7 @@ namespace Omniscient
                 List<Parameter> parameters = eg.GetParameters();
                 ParamListPanel.LoadParameters(parameters);
                 ParamListPanel.Visible = true;
-                NameTextBox.Text = eg.GetName();
+                NameTextBox.Text = eg.Name;
 
                 ActionPanel.Visible = true;
                 ActionsComboBox.Items.Clear();
@@ -239,13 +239,12 @@ namespace Omniscient
                 int index = eventWatcher.GetEventGenerators().IndexOf(eg);
                 if (index > 0)
                 {
-                    eventWatcher.GetEventGenerators().RemoveAt(index);
-                    eventWatcher.GetEventGenerators().Insert(index - 1, eg);
+                    eg.SetIndex(index - 1);
 
                     siteMan.Save();
                     UpdateSitesTree();
                     siteManChanged = true;
-                    SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(eg.GetName(), true)[0];
+                    SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(eg.Name, true)[0];
                 }
             }
         }
@@ -261,13 +260,12 @@ namespace Omniscient
                 int index = eventWatcher.GetEventGenerators().IndexOf(eg);
                 if (index < eventWatcher.GetEventGenerators().Count-1)
                 {
-                    eventWatcher.GetEventGenerators().RemoveAt(index);
-                    eventWatcher.GetEventGenerators().Insert(index+1, eg);
-
+                    eg.SetIndex(index + 1);
+                    
                     siteMan.Save();
                     UpdateSitesTree();
                     siteManChanged = true;
-                    SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(eg.GetName(), true)[0];
+                    SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(eg.Name, true)[0];
                 }
             }
         }
@@ -284,7 +282,7 @@ namespace Omniscient
 
                 EventGenerator eg = (EventGenerator)node.Tag;
                 DetectionSystem sys = (DetectionSystem)node.Parent.Tag;
-                sys.GetEventGenerators().Remove(eg);
+                eg.Delete();
 
                 siteMan.Save();
                 UpdateSitesTree();
@@ -336,7 +334,7 @@ namespace Omniscient
             List<string> validEGs = new List<string>();
             foreach (EventGenerator otherEG in eventWatcher.GetEventGenerators())
             {
-                validEGs.Add(otherEG.GetName());
+                validEGs.Add(otherEG.Name);
             }
 
             List<Parameter> parameters = new List<Parameter>();
@@ -381,12 +379,11 @@ namespace Omniscient
             }
 
             EventGenerator eg = hookup.FromParameters(eventWatcher, name, parameters);
-            eventWatcher.GetEventGenerators().Add(eg);
 
             siteMan.Save();
             UpdateSitesTree();
             siteManChanged = true;
-            SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(eg.GetName(), true)[0];
+            SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(eg.Name, true)[0];
         }
 
         private void SaveAction(EventGenerator eg, Action action)
@@ -463,16 +460,27 @@ namespace Omniscient
             {
                 DetectionSystem eventWatcher = (DetectionSystem)node.Parent.Tag;
                 EventGenerator eg = (EventGenerator)node.Tag;
-                if (eg.GetName() != NameTextBox.Text && siteMan.ContainsName(NameTextBox.Text))
+                if (eg.Name != NameTextBox.Text && siteMan.ContainsName(NameTextBox.Text))
                 {
                     MessageBox.Show("All items in the Site Manager and Event Manager require a unique name!");
                     return;
                 }
                 if (!ParamListPanel.ValidateInput()) return;
                 EventGeneratorHookup hookup = EventGenerator.GetHookup(eg.GetEventGeneratorType());
-                eventWatcher.GetEventGenerators().Remove(eg);
+
+                int index = 0;
+                List<EventGenerator> egs = (eg.Parent as DetectionSystem).GetEventGenerators();
+                for (int i=0; i<egs.Count; i++)
+                {
+                    if (eg.ID == egs[i].ID)
+                    {
+                        index = i;
+                        break;
+                    }
+                }
+                eg.Delete();
                 eg = hookup.FromParameters(eventWatcher, NameTextBox.Text, ParamListPanel.Parameters);
-                eventWatcher.GetEventGenerators().Add(eg);
+                eg.SetIndex(index);
 
                 foreach (Action action in eg.GetActions())
                 {
@@ -487,7 +495,7 @@ namespace Omniscient
                 siteMan.Save();
                 UpdateSitesTree();
                 siteManChanged = true;
-                SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(eg.GetName(), true)[0];
+                SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(eg.Name, true)[0];
                 if(act!=null)
                 {
                     ActionsComboBox.Text = act.GetName();
@@ -512,7 +520,7 @@ namespace Omniscient
             siteMan.Save();
             UpdateSitesTree();
             siteManChanged = true;
-            SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(eg.GetName(), true)[0];
+            SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(eg.Name, true)[0];
             ActionsComboBox.Text = name;
             selectedAction = action;
         }
@@ -535,7 +543,7 @@ namespace Omniscient
             siteMan.Save();
             UpdateSitesTree();
             siteManChanged = true;
-            SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(eg.GetName(), true)[0];
+            SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(eg.Name, true)[0];
             ResetFields();
         }
 

@@ -55,16 +55,6 @@ namespace Omniscient
             return events;
         }
 
-        public override string GetName()
-        {
-            return name;
-        }
-
-        public override void SetName(string newName)
-        {
-            name = newName;
-        }
-
         public void SetChannel(Channel newChannel) { channel = newChannel; }
         public Channel GetChannel() { return channel; }
         public void SetInterval(TimeSpan newInterval) { interval = newInterval; }

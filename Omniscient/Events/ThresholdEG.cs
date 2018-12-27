@@ -161,16 +161,6 @@ namespace Omniscient
         public TimeSpan GetDebounceTime() { return debounceTime; }
         new public List<Event> GetEvents() { return events; }
 
-        public override string GetName()
-        {
-            return name;
-        }
-
-        public override void SetName(string newName)
-        {
-            name = newName;
-        }
-
         public override List<Parameter> GetParameters()
         {
             List<Parameter> parameters = new List<Parameter>()

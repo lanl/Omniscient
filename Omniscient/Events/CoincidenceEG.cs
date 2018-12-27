@@ -157,16 +157,6 @@ namespace Omniscient
         public TimeSpan GetWindow() { return window; }
         public TimeSpan GetMinDifference() { return minDifference; }
 
-        public override string GetName()
-        {
-            return name;
-        }
-
-        public override void SetName(string newName)
-        {
-            name = newName;
-        }
-
         public override List<Parameter> GetParameters()
         {
             string coincidenceTypeStr = "";
@@ -211,8 +201,8 @@ namespace Omniscient
                 {
                     "Start to Start", "Start to End", "End to Start", "End to End", "Max to Max"
                 } },
-                new SystemEventGeneratorParameter("Event Generator A", (DetectionSystem)eventWatcher){ Value = eventGeneratorA.GetName() },
-                new SystemEventGeneratorParameter("Event Generator B", (DetectionSystem)eventWatcher){ Value = eventGeneratorB.GetName() },
+                new SystemEventGeneratorParameter("Event Generator A", (DetectionSystem)eventWatcher){ Value = eventGeneratorA.Name },
+                new SystemEventGeneratorParameter("Event Generator B", (DetectionSystem)eventWatcher){ Value = eventGeneratorB.Name },
                 new TimeSpanParameter("Window") { Value = window.TotalSeconds.ToString() },
                 new TimeSpanParameter("Min Difference") { Value = minDifference.TotalSeconds.ToString() }
             };

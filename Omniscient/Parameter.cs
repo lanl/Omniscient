@@ -269,7 +269,7 @@ namespace Omniscient
             ValidValues = new List<string>();
             foreach (EventGenerator eg in System.GetEventGenerators())
             {
-                ValidValues.Add(eg.GetName());
+                ValidValues.Add(eg.Name);
             }
         }
 
@@ -277,7 +277,7 @@ namespace Omniscient
         {
             foreach (EventGenerator eg in System.GetEventGenerators())
             {
-                if (Value == eg.GetName()) return eg;
+                if (Value == eg.Name) return eg;
             }
             return null;
         }

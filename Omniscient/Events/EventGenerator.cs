@@ -20,8 +20,10 @@ using System.Xml;
 
 namespace Omniscient
 {
-    public abstract class EventGenerator
+    public abstract class EventGenerator : Persister
     {
+        public override string Species { get { return "Event Generator"; } }
+
         /// <summary>
         /// This array contains a hookup for each type of EventGenerator. In 
         /// order for Omniscient to recognize a new kind of EventGenerator, a
@@ -37,15 +39,15 @@ namespace Omniscient
         };
 
         protected DetectionSystem eventWatcher;
-        protected string name;
         protected string eventGeneratorType;
         protected List<Event> events;
         protected List<Action> actions;
 
-        public EventGenerator(DetectionSystem parent, string newName)
+        public EventGenerator(DetectionSystem parent, string name) : base(parent, name)
         {
+            parent.GetEventGenerators().Add(this);
+
             eventWatcher = parent;
-            name = newName;
             events = new List<Event>();
             actions = new List<Action>();
         }
@@ -53,8 +55,6 @@ namespace Omniscient
         public abstract List<Event> GenerateEvents(DateTime start, DateTime end);
         public List<Event> GetEvents() { return events; }
         public List<Action> GetActions() { return actions; }
-        public abstract string GetName();
-        public abstract void SetName(string newName);
 
         public string GetEventGeneratorType() { return eventGeneratorType; }
 
@@ -92,7 +92,7 @@ namespace Omniscient
         public static void ToXML(XmlWriter xmlWriter, EventGenerator eg)
         {
             xmlWriter.WriteStartElement("EventGenerator");
-            xmlWriter.WriteAttributeString("Name", eg.GetName());
+            xmlWriter.WriteAttributeString("Name", eg.Name);
             xmlWriter.WriteAttributeString("Type", eg.GetEventGeneratorType());
             List<Parameter> parameters = eg.GetParameters();
             foreach (Parameter param in parameters)
@@ -100,6 +100,21 @@ namespace Omniscient
                 xmlWriter.WriteAttributeString(param.Name.Replace(' ','_'), param.Value);
             }
             //hookup.GenerateXML(xmlWriter, eg);
+        }
+
+        public override bool SetIndex(int index)
+        {
+            eventWatcher.GetEventGenerators().Remove(this);
+            eventWatcher.GetEventGenerators().Insert(index, this);
+            eventWatcher.Children.Remove(this);
+            eventWatcher.Children.Insert(index + eventWatcher.GetInstruments().Count, this);
+            return true;
+        }
+
+        public override void Delete()
+        {
+            base.Delete();
+            eventWatcher.GetEventGenerators().Remove(this);
         }
     }
 

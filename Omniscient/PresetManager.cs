@@ -110,7 +110,7 @@ namespace Omniscient
                                     else if (instrumentNode.Name == "EventGenerator")
                                     {
                                         XmlNode eventGenNode = instrumentNode;
-                                        EventGenerator eventGenerator = sys.GetEventGenerators().Single(e => e.GetName() == eventGenNode.Attributes["name"]?.InnerText);
+                                        EventGenerator eventGenerator = sys.GetEventGenerators().Single(e => e.Name == eventGenNode.Attributes["name"]?.InnerText);
                                         if (eventGenNode.Attributes["checked"].InnerText == "true")
                                         {
                                             newPreset.GetActiveEventGenerators().Add(eventGenerator);
@@ -188,7 +188,7 @@ namespace Omniscient
                                 if (preset.GetActiveEventGenerators().Contains(eventGenerator))
                                 {
                                     xmlWriter.WriteStartElement("EventGenerator");
-                                    xmlWriter.WriteAttributeString("name", eventGenerator.GetName());
+                                    xmlWriter.WriteAttributeString("name", eventGenerator.Name);
                                     xmlWriter.WriteAttributeString("checked", "true");
                                     xmlWriter.WriteEndElement();
                                 }

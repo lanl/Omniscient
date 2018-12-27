@@ -112,8 +112,8 @@ namespace Omniscient
                         }
                         foreach (EventGenerator eg in sys.GetEventGenerators())
                         {
-                            TreeNode egNode = new TreeNode(eg.GetName());
-                            egNode.Name = eg.GetName();
+                            TreeNode egNode = new TreeNode(eg.Name);
+                            egNode.Name = eg.Name;
                             egNode.ForeColor = System.Drawing.SystemColors.GrayText;
                             egNode.Tag = eg;
                             egNode.ImageIndex = 4;

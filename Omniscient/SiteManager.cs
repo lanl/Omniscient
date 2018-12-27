@@ -56,7 +56,7 @@ namespace Omniscient
                         }
                         foreach (EventGenerator eventGenerator in sys.GetEventGenerators())
                         {
-                            if (eventGenerator.GetName() == name) return true;
+                            if (eventGenerator.Name == name) return true;
                             foreach (Action action in eventGenerator.GetActions())
                                 if (action.GetName() == name) return true;
                         }
@@ -251,7 +251,6 @@ namespace Omniscient
                                     }
                                     eg.GetActions().Add(action);
                                 }
-                                newSystem.GetEventGenerators().Add(eg);
                             }
                             else
                             {
