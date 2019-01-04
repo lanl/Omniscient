@@ -8,14 +8,34 @@ namespace Omniscient
 {
     public class OmniscientCore
     {
+        /// <summary>
+        /// Version of Omniscient
+        /// </summary>
         public const string VERSION = "0.3.2";
 
+        /// <summary>
+        /// Contains all of the Sites in the instance of Omniscient
+        /// </summary>
         public SiteManager SiteManager { get; set; }
 
+        /// <summary>
+        /// The earliest time off any data that is active
+        /// </summary>
         public DateTime GlobalStart { get; set; }
+        
+        /// <summary>
+        /// The latest time off any data that is active
+        /// </summary>
         public DateTime GlobalEnd { get; set; }
 
+        /// <summary>
+        /// If any errors occur, a message is put in ErrorMessage
+        /// </summary>
         public string ErrorMessage { get; private set; }
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
         public OmniscientCore()
         {
             ErrorMessage = "";
