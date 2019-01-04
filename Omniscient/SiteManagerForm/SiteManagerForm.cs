@@ -329,7 +329,7 @@ namespace Omniscient
             if (siteManChanged)
             {
                 main.ClearPanels();
-                if (main.siteMan.Reload() != ReturnCode.SUCCESS) MessageBox.Show("Warning: Bad trouble loading the site manager!");
+                if (main.Core.SiteManager.Reload() != ReturnCode.SUCCESS) MessageBox.Show("Warning: Bad trouble loading the site manager!");
                 if (main.presetMan.Reload() != ReturnCode.SUCCESS) MessageBox.Show("Warning: Bad trouble loading the preset manager!");
                 main.UpdateSitesTree();
             }

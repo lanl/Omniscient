@@ -33,14 +33,11 @@ namespace Omniscient
     public partial class MainForm : Form
     {
         ///////////////////////////////////////////////////////////////////////
-        private const string VERSION = "0.3.2";
-
-        private OmniscientCore core;
+        public OmniscientCore Core;
 
         private const int N_CHARTS = 4;
         private const int MAX_HIGHLIGHTED_EVENTS = 60;
 
-        public SiteManager siteMan;
         public PresetManager presetMan;
         List<ChannelPanel> chPanels;
         List<Instrument> activeInstruments;
@@ -71,7 +68,13 @@ namespace Omniscient
         /// </summary>
         public MainForm()
         {
-            core = new OmniscientCore();
+            
+            Core = new OmniscientCore();
+            if (Core.ErrorMessage != "")
+            {
+                MessageBox.Show(Core.ErrorMessage);
+            }
+
             logScale = new bool[N_CHARTS];
             for (int c = 0; c < N_CHARTS; c++) logScale[c] = false;
             activeInstruments = new List<Instrument>();
@@ -85,7 +88,7 @@ namespace Omniscient
         /// here because they cause errors when put in the form designer. </remarks>
         private void MainForm_Load(object sender, EventArgs e)
         {
-            this.Text = "Omniscient - Version " + VERSION;
+            this.Text = "Omniscient - Version " + OmniscientCore.VERSION;
             bootingUp = true;
             StripChart0.MouseDown += new MouseEventHandler(StripChart_MouseClick);
             StripChart1.MouseDown += new MouseEventHandler(StripChart_MouseClick);
@@ -109,21 +112,14 @@ namespace Omniscient
             StripChart2.SuppressExceptions = true;
             StripChart3.SuppressExceptions = true;
 
-            GlobalStartTextBox.Text = core.GlobalStart.ToString("MMM dd, yyyy");
-            GlobalEndTextBox.Text = core.GlobalEnd.ToString("MMM dd, yyyy");
-            StartDatePicker.Value = core.GlobalStart;
-            EndDatePicker.Value = core.GlobalEnd;
-            StartTimePicker.Value = core.GlobalStart.Date;
-            EndTimePicker.Value = core.GlobalEnd.Date;
+            GlobalStartTextBox.Text = Core.GlobalStart.ToString("MMM dd, yyyy");
+            GlobalEndTextBox.Text = Core.GlobalEnd.ToString("MMM dd, yyyy");
+            StartDatePicker.Value = Core.GlobalStart;
+            EndDatePicker.Value = Core.GlobalEnd;
+            StartTimePicker.Value = Core.GlobalStart.Date;
+            EndTimePicker.Value = Core.GlobalEnd.Date;
             chPanels = new List<ChannelPanel>();
-            siteMan = new SiteManager("SiteManager.xml", VERSION);
-            ReturnCode returnCode = siteMan.Reload();
-            if (returnCode == ReturnCode.FILE_DOESNT_EXIST)
-            {
-                siteMan.WriteBlank();
-                MessageBox.Show("SiteManager.xml not found. A new one has been created.");
-            }
-            else if (returnCode != ReturnCode.SUCCESS) MessageBox.Show("Warning: Bad trouble loading the site manager!");
+            
             LoadPresets();
             UpdateSitesTree();
             RangeTextBox.Text = "1";
@@ -206,7 +202,7 @@ namespace Omniscient
         
         public void LoadPresets()
         {
-            presetMan = new PresetManager("Presets.xml", siteMan);
+            presetMan = new PresetManager("Presets.xml", Core.SiteManager);
             ReturnCode returnCode = presetMan.Reload();
             if (returnCode == ReturnCode.FILE_DOESNT_EXIST)
             {
@@ -226,7 +222,7 @@ namespace Omniscient
         public void UpdateSitesTree()
         {
             SitesTreeView.Nodes.Clear();
-            foreach (Site site in siteMan.GetSites())
+            foreach (Site site in Core.SiteManager.GetSites())
             {
                 TreeNode siteNode = new TreeNode(site.Name);
                 siteNode.Name = site.Name;
@@ -708,10 +704,10 @@ namespace Omniscient
             if (earliest > latest) return;
 
             // Update global start and end
-            core.GlobalStart = earliest;
-            core.GlobalEnd = latest;
-            GlobalStartTextBox.Text = core.GlobalStart.ToString("MMM dd, yyyy");
-            GlobalEndTextBox.Text = core.GlobalEnd.ToString("MMM dd, yyyy");
+            Core.GlobalStart = earliest;
+            Core.GlobalEnd = latest;
+            GlobalStartTextBox.Text = Core.GlobalStart.ToString("MMM dd, yyyy");
+            GlobalEndTextBox.Text = Core.GlobalEnd.ToString("MMM dd, yyyy");
 
             // Update the range pickers as needed
             DateTime start = StartDatePicker.Value.Date;
@@ -720,14 +716,14 @@ namespace Omniscient
             end = end.Add(EndTimePicker.Value.TimeOfDay);
 
             bool changedRange = false;
-            if (start < core.GlobalStart || start > core.GlobalEnd)
+            if (start < Core.GlobalStart || start > Core.GlobalEnd)
             {
-                start = core.GlobalStart;
+                start = Core.GlobalStart;
                 changedRange = true;
             }
-            if (end > core.GlobalEnd || end < core.GlobalStart)
+            if (end > Core.GlobalEnd || end < Core.GlobalStart)
             {
-                end = core.GlobalEnd;
+                end = Core.GlobalEnd;
                 changedRange = true;
             }
             if (changedRange)
@@ -880,30 +876,30 @@ namespace Omniscient
 
         private void StartDatePicker_ValueChanged(object sender, EventArgs e)
         {
-            if (StartDatePicker.Value.Date < core.GlobalStart.Date)
+            if (StartDatePicker.Value.Date < Core.GlobalStart.Date)
             {
-                StartDatePicker.Value = core.GlobalStart.Date;
-                StartTimePicker.Value = core.GlobalStart;
+                StartDatePicker.Value = Core.GlobalStart.Date;
+                StartTimePicker.Value = Core.GlobalStart;
             }
-            if (StartDatePicker.Value.Date > core.GlobalEnd.Date)
+            if (StartDatePicker.Value.Date > Core.GlobalEnd.Date)
             {
-                StartDatePicker.Value = core.GlobalEnd.Date;
-                StartTimePicker.Value = core.GlobalEnd.Date;
+                StartDatePicker.Value = Core.GlobalEnd.Date;
+                StartTimePicker.Value = Core.GlobalEnd.Date;
             }
             rangeChanged = true;
         }
 
         private void StartTimePicker_ValueChanged(object sender, EventArgs e)
         {
-            if (StartDatePicker.Value.Date.AddTicks(StartTimePicker.Value.TimeOfDay.Ticks) < core.GlobalStart)
+            if (StartDatePicker.Value.Date.AddTicks(StartTimePicker.Value.TimeOfDay.Ticks) < Core.GlobalStart)
             {
-                StartDatePicker.Value = core.GlobalStart.Date;
-                StartTimePicker.Value = core.GlobalStart;
+                StartDatePicker.Value = Core.GlobalStart.Date;
+                StartTimePicker.Value = Core.GlobalStart;
             }
-            if (StartDatePicker.Value.Date.AddTicks(StartTimePicker.Value.TimeOfDay.Ticks) > core.GlobalEnd)
+            if (StartDatePicker.Value.Date.AddTicks(StartTimePicker.Value.TimeOfDay.Ticks) > Core.GlobalEnd)
             {
-                StartDatePicker.Value = core.GlobalEnd.Date;
-                StartTimePicker.Value = core.GlobalEnd.Date;
+                StartDatePicker.Value = Core.GlobalEnd.Date;
+                StartTimePicker.Value = Core.GlobalEnd.Date;
             }
             rangeChanged = true;
         }
@@ -941,8 +937,8 @@ namespace Omniscient
                     break;
             }
             newEnd = newEnd.AddTicks(StartTimePicker.Value.TimeOfDay.Ticks);
-            if (newEnd > core.GlobalEnd)
-                newEnd = core.GlobalEnd;
+            if (newEnd > Core.GlobalEnd)
+                newEnd = Core.GlobalEnd;
             EndDatePicker.Value = newEnd.Date;
             EndTimePicker.Value = newEnd;
 
@@ -979,8 +975,8 @@ namespace Omniscient
             int startSeconds = DateTimeToReferenceSeconds(start);
             int endSeconds = DateTimeToReferenceSeconds(end);
             // Update Scrollbar
-            StripChartScroll.Minimum =  DateTimeToReferenceSeconds(core.GlobalStart);
-            StripChartScroll.Maximum = DateTimeToReferenceSeconds(core.GlobalEnd);
+            StripChartScroll.Minimum =  DateTimeToReferenceSeconds(Core.GlobalStart);
+            StripChartScroll.Maximum = DateTimeToReferenceSeconds(Core.GlobalEnd);
             if (startSeconds < StripChartScroll.Minimum) startSeconds = StripChartScroll.Minimum;
             StripChartScroll.Value = startSeconds;
             StripChartScroll.SmallChange = endSeconds - startSeconds;
@@ -1302,7 +1298,7 @@ namespace Omniscient
 
         private void SiteManagerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            SiteManagerForm siteManForm = new SiteManagerForm(this, siteMan);
+            SiteManagerForm siteManForm = new SiteManagerForm(this, Core.SiteManager);
             siteManForm.ShowDialog();
         }
 
@@ -1426,7 +1422,7 @@ namespace Omniscient
 
         private void GenerateEventsButton_Click(object sender, EventArgs e)
         {
-            GenerateEvents(core.GlobalStart, core.GlobalEnd);
+            GenerateEvents(Core.GlobalStart, Core.GlobalEnd);
         }
 
         private void GenerateEvents(DateTime start, DateTime end)
@@ -1483,7 +1479,7 @@ namespace Omniscient
 
         private void EventManagerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            EventManagerForm eventManForm = new EventManagerForm(this, siteMan);
+            EventManagerForm eventManForm = new EventManagerForm(this, Core.SiteManager);
             eventManForm.ShowDialog();
         }
 
@@ -1517,7 +1513,7 @@ namespace Omniscient
             }
             System.Windows.Forms.Cursor.Current = Cursors.WaitCursor;
 
-            ExportDataDialog dialog = new ExportDataDialog(activeInstruments, core.GlobalStart, core.GlobalEnd,
+            ExportDataDialog dialog = new ExportDataDialog(activeInstruments, Core.GlobalStart, Core.GlobalEnd,
                 StartDatePicker.Value, StartTimePicker.Value, EndDatePicker.Value, EndTimePicker.Value);
             dialog.ShowDialog();
             return;
@@ -1525,7 +1521,7 @@ namespace Omniscient
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            AboutBox aboutBox = new AboutBox(VERSION);
+            AboutBox aboutBox = new AboutBox(OmniscientCore.VERSION);
             aboutBox.ShowDialog();
         }
 
