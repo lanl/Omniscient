@@ -40,7 +40,6 @@ namespace Omniscient
 
         public PresetManager presetMan;
         List<ChannelPanel> chPanels;
-        List<Instrument> activeInstruments;
 
         private bool rangeChanged = false;
         private bool bootingUp = false;
@@ -77,7 +76,6 @@ namespace Omniscient
 
             logScale = new bool[N_CHARTS];
             for (int c = 0; c < N_CHARTS; c++) logScale[c] = false;
-            activeInstruments = new List<Instrument>();
             events = new List<Event>();
             InitializeComponent();
         }
@@ -193,10 +191,10 @@ namespace Omniscient
                 UncheckChildrenNodes(child);
             }
 
-            while (activeInstruments.Count>0)
+            while (Core.ActiveInstruments.Count>0)
             {
                 //SitesTreeView.Nodes.Find(activeInstruments[0].GetName(), true)[0].Checked = false;
-                RemoveChannelPanels(activeInstruments[0]);
+                RemoveChannelPanels(Core.ActiveInstruments[0]);
             }
         }
         
@@ -310,7 +308,7 @@ namespace Omniscient
 
         private void UpdateData()
         {
-            foreach(Instrument inst in activeInstruments)
+            foreach(Instrument inst in Core.ActiveInstruments)
             {
                 UpdateInstrumentData(inst);
             }
@@ -673,6 +671,7 @@ namespace Omniscient
         /// added or removed.</summary>
         /// <remarks>It updates globalStart and globalEnd and changes the
         /// start/end pickers if they are out of the global range.</remarks>
+        /// <todo>Move to the main functionality to Core</todo>
         private void UpdateGlobalStartEnd()
         {
             DateTime earliest = new DateTime(3000,1,1);
@@ -680,10 +679,10 @@ namespace Omniscient
             DateTime chStart;
             DateTime chEnd;
 
-            if (activeInstruments.Count == 0) return;
+            if (Core.ActiveInstruments.Count == 0) return;
 
             // Figure out the earliest and latest data point
-            foreach (Instrument inst in activeInstruments)
+            foreach (Instrument inst in Core.ActiveInstruments)
             {
                 foreach (Channel ch in inst.GetChannels())
                 {
@@ -765,7 +764,7 @@ namespace Omniscient
         /// channel panels.</summary>
         private void AddChannelPanels(Instrument inst)
         {
-            activeInstruments.Add(inst);
+            Core.ActivateInstrument(inst);
             UpdateInstrumentData(inst);
 
             ChannelsPanel.SuspendLayout();
@@ -792,7 +791,7 @@ namespace Omniscient
 
         private void RemoveChannelPanels(Instrument inst)
         {
-            activeInstruments.Remove(inst);
+            Core.DeactivateInstrument(inst);
             inst.ClearData();
 
             List<ChannelPanel> chToGo = new List<ChannelPanel>();
@@ -1369,7 +1368,7 @@ namespace Omniscient
 
             // Make the new preset
             Preset preset = new Preset(newName);
-            foreach (Instrument inst in activeInstruments)
+            foreach (Instrument inst in Core.ActiveInstruments)
                 preset.GetActiveInstruments().Add(inst);
             foreach (ChannelPanel cp in chPanels)
             {
@@ -1506,14 +1505,14 @@ namespace Omniscient
 
         private void exportToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if(activeInstruments.Count == 0)
+            if(Core.ActiveInstruments.Count == 0)
             {
                 MessageBox.Show("No active Instruments for exporting data!");
                 return;
             }
             System.Windows.Forms.Cursor.Current = Cursors.WaitCursor;
 
-            ExportDataDialog dialog = new ExportDataDialog(activeInstruments, Core.GlobalStart, Core.GlobalEnd,
+            ExportDataDialog dialog = new ExportDataDialog(Core.ActiveInstruments, Core.GlobalStart, Core.GlobalEnd,
                 StartDatePicker.Value, StartTimePicker.Value, EndDatePicker.Value, EndTimePicker.Value);
             dialog.ShowDialog();
             return;

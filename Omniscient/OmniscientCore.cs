@@ -19,6 +19,11 @@ namespace Omniscient
         public SiteManager SiteManager { get; set; }
 
         /// <summary>
+        /// Contains all activated Instruments
+        /// </summary>
+        public List<Instrument> ActiveInstruments { get; private set; }
+
+        /// <summary>
         /// The earliest time off any data that is active
         /// </summary>
         public DateTime GlobalStart { get; set; }
@@ -50,8 +55,20 @@ namespace Omniscient
                 ErrorMessage = "Warning: Bad trouble loading the site manager!";
             }
 
+            ActiveInstruments = new List<Instrument>();
+
             GlobalStart = DateTime.Today.AddDays(-1);
             GlobalEnd = DateTime.Today;
+        }
+
+        public void ActivateInstrument(Instrument instrument)
+        {
+            ActiveInstruments.Add(instrument);
+        }
+
+        public void DeactivateInstrument(Instrument instrument)
+        {
+
         }
     }
 }
