@@ -78,6 +78,40 @@ namespace Omniscient
             for (int c = 0; c < N_CHARTS; c++) logScale[c] = false;
             events = new List<Event>();
             InitializeComponent();
+            Core.ViewChanged += Core_OnViewChanged;
+        }
+
+        private void Core_OnViewChanged(object sender, EventArgs e)
+        {
+            StartDatePicker.Value = Core.ViewStart.Date;
+            StartTimePicker.Value = Core.ViewStart;
+            EndDatePicker.Value = Core.ViewEnd.Date;
+            EndTimePicker.Value = Core.ViewEnd;
+
+            long range = (Core.ViewEnd - Core.ViewStart).Ticks;
+
+            if (range % TimeSpan.FromDays(1).Ticks == 0)
+            {
+                RangeComboBox.Text = "Days";
+                RangeTextBox.Text = (range / TimeSpan.FromDays(1).Ticks).ToString();
+            }
+            else if (range % TimeSpan.FromHours(1).Ticks == 0)
+            {
+                RangeComboBox.Text = "Hours";
+                RangeTextBox.Text = (range / TimeSpan.FromHours(1).Ticks).ToString();
+            }
+            else if (range % TimeSpan.FromMinutes(1).Ticks == 0)
+            {
+                RangeComboBox.Text = "Minutes";
+                RangeTextBox.Text = (range / TimeSpan.FromMinutes(1).Ticks).ToString();
+            }
+            else
+            {
+                RangeComboBox.Text = "Seconds";
+                RangeTextBox.Text = (range / TimeSpan.FromSeconds(1).Ticks).ToString();
+            }
+
+            UpdateRange();
         }
 
         /// <summary>
@@ -112,10 +146,10 @@ namespace Omniscient
 
             GlobalStartTextBox.Text = Core.GlobalStart.ToString("MMM dd, yyyy");
             GlobalEndTextBox.Text = Core.GlobalEnd.ToString("MMM dd, yyyy");
-            StartDatePicker.Value = Core.GlobalStart;
-            EndDatePicker.Value = Core.GlobalEnd;
-            StartTimePicker.Value = Core.GlobalStart.Date;
-            EndTimePicker.Value = Core.GlobalEnd.Date;
+            StartDatePicker.Value = Core.ViewStart;
+            EndDatePicker.Value = Core.ViewEnd;
+            StartTimePicker.Value = Core.ViewStart.Date;
+            EndTimePicker.Value = Core.ViewEnd.Date;
             chPanels = new List<ChannelPanel>();
             
             LoadPresets();
@@ -298,23 +332,6 @@ namespace Omniscient
         }
 
         /// <summary>
-        /// UpdateInstrumentData is called when instruments are added to the channel panels.</summary>
-        private void UpdateInstrumentData(Instrument inst)
-        {
-            System.Windows.Forms.Cursor.Current = Cursors.WaitCursor;
-            inst.LoadData(new DateTime(1900, 1, 1), new DateTime(2100, 1, 1));
-            System.Windows.Forms.Cursor.Current = Cursors.Default;
-        }
-
-        private void UpdateData()
-        {
-            foreach(Instrument inst in Core.ActiveInstruments)
-            {
-                UpdateInstrumentData(inst);
-            }
-        }
-
-        /// <summary>
         /// InitializeCharts is called when the form is loaded. </summary>
         private void InitializeCharts()
         {
@@ -378,18 +395,6 @@ namespace Omniscient
                 e.Text = (sName + "\n" + yVal.ToString());
         }
 
-        private DateTime GetRangeStart()
-        {
-            DateTime start = StartDatePicker.Value.Date;
-            return start.Add(StartTimePicker.Value.TimeOfDay);
-        }
-
-        private DateTime GetRangeEnd()
-        {
-            DateTime end = EndDatePicker.Value.Date;
-            return end.Add(EndTimePicker.Value.TimeOfDay);
-        }
-
         /// <summary>
         /// UpdateChart is called whenever the data to be displayed on a chart changes. </summary>
         private void UpdateChart(int chartNum)
@@ -401,8 +406,8 @@ namespace Omniscient
             chart.SuspendLayout();
 
             // Needed for speedy loading
-            DateTime start = GetRangeStart();
-            DateTime end = GetRangeEnd();
+            DateTime start = Core.ViewStart;
+              DateTime end = Core.ViewEnd;
 
             if (logScale[chartNum])
                 chart.ChartAreas[0].AxisY.IsLogarithmic = true;
@@ -554,8 +559,8 @@ namespace Omniscient
 
         private void DrawSections()
         {
-            DateTime start = GetRangeStart();
-            DateTime end = GetRangeEnd();
+            DateTime start = Core.ViewStart;
+            DateTime end = Core.ViewEnd;
             int eventCount = 0;
             Chart chart;
             bool overHeightWarning = false;
@@ -671,77 +676,27 @@ namespace Omniscient
         /// added or removed.</summary>
         /// <remarks>It updates globalStart and globalEnd and changes the
         /// start/end pickers if they are out of the global range.</remarks>
-        /// <todo>Move to the main functionality to Core</todo>
         private void UpdateGlobalStartEnd()
         {
-            DateTime earliest = new DateTime(3000,1,1);
-            DateTime latest = new DateTime(1000, 1, 1);
-            DateTime chStart;
-            DateTime chEnd;
-
-            if (Core.ActiveInstruments.Count == 0) return;
-
-            // Figure out the earliest and latest data point
-            foreach (Instrument inst in Core.ActiveInstruments)
-            {
-                foreach (Channel ch in inst.GetChannels())
-                {
-                    if(ch.GetTimeStamps().Count > 0)
-                    {
-                        chStart = ch.GetTimeStamps()[0];
-                        chEnd = ch.GetTimeStamps()[ch.GetTimeStamps().Count - 1];
-                        if(ch.GetChannelType() == Channel.ChannelType.DURATION_VALUE)
-                            chEnd += ch.GetDurations()[ch.GetDurations().Count - 1];
-                        if (chStart < earliest)
-                            earliest = chStart;
-                        if (chEnd > latest)
-                            latest = chEnd;
-                    }
-                }
-            }
-
-            if (earliest > latest) return;
-
             // Update global start and end
-            Core.GlobalStart = earliest;
-            Core.GlobalEnd = latest;
             GlobalStartTextBox.Text = Core.GlobalStart.ToString("MMM dd, yyyy");
             GlobalEndTextBox.Text = Core.GlobalEnd.ToString("MMM dd, yyyy");
 
-            // Update the range pickers as needed
-            DateTime start = StartDatePicker.Value.Date;
-            start = start.Add(StartTimePicker.Value.TimeOfDay);
-            DateTime end = EndDatePicker.Value.Date;
-            end = end.Add(EndTimePicker.Value.TimeOfDay);
-
-            bool changedRange = false;
-            if (start < Core.GlobalStart || start > Core.GlobalEnd)
+            if (StartDatePicker.Value.Date.Add(StartTimePicker.Value.TimeOfDay) != Core.ViewStart ||
+                EndDatePicker.Value.Date.Add(EndTimePicker.Value.TimeOfDay) != Core.ViewEnd)
             {
-                start = Core.GlobalStart;
-                changedRange = true;
-            }
-            if (end > Core.GlobalEnd || end < Core.GlobalStart)
-            {
-                end = Core.GlobalEnd;
-                changedRange = true;
-            }
-            if (changedRange)
-            {
-                if (TimeSpan.FromTicks(end.Ticks - start.Ticks).TotalDays > 1)
+                if (TimeSpan.FromTicks(Core.ViewEnd.Ticks - Core.ViewStart.Ticks).TotalDays > 1)
                 {
-                    start = end.AddDays(-1);
                     RangeTextBox.Text = "1";
                     RangeComboBox.Text = "Days";
                 }
-                else if (TimeSpan.FromTicks(end.Ticks - start.Ticks).TotalDays > 1)
+                else if (TimeSpan.FromTicks(Core.ViewEnd.Ticks - Core.ViewStart.Ticks).TotalDays > 1)
                 {
-                    start = end.AddDays(-1);
                     RangeTextBox.Text = "24";
                     RangeComboBox.Text = "Hours";
                 }
-                else if (TimeSpan.FromTicks(end.Ticks - start.Ticks).TotalHours > 1)
+                else if (TimeSpan.FromTicks(Core.ViewEnd.Ticks - Core.ViewStart.Ticks).TotalHours > 1)
                 {
-                    start = end.AddHours(-1);
                     RangeTextBox.Text = "60";
                     RangeComboBox.Text = "Minutes";
                 }
@@ -750,10 +705,10 @@ namespace Omniscient
                     RangeTextBox.Text = "";
                     RangeComboBox.Text = "Minutes";
                 }
-                StartDatePicker.Value = start.Date;
-                StartTimePicker.Value = start;
-                EndDatePicker.Value = end.Date;
-                EndTimePicker.Value = end;
+                StartDatePicker.Value = Core.ViewStart.Date;
+                StartTimePicker.Value = Core.ViewStart;
+                EndDatePicker.Value = Core.ViewEnd.Date;
+                EndTimePicker.Value = Core.ViewEnd;
             }
             UpdateRange();
         }
@@ -764,8 +719,9 @@ namespace Omniscient
         /// channel panels.</summary>
         private void AddChannelPanels(Instrument inst)
         {
+            System.Windows.Forms.Cursor.Current = Cursors.WaitCursor;
             Core.ActivateInstrument(inst);
-            UpdateInstrumentData(inst);
+            System.Windows.Forms.Cursor.Current = Cursors.Default;
 
             ChannelsPanel.SuspendLayout();
 
@@ -792,7 +748,6 @@ namespace Omniscient
         private void RemoveChannelPanels(Instrument inst)
         {
             Core.DeactivateInstrument(inst);
-            inst.ClearData();
 
             List<ChannelPanel> chToGo = new List<ChannelPanel>();
             foreach (ChannelPanel chanPan in chPanels)
@@ -875,31 +830,11 @@ namespace Omniscient
 
         private void StartDatePicker_ValueChanged(object sender, EventArgs e)
         {
-            if (StartDatePicker.Value.Date < Core.GlobalStart.Date)
-            {
-                StartDatePicker.Value = Core.GlobalStart.Date;
-                StartTimePicker.Value = Core.GlobalStart;
-            }
-            if (StartDatePicker.Value.Date > Core.GlobalEnd.Date)
-            {
-                StartDatePicker.Value = Core.GlobalEnd.Date;
-                StartTimePicker.Value = Core.GlobalEnd.Date;
-            }
             rangeChanged = true;
         }
 
         private void StartTimePicker_ValueChanged(object sender, EventArgs e)
         {
-            if (StartDatePicker.Value.Date.AddTicks(StartTimePicker.Value.TimeOfDay.Ticks) < Core.GlobalStart)
-            {
-                StartDatePicker.Value = Core.GlobalStart.Date;
-                StartTimePicker.Value = Core.GlobalStart;
-            }
-            if (StartDatePicker.Value.Date.AddTicks(StartTimePicker.Value.TimeOfDay.Ticks) > Core.GlobalEnd)
-            {
-                StartDatePicker.Value = Core.GlobalEnd.Date;
-                StartTimePicker.Value = Core.GlobalEnd.Date;
-            }
             rangeChanged = true;
         }
 
@@ -936,11 +871,10 @@ namespace Omniscient
                     break;
             }
             newEnd = newEnd.AddTicks(StartTimePicker.Value.TimeOfDay.Ticks);
-            if (newEnd > Core.GlobalEnd)
-                newEnd = Core.GlobalEnd;
-            EndDatePicker.Value = newEnd.Date;
-            EndTimePicker.Value = newEnd;
-
+            Core.ChangeView(StartDatePicker.Value.Date.AddTicks(StartTimePicker.Value.TimeOfDay.Ticks),
+                newEnd);
+            EndDatePicker.Value = Core.ViewEnd.Date;
+            EndTimePicker.Value = Core.ViewEnd;
         }
 
         /// <summary>
@@ -967,8 +901,8 @@ namespace Omniscient
             StripChartsPanel.SuspendLayout();
 
             // Setup x-axis format
-            DateTime start = GetRangeStart();
-            DateTime end = GetRangeEnd();
+            DateTime start = Core.ViewStart;
+            DateTime end = Core.ViewEnd;
 
             if (start >= end) return;
             int startSeconds = DateTimeToReferenceSeconds(start);
@@ -1118,12 +1052,8 @@ namespace Omniscient
 
         private void StripChartScroll_Scroll(object sender, ScrollEventArgs e)
         {
-            if (e.Type != ScrollEventType.EndScroll) return;
-            DateTime newStart = ReferenceSecondsToDateTime(StripChartScroll.Value);
-            StartDatePicker.Value = newStart.Date;
-            StartTimePicker.Value = newStart;
-            UpdateEndPickers();
-            UpdateRange();
+            if (e.Type == ScrollEventType.EndScroll) return;
+            Core.ShiftView(ReferenceSecondsToDateTime(e.NewValue) - ReferenceSecondsToDateTime(e.OldValue));
         }
 
         /// <summary>
@@ -1629,32 +1559,20 @@ namespace Omniscient
             if (e.Button == MouseButtons.Right)
             {
                 // Drag Range
-                try
-                {
-                    chart.ChartAreas[0].AxisX.Minimum -= mouseDelta;
-                    chart.ChartAreas[0].AxisX.Maximum -= mouseDelta;
-                }
-                catch
-                {
-                }
+                Core.ShiftView(DateTime.FromOADate(chart.ChartAreas[0].AxisX.Minimum) -
+                    DateTime.FromOADate(chart.ChartAreas[0].AxisX.Minimum+mouseDelta));
             }
             else if (mouseDelta/range < -0.05 && !controlPressed)
             {
                 // Zoom out
-                try
-                {
-                    chart.ChartAreas[0].AxisX.Minimum = chart.ChartAreas[0].AxisX.Minimum - range / 2;
-                    chart.ChartAreas[0].AxisX.Maximum = chart.ChartAreas[0].AxisX.Maximum + range / 2;
-                }
-                catch
-                {
-                }
+                Core.ChangeView(DateTime.FromOADate(chart.ChartAreas[0].AxisX.Minimum - range / 2),
+                    DateTime.FromOADate(chart.ChartAreas[0].AxisX.Maximum + range / 2));
             }
             else if (mouseDelta / range > 0.05 && !controlPressed)
             {
                 // Zoom in
-                chart.ChartAreas[0].AxisX.Minimum = mouseDownX;
-                chart.ChartAreas[0].AxisX.Maximum = mouseUpX;
+                Core.ChangeView(DateTime.FromOADate(mouseDownX),
+                    DateTime.FromOADate(mouseUpX));
             }
             else if (!controlPressed || 
                 ((mouseDelta / range < 0.05) && (mouseDelta/range > -0.05)))
@@ -1671,7 +1589,6 @@ namespace Omniscient
                 CalculateHighlightBoxValues();
                 return;
             }
-            UpdatePickersFromChart(chart);
         }
 
         public void StripChart_Paint(object sender, PaintEventArgs e)
@@ -1691,52 +1608,7 @@ namespace Omniscient
                 }
             }
         }
-
-        public void UpdatePickersFromChart(Chart chart)
-        {
-            DateTime start = DateTime.FromOADate(chart.ChartAreas[0].AxisX.Minimum);
-            DateTime end = DateTime.FromOADate(chart.ChartAreas[0].AxisX.Maximum);
-            StartTimePicker.Value = start;
-            StartDatePicker.Value = start;
-            EndTimePicker.Value = end;
-            EndDatePicker.Value = end;
-
-            TimeSpan span = end - start;
-
-            if (span > TimeSpan.FromDays(2*365))
-            {
-                RangeComboBox.Text = "Years";
-                RangeTextBox.Text = Math.Floor(span.TotalDays / 365).ToString();
-            }
-            else if (span > TimeSpan.FromDays(90))
-            {
-                RangeComboBox.Text = "Months";
-                RangeTextBox.Text = Math.Floor(span.TotalDays / 30).ToString();
-            }
-            else if (span > TimeSpan.FromDays(3))
-            {
-                RangeComboBox.Text = "Days";
-                RangeTextBox.Text = Math.Floor(span.TotalDays).ToString();
-            }
-            else if (span > TimeSpan.FromHours(3))
-            {
-                RangeComboBox.Text = "Hours";
-                RangeTextBox.Text = Math.Floor(span.TotalHours).ToString();
-            }
-            else if (span > TimeSpan.FromMinutes(3))
-            {
-                RangeComboBox.Text = "Minutes";
-                RangeTextBox.Text = Math.Floor(span.TotalMinutes).ToString();
-            }
-            else
-            {
-                RangeComboBox.Text = "Seconds";
-                RangeTextBox.Text = Math.Floor(span.TotalSeconds).ToString();
-            }
-            UpdateEndPickers();
-            UpdateRange();
-        }
-
+        
         bool controlPressed = false;
         private void MainForm_KeyDown(object sender, KeyEventArgs e)
         {
