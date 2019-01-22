@@ -1053,6 +1053,11 @@ namespace Omniscient
         private void StripChartScroll_Scroll(object sender, ScrollEventArgs e)
         {
             if (e.Type == ScrollEventType.EndScroll) return;
+            if ((e.NewValue + StripChartScroll.LargeChange >= StripChartScroll.Maximum) &&
+                (e.NewValue > e.OldValue))
+            {
+                e.NewValue = StripChartScroll.Maximum - StripChartScroll.LargeChange;
+            }
             Core.ShiftView(ReferenceSecondsToDateTime(e.NewValue) - ReferenceSecondsToDateTime(e.OldValue));
         }
 

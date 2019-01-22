@@ -115,6 +115,7 @@ namespace Omniscient
 
         public void ShiftView(TimeSpan shift)
         {
+            if (shift == TimeSpan.Zero) return;
             ChangeView(ViewStart + shift, ViewEnd + shift, true);
         }
 
