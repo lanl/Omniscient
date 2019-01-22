@@ -57,7 +57,7 @@ namespace Omniscient
             string[] lines;
             try
             {
-                lines = File.ReadAllLines(newFileName);
+                lines = IOUtility.PermissiveReadAllLines(newFileName);
             }
             catch
             {

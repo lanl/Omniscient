@@ -115,6 +115,7 @@
     <Compile Include="DeclarationEditor.Designer.cs">
       <DependentUpon>DeclarationEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="IOUtility.cs" />
     <Compile Include="OmniscientCore.cs" />
     <Compile Include="Persister.cs" />
     <Compile Include="EventManagerForm\DataCompilerPanel.cs">

@@ -38,7 +38,7 @@ namespace Omniscient
 
             if (!File.Exists(fileName))
                 return ReturnCode.COULD_NOT_OPEN_FILE;
-            lines = File.ReadAllLines(fileName);
+            lines = IOUtility.PermissiveReadAllLines(fileName);
 
             return ReturnCode.SUCCESS;
         }
