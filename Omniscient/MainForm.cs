@@ -522,12 +522,12 @@ namespace Omniscient
                 }
             }
 
-            ScaleAxes(chartNum);
+            AutoScaleYAxes(chartNum);
             chart.ResumeLayout();
             System.Windows.Forms.Cursor.Current = Cursors.Default;
         }
 
-        private void ScaleAxes(int chartNum)
+        private void AutoScaleYAxes(int chartNum)
         {
             Chart chart = GetChart(chartNum);
             double maxOrderOfMagnitude = Math.Pow(10,Math.Floor(Math.Log10(chartMaxPointValue[chartNum])));
@@ -1082,6 +1082,22 @@ namespace Omniscient
             for (int i = 0; i < N_CHARTS; i++)
                 if (activeChart == GetChart(i)) chartNum = i;
 
+            // Toggle log scale
+            if (logScale[chartNum])
+            {
+                MenuItem menuItem = new MenuItem("Switch to linear Y-Axis");
+                menuItem.Tag = chartNum;
+                menuItem.Click += ToggleYAxisScale;
+                chartMenu.MenuItems.Add(menuItem);
+            }
+            else
+            {
+                MenuItem menuItem = new MenuItem("Switch to log Y-Axis");
+                menuItem.Tag = chartNum;
+                menuItem.Click += ToggleYAxisScale;
+                chartMenu.MenuItems.Add(menuItem);
+            }
+
             // Determine which MCAInstruments are being plotted on the chart
             foreach (ChannelPanel chanPan in chPanels)
             {
@@ -1138,6 +1154,29 @@ namespace Omniscient
                 }
             }
             chartMenu.Show(activeChart, new Point((int)mouseX, (int)mouseY));
+        }
+
+        private void ToggleYAxisScale(object sender, EventArgs e)
+        {
+            MenuItem menuItem = (MenuItem)sender;
+            int chartNum = (int)menuItem.Tag;
+            logScale[chartNum] = !logScale[chartNum];
+            switch(chartNum)
+            {
+                case 0:
+                    C1LogScaleCheckBox.Checked = logScale[chartNum];
+                    break;
+                case 1:
+                    C2LogScaleCheckBox.Checked = logScale[chartNum];
+                    break;
+                case 2:
+                    C3LogScaleCheckBox.Checked = logScale[chartNum];
+                    break;
+                case 3:
+                    C4LogScaleCheckBox.Checked = logScale[chartNum];
+                    break;
+            }
+            UpdateChart(chartNum);
         }
 
         private void DeclarationMenuItem_Click(object sender, EventArgs e)
