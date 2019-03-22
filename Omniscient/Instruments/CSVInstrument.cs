@@ -43,10 +43,29 @@ namespace Omniscient
         public ReturnCode SetNumberOfChannels(int nChannels)
         {
             if (nChannels < 1) return ReturnCode.BAD_INPUT;
+            Channel[] newChannels = new Channel[nChannels];
+
+            // Put as many of the original channels back as can fit in the new array
+            if (numChannels < nChannels)
+            {
+                for (int i=0; i<numChannels; ++i)
+                {
+                    newChannels[i] = channels[i];
+                }
+                for (int i=numChannels; i<nChannels; ++i)
+                {
+                    newChannels[i] = new Channel(Name + "-" + i.ToString(), this, Channel.ChannelType.COUNT_RATE, 0);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < nChannels; ++i)
+                {
+                    newChannels[i] = channels[i];
+                }
+            }
             numChannels = nChannels;
-            channels = new Channel[numChannels];
-            for (int i = 0; i < numChannels; i++)
-                channels[i] = new Channel(Name + "-" + i.ToString(), this, Channel.ChannelType.COUNT_RATE, 0);
+            channels = newChannels;
             csvParser.NumberOfColumns = numChannels + 1;
             return ReturnCode.SUCCESS;
         }
