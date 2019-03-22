@@ -25,6 +25,8 @@ using System.Windows.Forms.DataVisualization.Charting;
 
 using System.Windows.Media;
 
+using Omniscient.MainDialogs;
+
 namespace Omniscient
 {
     /// <summary>
@@ -45,8 +47,12 @@ namespace Omniscient
         private bool bootingUp = false;
 
         private bool[] logScale;
+        private bool[] autoScale;
         double[] chartMaxPointValue;
         double[] chartMinPointValue;
+
+        double[] chartMinY;
+        double[] chartMaxY;
 
         // The following are used to show a time marker when a user clicks a chart
         Chart activeChart;
@@ -75,7 +81,12 @@ namespace Omniscient
             }
 
             logScale = new bool[N_CHARTS];
-            for (int c = 0; c < N_CHARTS; c++) logScale[c] = false;
+            autoScale = new bool[N_CHARTS];
+            for (int c = 0; c < N_CHARTS; c++)
+            {
+                logScale[c] = false;
+                autoScale[c] = true;
+            }
             events = new List<Event>();
             InitializeComponent();
             Core.ViewChanged += Core_OnViewChanged;
@@ -335,6 +346,8 @@ namespace Omniscient
         /// InitializeCharts is called when the form is loaded. </summary>
         private void InitializeCharts()
         {
+            chartMinY = new double[N_CHARTS];
+            chartMaxY = new double[N_CHARTS];
             chartMaxPointValue = new double[N_CHARTS];
             chartMinPointValue = new double[N_CHARTS];
             for (int chartNum = 0; chartNum < N_CHARTS; chartNum++)
@@ -363,6 +376,8 @@ namespace Omniscient
                 Series series = chart.Series[0];
                 
                 series.Points.Clear();
+                chartMinY[chartNum] = 0;
+                chartMaxY[chartNum] = 0;
                 chartMaxPointValue[chartNum] = 0;
                 chartMinPointValue[chartNum] = 0;
             }
@@ -521,15 +536,15 @@ namespace Omniscient
                     series.Points.ResumeUpdates();
                 }
             }
-
-            AutoScaleYAxes(chartNum);
+            if(autoScale[chartNum]) AutoScaleYAxes(chartNum);
+            chart.ChartAreas[0].AxisY.Minimum = chartMinY[chartNum];
+            chart.ChartAreas[0].AxisY.Maximum = chartMaxY[chartNum];
             chart.ResumeLayout();
             System.Windows.Forms.Cursor.Current = Cursors.Default;
         }
 
         private void AutoScaleYAxes(int chartNum)
         {
-            Chart chart = GetChart(chartNum);
             double maxOrderOfMagnitude = Math.Pow(10,Math.Floor(Math.Log10(chartMaxPointValue[chartNum])));
             double firstDigit = Math.Floor(chartMaxPointValue[chartNum] / maxOrderOfMagnitude);
             double maxMinRatio = chartMaxPointValue[chartNum] / chartMinPointValue[chartNum];
@@ -537,13 +552,13 @@ namespace Omniscient
             if(logScale[chartNum])
             {
                 double minOrderOfMagnitude = Math.Pow(10, Math.Floor(Math.Log10(chartMinPointValue[chartNum])));
-                chart.ChartAreas[0].AxisY.Minimum = minOrderOfMagnitude;
-                chart.ChartAreas[0].AxisY.Maximum = maxOrderOfMagnitude * 10;
+                chartMinY[chartNum] = minOrderOfMagnitude;
+                chartMaxY[chartNum] = maxOrderOfMagnitude * 10;
             }
             else if(maxMinRatio > 2)
             {
-                chart.ChartAreas[0].AxisY.Minimum = 0;
-                chart.ChartAreas[0].AxisY.Maximum = (firstDigit+1)*maxOrderOfMagnitude;
+                chartMinY[chartNum] = 0;
+                chartMaxY[chartNum] = (firstDigit+1)*maxOrderOfMagnitude;
             }
             else
             {
@@ -551,9 +566,8 @@ namespace Omniscient
                 double maxMinDifference = chartMaxPointValue[chartNum] - chartMinPointValue[chartNum];
                 double diffOoM = Math.Pow(10, Math.Floor(Math.Log10(maxMinDifference)));
 
-
-                chart.ChartAreas[0].AxisY.Minimum = Math.Floor(chartMinPointValue[chartNum] / (diffOoM)) * diffOoM;
-                chart.ChartAreas[0].AxisY.Maximum = Math.Ceiling(chartMaxPointValue[chartNum] / (diffOoM)) * diffOoM;
+                chartMinY[chartNum] = Math.Floor(chartMinPointValue[chartNum] / (diffOoM)) * diffOoM;
+                chartMaxY[chartNum] = Math.Ceiling(chartMaxPointValue[chartNum] / (diffOoM)) * diffOoM;
             }
         }
 
@@ -1082,19 +1096,41 @@ namespace Omniscient
             for (int i = 0; i < N_CHARTS; i++)
                 if (activeChart == GetChart(i)) chartNum = i;
 
+            // Set Y-Axis range
+            MenuItem ChartOptionsMenuItem = new MenuItem("Set Y-Axis Range");
+            ChartOptionsMenuItem.Tag = chartNum;
+            ChartOptionsMenuItem.Click += ChartOptionsMenuItem_Click;
+            chartMenu.MenuItems.Add(ChartOptionsMenuItem);
+
+            // Toggle auto scale
+            if (autoScale[chartNum])
+            {
+                MenuItem menuItem = new MenuItem("Do not auto-scale Y-Axis");
+                menuItem.Tag = chartNum;
+                menuItem.Click += ToggleYAxisAutoScale;
+                chartMenu.MenuItems.Add(menuItem);
+            }
+            else
+            {
+                MenuItem menuItem = new MenuItem("Auto-scale Y-Axis");
+                menuItem.Tag = chartNum;
+                menuItem.Click += ToggleYAxisAutoScale;
+                chartMenu.MenuItems.Add(menuItem);
+            }
+
             // Toggle log scale
             if (logScale[chartNum])
             {
                 MenuItem menuItem = new MenuItem("Switch to linear Y-Axis");
                 menuItem.Tag = chartNum;
-                menuItem.Click += ToggleYAxisScale;
+                menuItem.Click += ToggleYAxisLogScale;
                 chartMenu.MenuItems.Add(menuItem);
             }
             else
             {
                 MenuItem menuItem = new MenuItem("Switch to log Y-Axis");
                 menuItem.Tag = chartNum;
-                menuItem.Click += ToggleYAxisScale;
+                menuItem.Click += ToggleYAxisLogScale;
                 chartMenu.MenuItems.Add(menuItem);
             }
 
@@ -1156,7 +1192,29 @@ namespace Omniscient
             chartMenu.Show(activeChart, new Point((int)mouseX, (int)mouseY));
         }
 
-        private void ToggleYAxisScale(object sender, EventArgs e)
+        private void ChartOptionsMenuItem_Click(object sender, EventArgs e)
+        {
+            MenuItem menuItem = (MenuItem)sender;
+            int chartNum = (int)menuItem.Tag;
+            ChartOptionsDialog chartOptionsDialog = new ChartOptionsDialog(chartNum, chartMinY[chartNum], chartMaxY[chartNum]);
+            if (chartOptionsDialog.ShowDialog() == DialogResult.OK)
+            {
+                chartMinY[chartNum] = chartOptionsDialog.YMin;
+                chartMaxY[chartNum] = chartOptionsDialog.YMax;
+                autoScale[chartNum] = false;
+                UpdateChart(chartNum);
+            }
+        }
+
+        private void ToggleYAxisAutoScale(object sender, EventArgs e)
+        {
+            MenuItem menuItem = (MenuItem)sender;
+            int chartNum = (int)menuItem.Tag;
+            autoScale[chartNum] = !autoScale[chartNum];
+            UpdateChart(chartNum);
+        }
+
+        private void ToggleYAxisLogScale(object sender, EventArgs e)
         {
             MenuItem menuItem = (MenuItem)sender;
             int chartNum = (int)menuItem.Tag;

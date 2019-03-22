@@ -117,6 +117,12 @@
       <DependentUpon>DeclarationEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="IOUtility.cs" />
+    <Compile Include="MainDialogs\ChartOptionsDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainDialogs\ChartOptionsDialog.Designer.cs">
+      <DependentUpon>ChartOptionsDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="OmniscientCore.cs" />
     <Compile Include="Persister.cs" />
     <Compile Include="EventManagerForm\DataCompilerPanel.cs">
@@ -283,6 +289,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Inspectrum.resx">
       <DependentUpon>Inspectrum.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainDialogs\ChartOptionsDialog.resx">
+      <DependentUpon>ChartOptionsDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SiteManagerForm\InstTypeDialog.resx">
       <DependentUpon>InstTypeDialog.cs</DependentUpon>
