@@ -25,6 +25,8 @@ namespace Omniscient
             }
         }
 
+        private List<InstrumentCache> InstrumentCaches;
+
         private object TasksLock = new object();
         private LinkedList<CacheTask> Tasks;
         private CacheTask TaskAtHand;
@@ -39,8 +41,22 @@ namespace Omniscient
             // Make sure a Cache directory exists
             if (!Directory.Exists("Cache")) Directory.CreateDirectory("Cache");
 
+            InstrumentCaches = new List<InstrumentCache>();
+
             Tasks = new LinkedList<CacheTask>();
             TaskAtHand = null;
+        }
+
+        public void AddInstrumentCache(InstrumentCache cache)
+        {
+            InstrumentCaches.Add(cache);
+            AddUrgentTask(new InstrumentCacheScanTask(cache));
+            
+        }
+
+        public void RemoveInstrumentCache(InstrumentCache cache)
+        {
+            InstrumentCaches.Remove(cache);
         }
 
         /// <summary>
@@ -91,8 +107,8 @@ namespace Omniscient
                     if (TaskAtHand != null)
                     {
                         TaskAtHand.Abort();
-                        break;
                     }
+                    break;
                 }
 
                 if(TaskAtHand == null)
@@ -118,8 +134,8 @@ namespace Omniscient
                             break;
                     }
                 }
-                State = CacheManagerState.Stopped;
             }
+            State = CacheManagerState.Stopped;
         }
 
 
@@ -134,13 +150,20 @@ namespace Omniscient
                 {
                     Tasks.Remove(TaskAtHand);
                 }
-                TaskAtHand = Tasks.First.Value;
+                if (Tasks.Count > 0)
+                {
+                    TaskAtHand = Tasks.First.Value;
+                }
+                else
+                {
+                    TaskAtHand = null;
+                }
             }
-            TaskAtHand.Start();
+            TaskAtHand?.Start();
         }
     }
 
-    public class CacheTask
+    public abstract class CacheTask
     {
         public enum CacheTaskState { NotStarted, Running, Stopping, Aborted, Complete };
         private CacheTaskState _state;
@@ -156,6 +179,7 @@ namespace Omniscient
                 }
             }
         }
+        public Thread TaskThread { get; protected set; }
 
         /// <summary>
         /// Invoked when task is complete.
@@ -174,7 +198,11 @@ namespace Omniscient
 
         public void Start()
         {
-
+            State = CacheTaskState.Running;
+            TaskThread = new Thread(RunTask);
+            TaskThread.Start();
         }
+
+        public abstract void RunTask();
     }
 }

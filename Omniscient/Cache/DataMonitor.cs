@@ -146,7 +146,7 @@ namespace Omniscient
             List<FileScan> entries = new List<FileScan>(files.Length);
             foreach (string file in files)
             {
-                if (Path.GetFileName(file).StartsWith(FilePrefix) && file.EndsWith(FileSuffix))
+                if (Path.GetFileName(file).ToLower().StartsWith(FilePrefix.ToLower()) && file.ToLower().EndsWith(FileSuffix.ToLower()))
                 {
                     entries.Add(ScanFile(file));
                 }

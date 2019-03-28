@@ -48,6 +48,8 @@ namespace Omniscient
                 base.Name = value;
             }
         }
+
+        public InstrumentCache Cache { get; private set; }
 		
         public string InstrumentType { get; protected set; }
         protected string dataFolder;
@@ -78,6 +80,7 @@ namespace Omniscient
             virtualChannels = new List<VirtualChannel>();
             dataFileNames = new string[0];
             dataFileTimes = new DateTime[0];
+            Cache = new InstrumentCache(this);
         }
 
         public void LoadVirtualChannels()

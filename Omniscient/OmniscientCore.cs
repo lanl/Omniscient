@@ -15,6 +15,8 @@ namespace Omniscient
 
         public event EventHandler ViewChanged;
 
+        CacheManager Cache;
+
         /// <summary>
         /// Contains all of the Sites in the instance of Omniscient
         /// </summary>
@@ -92,6 +94,9 @@ namespace Omniscient
                 ErrorMessage = "Warning: Bad trouble loading the site manager!";
             }
 
+            Cache = new CacheManager();
+            Cache.Start();
+
             ActiveInstruments = new List<Instrument>();
 
             GlobalStart = DateTime.Today.AddDays(-1);
@@ -103,6 +108,7 @@ namespace Omniscient
         {
             ActiveInstruments.Add(instrument);
             instrument.LoadData(new DateTime(1900, 1, 1), new DateTime(2100, 1, 1));
+            Cache.AddInstrumentCache(instrument.Cache);
             UpdateGlobalStartEnd();
         }
 
@@ -110,6 +116,7 @@ namespace Omniscient
         {
             ActiveInstruments.Remove(instrument);
             instrument.ClearData();
+            Cache.RemoveInstrumentCache(instrument.Cache);
             UpdateGlobalStartEnd();
         }
 
@@ -297,6 +304,11 @@ namespace Omniscient
                 }
                 ChangeView(tempViewStart, tempViewEnd);
             }
+        }
+
+        public void Shutdown()
+        {
+            Cache.Stop();
         }
     }
 

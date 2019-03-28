@@ -66,7 +66,6 @@ namespace Omniscient
         private double markerValue = 0;
 
         List<Event> events;
-        CacheManager cache;
         ///////////////////////////////////////////////////////////////////////
 
         /// <summary>
@@ -79,7 +78,6 @@ namespace Omniscient
             {
                 MessageBox.Show(Core.ErrorMessage);
             }
-            cache = new CacheManager();
             logScale = new bool[N_CHARTS];
             autoScale = new bool[N_CHARTS];
             for (int c = 0; c < N_CHARTS; c++)
@@ -1727,6 +1725,11 @@ namespace Omniscient
             {
                 controlPressed = false;
             }
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Core.Shutdown();
         }
     }
 }
