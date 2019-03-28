@@ -136,7 +136,8 @@ namespace Omniscient
         /// </summary>
         public virtual void Delete()
         {
-            foreach (Persister child in Children) child.Delete();
+            int nChildren = Children.Count();
+            for (int i = nChildren-1;  i>=0; i--) Children[i].Delete();
             if (Parent != null)
             {
                 Parent.Children.Remove(this);
