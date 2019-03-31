@@ -21,8 +21,8 @@ namespace Omniscient
     public class InstrumentCache
     {
         public Instrument Instrument { get; private set; }
-        public DataMonitor Monitor;
-        public List<FileScan> Scans;
+        public DataMonitor TenMinuteMonitor;
+        public List<FileScan> TenMinuteScans;
         public long MemoryUsed { get; private set; }
         public long MemoryAllocation { get; set; }
         LinkedList<DayCache> Days { get; set; }
@@ -39,9 +39,9 @@ namespace Omniscient
             if (!Directory.Exists("Cache")) Directory.CreateDirectory("Cache");
             if (!Directory.Exists(cacheDirectory)) Directory.CreateDirectory(cacheDirectory);
 
-            Monitor = new DataMonitor();
-            Monitor.FileListFile = cacheDirectory + "\\FileListFile.csv";
-            Scans = new List<FileScan>();
+            TenMinuteMonitor = new DataMonitor();
+            TenMinuteMonitor.FileListFile = cacheDirectory + "\\FileListFile.csv";
+            TenMinuteScans = new List<FileScan>();
 
             Days = new LinkedList<DayCache>();
         }
@@ -51,20 +51,42 @@ namespace Omniscient
     {
         InstrumentCache Cache;
 
-        public InstrumentCacheScanTask(InstrumentCache cache) : base()
+        public InstrumentCacheScanTask(CacheManager manager, InstrumentCache cache) : base(manager)
         {
             Cache = cache;
         }
 
         public override void RunTask()
         {
-            Cache.Monitor.DirectoryToMonitor = Cache.Instrument.GetDataFolder();
-            Cache.Monitor.ScanRecursively = Cache.Instrument.IncludeSubDirectories;
-            Cache.Monitor.LazyMode = true;
-            Cache.Monitor.FilePrefix = Cache.Instrument.GetFilePrefix();
-            Cache.Monitor.FileSuffix = Cache.Instrument.FileExtension;
-            Cache.Monitor.LoadFileListFile();
-            Cache.Scans = Cache.Monitor.Scan();
+            if (Cache.Instrument.GetChannels()[0].GetChannelType() != Channel.ChannelType.COUNT_RATE) return;
+            Cache.TenMinuteMonitor.DirectoryToMonitor = Cache.Instrument.GetDataFolder();
+            Cache.TenMinuteMonitor.ScanRecursively = Cache.Instrument.IncludeSubDirectories;
+            Cache.TenMinuteMonitor.LazyMode = true;
+            Cache.TenMinuteMonitor.FilePrefix = Cache.Instrument.GetFilePrefix();
+            Cache.TenMinuteMonitor.FileSuffix = Cache.Instrument.FileExtension;
+            Cache.TenMinuteMonitor.LoadFileListFile();
+            Cache.TenMinuteScans = Cache.TenMinuteMonitor.Scan();
+            foreach(FileScan scan in Cache.TenMinuteScans)
+            {
+                Manager.AddNonurgentTask(new GenerateFileCache(Manager, Cache, scan));
+            }
+            State = CacheTaskState.Complete;
+        }
+    }
+
+    public class GenerateFileCache : CacheTask
+    {
+        FileScan Scan;
+        InstrumentCache ICache;
+
+        public GenerateFileCache(CacheManager manager, InstrumentCache instrumentCache, FileScan scan) : base(manager)
+        {
+            ICache = instrumentCache;
+            Scan = scan;
+        }
+        public override void RunTask()
+        {
+
             State = CacheTaskState.Complete;
         }
     }

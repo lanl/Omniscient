@@ -50,8 +50,7 @@ namespace Omniscient
         public void AddInstrumentCache(InstrumentCache cache)
         {
             InstrumentCaches.Add(cache);
-            AddUrgentTask(new InstrumentCacheScanTask(cache));
-            
+            AddUrgentTask(new InstrumentCacheScanTask(this, cache));
         }
 
         public void RemoveInstrumentCache(InstrumentCache cache)
@@ -186,8 +185,11 @@ namespace Omniscient
         /// </summary>
         public event EventHandler OnComplete;
 
-        public CacheTask()
+        public CacheManager Manager { get; private set; }
+
+        public CacheTask(CacheManager manager)
         {
+            Manager = manager;
             State = CacheTaskState.NotStarted;
         }
 
