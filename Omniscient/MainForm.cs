@@ -455,8 +455,8 @@ namespace Omniscient
                 {
                     Channel chan = chanPan.GetChannel();
 
-                    List<DateTime> dates = chan.GetTimeStamps();
-                    List<double> vals = chan.GetValues();
+                    List<DateTime> dates = chan.GetTimeStamps(ChannelCompartment.View);
+                    List<double> vals = chan.GetValues(ChannelCompartment.View);
 
                     Series series = new Series(chan.Name);
                     series.Points.SuspendUpdates();
@@ -465,7 +465,7 @@ namespace Omniscient
                     
                     if (chan.GetChannelType() == Channel.ChannelType.DURATION_VALUE)
                     {
-                        List<TimeSpan> durations = chan.GetDurations();
+                        List<TimeSpan> durations = chan.GetDurations(ChannelCompartment.View);
                         if (logScale[chartNum])
                         {
                             for (int i = 0; i < dates.Count; ++i)
@@ -1162,8 +1162,8 @@ namespace Omniscient
                     if (plotChan)
                     {
                         // Determine whether the user clicked within a measurement
-                        List<DateTime> timeStamps = chan.GetTimeStamps();
-                        List<TimeSpan> durations = chan.GetDurations();
+                        List<DateTime> timeStamps = chan.GetTimeStamps(ChannelCompartment.View);
+                        List<TimeSpan> durations = chan.GetDurations(ChannelCompartment.View);
                         for(int meas = 0; meas < timeStamps.Count(); meas++)
                         {
                             if (timeStamps[meas] <= mouseTime && mouseTime <= timeStamps[meas] + durations[meas])
@@ -1171,14 +1171,14 @@ namespace Omniscient
                                 if (chan.GetInstrument() is MCAInstrument)
                                 {
                                     MenuItem menuItem = new MenuItem("View " + chan.Name + " in Inspectrum");
-                                    menuItem.Tag = chan.GetFiles()[meas].FileName;
+                                    menuItem.Tag = chan.GetFiles(ChannelCompartment.View)[meas].FileName;
                                     menuItem.Click += PlotSpectrumMenuItem_Click;
                                     chartMenu.MenuItems.Add(menuItem);
                                 }
                                 else if(chan.GetInstrument() is DeclarationInstrument)
                                 {
                                     MenuItem menuItem = new MenuItem("View " + chan.Name + " in Declaration Editor");
-                                    menuItem.Tag = chan.GetFiles()[meas].FileName;
+                                    menuItem.Tag = chan.GetFiles(ChannelCompartment.View)[meas].FileName;
                                     menuItem.Click += DeclarationMenuItem_Click;
                                     chartMenu.MenuItems.Add(menuItem);
                                 }
@@ -1630,11 +1630,11 @@ namespace Omniscient
                 {
                     Channel ch = chanPan.GetChannel();
                     boxData += "--" + ch.Name + "--\n";
-                    boxData += "μ:\t" + ch.GetAverage(start, end).ToString("G6") + "\n";
-                    boxData += "σ:\t" + ch.GetStandardDeviation(start, end).ToString("G6") + "\n";
-                    boxData += "Max:\t" + ch.GetMax(start, end).ToString("G6") + "\n";
-                    boxData += "Min:\t" + ch.GetMin(start, end).ToString("G6") + "\n";
-                    boxData += "\n";
+                    boxData += "μ:\t" + ch.GetAverage(ChannelCompartment.View, start, end).ToString("G6") + "\n";
+                    boxData += "σ:\t" + ch.GetStandardDeviation(ChannelCompartment.View, start, end).ToString("G6") + "\n";
+                    boxData += "Max:\t" + ch.GetMax(ChannelCompartment.View, start, end).ToString("G6") + "\n";
+                    boxData += "Min:\t" + ch.GetMin(ChannelCompartment.View, start, end).ToString("G6") + "\n";
+					boxData += "\n";
                 }
             }
         }

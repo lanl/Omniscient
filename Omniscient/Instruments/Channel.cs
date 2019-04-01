@@ -20,18 +20,21 @@ using System.Xml;
 
 namespace Omniscient
 {
+    public enum ChannelCompartment { View=0, Process=1};
     public class Channel : Persister
     {
+        private const int N_COMPARTMENTS = 2;
+
         public override string Species { get { return "Channel"; } }
 
         public enum ChannelType { COUNT_RATE, DURATION_VALUE, GAMMA_SPECTRUM, VIDEO};
 
         protected Instrument instrument;
         protected ChannelType channelType;
-        protected List<DateTime> timeStamps;
-        protected List<TimeSpan> durations;
-        protected List<double> values;
-        protected List<DataFile> files;
+        protected List<DateTime>[] timeStamps;
+        protected List<TimeSpan>[] durations;
+        protected List<double>[] values;
+        protected List<DataFile>[] files;
 
         /// <summary>
         /// A hidden Channel does not appear in the MainWindow ChannelPanel 
@@ -45,135 +48,143 @@ namespace Omniscient
 
 
             channelType = newType;
-            timeStamps = new List<DateTime>();
-            durations = new List<TimeSpan>();
-            values = new List<double>();
-            files = new List<DataFile>();
+            timeStamps = new List<DateTime>[N_COMPARTMENTS];
+            durations = new List<TimeSpan>[N_COMPARTMENTS];
+            values = new List<double>[N_COMPARTMENTS];
+            files = new List<DataFile>[N_COMPARTMENTS];
+            for (int c = 0; c<N_COMPARTMENTS; c++)
+            {
+                timeStamps[c] = new List<DateTime>();
+                durations[c] = new List<TimeSpan>();
+                values[c] = new List<double>();
+                files[c] = new List<DataFile>();
+            }
+
             Hidden = false;
         }
 
-        public void AddDataPoint(DateTime time, double value, DataFile file)
+        public void AddDataPoint(ChannelCompartment compartment, DateTime time, double value, DataFile file)
         {
-            timeStamps.Add(time);
-            values.Add(value);
-            files.Add(file);
+            timeStamps[(int)compartment].Add(time);
+            values[(int)compartment].Add(value);
+            files[(int)compartment].Add(file);
         }
 
-        public void AddDataPoint(DateTime time, double value, TimeSpan duration, DataFile file)
+        public void AddDataPoint(ChannelCompartment compartment, DateTime time, double value, TimeSpan duration, DataFile file)
         {
-            timeStamps.Add(time);
-            values.Add(value);
-            durations.Add(duration);
-            files.Add(file);
+            timeStamps[(int)compartment].Add(time);
+            values[(int)compartment].Add(value);
+            durations[(int)compartment].Add(duration);
+            files[(int)compartment].Add(file);
         }
 
-        public void ClearData()
+        public void ClearData(ChannelCompartment compartment)
         {
-            timeStamps = new List<DateTime>();
-            values = new List<double>();
-            files = new List<DataFile>();
+            timeStamps[(int)compartment] = new List<DateTime>();
+            values[(int)compartment] = new List<double>();
+            files[(int)compartment] = new List<DataFile>();
             if (channelType == ChannelType.DURATION_VALUE)
-                durations = new List<TimeSpan>();
+                durations[(int)compartment] = new List<TimeSpan>();
         }
 
-        public void Sort()
+        public void Sort(ChannelCompartment compartment)
         {
-            DateTime[] stampArray = timeStamps.ToArray();
-            double[] valueArray = values.ToArray();
-            DataFile[] fileArray = files.ToArray();
+            DateTime[] stampArray = timeStamps[(int)compartment].ToArray();
+            double[] valueArray = values[(int)compartment].ToArray();
+            DataFile[] fileArray = files[(int)compartment].ToArray();
 
             if (channelType == ChannelType.DURATION_VALUE)
             {
-                TimeSpan[] durationArray = durations.ToArray();
+                TimeSpan[] durationArray = durations[(int)compartment].ToArray();
                 Array.Sort(stampArray.ToArray(), durationArray);
-                durations = durationArray.ToList();
+                durations[(int)compartment] = durationArray.ToList();
             }
             Array.Sort(stampArray.ToArray(), fileArray);
             Array.Sort(stampArray, valueArray);
 
-            timeStamps = stampArray.ToList();
-            values = valueArray.ToList();
-            files = fileArray.ToList();
+            timeStamps[(int)compartment] = stampArray.ToList();
+            values[(int)compartment] = valueArray.ToList();
+            files[(int)compartment] = fileArray.ToList();
         }
 
-        public List<DataFile> GetFiles(DateTime start, DateTime end)
+        public List<DataFile> GetFiles(ChannelCompartment compartment, DateTime start, DateTime end)
         {
             List<DataFile> outFiles = new List<DataFile>();
             for(int i=0; i<files.Count(); i++)
             {
-                if(timeStamps[i] >= start && timeStamps[i] <= end)
+                if(timeStamps[(int)compartment][i] >= start && timeStamps[(int)compartment][i] <= end)
                 {
-                    if (!outFiles.Contains(files[i])) outFiles.Add(files[i]);
+                    if (!outFiles.Contains(files[(int)compartment][i])) outFiles.Add(files[(int)compartment][i]);
                 }
             }
             return outFiles;
         }
         
         public ChannelType GetChannelType() { return channelType; }
-        public List<DateTime> GetTimeStamps() { return timeStamps; }
-        public List<TimeSpan> GetDurations() { return durations; }
-        public List<double> GetValues() { return values; }
-        public List<DataFile> GetFiles() { return files; }
+        public List<DateTime> GetTimeStamps(ChannelCompartment compartment) { return timeStamps[(int)compartment]; }
+        public List<TimeSpan> GetDurations(ChannelCompartment compartment) { return durations[(int)compartment]; }
+        public List<double> GetValues(ChannelCompartment compartment) { return values[(int)compartment]; }
+        public List<DataFile> GetFiles(ChannelCompartment compartment) { return files[(int)compartment]; }
         public Instrument GetInstrument() { return instrument; }
 
-        public double GetAverage(DateTime start, DateTime end)
+        public double GetAverage(ChannelCompartment compartment, DateTime start, DateTime end)
         {
-            int count = timeStamps.Count;
-            int startIndex = FindFirstIndexAfter(start);
-            int endIndex = FindFirstIndexAfter(end);
+            int count = timeStamps[(int)compartment].Count;
+            int startIndex = FindFirstIndexAfter(compartment, start);
+            int endIndex = FindFirstIndexAfter(compartment, end);
             if (startIndex >= count || endIndex == 0 || startIndex>=endIndex) return double.NaN;
 
             double sum = 0;
             for (int i=startIndex; i<endIndex; ++i)
             {
-                sum += values[i];
+                sum += values[(int)compartment][i];
             }
             return sum / (endIndex - startIndex);
         }
 
-        public double GetStandardDeviation(DateTime start, DateTime end)
+        public double GetStandardDeviation(ChannelCompartment compartment, DateTime start, DateTime end)
         {
-            int count = timeStamps.Count;
-            int startIndex = FindFirstIndexAfter(start);
-            int endIndex = FindFirstIndexAfter(end);
+            int count = timeStamps[(int)compartment].Count;
+            int startIndex = FindFirstIndexAfter(compartment, start);
+            int endIndex = FindFirstIndexAfter(compartment, end);
             if (startIndex >= count || endIndex == 0 || startIndex >= endIndex) return double.NaN;
 
-            double average = GetAverage(start, end);
+            double average = GetAverage(compartment, start, end);
             double sumSquareDeviations = 0;
             for (int i=startIndex; i<endIndex; i++)
             {
-                sumSquareDeviations += (values[i] - average) * (values[i] - average);
+                sumSquareDeviations += (values[(int)compartment][i] - average) * (values[(int)compartment][i] - average);
             }
 
             return Math.Sqrt(sumSquareDeviations / (endIndex - startIndex));
         }
 
-        public double GetMax(DateTime start, DateTime end)
+        public double GetMax(ChannelCompartment compartment, DateTime start, DateTime end)
         {
-            int count = timeStamps.Count;
-            int startIndex = FindFirstIndexAfter(start);
-            int endIndex = FindFirstIndexAfter(end);
+            int count = timeStamps[(int)compartment].Count;
+            int startIndex = FindFirstIndexAfter(compartment, start);
+            int endIndex = FindFirstIndexAfter(compartment, end);
             if (startIndex >= count || endIndex == 0 || startIndex >= endIndex) return double.NaN;
 
             double max = double.MinValue;
             for (int i=startIndex; i<endIndex; i++)
             {
-                if (values[i] > max) max = values[i];
+                if (values[(int)compartment][i] > max) max = values[(int)compartment][i];
             }
             return max;
         }
 
-        public double GetMin(DateTime start, DateTime end)
+        public double GetMin(ChannelCompartment compartment, DateTime start, DateTime end)
         {
-            int count = timeStamps.Count;
-            int startIndex = FindFirstIndexAfter(start);
-            int endIndex = FindFirstIndexAfter(end);
+            int count = timeStamps[(int)compartment].Count;
+            int startIndex = FindFirstIndexAfter(compartment, start);
+            int endIndex = FindFirstIndexAfter(compartment, end);
             if (startIndex >= count || endIndex == 0 || startIndex >= endIndex) return double.NaN;
 
             double min = double.MaxValue;
             for (int i = startIndex; i < endIndex; i++)
             {
-                if (values[i] < min) min = values[i];
+                if (values[(int)compartment][i] < min) min = values[(int)compartment][i];
             }
             return min;
         }
@@ -184,11 +195,11 @@ namespace Omniscient
         /// <remarks>Binary search FTW</remarks>
         /// <param name="dateTime"></param>
         /// <returns></returns>
-        public int FindFirstIndexAfter(DateTime dateTime)
+        public int FindFirstIndexAfter(ChannelCompartment compartment, DateTime dateTime)
         {
-            int count = timeStamps.Count;
-            if (count == 0 || timeStamps[0] > dateTime) return 0;
-            if (dateTime > timeStamps[count - 1]) return count;
+            int count = timeStamps[(int)compartment].Count;
+            if (count == 0 || timeStamps[(int)compartment][0] > dateTime) return 0;
+            if (dateTime > timeStamps[(int)compartment][count - 1]) return count;
 
             int lastSmallerIndex = 0;
             int lastBiggerIndex = count - 1;
@@ -196,10 +207,10 @@ namespace Omniscient
             int nextIndex;
             while (true)
             {
-                if (timeStamps[index] > dateTime)
+                if (timeStamps[(int)compartment][index] > dateTime)
                 {
                     // Go down
-                    if (timeStamps[index - 1] < dateTime) return index;
+                    if (timeStamps[(int)compartment][index - 1] < dateTime) return index;
                     nextIndex = (lastSmallerIndex + index) / 2;
                     lastBiggerIndex = index;
                     index = nextIndex;
@@ -207,7 +218,7 @@ namespace Omniscient
                 else
                 {
                     // Go up
-                    if (timeStamps[index + 1] > dateTime) return index + 1;
+                    if (timeStamps[(int)compartment][index + 1] > dateTime) return index + 1;
                     nextIndex = (lastBiggerIndex + index) / 2;
                     lastSmallerIndex = index;
                     index = nextIndex;

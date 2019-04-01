@@ -47,11 +47,12 @@ namespace Omniscient
 
         public override List<Event> GenerateEvents(DateTime start, DateTime end)
         {
-            List<DateTime> times = channel.GetTimeStamps();
-            List<double> vals = channel.GetValues();
+            channel.GetInstrument().LoadData(ChannelCompartment.Process, start, end);
+            List<DateTime> times = channel.GetTimeStamps(ChannelCompartment.Process);
+            List<double> vals = channel.GetValues(ChannelCompartment.Process);
             List<TimeSpan> durations = null;
             if(channel.GetChannelType() == Channel.ChannelType.DURATION_VALUE)
-                durations = channel.GetDurations();
+                durations = channel.GetDurations(ChannelCompartment.Process);
             events = new List<Event>();
             Event eve = new Event(this);        // Really shouldn't need to make an event here but visual studio freaks out without it
             DateTime maxTime = new DateTime();

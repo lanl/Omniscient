@@ -57,7 +57,7 @@ namespace Omniscient
             return DateTime.MinValue;
         }
 
-        public override ReturnCode IngestFile(string fileName)
+        public override ReturnCode IngestFile(ChannelCompartment compartment, string fileName)
         {
             ReturnCode returnCode = isrParser.ParseFile(fileName);
             DataFile dataFile = new DataFile(fileName);
@@ -66,20 +66,20 @@ namespace Omniscient
             for (int r = 0; r < numRecords; ++r)
             {
                 time = isrParser.ISRTimeToDateTime(isrParser.GetRecord(r).time);
-                channels[TOTALS1].AddDataPoint(time, isrParser.GetRecord(r).totals1, dataFile);
-                channels[TOTALS2].AddDataPoint(time, isrParser.GetRecord(r).totals2, dataFile);
-                channels[TOTALS3].AddDataPoint(time, isrParser.GetRecord(r).totals3, dataFile);
-                channels[REALS_PLUS_ACC].AddDataPoint(time, isrParser.GetRecord(r).realsPlusAccidentals, dataFile);
-                channels[ACC].AddDataPoint(time, isrParser.GetRecord(r).accidentals, dataFile);
+                channels[TOTALS1].AddDataPoint(compartment, time, isrParser.GetRecord(r).totals1, dataFile);
+                channels[TOTALS2].AddDataPoint(compartment, time, isrParser.GetRecord(r).totals2, dataFile);
+                channels[TOTALS3].AddDataPoint(compartment, time, isrParser.GetRecord(r).totals3, dataFile);
+                channels[REALS_PLUS_ACC].AddDataPoint(compartment, time, isrParser.GetRecord(r).realsPlusAccidentals, dataFile);
+                channels[ACC].AddDataPoint(compartment, time, isrParser.GetRecord(r).accidentals, dataFile);
             }
             return ReturnCode.SUCCESS;
         }
 
-        public override void ClearData()
+        public override void ClearData(ChannelCompartment compartment)
         {
             foreach (Channel ch in channels)
             {
-                ch.ClearData();
+                ch.ClearData(compartment);
             }
         }
 

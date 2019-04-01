@@ -52,7 +52,7 @@ namespace Omniscient
 
         public abstract List<Parameter> GetParameters();
 
-        public abstract void CalculateValues();
+        public abstract void CalculateValues(ChannelCompartment compartment);
 
         public static VirtualChannelHookup GetHookup(string type)
         {
@@ -176,15 +176,15 @@ namespace Omniscient
             Operation = OperationType.Sum;
         }
 
-        public override void CalculateValues()
+        public override void CalculateValues(ChannelCompartment compartment)
         {
-            double[] arrayVals = new double[ChannelA.GetValues().Count];
+            double[] arrayVals = new double[ChannelA.GetValues(compartment).Count];
             if (channelType == ChannelType.DURATION_VALUE)
-                durations = ChannelA.GetDurations();
-            List<double> A = ChannelA.GetValues();
-            List<double> B = ChannelB.GetValues();
+                durations[(int)compartment] = ChannelA.GetDurations(compartment);
+            List<double> A = ChannelA.GetValues(compartment);
+            List<double> B = ChannelB.GetValues(compartment);
 
-            timeStamps = ChannelA.GetTimeStamps();
+            timeStamps[(int)compartment] = ChannelA.GetTimeStamps(compartment);
             
             switch (Operation)
             {
@@ -208,7 +208,7 @@ namespace Omniscient
                             arrayVals[i] = A[i] / B[i];
                     break;
             }
-            values = arrayVals.ToList();
+            values[(int)compartment] = arrayVals.ToList();
         }
 
         public override List<Parameter> GetParameters()
@@ -344,14 +344,14 @@ namespace Omniscient
             Operation = OperationType.Sum;
         }
 
-        public override void CalculateValues()
+        public override void CalculateValues(ChannelCompartment compartment)
         {
-            double[] arrayVals = new double[Channel.GetValues().Count];
+            double[] arrayVals = new double[Channel.GetValues(compartment).Count];
             if (channelType == ChannelType.DURATION_VALUE)
-                durations = Channel.GetDurations();
-            List<double> A = Channel.GetValues();
+                durations[(int)compartment] = Channel.GetDurations(compartment);
+            List<double> A = Channel.GetValues(compartment);
 
-            timeStamps = Channel.GetTimeStamps();
+            timeStamps[(int)compartment] = Channel.GetTimeStamps(compartment);
 
             switch (Operation)
             {
@@ -368,7 +368,7 @@ namespace Omniscient
                         arrayVals[i] = Math.Pow(A[i], Constant);
                     break;
             }
-            values = arrayVals.ToList();
+            values[(int)compartment] = arrayVals.ToList();
         }
 
         public override List<Parameter> GetParameters()
@@ -494,14 +494,14 @@ namespace Omniscient
         }
         public TimeSpan Delay { get; set; }
 
-        public override void CalculateValues()
+        public override void CalculateValues(ChannelCompartment compartment)
         {
-            values = Channel.GetValues();
-            List<DateTime> times = Channel.GetTimeStamps();
+            values[(int)compartment] = Channel.GetValues(compartment);
+            List<DateTime> times = Channel.GetTimeStamps(compartment);
             DateTime[] arrayTimeStamps = new DateTime[times.Count];
             for (int i = 0; i < times.Count; i++)
                 arrayTimeStamps[i] = times[i].AddTicks(Delay.Ticks);
-            timeStamps = arrayTimeStamps.ToList();
+            timeStamps[(int)compartment] = arrayTimeStamps.ToList();
         }
 
         public override List<Parameter> GetParameters()
@@ -592,13 +592,13 @@ namespace Omniscient
         }
         public string File { get; set; }
 
-        public override void CalculateValues()
+        public override void CalculateValues(ChannelCompartment compartment)
         {
             if (channelType == ChannelType.DURATION_VALUE)
-                durations = Channel.GetDurations();
-            timeStamps = Channel.GetTimeStamps();
-            double[] arrayVals = SignalProcessor.Convolve(Channel.GetValues().ToArray(), SignalProcessor.FromFile(File));
-            values = arrayVals.ToList();
+                durations[(int)compartment] = Channel.GetDurations(compartment);
+            timeStamps[(int)compartment] = Channel.GetTimeStamps(compartment);
+            double[] arrayVals = SignalProcessor.Convolve(Channel.GetValues(compartment).ToArray(), SignalProcessor.FromFile(File));
+            values[(int)compartment] = arrayVals.ToList();
         }
 
         public override List<Parameter> GetParameters()
@@ -693,15 +693,15 @@ namespace Omniscient
             Statistic = StatisticType.Max;
         }
 
-        public override void CalculateValues()
+        public override void CalculateValues(ChannelCompartment compartment)
         {
-            double[] arrayVals = new double[Channel.GetValues().Count];
+            double[] arrayVals = new double[Channel.GetValues(compartment).Count];
 
             if (channelType == ChannelType.DURATION_VALUE)
-                durations = Channel.GetDurations();
+                durations[(int)compartment] = Channel.GetDurations(compartment);
 
-            List<double> A = Channel.GetValues();
-            timeStamps = Channel.GetTimeStamps();
+            List<double> A = Channel.GetValues(compartment);
+            timeStamps[(int)compartment] = Channel.GetTimeStamps(compartment);
 
             switch (Statistic)
             {
@@ -777,7 +777,7 @@ namespace Omniscient
                     }
                     break;
             }
-            values = arrayVals.ToList();
+            values[(int)compartment] = arrayVals.ToList();
         }
 
         public override List<Parameter> GetParameters()
@@ -909,15 +909,15 @@ namespace Omniscient
             Operation = OperationType.Sqrt;
         }
 
-        public override void CalculateValues()
+        public override void CalculateValues(ChannelCompartment compartment)
         {
-            double[] arrayVals = new double[Channel.GetValues().Count];
+            double[] arrayVals = new double[Channel.GetValues(compartment).Count];
 
             if (channelType == ChannelType.DURATION_VALUE)
-                durations = Channel.GetDurations();
+                durations[(int)compartment] = Channel.GetDurations(compartment);
 
-            List<double> A = Channel.GetValues();
-            timeStamps = Channel.GetTimeStamps();
+            List<double> A = Channel.GetValues(compartment);
+            timeStamps[(int)compartment] = Channel.GetTimeStamps(compartment);
 
             switch (Operation)
             {
@@ -1016,7 +1016,7 @@ namespace Omniscient
             {
                 if (double.IsInfinity(arrayVals[i])) arrayVals[i] = double.NaN;
             }
-            values = arrayVals.ToList();
+            values[(int)compartment] = arrayVals.ToList();
         }
 
         public override List<Parameter> GetParameters()

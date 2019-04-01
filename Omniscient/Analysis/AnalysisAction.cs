@@ -42,7 +42,7 @@ namespace Omniscient
             List<string> targetFiles = new List<string>();
             for (int dc = 0; dc < dataCompilers.Count(); dc++)
             {
-                List<DataFile> dataFiles = channels[dc].GetFiles(eve.GetStartTime(), eve.GetEndTime());
+                List<DataFile> dataFiles = channels[dc].GetFiles(ChannelCompartment.View, eve.GetStartTime(), eve.GetEndTime());
                 rawFiles = new List<string>();
                 foreach (DataFile dataFile in dataFiles)
                     rawFiles.Add(dataFile.FileName);

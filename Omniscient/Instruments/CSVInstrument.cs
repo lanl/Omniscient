@@ -71,15 +71,15 @@ namespace Omniscient
         }
 
 
-        public override void ClearData()
+        public override void ClearData(ChannelCompartment compartment)
         {
             foreach (Channel ch in channels)
             {
-                ch.ClearData();
+                ch.ClearData(compartment);
             }
         }
 
-        public override ReturnCode IngestFile(string fileName)
+        public override ReturnCode IngestFile(ChannelCompartment compartment, string fileName)
         {
             ReturnCode returnCode = csvParser.ParseFile(fileName);
             DateTime time;
@@ -90,7 +90,7 @@ namespace Omniscient
                 time = csvParser.TimeStamps[r];
                 for (int c = 0; c < numChannels; c++)
                 {
-                    channels[c].AddDataPoint(time, csvParser.Data[r, c], dataFile);
+                    channels[c].AddDataPoint(compartment, time, csvParser.Data[r, c], dataFile);
                 }
             }
             return ReturnCode.SUCCESS;

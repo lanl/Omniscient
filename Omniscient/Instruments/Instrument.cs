@@ -83,10 +83,10 @@ namespace Omniscient
             Cache = new InstrumentCache(this);
         }
 
-        public void LoadVirtualChannels()
+        public void LoadVirtualChannels(ChannelCompartment compartment)
         {
             foreach (VirtualChannel chan in virtualChannels)
-                chan.CalculateValues();
+                chan.CalculateValues(compartment);
         }
 
         public List<string> GetSubdirectories(string directory)
@@ -144,7 +144,7 @@ namespace Omniscient
         }
         public abstract DateTime GetFileDate(string file);
 
-        public virtual void LoadData(DateTime startDate, DateTime endDate)
+        public virtual void LoadData(ChannelCompartment compartment, DateTime startDate, DateTime endDate)
         {
             ReturnCode returnCode = ReturnCode.SUCCESS;
 
@@ -157,17 +157,17 @@ namespace Omniscient
 
             for (int i = startIndex; i <= endIndex; ++i)
             {
-                returnCode = IngestFile(dataFileNames[i]);
+                returnCode = IngestFile(compartment, dataFileNames[i]);
                 
             }
             for (int c = 0; c < numChannels; c++)
             {
-                channels[c].Sort();
+                channels[c].Sort(compartment);
             }
-            LoadVirtualChannels();
+            LoadVirtualChannels(compartment);
         }
-        public abstract ReturnCode IngestFile(string fileName);
-        public abstract void ClearData();
+        public abstract ReturnCode IngestFile(ChannelCompartment compartment, string fileName);
+        public abstract void ClearData(ChannelCompartment compartment);
 
         public void SetDataFolder(string newDataFolder)
         {

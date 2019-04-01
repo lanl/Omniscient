@@ -64,7 +64,7 @@ namespace Omniscient
             return DateTime.MinValue;
         }
 
-        public override ReturnCode IngestFile(string fileName)
+        public override ReturnCode IngestFile(ChannelCompartment compartment, string fileName)
         {
             ReturnCode returnCode = vbfParser.ParseFile(fileName);
             DataFile dataFile = new DataFile(fileName);
@@ -73,23 +73,23 @@ namespace Omniscient
             for (int r = 0; r < numRecords; ++r)
             {
                 time = vbfParser.VBFTimeToDateTime(vbfParser.GetRecord(r).time);
-                channels[data0].AddDataPoint(time, vbfParser.GetRecord(r).data[0], dataFile);
-                channels[data1].AddDataPoint(time, vbfParser.GetRecord(r).data[1], dataFile);
-                channels[data2].AddDataPoint(time, vbfParser.GetRecord(r).data[2], dataFile);
-                channels[data3].AddDataPoint(time, vbfParser.GetRecord(r).data[3], dataFile);
-                channels[data4].AddDataPoint(time, vbfParser.GetRecord(r).data[4], dataFile);
-                channels[data5].AddDataPoint(time, vbfParser.GetRecord(r).data[5], dataFile);
-                channels[data6].AddDataPoint(time, vbfParser.GetRecord(r).data[6], dataFile);
-                channels[data7].AddDataPoint(time, vbfParser.GetRecord(r).data[7], dataFile);
+                channels[data0].AddDataPoint(compartment, time, vbfParser.GetRecord(r).data[0], dataFile);
+                channels[data1].AddDataPoint(compartment, time, vbfParser.GetRecord(r).data[1], dataFile);
+                channels[data2].AddDataPoint(compartment, time, vbfParser.GetRecord(r).data[2], dataFile);
+                channels[data3].AddDataPoint(compartment, time, vbfParser.GetRecord(r).data[3], dataFile);
+                channels[data4].AddDataPoint(compartment, time, vbfParser.GetRecord(r).data[4], dataFile);
+                channels[data5].AddDataPoint(compartment, time, vbfParser.GetRecord(r).data[5], dataFile);
+                channels[data6].AddDataPoint(compartment, time, vbfParser.GetRecord(r).data[6], dataFile);
+                channels[data7].AddDataPoint(compartment, time, vbfParser.GetRecord(r).data[7], dataFile);
             }
             return ReturnCode.SUCCESS;
         }
 
-        public override void ClearData()
+        public override void ClearData(ChannelCompartment compartment)
         {
             foreach (Channel ch in channels)
             {
-                ch.ClearData();
+                ch.ClearData(compartment);
             }
         }
 

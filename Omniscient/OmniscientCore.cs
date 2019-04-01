@@ -107,7 +107,7 @@ namespace Omniscient
         public void ActivateInstrument(Instrument instrument)
         {
             ActiveInstruments.Add(instrument);
-            instrument.LoadData(new DateTime(1900, 1, 1), new DateTime(2100, 1, 1));
+            instrument.LoadData(ChannelCompartment.View, new DateTime(1900, 1, 1), new DateTime(2100, 1, 1));
             Cache.AddInstrumentCache(instrument.Cache);
             UpdateGlobalStartEnd();
         }
@@ -115,7 +115,7 @@ namespace Omniscient
         public void DeactivateInstrument(Instrument instrument)
         {
             ActiveInstruments.Remove(instrument);
-            instrument.ClearData();
+            instrument.ClearData(ChannelCompartment.View);
             Cache.RemoveInstrumentCache(instrument.Cache);
             UpdateGlobalStartEnd();
         }
@@ -250,12 +250,12 @@ namespace Omniscient
             {
                 foreach (Channel ch in inst.GetChannels())
                 {
-                    if (ch.GetTimeStamps().Count > 0)
+                    if (ch.GetTimeStamps(ChannelCompartment.View).Count > 0)
                     {
-                        chStart = ch.GetTimeStamps()[0];
-                        chEnd = ch.GetTimeStamps()[ch.GetTimeStamps().Count - 1];
+                        chStart = ch.GetTimeStamps(ChannelCompartment.View)[0];
+                        chEnd = ch.GetTimeStamps(ChannelCompartment.View)[ch.GetTimeStamps(ChannelCompartment.View).Count - 1];
                         if (ch.GetChannelType() == Channel.ChannelType.DURATION_VALUE)
-                            chEnd += ch.GetDurations()[ch.GetDurations().Count - 1];
+                            chEnd += ch.GetDurations(ChannelCompartment.View)[ch.GetDurations(ChannelCompartment.View).Count - 1];
                         if (chStart < earliest)
                             earliest = chStart;
                         if (chEnd > latest)

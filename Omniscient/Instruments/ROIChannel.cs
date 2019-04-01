@@ -29,15 +29,15 @@ namespace Omniscient
             roi = new ROI();
         }
 
-        public void AddDataPoint(DateTime time, Spectrum spectrum, TimeSpan duration, DataFile file)
+        public void AddDataPoint(ChannelCompartment compartment, DateTime time, Spectrum spectrum, TimeSpan duration, DataFile file)
         {
-            timeStamps.Add(time);
-            values.Add(roi.GetROICountRate(spectrum));
-            durations.Add(duration);
-            files.Add(file);
+            timeStamps[(int)compartment].Add(time);
+            values[(int)compartment].Add(roi.GetROICountRate(spectrum));
+            durations[(int)compartment].Add(duration);
+            files[(int)compartment].Add(file);
         }
 
-        public override void CalculateValues(){}
+        public override void CalculateValues(ChannelCompartment compartment){}
 
         public override List<Parameter> GetParameters()
         {

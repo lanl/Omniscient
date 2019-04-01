@@ -63,7 +63,7 @@ namespace Omniscient
             return DateTime.MinValue;
         }
 
-        public override ReturnCode IngestFile(string fileName)
+        public override ReturnCode IngestFile(ChannelCompartment compartment, string fileName)
         {
             ReturnCode returnCode = bidParser.ParseFile(fileName);
             DataFile dataFile = new DataFile(fileName);
@@ -72,22 +72,22 @@ namespace Omniscient
             for (int r = 0; r < numRecords; ++r)
             {
                 time = bidParser.BIDTimeToDateTime(bidParser.GetRecord(r).time);
-                channels[chACountRate].AddDataPoint(time, bidParser.GetRecord(r).chACountRate, dataFile);
-                channels[chBCountRate].AddDataPoint(time, bidParser.GetRecord(r).chBCountRate, dataFile);
-                channels[chCCountRate].AddDataPoint(time, bidParser.GetRecord(r).chCCountRate, dataFile);
-                channels[gamInGamCh1].AddDataPoint(time, bidParser.GetRecord(r).gamInGamCh1, dataFile);
-                channels[gamCh1Sigma].AddDataPoint(time, bidParser.GetRecord(r).gamCh1Sigma, dataFile);
-                channels[gamInGamCh2].AddDataPoint(time, bidParser.GetRecord(r).gamInGamCh2, dataFile);
-                channels[gamCh2Sigma].AddDataPoint(time, bidParser.GetRecord(r).gamCh2Sigma, dataFile);
+                channels[chACountRate].AddDataPoint(compartment, time, bidParser.GetRecord(r).chACountRate, dataFile);
+                channels[chBCountRate].AddDataPoint(compartment, time, bidParser.GetRecord(r).chBCountRate, dataFile);
+                channels[chCCountRate].AddDataPoint(compartment, time, bidParser.GetRecord(r).chCCountRate, dataFile);
+                channels[gamInGamCh1].AddDataPoint(compartment, time, bidParser.GetRecord(r).gamInGamCh1, dataFile);
+                channels[gamCh1Sigma].AddDataPoint(compartment, time, bidParser.GetRecord(r).gamCh1Sigma, dataFile);
+                channels[gamInGamCh2].AddDataPoint(compartment, time, bidParser.GetRecord(r).gamInGamCh2, dataFile);
+                channels[gamCh2Sigma].AddDataPoint(compartment, time, bidParser.GetRecord(r).gamCh2Sigma, dataFile);
             }
             return ReturnCode.SUCCESS;
         }
 
-        public override void ClearData()
+        public override void ClearData(ChannelCompartment compartment)
         {
             foreach (Channel ch in channels)
             {
-                ch.ClearData();
+                ch.ClearData(compartment);
             }
         }
 

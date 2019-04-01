@@ -71,7 +71,7 @@ namespace Omniscient
             return DateTime.MinValue;
         }
 
-        public override ReturnCode IngestFile(string fileName)
+        public override ReturnCode IngestFile(ChannelCompartment compartment, string fileName)
         {
             ReturnCode returnCode = spectrumParser.ParseSpectrumFile(fileName);
             DataFile dataFile = new DataFile(fileName);
@@ -84,24 +84,24 @@ namespace Omniscient
             {
                 counts += spectrum.GetCounts()[ch];
             }
-            channels[COUNT_RATE].AddDataPoint(time, counts / spectrum.GetLiveTime(), duration, dataFile);
+            channels[COUNT_RATE].AddDataPoint(compartment, time, counts / spectrum.GetLiveTime(), duration, dataFile);
 
 
             foreach (VirtualChannel chan in virtualChannels)
             {
                 if (chan is ROIChannel)
                 {
-                    ((ROIChannel)chan).AddDataPoint(time, spectrum, duration, dataFile);
+                    ((ROIChannel)chan).AddDataPoint(compartment, time, spectrum, duration, dataFile);
                 }
             }
             return ReturnCode.SUCCESS;
         }
 
-        public override void ClearData()
+        public override void ClearData(ChannelCompartment compartment)
         {
             foreach (Channel ch in channels)
             {
-                ch.ClearData();
+                ch.ClearData(compartment);
             }
         }
 

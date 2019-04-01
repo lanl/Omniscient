@@ -158,7 +158,8 @@ namespace Omniscient
             System.Windows.Forms.Cursor.Current = Cursors.WaitCursor;
             try
             {
-                List<DateTime> dates = selectedChannels[0].GetTimeStamps();
+                foreach (Channel chan in selectedChannels) chan.GetInstrument().LoadData(ChannelCompartment.Process, start, end);
+                List<DateTime> dates = selectedChannels[0].GetTimeStamps(ChannelCompartment.Process);
                 using (StreamWriter file = new StreamWriter(fileName))
                 {
                     // Headers
@@ -180,7 +181,7 @@ namespace Omniscient
                             file.Write(dates[i].ToString("yyyy-MM-dd HH:mm:ss.fff"));
                             for (int c = 0; c < selectedChannels.Count; c++)
                             {
-                                file.Write("," + selectedChannels[c].GetValues()[i]);
+                                file.Write("," + selectedChannels[c].GetValues(ChannelCompartment.Process)[i]);
                             }
                             file.Write("\r\n");
                         }

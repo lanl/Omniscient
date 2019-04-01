@@ -54,21 +54,21 @@ namespace Omniscient
             return DateTime.MinValue;
         }
 
-        public override ReturnCode IngestFile(string fileName)
+        public override ReturnCode IngestFile(ChannelCompartment compartment, string fileName)
         {
             ReturnCode returnCode = decParser.ParseDeclarationFile(fileName);
             DateTime time = decParser.FromTime;
             TimeSpan duration = decParser.ToTime - decParser.FromTime;
 
-            channels[DECLARATION].AddDataPoint(time, 1, duration, new DataFile(fileName));
+            channels[DECLARATION].AddDataPoint(compartment, time, 1, duration, new DataFile(fileName));
             return ReturnCode.FAIL;
         }
 
-        public override void ClearData()
+        public override void ClearData(ChannelCompartment compartment)
         {
             foreach (Channel ch in channels)
             {
-                ch.ClearData();
+                ch.ClearData(compartment);
             }
         }
 

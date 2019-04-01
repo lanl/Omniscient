@@ -35,7 +35,8 @@ namespace Omniscient
 
         public override List<Event> GenerateEvents(DateTime start, DateTime end)
         {
-            List<DateTime> times = channel.GetTimeStamps();
+            channel.GetInstrument().LoadData(ChannelCompartment.Process, start, end);
+            List<DateTime> times = channel.GetTimeStamps(ChannelCompartment.Process);
             events = new List<Event>();
             Event eve = new Event(this);        // Really shouldn't need to make an event here but visual studio freaks out without it
 
