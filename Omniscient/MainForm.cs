@@ -1632,10 +1632,11 @@ namespace Omniscient
                 {
                     Channel ch = chanPan.GetChannel();
                     boxData += "--" + ch.Name + "--\n";
-                    boxData += "μ: " + ch.GetAverage(start, end).ToString("G6") + "\n";
-                    boxData += "σ: " + ch.GetStandardDeviation(start, end).ToString("G6") + "\n";
-                    boxData += "Max: " + ch.GetMax(start, end).ToString("G6") + "\n";
-                    boxData += "Min: " + ch.GetMin(start, end).ToString("G6") + "\n";
+                    boxData += "μ:\t" + ch.GetAverage(start, end).ToString("G6") + "\n";
+                    boxData += "σ:\t" + ch.GetStandardDeviation(start, end).ToString("G6") + "\n";
+                    boxData += "Max:\t" + ch.GetMax(start, end).ToString("G6") + "\n";
+                    boxData += "Min:\t" + ch.GetMin(start, end).ToString("G6") + "\n";
+                    boxData += "\n";
                 }
             }
         }
