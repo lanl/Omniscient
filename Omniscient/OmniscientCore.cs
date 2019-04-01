@@ -11,7 +11,7 @@ namespace Omniscient
         /// <summary>
         /// Version of Omniscient
         /// </summary>
-        public const string VERSION = "0.3.4";
+        public const string VERSION = "0.3.5";
 
         public event EventHandler ViewChanged;
 
