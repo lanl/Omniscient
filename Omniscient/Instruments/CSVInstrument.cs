@@ -81,9 +81,12 @@ namespace Omniscient
 
         public override ReturnCode IngestFile(ChannelCompartment compartment, string fileName)
         {
-            ReturnCode returnCode = csvParser.ParseFile(fileName);
             DateTime time;
             DataFile dataFile = new DataFile(fileName);
+            dataFile.DataStart = GetFileDate(fileName);
+
+            ReturnCode returnCode = csvParser.ParseFile(fileName);
+
             int numRecords = csvParser.GetNumRecords();
             for (int r = 0; r < numRecords; ++r)
             {
