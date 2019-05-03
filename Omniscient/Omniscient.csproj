@@ -114,6 +114,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="DataDecimator.cs" />
+    <Compile Include="DateTimeRange.cs" />
     <Compile Include="DeclarationEditor.cs">
       <SubType>Form</SubType>
     </Compile>

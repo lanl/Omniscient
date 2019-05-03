@@ -8,11 +8,6 @@ namespace Omniscient
 {
     public enum CacheLevel { Base, FiveSecond, OneMinute, TenMinute, TwoHour}
     public enum CacheDataType { Double, MMAC }
-    public struct DateTimeRange
-    {
-        public DateTime Start { get; set; }
-        public DateTime End { get; set; }
-    }
     public class CacheLevelData
     {
         public CacheLevel Level { get; private set; }
