@@ -31,6 +31,29 @@ namespace Omniscient
         }
 
         /// <summary>
+        /// Reads up a number of lines (or fewer if the file is shorter) from a file without locking it
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        public static string[] PermissiveReadLines(string fileName, int nLines)
+        {
+            int lineCount = 0;
+            using (FileStream stream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            {
+                using (StreamReader reader = new StreamReader(stream))
+                {
+                    List<string> lines = new List<string>();
+                    while (!reader.EndOfStream && lineCount < nLines)
+                    {
+                        lines.Add(reader.ReadLine());
+                        lineCount++;
+                    }
+                    return lines.ToArray();
+                }
+            }
+        }
+
+        /// <summary>
         /// Compacts a list of DateTimes into a list of longs (Ticks) using a
         /// twist on run length encoding: it looks at differences and applies
         /// RLE to those.

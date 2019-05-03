@@ -70,7 +70,7 @@ namespace Omniscient
             string[] lines;
             try
             {
-                lines = IOUtility.PermissiveReadAllLines(fileName);
+                lines = IOUtility.PermissiveReadLines(fileName, nHeaders+1);
             }
             catch (Exception ex)
             {
