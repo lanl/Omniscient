@@ -93,5 +93,43 @@ namespace OmniscientTests
             Assert.AreEqual(days[1].Ticks, (new DateTime(2019, 5, 2)).Ticks);
             Assert.AreEqual(days[2].Ticks, (new DateTime(2019, 5, 3)).Ticks);
         }
+
+        [TestMethod]
+        public void DaysBeforeMakesSense()
+        {
+            DateTimeRange range = new DateTimeRange(new DateTime(2019, 5, 1, 12, 1, 1), new DateTime(2019, 5, 7, 14, 1, 1));
+            List<DateTime> days = range.DaysBefore(new DateTime(2019, 5, 3));
+            Assert.AreEqual(days.Count, 2);
+            Assert.AreEqual(days[0].Ticks, (new DateTime(2019, 5, 1)).Ticks);
+            Assert.AreEqual(days[1].Ticks, (new DateTime(2019, 5, 2)).Ticks);
+
+            range = new DateTimeRange(new DateTime(2019, 5, 4, 12, 1, 1), new DateTime(2019, 5, 7, 14, 1, 1));
+            days = range.DaysBefore(new DateTime(2019, 5, 3));
+            Assert.AreEqual(days.Count, 0);
+
+            range = new DateTimeRange(new DateTime(2019, 5, 3), new DateTime(2019, 5, 7, 14, 1, 1));
+            days = range.DaysBefore(new DateTime(2019, 5, 3));
+            Assert.AreEqual(days.Count, 0);
+        }
+
+        [TestMethod]
+        public void DaysAfterMakesSense()
+        {
+            DateTimeRange range = new DateTimeRange(new DateTime(2019, 5, 1, 12, 1, 1), new DateTime(2019, 5, 7, 14, 1, 1));
+            List<DateTime> days = range.DaysAfter(new DateTime(2019, 5, 3));
+            Assert.AreEqual(days.Count, 4);
+            Assert.AreEqual(days[0].Ticks, (new DateTime(2019, 5, 4)).Ticks);
+            Assert.AreEqual(days[1].Ticks, (new DateTime(2019, 5, 5)).Ticks);
+            Assert.AreEqual(days[2].Ticks, (new DateTime(2019, 5, 6)).Ticks);
+            Assert.AreEqual(days[3].Ticks, (new DateTime(2019, 5, 7)).Ticks);
+
+            range = new DateTimeRange(new DateTime(2019, 5, 4, 12, 1, 1), new DateTime(2019, 5, 7, 14, 1, 1));
+            days = range.DaysAfter(new DateTime(2019, 5, 8));
+            Assert.AreEqual(days.Count, 0);
+
+            range = new DateTimeRange(new DateTime(2019, 5, 3), new DateTime(2019, 5, 7));
+            days = range.DaysAfter(new DateTime(2019, 5, 7));
+            Assert.AreEqual(days.Count, 0);
+        }
     }
 }
