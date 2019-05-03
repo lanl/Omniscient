@@ -60,7 +60,9 @@ namespace Omniscient
             DateTime time = decParser.FromTime;
             TimeSpan duration = decParser.ToTime - decParser.FromTime;
 
-            channels[DECLARATION].AddDataPoint(compartment, time, 1, duration, new DataFile(fileName));
+            DataFile dataFile = new DataFile(fileName, time, time + duration);
+
+            channels[DECLARATION].AddDataPoint(compartment, time, 1, duration, dataFile);
             return ReturnCode.FAIL;
         }
 

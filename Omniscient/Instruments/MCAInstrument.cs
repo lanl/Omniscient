@@ -74,11 +74,10 @@ namespace Omniscient
         public override ReturnCode IngestFile(ChannelCompartment compartment, string fileName)
         {
             ReturnCode returnCode = spectrumParser.ParseSpectrumFile(fileName);
-            DataFile dataFile = new DataFile(fileName);
             Spectrum spectrum = spectrumParser.GetSpectrum();
             DateTime time = spectrum.GetStartTime();
             TimeSpan duration = TimeSpan.FromSeconds(spectrum.GetRealTime());
-
+            DataFile dataFile = new DataFile(fileName, time, time+duration);
             int counts = 0;
             for (int ch = 0; ch < spectrum.GetNChannels(); ch++)
             {

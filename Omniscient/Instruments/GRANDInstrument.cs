@@ -66,9 +66,9 @@ namespace Omniscient
         public override ReturnCode IngestFile(ChannelCompartment compartment, string fileName)
         {
             ReturnCode returnCode = bidParser.ParseFile(fileName);
-            DataFile dataFile = new DataFile(fileName);
+            DataFile dataFile = new DataFile(fileName, bidParser.GetDate());
             int numRecords = bidParser.GetNumRecords();
-            DateTime time;
+            DateTime time = DateTime.MinValue;
             for (int r = 0; r < numRecords; ++r)
             {
                 time = bidParser.BIDTimeToDateTime(bidParser.GetRecord(r).time);
@@ -80,6 +80,9 @@ namespace Omniscient
                 channels[gamInGamCh2].AddDataPoint(compartment, time, bidParser.GetRecord(r).gamInGamCh2, dataFile);
                 channels[gamCh2Sigma].AddDataPoint(compartment, time, bidParser.GetRecord(r).gamCh2Sigma, dataFile);
             }
+
+            dataFile.DataEnd = time;
+
             return ReturnCode.SUCCESS;
         }
 

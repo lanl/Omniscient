@@ -60,9 +60,9 @@ namespace Omniscient
         public override ReturnCode IngestFile(ChannelCompartment compartment, string fileName)
         {
             ReturnCode returnCode = isrParser.ParseFile(fileName);
-            DataFile dataFile = new DataFile(fileName);
+            DataFile dataFile = new DataFile(fileName, isrParser.GetDate());
             int numRecords = isrParser.GetNumRecords();
-            DateTime time;
+            DateTime time = DateTime.MinValue;
             for (int r = 0; r < numRecords; ++r)
             {
                 time = isrParser.ISRTimeToDateTime(isrParser.GetRecord(r).time);
@@ -72,6 +72,7 @@ namespace Omniscient
                 channels[REALS_PLUS_ACC].AddDataPoint(compartment, time, isrParser.GetRecord(r).realsPlusAccidentals, dataFile);
                 channels[ACC].AddDataPoint(compartment, time, isrParser.GetRecord(r).accidentals, dataFile);
             }
+            dataFile.DataEnd = time;
             return ReturnCode.SUCCESS;
         }
 

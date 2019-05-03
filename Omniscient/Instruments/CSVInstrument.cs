@@ -81,7 +81,7 @@ namespace Omniscient
 
         public override ReturnCode IngestFile(ChannelCompartment compartment, string fileName)
         {
-            DateTime time;
+            DateTime time = DateTime.MinValue;
             DataFile dataFile = new DataFile(fileName);
             dataFile.DataStart = GetFileDate(fileName);
 
@@ -96,6 +96,9 @@ namespace Omniscient
                     channels[c].AddDataPoint(compartment, time, csvParser.Data[r, c], dataFile);
                 }
             }
+
+            dataFile.DataEnd = time;
+
             return ReturnCode.SUCCESS;
         }
 

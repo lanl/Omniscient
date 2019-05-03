@@ -67,8 +67,8 @@ namespace Omniscient
         public override ReturnCode IngestFile(ChannelCompartment compartment, string fileName)
         {
             ReturnCode returnCode = vbfParser.ParseFile(fileName);
-            DataFile dataFile = new DataFile(fileName);
-            DateTime time;
+            DataFile dataFile = new DataFile(fileName, vbfParser.GetDate());
+            DateTime time = DateTime.MinValue;
             int numRecords = vbfParser.GetNumRecords();
             for (int r = 0; r < numRecords; ++r)
             {
@@ -82,6 +82,7 @@ namespace Omniscient
                 channels[data6].AddDataPoint(compartment, time, vbfParser.GetRecord(r).data[6], dataFile);
                 channels[data7].AddDataPoint(compartment, time, vbfParser.GetRecord(r).data[7], dataFile);
             }
+            dataFile.DataEnd = time;
             return ReturnCode.SUCCESS;
         }
 
