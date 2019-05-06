@@ -145,6 +145,21 @@ namespace Omniscient
         }
         public abstract DateTime GetFileDate(string file);
 
+        public DateTimeRange GetLoadedRange(ChannelCompartment compartment)
+        {
+            DateTimeRange range = new DateTimeRange(DateTime.MinValue, DateTime.MinValue);
+            if (channels.Length > 0)
+            {
+                List<DateTime> times = channels[0].GetTimeStamps(compartment);
+                if(times.Count > 0)
+                {
+                    range.Start = times[0];
+                    range.End = times[times.Count - 1];
+                }
+            }
+            return range;
+        }
+
         public virtual void LoadData(ChannelCompartment compartment, DateTime startDate, DateTime endDate)
         {
             ReturnCode returnCode = ReturnCode.SUCCESS;
@@ -152,7 +167,12 @@ namespace Omniscient
             ///////////////////////////////////////////////////////////////////
             if (compartment == ChannelCompartment.View)
             {
-                Cache.LoadDataIntoInstrument(ChannelCompartment.View, new DateTimeRange(startDate, endDate));
+                // Only make a load request if the data is out of range
+                DateTimeRange loadedRange = GetLoadedRange(compartment);
+                if (startDate < loadedRange.Start || endDate > loadedRange.End)
+                {
+                    Cache.LoadDataIntoInstrument(ChannelCompartment.View, new DateTimeRange(startDate, endDate));
+                }
                 return;
             }
             ///////////////////////////////////////////////////////////////////
