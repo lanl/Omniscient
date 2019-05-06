@@ -141,12 +141,21 @@ namespace Omniscient
             dataFileTimes = dataFileDateList.ToArray();
 
             Array.Sort(dataFileTimes, dataFileNames);
+            Cache.SetDataFiles(dataFileNames, dataFileTimes);
         }
         public abstract DateTime GetFileDate(string file);
 
         public virtual void LoadData(ChannelCompartment compartment, DateTime startDate, DateTime endDate)
         {
             ReturnCode returnCode = ReturnCode.SUCCESS;
+
+            ///////////////////////////////////////////////////////////////////
+            if (compartment == ChannelCompartment.View)
+            {
+                Cache.LoadDataIntoInstrument(ChannelCompartment.View, new DateTimeRange(startDate, endDate));
+                return;
+            }
+            ///////////////////////////////////////////////////////////////////
 
             int startIndex = Array.FindIndex(dataFileTimes.ToArray(), x => x >= startDate);
             int endIndex = Array.FindIndex(dataFileTimes.ToArray(), x => x >= endDate);

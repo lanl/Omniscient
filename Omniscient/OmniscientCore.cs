@@ -107,7 +107,8 @@ namespace Omniscient
         public void ActivateInstrument(Instrument instrument)
         {
             ActiveInstruments.Add(instrument);
-            instrument.LoadData(ChannelCompartment.View, new DateTime(1900, 1, 1), new DateTime(2100, 1, 1));
+            instrument.ScanDataFolder();
+            //instrument.LoadData(ChannelCompartment.View, new DateTime(1900, 1, 1), new DateTime(2100, 1, 1));
             Cache.AddInstrumentCache(instrument.Cache);
             UpdateGlobalStartEnd();
         }
@@ -226,6 +227,12 @@ namespace Omniscient
                             _viewEnd = new DateTime(endT);
                         }
                     }
+                    
+                    foreach (Instrument instrument in ActiveInstruments)
+                    {
+                        instrument.LoadData(ChannelCompartment.View, _viewStart, _viewEnd);
+                    }
+
                     // Invoke event handlers (i.e. update UI)
                     ViewChanged?.Invoke(this, EventArgs.Empty);
                 }
@@ -248,6 +255,7 @@ namespace Omniscient
             // Figure out the earliest and latest data point
             foreach (Instrument inst in ActiveInstruments)
             {
+                /*
                 foreach (Channel ch in inst.GetChannels())
                 {
                     if (ch.GetTimeStamps(ChannelCompartment.View).Count > 0)
@@ -262,6 +270,10 @@ namespace Omniscient
                             latest = chEnd;
                     }
                 }
+                */
+                DateTimeRange range = inst.Cache.GetDataFilesTimeRange();
+                if (range.Start < earliest) earliest = range.Start;
+                if (range.End > latest) latest = range.End;
             }
 
             if (earliest > latest) return;

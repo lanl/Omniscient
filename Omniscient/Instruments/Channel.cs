@@ -20,10 +20,10 @@ using System.Xml;
 
 namespace Omniscient
 {
-    public enum ChannelCompartment { View=0, Process=1};
+    public enum ChannelCompartment { View=0, Process=1, Cache=2};
     public class Channel : Persister
     {
-        private const int N_COMPARTMENTS = 2;
+        private const int N_COMPARTMENTS = 3;
 
         public override string Species { get { return "Channel"; } }
 
