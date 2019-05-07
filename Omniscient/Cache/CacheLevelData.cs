@@ -55,6 +55,11 @@ namespace Omniscient
 
         public void ExportToChannel(Channel channel, ChannelCompartment compartment)
         {
+            if (compartment == ChannelCompartment.View && channel.Hidden == true)
+            {
+                // No need to view hidden data
+                return;
+            }
             if (Durations.Count == 0)
             {
                 for (int i = 0; i < TimeStamps.Count; i++)

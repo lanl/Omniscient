@@ -169,7 +169,7 @@ namespace Omniscient
             {
                 // Only make a load request if the data is out of range
                 DateTimeRange loadedRange = GetLoadedRange(compartment);
-                if (startDate < loadedRange.Start || endDate > loadedRange.End)
+                if (startDate < loadedRange.Start || endDate.Date > loadedRange.End)
                 {
                     Cache.LoadDataIntoInstrument(ChannelCompartment.View, new DateTimeRange(startDate, endDate));
                 }
