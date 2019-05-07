@@ -25,6 +25,26 @@ namespace Omniscient
         public double[][] ChannelAveData { get; private set; }
         public int[][] ChannelCountData { get; private set; }
 
+        public ChannelCacheLevelData(CacheLevel level)
+        {
+            Level = level;
+        }
+
+        /// <summary>
+        /// Returns the approximate memory usage of the ChannelCacheLevelData in bytes
+        /// </summary>
+        /// <returns></returns>
+        public int GetMemoryUsage()
+        {
+            switch (Level)
+            {
+                case CacheLevel.Base:
+                    return 24 * TimeStamps.Count + 8 * Durations.Count;
+                default:
+                    throw new NotImplementedException();
+            }
+        }
+
         public void ImportFromChannel(Channel channel, ChannelCompartment compartment)
         {
             TimeStamps = channel.GetTimeStamps(compartment);

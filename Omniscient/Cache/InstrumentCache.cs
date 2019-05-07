@@ -21,10 +21,26 @@ namespace Omniscient
         {
             Date = date;
         }
+
+        /// <summary>
+        /// Returns the approximate memory usage of the BaseData in bytes
+        /// </summary>
+        /// <returns></returns>
+        public int GetBaseDataUsage()
+        {
+            int bytes = 0;
+            foreach (ChannelCacheLevelData cacheData in BaseData)
+            {
+                bytes += cacheData.GetMemoryUsage();
+            }
+            return bytes;
+        }
     }
 
     public class InstrumentCache
     {
+        private const int BASE_DAY_ESTIMATE_BYTES = 250_000_000;
+
         public List<DataFile> DataFiles { get; private set; }
         public Instrument Instrument { get; private set; }
         public DataMonitor TenMinuteMonitor;
@@ -39,6 +55,7 @@ namespace Omniscient
         {
             this.Instrument = instrument;
             MemoryUsed = 0;
+            MemoryAllocation = 1_250_000_000;
 
             cacheDirectory = "Cache\\" + Instrument.ID.ToString("X8");
 
@@ -52,13 +69,12 @@ namespace Omniscient
             DataFiles = new List<DataFile>();
 
             Days = new LinkedList<DayCache>();
-
         }
 
         public void SetDataFiles(string[] fileNames, DateTime[] times)
         {
             DataFiles = new List<DataFile>(fileNames.Length);
-            for (int i=0; i<fileNames.Length-1; i++)
+            for (int i = 0; i < fileNames.Length - 1; i++)
             {
                 DataFiles.Add(new DataFile(fileNames[i], times[i]));
             }
@@ -70,7 +86,7 @@ namespace Omniscient
                 Instrument.LoadVirtualChannels(ChannelCompartment.Cache);
                 Channel[] channels = Instrument.GetChannels();
                 DateTime lastTime = DateTime.MinValue;
-                foreach(Channel chan in channels)
+                foreach (Channel chan in channels)
                 {
                     if (chan.GetTimeStamps(ChannelCompartment.Cache).Last() > lastTime)
                     {
@@ -101,7 +117,7 @@ namespace Omniscient
             else
             {
                 DateTimeRange loadedRange = new DateTimeRange(Days.First.Value.Date, Days.Last.Value.Date);
-                if(!timeRange.CompletelyInRange(loadedRange))
+                if (!timeRange.CompletelyInRange(loadedRange))
                 {
                     if (timeRange.End < loadedRange.Start.AddDays(-1) || timeRange.Start > loadedRange.End.AddDays(1))
                     {
@@ -114,13 +130,16 @@ namespace Omniscient
                         if (timeRange.Start < loadedRange.Start)
                         {
                             List<DateTime> days = timeRange.DaysBefore(loadedRange.Start);
+                            PreventativeMemoryManagement(days, timeRange);
                             AddDaysToFront(days);
                         }
-                        if (timeRange.End < loadedRange.End)
+                        if (timeRange.End > loadedRange.End)
                         {
                             List<DateTime> days = timeRange.DaysAfter(loadedRange.End);
+                            PreventativeMemoryManagement(days, timeRange);
                             AddDaysToEnd(days);
                         }
+                        ReactiveMemoryManagement(timeRange);
                     }
                 }
             }
@@ -135,7 +154,7 @@ namespace Omniscient
             Channel[] channels = Instrument.GetChannels();
             foreach (DayCache dayCache in Days)
             {
-                if(dayCache.Date >= dayRange.Start && dayCache.Date <= dayRange.End)
+                if (dayCache.Date >= dayRange.Start && dayCache.Date <= dayRange.End)
                 {
                     for (int ch = 0; ch < Instrument.GetNumChannels(); ch++)
                     {
@@ -145,9 +164,79 @@ namespace Omniscient
             }
         }
 
+        private void ReactiveMemoryManagement(DateTimeRange timeRange)
+        {
+            DateTimeRange loadedRange = new DateTimeRange(Days.First.Value.Date, Days.Last.Value.Date);
+            TimeSpan startDiff;
+            TimeSpan endDiff;
+
+            while (MemoryUsed > MemoryAllocation)
+            {
+                startDiff = Days.First.Value.Date - timeRange.Start.Date;
+                endDiff = timeRange.End.Date - Days.Last.Value.Date;
+
+                if (startDiff == TimeSpan.Zero && endDiff == TimeSpan.Zero)
+                {
+                    // No solution
+                    return;
+                }
+                if (endDiff > startDiff)
+                {
+                    UnloadDay(false);
+                }
+                else
+                {
+                    UnloadDay(true);
+                }
+            }
+        }
+
+        private void PreventativeMemoryManagement(List<DateTime> newDays, DateTimeRange timeRange)
+        {
+            if (newDays.Count * BASE_DAY_ESTIMATE_BYTES + MemoryUsed < MemoryAllocation)
+            {
+                // No problem
+                return;
+            }
+            DateTimeRange loadedRange = new DateTimeRange(Days.First.Value.Date, Days.Last.Value.Date);
+            if (timeRange.Start.Date <= loadedRange.Start && timeRange.End.Date >= loadedRange.End)
+            {
+                // No solution
+                return;
+            }
+
+            if (newDays[0] < loadedRange.Start)
+            {
+                // Take off the end
+                while (Days.Last.Value.Date > timeRange.End.Date)
+                {
+                    UnloadDay(false);
+                    if (newDays.Count * BASE_DAY_ESTIMATE_BYTES + MemoryUsed < MemoryAllocation)
+                    {
+                        // No problem
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                // Take off the front
+                while (Days.First.Value.Date < timeRange.Start.Date)
+                {
+                    UnloadDay(true);
+                    if (newDays.Count * BASE_DAY_ESTIMATE_BYTES + MemoryUsed < MemoryAllocation)
+                    {
+                        // No problem
+                        break;
+                    }
+                }
+            }
+
+        }
+
         public void LoadFreshRange(DateTimeRange timeRange)
         {
-            Days.Clear();
+            UnloadAllDays();
             foreach (DateTime day in timeRange.DaysInRange())
             {
                 Days.AddLast(LoadDay(day));
@@ -188,11 +277,38 @@ namespace Omniscient
             Channel[] channels = Instrument.GetChannels();
             for (int ch = 0; ch <Instrument.GetNumChannels(); ch++)
             {
-                dayCache.BaseData[ch] = new ChannelCacheLevelData();
+                dayCache.BaseData[ch] = new ChannelCacheLevelData(CacheLevel.Base);
                 dayCache.BaseData[ch].ImportFromChannel(channels[ch], ChannelCompartment.Cache);
             }
             Instrument.ClearData(ChannelCompartment.Cache);
+
+            MemoryUsed += dayCache.GetBaseDataUsage();
+
             return dayCache;
+        }
+
+        public void UnloadAllDays()
+        {
+            while(Days.Count > 0)
+            {
+                UnloadDay(true);
+            }
+        }
+
+        public void UnloadDay(bool frontEnd)
+        {
+            if (Days.Count == 0) return;
+
+            if (frontEnd)
+            {
+                MemoryUsed -= Days.First.Value.GetBaseDataUsage();
+                Days.RemoveFirst();
+            }
+            else
+            {
+                MemoryUsed -= Days.Last.Value.GetBaseDataUsage();
+                Days.RemoveLast();
+            }
         }
     }
 
