@@ -99,6 +99,8 @@ namespace Omniscient
 
             dataFile.DataEnd = time;
 
+            csvParser = new CSVParser();
+
             return ReturnCode.SUCCESS;
         }
 

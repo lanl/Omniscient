@@ -93,6 +93,7 @@ namespace Omniscient
                         lastTime = chan.GetTimeStamps(ChannelCompartment.Cache).Last();
                     }
                 }
+                Instrument.ClearData(ChannelCompartment.Cache);
                 DataFiles.Add(new DataFile(fileNames[fileIndex], times[fileIndex], lastTime));
             }
         }

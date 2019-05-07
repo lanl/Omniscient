@@ -83,6 +83,8 @@ namespace Omniscient
 
             dataFile.DataEnd = time;
 
+            bidParser = new BIDParser();
+
             return ReturnCode.SUCCESS;
         }
 

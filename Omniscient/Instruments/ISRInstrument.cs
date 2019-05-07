@@ -73,6 +73,9 @@ namespace Omniscient
                 channels[ACC].AddDataPoint(compartment, time, isrParser.GetRecord(r).accidentals, dataFile);
             }
             dataFile.DataEnd = time;
+
+            isrParser = new ISRParser();
+
             return ReturnCode.SUCCESS;
         }
 

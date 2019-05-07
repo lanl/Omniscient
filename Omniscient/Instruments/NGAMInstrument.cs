@@ -83,6 +83,7 @@ namespace Omniscient
                 channels[data7].AddDataPoint(compartment, time, vbfParser.GetRecord(r).data[7], dataFile);
             }
             dataFile.DataEnd = time;
+            vbfParser = new VBFParser();
             return ReturnCode.SUCCESS;
         }
 
