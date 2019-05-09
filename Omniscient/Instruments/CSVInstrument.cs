@@ -40,6 +40,13 @@ namespace Omniscient
                 channels[i] = new Channel(Name + "-" + i.ToString(), this, Channel.ChannelType.COUNT_RATE, 0);
         }
 
+        private void MakeNewParser()
+        {
+            csvParser = new CSVParser();
+            csvParser.NumberOfColumns = numChannels + 1;
+            csvParser.NumberOfHeaders = NumberOfHeaders;
+        }
+
         public ReturnCode SetNumberOfChannels(int nChannels)
         {
             if (nChannels < 1) return ReturnCode.BAD_INPUT;
@@ -99,7 +106,7 @@ namespace Omniscient
 
             dataFile.DataEnd = time;
 
-            csvParser = new CSVParser();
+            MakeNewParser();
 
             return ReturnCode.SUCCESS;
         }
