@@ -28,6 +28,14 @@ namespace Omniscient
         public List<Instrument> ActiveInstruments { get; private set; }
 
         /// <summary>
+        /// Contains all activated EventGenerators
+        /// </summary>
+        public List<EventGenerator> ActiveEventGenerators { get; private set; }
+
+
+        public List<Event> Events { get; private set; }
+
+        /// <summary>
         /// The earliest time off any data that is active
         /// </summary>
         public DateTime GlobalStart { get; set; }
@@ -98,6 +106,8 @@ namespace Omniscient
             Cache.Start();
 
             ActiveInstruments = new List<Instrument>();
+            ActiveEventGenerators = new List<EventGenerator>();
+            Events = new List<Event>();
 
             GlobalStart = DateTime.Today.AddDays(-1);
             GlobalEnd = DateTime.Today;
@@ -121,6 +131,45 @@ namespace Omniscient
             UpdateGlobalStartEnd();
         }
 
+        /// <summary>
+        /// Adds an EventGenerator to the list of ActiveEventGenerators
+        /// </summary>
+        /// <param name="eventGenerator"></param>
+        public void ActivateEventGenerator(EventGenerator eventGenerator)
+        {
+            ActiveEventGenerators.Add(eventGenerator);
+        }
+
+        /// <summary>
+        /// Removes an EventGenerator from the list of ActiveEventGenerators
+        /// </summary>
+        /// <param name="eventGenerator"></param>
+        public void DeactivateEventGenerator(EventGenerator eventGenerator)
+        {
+            ActiveEventGenerators.Remove(eventGenerator);
+        }
+
+        /// <summary>
+        /// Generate events with active event generators
+        /// </summary>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        public void GenerateEvents(DateTime start, DateTime end)
+        {
+            Events = new List<Event>();
+
+            foreach (EventGenerator eg in ActiveEventGenerators)
+            {
+                Events.AddRange(eg.GenerateEvents(start, end));
+                eg.RunActions();
+            }
+            Events.Sort((x, y) => x.GetStartTime().CompareTo(y.GetStartTime()));
+        }
+
+        /// <summary>
+        /// Change ViewStart and ViewEnd by an equal amount
+        /// </summary>
+        /// <param name="shift"></param>
         public void ShiftView(TimeSpan shift)
         {
             if (shift == TimeSpan.Zero) return;

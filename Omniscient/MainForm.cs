@@ -64,8 +64,6 @@ namespace Omniscient
         DateTime mouseTime;
         private bool showMarker = false;
         private double markerValue = 0;
-
-        List<Event> events;
         ///////////////////////////////////////////////////////////////////////
 
         /// <summary>
@@ -85,7 +83,6 @@ namespace Omniscient
                 logScale[c] = false;
                 autoScale[c] = true;
             }
-            events = new List<Event>();
             InitializeComponent();
             Core.ViewChanged += Core_OnViewChanged;
         }
@@ -595,7 +592,7 @@ namespace Omniscient
                 eventCount = 0;
                 if (HighlightEventsCheckBox.Checked)
                 {
-                    foreach (Event eve in events)
+                    foreach (Event eve in Core.Events)
                     {
                         if (eve.GetStartTime() < end && eve.GetEndTime() > start && eventCount < MAX_HIGHLIGHTED_EVENTS)
                         {
@@ -806,6 +803,19 @@ namespace Omniscient
                 else
                 {
                     RemoveChannelPanels(inst);
+                    checkingParents = true;
+                    UncheckParentNodes(e.Node);
+                    checkingParents = false;
+                }
+            }
+            else if(e.Node.Tag is EventGenerator)
+            {
+                EventGenerator eventGenerator = (EventGenerator)e.Node.Tag;
+                if (e.Node.Checked)
+                    Core.ActivateEventGenerator(eventGenerator);
+                else
+                {
+                    Core.DeactivateEventGenerator(eventGenerator);
                     checkingParents = true;
                     UncheckParentNodes(e.Node);
                     checkingParents = false;
@@ -1456,46 +1466,20 @@ namespace Omniscient
 
         private void GenerateEvents(DateTime start, DateTime end)
         {
-            List<EventGenerator> eventGenerators = new List<EventGenerator>();
-            events = new List<Event>();
-
-            //  Put all of the checked systems in the SitesTreeView in eventWatchers
-            foreach (TreeNode siteNode in SitesTreeView.Nodes)
-            {
-                foreach (TreeNode facNode in siteNode.Nodes)
-                {
-                    foreach(TreeNode sysNode in facNode.Nodes)
-                    {
-                        foreach(TreeNode node in sysNode.Nodes)
-                        {
-                            if (node.Tag is EventGenerator && node.Checked)
-                            {
-                                eventGenerators.Add((EventGenerator)node.Tag);
-                            }
-                        }
-                    }
-                }
-            }
-
-            foreach(EventGenerator eg in eventGenerators)
-            {
-                events.AddRange(eg.GenerateEvents(start, end));
-                eg.RunActions();
-            }
-            events.Sort((x, y) => x.GetStartTime().CompareTo(y.GetStartTime()));
+            Core.GenerateEvents(start, end);
 
             EventGridView.Rows.Clear();
-            for (int i=0; i < events.Count(); i++)
+            for (int i=0; i < Core.Events.Count(); i++)
             {
                 EventGridView.Rows.Add(
-                    events[i].GetEventGenerator().Name,
-                    events[i].GetStartTime().ToString("MM/dd/yy HH:mm:ss"),
-                    events[i].GetEndTime().ToString("MM/dd/yy HH:mm:ss"),
-                    events[i].GetDuration().TotalSeconds,
-                    events[i].GetMaxValue(),
-                    events[i].GetMaxTime().ToString("MM/dd/yy HH:mm:ss"),
-                    events[i].GetComment());
-                EventGridView.Rows[i].Tag = events[i];
+                    Core.Events[i].GetEventGenerator().Name,
+                    Core.Events[i].GetStartTime().ToString("MM/dd/yy HH:mm:ss"),
+                    Core.Events[i].GetEndTime().ToString("MM/dd/yy HH:mm:ss"),
+                    Core.Events[i].GetDuration().TotalSeconds,
+                    Core.Events[i].GetMaxValue(),
+                    Core.Events[i].GetMaxTime().ToString("MM/dd/yy HH:mm:ss"),
+                    Core.Events[i].GetComment());
+                EventGridView.Rows[i].Tag = Core.Events[i];
             }
             if (HighlightEventsCheckBox.Checked)
                 DrawSections();
