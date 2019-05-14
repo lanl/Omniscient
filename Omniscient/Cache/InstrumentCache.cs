@@ -118,7 +118,7 @@ namespace Omniscient
             else
             {
                 DateTimeRange loadedRange = new DateTimeRange(Days.First.Value.Date, Days.Last.Value.Date);
-                if (!timeRange.CompletelyInRange(loadedRange))
+                if (!loadedRange.CompletelyInRange(timeRange))
                 {
                     if (timeRange.End < loadedRange.Start.AddDays(-1) || timeRange.Start > loadedRange.End.AddDays(1))
                     {
