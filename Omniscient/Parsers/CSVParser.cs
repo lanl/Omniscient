@@ -8,15 +8,20 @@ using System.Threading.Tasks;
 
 namespace Omniscient
 {
-    class CSVParser
+    public class CSVParser
     {
+        public enum DelimiterType { Comma, CommaOrWhitespace };
+
         private System.Globalization.CultureInfo CULTURE_INFO = new CultureInfo("en-US");
+        private char[] TRIM_CHARS = new char[] { ':' };
 
         private string fileName;
         public string FileName {
             get { return fileName; }
             set { fileName = value; }
         }
+
+        public DelimiterType Delimiter { get; set; }
 
         private int nHeaders;
         public int NumberOfHeaders
@@ -95,16 +100,26 @@ namespace Omniscient
                 string[] tokens;
                 int i = nHeaders;
                 entry = i - nHeaders;
-                tokens = lines[i].Split(',');
+                char[] delimiters = new char[] { ',' };
+                switch (Delimiter)
+                {
+                    case DelimiterType.Comma:
+                        delimiters = new char[] { ',' };
+                        break;
+                    case DelimiterType.CommaOrWhitespace:
+                        delimiters = new char[] { ',', ' ', '\t' };
+                        break;
+                }
+                tokens = lines[i].Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
                 if (tokens.Length < nColumns)
                     return ReturnCode.CORRUPTED_FILE;
                 if (TimeStampFormat == "")
                 {
-                    timeStamps[entry] = DateTime.Parse(tokens[0]);
+                    timeStamps[entry] = DateTime.Parse(tokens[0].Trim(TRIM_CHARS));
                 }
                 else
                 {
-                    timeStamps[entry] = DateTime.ParseExact(tokens[0], TimeStampFormat, CULTURE_INFO);
+                    timeStamps[entry] = DateTime.ParseExact(tokens[0].Trim(TRIM_CHARS), TimeStampFormat, CULTURE_INFO);
                 }
                 for (int j = 1; j < nColumns; j++)
                 {
@@ -140,6 +155,18 @@ namespace Omniscient
             timeStamps = new DateTime[nDataLines];
 
             nRecords = nDataLines;
+
+            char[] delimiters = new char[] { ',' };
+            switch (Delimiter)
+            {
+                case DelimiterType.Comma:
+                    delimiters = new char[] { ',' };
+                    break;
+                case DelimiterType.CommaOrWhitespace:
+                    delimiters = new char[] { ',', ' ', '\t' };
+                    break;
+            }
+
             int entry;
             try
             {
@@ -150,10 +177,10 @@ namespace Omniscient
                     for (int i = nHeaders; i < lines.Length; i++)
                     {
                         entry = i - nHeaders;
-                        tokens = lines[i].Split(',');
+                        tokens = lines[i].Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
                         if (tokens.Length < nColumns)
                             return ReturnCode.CORRUPTED_FILE;
-                        timeStamps[entry] = DateTime.Parse(tokens[0]);
+                        timeStamps[entry] = DateTime.Parse(tokens[0].Trim(TRIM_CHARS));
                         for (int j = 1; j < nColumns; j++)
                         {
                             data[entry, j - 1] = double.Parse(tokens[j]);
@@ -165,10 +192,10 @@ namespace Omniscient
                     for (int i = nHeaders; i < lines.Length; i++)
                     {
                         entry = i - nHeaders;
-                        tokens = lines[i].Split(',');
+                        tokens = lines[i].Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
                         if (tokens.Length < nColumns)
                             return ReturnCode.CORRUPTED_FILE;
-                        timeStamps[entry] = DateTime.ParseExact(tokens[0], TimeStampFormat, CULTURE_INFO);
+                        timeStamps[entry] = DateTime.ParseExact(tokens[0].Trim(TRIM_CHARS), TimeStampFormat, CULTURE_INFO);
                         for (int j = 1; j < nColumns; j++)
                         {
                             data[entry, j - 1] = double.Parse(tokens[j]);

@@ -11,6 +11,17 @@ namespace Omniscient
     {
         private const string FILE_EXTENSION = "csv";
 
+        private CSVParser.DelimiterType _delimiter;
+        public CSVParser.DelimiterType Delimiter
+        {
+            get { return _delimiter; }
+            set
+            {
+                _delimiter = value;
+                if (csvParser != null) csvParser.Delimiter = value;
+            }
+        }
+
         private int _numberOfHeaders;
         public int NumberOfHeaders
         {
@@ -56,6 +67,7 @@ namespace Omniscient
 
             csvParser = new CSVParser();
             csvParser.NumberOfColumns = numChannels + 1;
+            Delimiter = CSVParser.DelimiterType.Comma;
             NumberOfHeaders = 0;
             TimeStampFormat = "";
 
@@ -67,6 +79,7 @@ namespace Omniscient
         private void MakeNewParser()
         {
             csvParser = new CSVParser();
+            csvParser.Delimiter = Delimiter;
             csvParser.NumberOfColumns = numChannels + 1;
             csvParser.NumberOfHeaders = NumberOfHeaders;
             csvParser.TimeStampFormat = TimeStampFormat;
@@ -148,6 +161,22 @@ namespace Omniscient
         public override List<Parameter> GetParameters()
         {
             List<Parameter> parameters = GetStandardInstrumentParameters();
+            string delim = "";
+            switch (Delimiter)
+            {
+                case CSVParser.DelimiterType.Comma:
+                    delim = "Comma";
+                    break;
+                case CSVParser.DelimiterType.CommaOrWhitespace:
+                    delim = "Comma or Whitespace";
+                    break;
+            }
+            parameters.Add(new EnumParameter("Delimiter")
+            {
+                Value = delim,
+                ValidValues = { "Comma", "Comma or Whitespace" }
+            });
+            parameters.Add(new StringParameter("Extension") { Value = FileExtension });
             parameters.Add(new IntParameter("Headers") { Value = NumberOfHeaders.ToString() });
             parameters.Add(new IntParameter("Channels") { Value = numChannels.ToString() });
             parameters.Add(new StringParameter("Time Stamp Format") { Value = TimeStampFormat });
@@ -161,6 +190,20 @@ namespace Omniscient
             {
                 switch (param.Name)
                 {
+                    case "Delimiter":
+                        switch(((EnumParameter)param).Value)
+                        {
+                            case "Comma":
+                                Delimiter = CSVParser.DelimiterType.Comma;
+                                break;
+                            case "Comma or Whitespace":
+                                Delimiter = CSVParser.DelimiterType.CommaOrWhitespace;
+                                break;
+                        }
+                        break;
+                    case "Extension":
+                        FileExtension = ((StringParameter)param).Value;
+                        break;
                     case "Headers":
                         NumberOfHeaders = ((IntParameter)param).ToInt();
                         break;
@@ -180,6 +223,11 @@ namespace Omniscient
         public CSVInstrumentHookup()
         {
             TemplateParameters.AddRange( new List<ParameterTemplate>() {
+                new ParameterTemplate("Delimiter", ParameterType.Enum)
+                {
+                    ValidValues = {"Comma", "Comma or Whitespace"}
+                },
+                new ParameterTemplate("Extension", ParameterType.String),
                 new ParameterTemplate("Headers", ParameterType.Int),
                 new ParameterTemplate("Channels", ParameterType.Int),
                 new ParameterTemplate("Time Stamp Format", ParameterType.String),
@@ -193,10 +241,26 @@ namespace Omniscient
             int nHeaders = 0;
             int nChannels = 0;
             string tStampFormat = "";
+            string fileExtension = "csv";
+            CSVParser.DelimiterType delimiter = CSVParser.DelimiterType.Comma;
             foreach (Parameter param in parameters)
             {
                 switch (param.Name)
                 {
+                    case "Delimiter":
+                        switch (((EnumParameter)param).Value)
+                        {
+                            case "Comma":
+                                delimiter = CSVParser.DelimiterType.Comma;
+                                break;
+                            case "Comma or Whitespace":
+                                delimiter = CSVParser.DelimiterType.CommaOrWhitespace;
+                                break;
+                        }
+                        break;
+                    case "Extension":
+                        fileExtension = ((StringParameter)param).Value;
+                        break;
                     case "Headers":
                         nHeaders = ((IntParameter)param).ToInt();
                         break;
@@ -209,8 +273,10 @@ namespace Omniscient
                 }
             }
             CSVInstrument instrument = new CSVInstrument(parent, newName, nChannels, id);
+            instrument.Delimiter = delimiter;
             instrument.NumberOfHeaders = nHeaders;
             instrument.TimeStampFormat = tStampFormat;
+            instrument.FileExtension = fileExtension;
             Instrument.ApplyStandardInstrumentParameters(instrument, parameters);
             return instrument;
         }
