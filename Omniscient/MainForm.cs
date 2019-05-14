@@ -1461,7 +1461,10 @@ namespace Omniscient
 
         private void GenerateEventsButton_Click(object sender, EventArgs e)
         {
-            GenerateEvents(Core.GlobalStart, Core.GlobalEnd);
+            GenerateEventsDialog dialog = new GenerateEventsDialog(Core);
+            if (dialog.ShowDialog() != DialogResult.OK) return;
+
+            GenerateEvents(dialog.StartTime, dialog.EndTime);
         }
 
         private void GenerateEvents(DateTime start, DateTime end)
