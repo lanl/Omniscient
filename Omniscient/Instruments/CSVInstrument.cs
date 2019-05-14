@@ -22,6 +22,29 @@ namespace Omniscient
             }
         }
 
+        private string _timeStampFormat;
+        public string TimeStampFormat
+        {
+            get { return _timeStampFormat; }
+            set
+            {
+                _timeStampFormat = value;
+                if (_timeStampFormat is null) _timeStampFormat = "";
+
+                bool hasChar = false;
+                foreach (char c in _timeStampFormat)
+                {
+                    if (Char.IsLetterOrDigit(c)) hasChar = true;
+                }
+                if (!hasChar)
+                {
+                    _timeStampFormat = "";
+                }
+
+                if (csvParser != null) csvParser.TimeStampFormat = _timeStampFormat;
+            }
+        }
+
         CSVParser csvParser;
 
         public CSVInstrument(DetectionSystem parent, string newName, int nChannels, uint id) : base(parent, newName, id)
@@ -34,6 +57,7 @@ namespace Omniscient
             csvParser = new CSVParser();
             csvParser.NumberOfColumns = numChannels + 1;
             NumberOfHeaders = 0;
+            TimeStampFormat = "";
 
             channels = new Channel[numChannels];
             for (int i = 0; i < numChannels; i++)
@@ -45,6 +69,7 @@ namespace Omniscient
             csvParser = new CSVParser();
             csvParser.NumberOfColumns = numChannels + 1;
             csvParser.NumberOfHeaders = NumberOfHeaders;
+            csvParser.TimeStampFormat = TimeStampFormat;
         }
 
         public ReturnCode SetNumberOfChannels(int nChannels)
@@ -125,6 +150,7 @@ namespace Omniscient
             List<Parameter> parameters = GetStandardInstrumentParameters();
             parameters.Add(new IntParameter("Headers") { Value = NumberOfHeaders.ToString() });
             parameters.Add(new IntParameter("Channels") { Value = numChannels.ToString() });
+            parameters.Add(new StringParameter("Time Stamp Format") { Value = TimeStampFormat });
             return parameters;
         }
 
@@ -141,6 +167,9 @@ namespace Omniscient
                     case "Channels":
                         SetNumberOfChannels(((IntParameter)param).ToInt());
                         break;
+                    case "Time Stamp Format":
+                        TimeStampFormat = ((StringParameter)param).Value;
+                        break;
                 }
             }
         }
@@ -152,7 +181,8 @@ namespace Omniscient
         {
             TemplateParameters.AddRange( new List<ParameterTemplate>() {
                 new ParameterTemplate("Headers", ParameterType.Int),
-                new ParameterTemplate("Channels", ParameterType.Int)
+                new ParameterTemplate("Channels", ParameterType.Int),
+                new ParameterTemplate("Time Stamp Format", ParameterType.String),
                 });
         }
 
@@ -162,6 +192,7 @@ namespace Omniscient
         {
             int nHeaders = 0;
             int nChannels = 0;
+            string tStampFormat = "";
             foreach (Parameter param in parameters)
             {
                 switch (param.Name)
@@ -172,10 +203,14 @@ namespace Omniscient
                     case "Channels":
                         nChannels = ((IntParameter)param).ToInt();
                         break;
+                    case "Time Stamp Format":
+                        tStampFormat = ((StringParameter)param).Value;
+                        break;
                 }
             }
             CSVInstrument instrument = new CSVInstrument(parent, newName, nChannels, id);
             instrument.NumberOfHeaders = nHeaders;
+            instrument.TimeStampFormat = tStampFormat;
             Instrument.ApplyStandardInstrumentParameters(instrument, parameters);
             return instrument;
         }

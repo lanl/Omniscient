@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -9,6 +10,8 @@ namespace Omniscient
 {
     class CSVParser
     {
+        private System.Globalization.CultureInfo CULTURE_INFO = new CultureInfo("en-US");
+
         private string fileName;
         public string FileName {
             get { return fileName; }
@@ -95,7 +98,14 @@ namespace Omniscient
                 tokens = lines[i].Split(',');
                 if (tokens.Length < nColumns)
                     return ReturnCode.CORRUPTED_FILE;
-                timeStamps[entry] = DateTime.Parse(tokens[0]);
+                if (TimeStampFormat == "")
+                {
+                    timeStamps[entry] = DateTime.Parse(tokens[0]);
+                }
+                else
+                {
+                    timeStamps[entry] = DateTime.ParseExact(tokens[0], TimeStampFormat, CULTURE_INFO);
+                }
                 for (int j = 1; j < nColumns; j++)
                 {
                     data[entry, j - 1] = double.Parse(tokens[j]);
@@ -134,16 +144,35 @@ namespace Omniscient
             try
             {
                 string[] tokens;
-                for (int i = nHeaders; i < lines.Length; i++)
+
+                if (TimeStampFormat == "")
                 {
-                    entry = i - nHeaders;
-                    tokens = lines[i].Split(',');
-                    if (tokens.Length < nColumns)
-                        return ReturnCode.CORRUPTED_FILE;
-                    timeStamps[entry] = DateTime.Parse(tokens[0]);
-                    for (int j = 1; j < nColumns; j++)
+                    for (int i = nHeaders; i < lines.Length; i++)
                     {
-                        data[entry, j - 1] = double.Parse(tokens[j]);
+                        entry = i - nHeaders;
+                        tokens = lines[i].Split(',');
+                        if (tokens.Length < nColumns)
+                            return ReturnCode.CORRUPTED_FILE;
+                        timeStamps[entry] = DateTime.Parse(tokens[0]);
+                        for (int j = 1; j < nColumns; j++)
+                        {
+                            data[entry, j - 1] = double.Parse(tokens[j]);
+                        }
+                    }
+                }
+                else
+                {
+                    for (int i = nHeaders; i < lines.Length; i++)
+                    {
+                        entry = i - nHeaders;
+                        tokens = lines[i].Split(',');
+                        if (tokens.Length < nColumns)
+                            return ReturnCode.CORRUPTED_FILE;
+                        timeStamps[entry] = DateTime.ParseExact(tokens[0], TimeStampFormat, CULTURE_INFO);
+                        for (int j = 1; j < nColumns; j++)
+                        {
+                            data[entry, j - 1] = double.Parse(tokens[j]);
+                        }
                     }
                 }
             }
