@@ -135,6 +135,7 @@
       <DependentUpon>GenerateEventsDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="OmniscientCore.cs" />
+    <Compile Include="Parsers\N42Parser.cs" />
     <Compile Include="Persister.cs" />
     <Compile Include="EventManagerForm\DataCompilerPanel.cs">
       <SubType>UserControl</SubType>

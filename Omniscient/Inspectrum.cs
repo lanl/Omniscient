@@ -34,6 +34,7 @@ namespace Omniscient
 
         CHNParser chnParser;
         SPEParser speParser;
+        N42Parser n42Parser;
         GearedValues<ObservablePoint> chartVals;
 
         bool calibrationChanged = false;
@@ -51,6 +52,7 @@ namespace Omniscient
             InitializeComponent();
             chnParser = new CHNParser();
             speParser = new SPEParser();
+            n42Parser = new N42Parser();
         }
 
         private void DrawSpectrum()
@@ -93,6 +95,11 @@ namespace Omniscient
             {
                 speParser.ParseSpectrumFile(fileName);
                 spectrum = speParser.GetSpectrum();
+            }
+            else if (fileExt == "n42")
+            {
+                n42Parser.ParseSpectrumFile(fileName);
+                spectrum = n42Parser.GetSpectrum();
             }
             else
             {

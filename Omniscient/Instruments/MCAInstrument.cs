@@ -44,8 +44,13 @@ namespace Omniscient
                     spectrumParser = new SPEParser();
                     _fileExtension = value;
                 }
+                else if (value == "n42")
+                {
+                    spectrumParser = new N42Parser();
+                    _fileExtension = value;
+                }
                 else
-                    throw new ArgumentException("File extension must be chn or spe!");
+                    throw new ArgumentException("File extension must be chn, spe, or n42!");
                 ScanDataFolder();
             }
         }
@@ -110,7 +115,7 @@ namespace Omniscient
             parameters.Add(new EnumParameter("File Extension")
             {
                 Value = FileExtension,
-                ValidValues = { "chn", "spe" }
+                ValidValues = { "chn", "spe", "n42" }
             });
             return parameters;
         }
@@ -136,7 +141,7 @@ namespace Omniscient
         {
             TemplateParameters.Add(new ParameterTemplate("File Extension", ParameterType.Enum)
             {
-                ValidValues = { "chn", "spe" }
+                ValidValues = { "chn", "spe", "n42" }
             });
         }
 
