@@ -25,8 +25,15 @@ namespace Omniscient
 {
     public partial class ChannelPanel : UserControl
     {
+        private const string LINE = "_";
+        private const string DOT = "o";
 
         public event EventHandler CheckChanged;
+        public event EventHandler SymbolChanged;
+
+        public enum SymbolType { Line, Dot }
+
+        public SymbolType Symbol { get; private set; }
 
         private Channel channel;
 
@@ -44,6 +51,11 @@ namespace Omniscient
             Chart3CheckBox.Tag = 2;
             Chart4CheckBox.Tag = 3;
 
+            SymbolComboBox.Items.Add(LINE);
+            SymbolComboBox.Items.Add(DOT);
+            SymbolComboBox.SelectedItem = LINE;
+            Symbol = SymbolType.Line;
+
             NameToolTip.SetToolTip(NameTextBox, NameTextBox.Text);
         }
 
@@ -51,26 +63,35 @@ namespace Omniscient
 
         private void Chart1CheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            if (CheckChanged != null)
-                CheckChanged(sender, e);
+            CheckChanged?.Invoke(sender, e);
         }
 
         private void Chart2CheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            if (CheckChanged != null)
-                CheckChanged(sender, e);
+            CheckChanged?.Invoke(sender, e);
         }
 
         private void Chart3CheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            if (CheckChanged != null)
-                CheckChanged(sender, e);
+            CheckChanged?.Invoke(sender, e);
         }
 
         private void Chart4CheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            if (CheckChanged != null)
-                CheckChanged(sender, e);
+            CheckChanged?.Invoke(sender, e);
+        }
+
+        private void SymbolComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if ((string)SymbolComboBox.SelectedItem == LINE)
+            {
+                Symbol = SymbolType.Line;
+            }
+            else
+            {
+                Symbol = SymbolType.Dot;
+            }
+            SymbolChanged?.Invoke(sender, e);
         }
     }
 }

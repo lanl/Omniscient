@@ -54,11 +54,13 @@ namespace Omniscient
             // SymbolComboBox
             // 
             this.SymbolComboBox.Dock = System.Windows.Forms.DockStyle.Left;
+            this.SymbolComboBox.Font = new System.Drawing.Font("Microsoft PhagsPa", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SymbolComboBox.FormattingEnabled = true;
             this.SymbolComboBox.Location = new System.Drawing.Point(240, 0);
             this.SymbolComboBox.Name = "SymbolComboBox";
-            this.SymbolComboBox.Size = new System.Drawing.Size(50, 21);
+            this.SymbolComboBox.Size = new System.Drawing.Size(45, 22);
             this.SymbolComboBox.TabIndex = 12;
+            this.SymbolComboBox.SelectedIndexChanged += new System.EventHandler(this.SymbolComboBox_SelectedIndexChanged);
             // 
             // Chart4CheckBox
             // 
@@ -149,7 +151,7 @@ namespace Omniscient
 
         #endregion
 
-        private System.Windows.Forms.ComboBox SymbolComboBox;
+        public System.Windows.Forms.ComboBox SymbolComboBox;
         public System.Windows.Forms.CheckBox Chart4CheckBox;
         public System.Windows.Forms.CheckBox Chart3CheckBox;
         public System.Windows.Forms.CheckBox Chart2CheckBox;

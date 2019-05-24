@@ -459,9 +459,18 @@ namespace Omniscient
                     series.Points.SuspendUpdates();
                     series.ChartType = SeriesChartType.FastLine;
                     series.XValueType = ChartValueType.DateTime;
+                    if (chanPan.Symbol == ChannelPanel.SymbolType.Dot)
+                    {
+                        series.ChartType = SeriesChartType.Point;
+                    }
+                    else
+                    {
+                        series.ChartType = SeriesChartType.Line;
+                    }
                     
                     if (chan.GetChannelType() == Channel.ChannelType.DURATION_VALUE)
                     {
+                        series.BorderWidth = 3;
                         List<TimeSpan> durations = chan.GetDurations(ChannelCompartment.View);
                         if (logScale[chartNum])
                         {
@@ -741,6 +750,7 @@ namespace Omniscient
                     ChannelPanel chanPan = new ChannelPanel(ch);
                     chanPan.Dock = DockStyle.Top;
                     chanPan.CheckChanged += new EventHandler(OnChannelPannelCheckChanged);
+                    chanPan.SymbolChanged += new EventHandler(OnChannelPannelSymbolChanged);
                     ChannelsPanel.Controls.Add(chanPan);
                     chPanels.Add(chanPan);
                 }
@@ -752,6 +762,11 @@ namespace Omniscient
             ChannelsLabelPanel.SendToBack();
             ChannelsPanel.ResumeLayout();
             UpdateGlobalStartEnd();
+        }
+
+        private void OnChannelPannelSymbolChanged(object sender, EventArgs e)
+        {
+            UpdatesCharts();
         }
 
         private void RemoveChannelPanels(Instrument inst)
