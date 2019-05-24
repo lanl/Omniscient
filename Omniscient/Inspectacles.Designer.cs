@@ -41,73 +41,65 @@ namespace Omniscient
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Inspectacles));
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.MediaPlayer = new AxWMPLib.AxWindowsMediaPlayer();
-            this.menuStrip1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.MediaPlayer)).BeginInit();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.PicBox = new System.Windows.Forms.PictureBox();
+            this.TimeStampLabel = new System.Windows.Forms.Label();
+            this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.PicBox)).BeginInit();
             this.SuspendLayout();
             // 
-            // menuStrip1
+            // panel1
             // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(647, 24);
-            this.menuStrip1.TabIndex = 0;
-            this.menuStrip1.Text = "menuStrip1";
+            this.panel1.Controls.Add(this.TimeStampLabel);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(647, 40);
+            this.panel1.TabIndex = 0;
             // 
-            // fileToolStripMenuItem
+            // PicBox
             // 
-            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.openToolStripMenuItem});
-            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
-            this.fileToolStripMenuItem.Text = "File";
+            this.PicBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PicBox.Location = new System.Drawing.Point(0, 40);
+            this.PicBox.Margin = new System.Windows.Forms.Padding(10);
+            this.PicBox.Name = "PicBox";
+            this.PicBox.Padding = new System.Windows.Forms.Padding(10);
+            this.PicBox.Size = new System.Drawing.Size(647, 474);
+            this.PicBox.TabIndex = 1;
+            this.PicBox.TabStop = false;
             // 
-            // openToolStripMenuItem
+            // TimeStampLabel
             // 
-            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.openToolStripMenuItem.Text = "Open";
-            this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
-            // 
-            // MediaPlayer
-            // 
-            this.MediaPlayer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.MediaPlayer.Enabled = true;
-            this.MediaPlayer.Location = new System.Drawing.Point(0, 24);
-            this.MediaPlayer.Name = "MediaPlayer";
-            this.MediaPlayer.OcxState = ((System.Windows.Forms.AxHost.State)(resources.GetObject("MediaPlayer.OcxState")));
-            this.MediaPlayer.Size = new System.Drawing.Size(647, 490);
-            this.MediaPlayer.TabIndex = 1;
+            this.TimeStampLabel.Dock = System.Windows.Forms.DockStyle.Left;
+            this.TimeStampLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.TimeStampLabel.Location = new System.Drawing.Point(0, 0);
+            this.TimeStampLabel.Margin = new System.Windows.Forms.Padding(20, 10, 20, 10);
+            this.TimeStampLabel.Name = "TimeStampLabel";
+            this.TimeStampLabel.Padding = new System.Windows.Forms.Padding(20, 10, 20, 10);
+            this.TimeStampLabel.Size = new System.Drawing.Size(300, 40);
+            this.TimeStampLabel.TabIndex = 0;
+            this.TimeStampLabel.Text = "label1";
             // 
             // Inspectacles
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(647, 514);
-            this.Controls.Add(this.MediaPlayer);
-            this.Controls.Add(this.menuStrip1);
-            this.MainMenuStrip = this.menuStrip1;
+            this.Controls.Add(this.PicBox);
+            this.Controls.Add(this.panel1);
             this.Name = "Inspectacles";
             this.Text = "Inspectacles";
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.MediaPlayer)).EndInit();
+            this.Load += new System.EventHandler(this.Inspectacles_Load);
+            this.panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.PicBox)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
-        private AxWMPLib.AxWindowsMediaPlayer MediaPlayer;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.PictureBox PicBox;
+        private System.Windows.Forms.Label TimeStampLabel;
     }
 }

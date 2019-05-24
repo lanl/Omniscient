@@ -30,21 +30,15 @@ namespace Omniscient
             InitializeComponent();
         }
 
-        private void OpenFile()
+        private void Inspectacles_Load(object sender, EventArgs e)
         {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "MPEG files (*.mpg)|*.mpg|All files (*.*)|*.*";
-            openFileDialog.RestoreDirectory = true;
-
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                MediaPlayer.URL = openFileDialog.FileName;
-            }
+            PicBox.SizeMode = PictureBoxSizeMode.Zoom;
         }
 
-        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        public void LoadPicture(string fileName, DateTime timeStamp)
         {
-            OpenFile();
+            PicBox.Image = Image.FromFile(fileName);
+            TimeStampLabel.Text = "Time stamp: " + timeStamp.ToString("yyyy-MM-dd HH:mm:ss");
         }
     }
 }
