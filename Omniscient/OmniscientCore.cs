@@ -103,7 +103,7 @@ namespace Omniscient
             }
 
             Cache = new CacheManager();
-            Cache.Start();
+            //Cache.Start();
 
             ActiveInstruments = new List<Instrument>();
             ActiveEventGenerators = new List<EventGenerator>();
@@ -369,7 +369,7 @@ namespace Omniscient
 
         public void Shutdown()
         {
-            Cache.Stop();
+            //Cache.Stop();
         }
     }
 
