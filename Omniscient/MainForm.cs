@@ -1161,8 +1161,11 @@ namespace Omniscient
             foreach (ChannelPanel chanPan in chPanels)
             {
                 Channel chan = chanPan.GetChannel();
+                Instrument inst = chan.GetInstrument();
 
-                if (chan.GetInstrument() is MCAInstrument || chan.GetInstrument() is DeclarationInstrument)
+                if (inst is MCAInstrument ||
+                    inst is DeclarationInstrument ||
+                    inst is ImageInstrument)
                 {
                     bool plotChan = false;
                     switch (chartNum)
@@ -1186,33 +1189,74 @@ namespace Omniscient
                     }
                     if (plotChan)
                     {
-                        // Determine whether the user clicked within a measurement
-                        List<DateTime> timeStamps = chan.GetTimeStamps(ChannelCompartment.View);
-                        List<TimeSpan> durations = chan.GetDurations(ChannelCompartment.View);
-                        for(int meas = 0; meas < timeStamps.Count(); meas++)
+                        if (inst is MCAInstrument || inst is DeclarationInstrument)
                         {
-                            if (timeStamps[meas] <= mouseTime && mouseTime <= timeStamps[meas] + durations[meas])
+                            // Determine whether the user clicked within a measurement
+                            List<DateTime> timeStamps = chan.GetTimeStamps(ChannelCompartment.View);
+                            List<TimeSpan> durations = chan.GetDurations(ChannelCompartment.View);
+                            for (int meas = 0; meas < timeStamps.Count(); meas++)
                             {
-                                if (chan.GetInstrument() is MCAInstrument)
+                                if (timeStamps[meas] <= mouseTime && mouseTime <= timeStamps[meas] + durations[meas])
                                 {
-                                    MenuItem menuItem = new MenuItem("View " + chan.Name + " in Inspectrum");
-                                    menuItem.Tag = chan.GetFiles(ChannelCompartment.View)[meas].FileName;
-                                    menuItem.Click += PlotSpectrumMenuItem_Click;
-                                    chartMenu.MenuItems.Add(menuItem);
+                                    if (chan.GetInstrument() is MCAInstrument)
+                                    {
+                                        MenuItem menuItem = new MenuItem("View " + chan.Name + " in Inspectrum");
+                                        menuItem.Tag = chan.GetFiles(ChannelCompartment.View)[meas].FileName;
+                                        menuItem.Click += PlotSpectrumMenuItem_Click;
+                                        chartMenu.MenuItems.Add(menuItem);
+                                    }
+                                    else if (chan.GetInstrument() is DeclarationInstrument)
+                                    {
+                                        MenuItem menuItem = new MenuItem("View " + chan.Name + " in Declaration Editor");
+                                        menuItem.Tag = chan.GetFiles(ChannelCompartment.View)[meas].FileName;
+                                        menuItem.Click += DeclarationMenuItem_Click;
+                                        chartMenu.MenuItems.Add(menuItem);
+                                    }
                                 }
-                                else if(chan.GetInstrument() is DeclarationInstrument)
+                            }
+                        }
+                        else if (inst is ImageInstrument)
+                        {
+                            List<DateTime> timeStamps = chan.GetTimeStamps(ChannelCompartment.View);
+                            if (timeStamps.Count == 0)
+                            {
+                                continue;
+                            }
+
+                            // Find closest image (within a day)
+                            long distance = TimeSpan.TicksPerDay;
+                            long thisDist = 0;
+                            int index = -1;
+                            for (int meas = 0; meas < timeStamps.Count(); meas++)
+                            {
+                                thisDist = Math.Abs(timeStamps[meas].Ticks - mouseTime.Ticks);
+                                if (thisDist < distance)
                                 {
-                                    MenuItem menuItem = new MenuItem("View " + chan.Name + " in Declaration Editor");
-                                    menuItem.Tag = chan.GetFiles(ChannelCompartment.View)[meas].FileName;
-                                    menuItem.Click += DeclarationMenuItem_Click;
-                                    chartMenu.MenuItems.Add(menuItem);
+                                    index = meas;
+                                    distance = thisDist;
                                 }
+                            }
+                            if (index >= 0)
+                            {
+                                MenuItem menuItem = new MenuItem("View " + chan.Name + " in Inspectacles");
+                                menuItem.Tag = Tuple.Create(chan.GetFiles(ChannelCompartment.View)[index].FileName, timeStamps[index]);
+                                menuItem.Click += ImageMenuItem_Click;
+                                chartMenu.MenuItems.Add(menuItem);
                             }
                         }
                     }
                 }
             }
             chartMenu.Show(activeChart, new Point((int)mouseX, (int)mouseY));
+        }
+
+        private void ImageMenuItem_Click(object sender, EventArgs e)
+        {
+            MenuItem menuItem = (MenuItem)sender;
+            Tuple<string, DateTime> imageData = (Tuple<string, DateTime>)menuItem.Tag;
+            Inspectacles inspectacles = new Inspectacles();
+            inspectacles.LoadPicture(imageData.Item1, imageData.Item2);
+            inspectacles.Show();
         }
 
         private void ChartOptionsMenuItem_Click(object sender, EventArgs e)

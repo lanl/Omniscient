@@ -121,6 +121,7 @@
     <Compile Include="DeclarationEditor.Designer.cs">
       <DependentUpon>DeclarationEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="Instruments\ImageInstrument.cs" />
     <Compile Include="IOUtility.cs" />
     <Compile Include="MainDialogs\ChartOptionsDialog.cs">
       <SubType>Form</SubType>

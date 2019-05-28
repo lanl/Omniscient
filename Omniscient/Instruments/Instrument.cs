@@ -29,6 +29,7 @@ namespace Omniscient
         {
             new CSVInstrumentHookup(),
             new GRANDInstrumentHookup(),
+            new ImageInstrumentHookup(),
             new ISRInstrumentHookup(),
             new MCAInstrumentHookup(),
             new NGAMInstrumentHookup()
