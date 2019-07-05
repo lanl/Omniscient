@@ -87,14 +87,6 @@ namespace Omniscient
             return ReturnCode.SUCCESS;
         }
 
-        public override void ClearData(ChannelCompartment compartment)
-        {
-            foreach (Channel ch in channels)
-            {
-                ch.ClearData(compartment);
-            }
-        }
-
         public override List<Parameter> GetParameters()
         {
             return GetStandardInstrumentParameters();

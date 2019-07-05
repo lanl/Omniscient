@@ -52,14 +52,6 @@ namespace Omniscient
             ApplyStandardInstrumentParameters(this, parameters);
         }
 
-        public override void ClearData(ChannelCompartment compartment)
-        {
-            foreach (Channel ch in channels)
-            {
-                ch.ClearData(compartment);
-            }
-        }
-
         public override DateTime GetFileDate(string file)
         {
             Regex regex = new Regex(DatePatterns[DatePattern]);

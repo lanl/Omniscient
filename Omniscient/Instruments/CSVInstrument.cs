@@ -115,15 +115,6 @@ namespace Omniscient
             return ReturnCode.SUCCESS;
         }
 
-
-        public override void ClearData(ChannelCompartment compartment)
-        {
-            foreach (Channel ch in channels)
-            {
-                ch.ClearData(compartment);
-            }
-        }
-
         public override ReturnCode IngestFile(ChannelCompartment compartment, string fileName)
         {
             DateTime time = DateTime.MinValue;

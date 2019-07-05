@@ -197,7 +197,13 @@ namespace Omniscient
             LoadVirtualChannels(compartment);
         }
         public abstract ReturnCode IngestFile(ChannelCompartment compartment, string fileName);
-        public abstract void ClearData(ChannelCompartment compartment);
+        public void ClearData(ChannelCompartment compartment)
+        {
+            foreach (Channel ch in GetChannels())
+            {
+                ch.ClearData(compartment);
+            }
+        }
 
         public void SetDataFolder(string newDataFolder)
         {
