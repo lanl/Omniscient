@@ -38,6 +38,7 @@ namespace Omniscient
         public OmniscientCore Core;
 
         private const int N_CHARTS = 4;
+        private Chart[] charts;
         private const int MAX_HIGHLIGHTED_EVENTS = 60;
 
         public PresetManager presetMan;
@@ -59,11 +60,11 @@ namespace Omniscient
         double mouseX = 0;
         double mouseY = 0;
         double mouseDownX = 0;
-        double mouseDownY = 0;
         double mouseUpX = 0;
         DateTime mouseTime;
         private bool showMarker = false;
         private double markerValue = 0;
+        IntervalOfReview manualIOR = null;
         ///////////////////////////////////////////////////////////////////////
 
         /// <summary>
@@ -84,6 +85,7 @@ namespace Omniscient
                 autoScale[c] = true;
             }
             InitializeComponent();
+            charts = new Chart[] { StripChart0, StripChart1, StripChart2, StripChart3 };
             Core.ViewChanged += Core_OnViewChanged;
         }
 
@@ -1324,8 +1326,6 @@ namespace Omniscient
         /// Called when a user clicks on any of the charts.</summary>
         private void StripChart_MouseClick(object sender, System.Windows.Forms.MouseEventArgs e)
         {
-            drawStatisticsBox = false;
-
             if (e.Button == MouseButtons.Left)
             {
                 Chart chart = (Chart)sender;
@@ -1625,14 +1625,12 @@ namespace Omniscient
 
         Chart downChart;
         bool drawingZoomBox = false;
-        bool drawStatisticsBox = false;
         private void StripChart_MouseDown(object sender, MouseEventArgs e)
         {
             downChart = (Chart)sender;
             mouseDownX = downChart.ChartAreas[0].AxisX.PixelPositionToValue(e.X);
             if (e.Button == MouseButtons.Left)
             {
-                drawStatisticsBox = false;
                 drawingZoomBox = true;
             }
         }
@@ -1642,14 +1640,8 @@ namespace Omniscient
         {
             boxData = "";
             int chartNum = (int)downChart.Tag;
-            DateTime start = DateTime.FromOADate(mouseDownX);
-            DateTime end = DateTime.FromOADate(mouseUpX);
-            if (end < start)
-            {
-                DateTime dateTimesScrap = start;
-                start = end;
-                end = dateTimesScrap;
-            }
+            DateTime start = manualIOR.TimeRange.Start;
+            DateTime end = manualIOR.TimeRange.End;
             foreach (ChannelPanel chanPan in chPanels)
             {
                 bool plotChan = false;
@@ -1726,33 +1718,60 @@ namespace Omniscient
             {
                 // This is nothing - just do nothing
                 drawingZoomBox = false;
-                drawStatisticsBox = false;
                 return;
             }
             else
             {
                 // Draw statistics box
-                drawStatisticsBox = true;
-                CalculateHighlightBoxValues();
+                CreateManualIOR();
                 return;
+            }
+        }
+
+        Chart manualIORChart = null;
+        public void CreateManualIOR()
+        {
+            DateTime start = DateTime.FromOADate(mouseDownX);
+            DateTime end = DateTime.FromOADate(mouseUpX);
+            if (end < start)
+            {
+                DateTime dateTimesScrap = start;
+                start = end;
+                end = dateTimesScrap;
+            }
+            manualIOR = new IntervalOfReview(start, end);
+            manualIORChart = downChart;
+
+            // Draw statistics box
+            CalculateHighlightBoxValues();
+
+            foreach (Chart chart in charts)
+            {
+                chart.Invalidate();
             }
         }
 
         public void StripChart_Paint(object sender, PaintEventArgs e)
         {
-            if (drawingZoomBox || drawStatisticsBox)
+            Chart chart = (Chart)sender;
+            Axis X = chart.ChartAreas[0].AxisX;
+            Axis Y = chart.ChartAreas[0].AxisY;
+            if (drawingZoomBox)
             {
-                Chart chart = (Chart)sender;
-                Axis X = chart.ChartAreas[0].AxisX;
-                Axis Y = chart.ChartAreas[0].AxisY;
                 int xStart = (int)X.ValueToPixelPosition(mouseDownX);
-                int xNow = (int)mouseX;
+                int xNow = (int)X.ValueToPixelPosition(mouseTime.ToOADate());
                 e.Graphics.DrawRectangle(Pens.Gray, Math.Min(xStart, xNow), (int)Y.ValueToPixelPosition(Y.Maximum),
                     Math.Abs(xStart - xNow), (int)Y.ValueToPixelPosition(Y.Minimum) - (int)Y.ValueToPixelPosition(Y.Maximum));
-                if(drawStatisticsBox && chart == downChart)
-                {
-                    e.Graphics.DrawString(boxData, SystemFonts.DefaultFont, SystemBrushes.InfoText, new Point(Math.Min(xStart, xNow) + 5, (int)Y.ValueToPixelPosition(Y.Maximum) + 5));
-                }
+            }
+            if (!(manualIOR is null) && chart == manualIORChart)
+            {
+                e.Graphics.DrawRectangle(Pens.Gray, 
+                    (float)X.ValueToPixelPosition(manualIOR.TimeRange.Start.ToOADate()), 
+                    (int)Y.ValueToPixelPosition(Y.Maximum),
+                    (float) (X.ValueToPixelPosition(manualIOR.TimeRange.End.ToOADate()) - X.ValueToPixelPosition(manualIOR.TimeRange.Start.ToOADate())), 
+                    (int)Y.ValueToPixelPosition(Y.Minimum) - (int)Y.ValueToPixelPosition(Y.Maximum));
+                e.Graphics.DrawString(boxData, SystemFonts.DefaultFont, SystemBrushes.InfoText, 
+                    new Point((int)X.ValueToPixelPosition(manualIOR.TimeRange.Start.ToOADate()) + 5, (int)Y.ValueToPixelPosition(Y.Maximum) + 5));
             }
         }
         
@@ -1762,6 +1781,17 @@ namespace Omniscient
             if (e.KeyCode == Keys.ControlKey)
             {
                 controlPressed = true;
+            }
+            if (e.KeyCode == Keys.Delete)
+            {
+                if (!(manualIOR is null) && (markerValue >= manualIOR.TimeRange.Start.ToOADate()) && (markerValue <= manualIOR.TimeRange.End.ToOADate()))
+                {
+                    manualIOR = null;
+                    foreach(Chart chart in charts)
+                    {
+                        chart.Invalidate();
+                    }
+                }
             }
         }
 

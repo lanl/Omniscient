@@ -17,6 +17,11 @@ namespace Omniscient
             End = end;
         }
 
+        public TimeSpan GetTimeSpan()
+        {
+            return End - Start;
+        }
+
         public bool InRange(DateTime time)
         {
             if (time >= Start && time <= End) return true;
