@@ -70,7 +70,6 @@ namespace Omniscient
             set
             {
                 _fileExtension = value;
-                ScanDataFolder();
             }
         }
 
@@ -270,7 +269,7 @@ namespace Omniscient
                         break;
                 }
             }
-            instrument.ScanDataFolder();
+            //instrument.ScanDataFolder();
         }
 
         public override bool SetIndex(int index)
