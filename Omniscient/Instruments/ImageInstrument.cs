@@ -12,8 +12,8 @@ namespace Omniscient
     {
         private const string FILE_EXTENSION = "jpg";
 
-        private Dictionary<string, string> DatePatterns { get; set; }
         public string DatePattern { get; set; }
+        public string DateRegexPattern { get; set; }
 
         public ImageInstrument(DetectionSystem parent, string name, uint id) : base(parent, name, id)
         {
@@ -24,18 +24,6 @@ namespace Omniscient
             numChannels = 1;
             channels = new Channel[numChannels];
             channels[0] = new Channel(Name + "-Channel", this, Channel.ChannelType.VIDEO, 0);
-
-            DatePatterns = GenerateDatePatterns();
-            DatePattern = DatePatterns.Keys.ElementAt(0);
-        }
-
-        public static Dictionary<string, string> GenerateDatePatterns()
-        {
-            Dictionary<string, string> patterns = new Dictionary<string, string>();
-            patterns.Add("yyyy-MM-dd HH:mm:ss", @"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}");
-            patterns.Add("yyyy-MM-ddTHH:mm:ss", @"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}");
-            patterns.Add("yyyyMMddTHHmmss", @"\d{8}T\d{6}");
-            return patterns;
         }
 
         public override void ApplyParameters(List<Parameter> parameters)
@@ -46,6 +34,7 @@ namespace Omniscient
                 {
                     case "Date Pattern":
                         DatePattern = param.Value;
+                        DateRegexPattern = (param as DateTimeFormatParameter).GetRegexPattern();
                         break;
                 }
             }
@@ -54,7 +43,7 @@ namespace Omniscient
 
         public override DateTime GetFileDate(string file)
         {
-            Regex regex = new Regex(DatePatterns[DatePattern]);
+            Regex regex = new Regex(DateRegexPattern);
             Match match = regex.Match(file);
             if (match.Success)
             {
@@ -66,10 +55,9 @@ namespace Omniscient
         public override List<Parameter> GetParameters()
         {
             List<Parameter> parameters = GetStandardInstrumentParameters();
-            parameters.Add(new EnumParameter("Date Pattern")
+            parameters.Add(new DateTimeFormatParameter("Date Pattern")
             {
-                Value = DatePattern,
-                ValidValues = DatePatterns.Keys.ToList()
+                Value = DatePattern
             });
             return parameters;
         }
@@ -89,7 +77,7 @@ namespace Omniscient
     {
         public ImageInstrumentHookup()
         {
-            TemplateParameters.Add(new ParameterTemplate("Date Pattern", ParameterType.Enum, ImageInstrument.GenerateDatePatterns().Keys.ToList()));
+            TemplateParameters.Add(new ParameterTemplate("Date Pattern", ParameterType.DateTimeFormat));
         }
 
         public override string Type { get { return "Image"; } }
@@ -103,6 +91,7 @@ namespace Omniscient
                 {
                     case "Date Pattern":
                         instrument.DatePattern = param.Value;
+                        instrument.DateRegexPattern = (param as DateTimeFormatParameter).GetRegexPattern();
                         break;
                 }
             }

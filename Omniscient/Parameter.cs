@@ -8,7 +8,7 @@ using System.Xml;
 
 namespace Omniscient
 {
-    public enum ParameterType { String, Int, Double, Bool, Enum, TimeSpan, SystemChannel, SystemEventGenerator, FileName, Directory, InstrumentChannel }
+    public enum ParameterType { String, Int, Double, Bool, Enum, TimeSpan, DateTimeFormat, SystemChannel, SystemEventGenerator, FileName, Directory, InstrumentChannel }
 
     /// <summary>
     /// A description of a Parameter. Used in Hookups
@@ -80,6 +80,9 @@ namespace Omniscient
                     case ParameterType.TimeSpan:
                         parameters.Add(new TimeSpanParameter(pTemplate.Name) { Value = node.Attributes[paramNameStr]?.InnerText });
                         break;
+                    case ParameterType.DateTimeFormat:
+                        parameters.Add(new DateTimeFormatParameter(pTemplate.Name) { Value = node.Attributes[paramNameStr]?.InnerText });
+                        break;
                     case ParameterType.FileName:
                         parameters.Add(new FileNameParameter(pTemplate.Name) { Value = node.Attributes[paramNameStr]?.InnerText });
                         break;
@@ -104,7 +107,6 @@ namespace Omniscient
             Name = name;
             Type = type;
         }
-
         public abstract bool Validate();
     }
 
@@ -253,6 +255,31 @@ namespace Omniscient
                     if (Value == ch.Name) return ch;
                 }
             }
+            return null;
+        }
+    }
+
+    /// <summary>
+    /// A parameter that stores DateTime formats and provides regex patterns 
+    /// to extract DateTimes from strings
+    /// </summary>
+    public class DateTimeFormatParameter : LimitedValueParameter
+    {
+        private static Dictionary<string, string> patterns = new Dictionary<string, string>
+        {
+            { "yyyy-MM-dd HH:mm:ss",  @"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}" },
+            { "yyyy-MM-ddTHH:mm:ss",  @"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}" },
+            { "yyyyMMddTHHmmss",      @"\d{8}T\d{6}" }
+        };
+
+        public DateTimeFormatParameter(string name) : base(name, ParameterType.DateTimeFormat)
+        {
+            ValidValues = patterns.Keys.ToList();
+        }
+
+        public string GetRegexPattern()
+        {
+            if (!(Value is null)) return patterns[Value];
             return null;
         }
     }
