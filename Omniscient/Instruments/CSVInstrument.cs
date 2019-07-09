@@ -56,33 +56,68 @@ namespace Omniscient
             }
         }
 
+        private bool _hasEndTimes;
+        public bool HasEndTimes
+        {
+            get { return _hasEndTimes; }
+            set
+            {
+                if (value != _hasEndTimes)
+                {
+                    _hasEndTimes = value;
+                    ReinitializeChannels();
+                }
+            }
+        }
+
         CSVParser csvParser;
 
-        public CSVInstrument(DetectionSystem parent, string newName, int nChannels, uint id) : base(parent, newName, id)
+        public CSVInstrument(DetectionSystem parent, string newName, int nChannels, bool hasEndTimes, uint id) : base(parent, newName, id)
         {
             InstrumentType = "CSV";
             numChannels = nChannels;
             FileExtension = FILE_EXTENSION;
             filePrefix = "";
 
-            csvParser = new CSVParser();
-            csvParser.NumberOfColumns = numChannels + 1;
             Delimiter = CSVParser.DelimiterType.Comma;
             NumberOfHeaders = 0;
             TimeStampFormat = "";
+            HasEndTimes = hasEndTimes;
+            MakeNewParser();
 
+            ReinitializeChannels();
+        }
+
+        private void ReinitializeChannels()
+        {
             channels = new Channel[numChannels];
-            for (int i = 0; i < numChannels; i++)
-                channels[i] = new Channel(Name + "-" + i.ToString(), this, Channel.ChannelType.COUNT_RATE, 0);
+            if (HasEndTimes)
+            {
+                for (int i = 0; i < numChannels; i++)
+                    channels[i] = new Channel(Name + "-" + i.ToString(), this, Channel.ChannelType.DURATION_VALUE, 0);
+            }
+            else
+            {
+                for (int i = 0; i < numChannels; i++)
+                    channels[i] = new Channel(Name + "-" + i.ToString(), this, Channel.ChannelType.COUNT_RATE, 0);
+            }
         }
 
         private void MakeNewParser()
         {
             csvParser = new CSVParser();
             csvParser.Delimiter = Delimiter;
-            csvParser.NumberOfColumns = numChannels + 1;
+            if (HasEndTimes)
+            {
+                csvParser.NumberOfColumns = numChannels + 2;
+            }
+            else
+            {
+                csvParser.NumberOfColumns = numChannels + 1;
+            }
             csvParser.NumberOfHeaders = NumberOfHeaders;
             csvParser.TimeStampFormat = TimeStampFormat;
+            csvParser.GetEndTimes = HasEndTimes;
         }
 
         public ReturnCode SetNumberOfChannels(int nChannels)
@@ -97,9 +132,19 @@ namespace Omniscient
                 {
                     newChannels[i] = channels[i];
                 }
-                for (int i=numChannels; i<nChannels; ++i)
+                if (HasEndTimes)
                 {
-                    newChannels[i] = new Channel(Name + "-" + i.ToString(), this, Channel.ChannelType.COUNT_RATE, 0);
+                    for (int i = numChannels; i < nChannels; ++i)
+                    {
+                        newChannels[i] = new Channel(Name + "-" + i.ToString(), this, Channel.ChannelType.DURATION_VALUE, 0);
+                    }
+                }
+                else
+                {
+                    for (int i = numChannels; i < nChannels; ++i)
+                    {
+                        newChannels[i] = new Channel(Name + "-" + i.ToString(), this, Channel.ChannelType.COUNT_RATE, 0);
+                    }
                 }
             }
             else
@@ -124,12 +169,26 @@ namespace Omniscient
             ReturnCode returnCode = csvParser.ParseFile(fileName);
 
             int numRecords = csvParser.GetNumRecords();
-            for (int r = 0; r < numRecords; ++r)
+            if (HasEndTimes)
             {
-                time = csvParser.TimeStamps[r];
-                for (int c = 0; c < numChannels; c++)
+                for (int r = 0; r < numRecords; ++r)
                 {
-                    channels[c].AddDataPoint(compartment, time, csvParser.Data[r, c], dataFile);
+                    time = csvParser.EndTimes[r];
+                    for (int c = 0; c < numChannels; c++)
+                    {
+                        channels[c].AddDataPoint(compartment, csvParser.TimeStamps[r], csvParser.Data[r, c], time - csvParser.TimeStamps[r], dataFile);
+                    }
+                }
+            }
+            else
+            {
+                for (int r = 0; r < numRecords; ++r)
+                {
+                    time = csvParser.TimeStamps[r];
+                    for (int c = 0; c < numChannels; c++)
+                    {
+                        channels[c].AddDataPoint(compartment, time, csvParser.Data[r, c], dataFile);
+                    }
                 }
             }
 
@@ -171,6 +230,7 @@ namespace Omniscient
             parameters.Add(new IntParameter("Headers") { Value = NumberOfHeaders.ToString() });
             parameters.Add(new IntParameter("Channels") { Value = numChannels.ToString() });
             parameters.Add(new StringParameter("Time Stamp Format") { Value = TimeStampFormat });
+            parameters.Add(new BoolParameter("Has End Times", HasEndTimes));
             return parameters;
         }
 
@@ -204,6 +264,9 @@ namespace Omniscient
                     case "Time Stamp Format":
                         TimeStampFormat = ((StringParameter)param).Value;
                         break;
+                    case "Has End Times":
+                        HasEndTimes = (param as BoolParameter).ToBool();
+                        break;
                 }
             }
         }
@@ -222,6 +285,7 @@ namespace Omniscient
                 new ParameterTemplate("Headers", ParameterType.Int),
                 new ParameterTemplate("Channels", ParameterType.Int),
                 new ParameterTemplate("Time Stamp Format", ParameterType.String),
+                new ParameterTemplate("Has End Times", ParameterType.Bool)
                 });
         }
 
@@ -234,6 +298,7 @@ namespace Omniscient
             string tStampFormat = "";
             string fileExtension = "csv";
             CSVParser.DelimiterType delimiter = CSVParser.DelimiterType.Comma;
+            bool hasEndTimes = false;
             foreach (Parameter param in parameters)
             {
                 switch (param.Name)
@@ -261,9 +326,12 @@ namespace Omniscient
                     case "Time Stamp Format":
                         tStampFormat = ((StringParameter)param).Value;
                         break;
+                    case "Has End Times":
+                        hasEndTimes = (param as BoolParameter).ToBool();
+                        break;
                 }
             }
-            CSVInstrument instrument = new CSVInstrument(parent, newName, nChannels, id);
+            CSVInstrument instrument = new CSVInstrument(parent, newName, nChannels, hasEndTimes, id);
             instrument.Delimiter = delimiter;
             instrument.NumberOfHeaders = nHeaders;
             instrument.TimeStampFormat = tStampFormat;

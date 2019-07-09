@@ -56,6 +56,14 @@ namespace Omniscient
             get { return timeStamps; }
         }
 
+        public bool GetEndTimes { get; set; }
+
+        private DateTime[] endTimes;
+        public DateTime[] EndTimes
+        {
+            get { return endTimes; }
+        }
+
         private int nRecords;
 
         public CSVParser()
@@ -90,8 +98,16 @@ namespace Omniscient
                 return ReturnCode.CORRUPTED_FILE;
             nDataLines = 1;
 
-            data = new double[nDataLines, nColumns - 1];
+            if (GetEndTimes)
+            {
+                data = new double[nDataLines, nColumns - 2];
+            }
+            else
+            {
+                data = new double[nDataLines, nColumns - 1];
+            }
             timeStamps = new DateTime[nDataLines];
+            if (GetEndTimes) endTimes = new DateTime[nDataLines];
 
             nRecords = nDataLines;
             int entry;
@@ -116,14 +132,18 @@ namespace Omniscient
                 if (TimeStampFormat == "")
                 {
                     timeStamps[entry] = DateTime.Parse(tokens[0].Trim(TRIM_CHARS));
+                    if (GetEndTimes) endTimes[entry] = DateTime.Parse(tokens[1].Trim(TRIM_CHARS));
                 }
                 else
                 {
                     timeStamps[entry] = DateTime.ParseExact(tokens[0].Trim(TRIM_CHARS), TimeStampFormat, CULTURE_INFO);
+                    if (GetEndTimes) endTimes[entry] = DateTime.ParseExact(tokens[0].Trim(TRIM_CHARS), TimeStampFormat, CULTURE_INFO);
                 }
-                for (int j = 1; j < nColumns; j++)
+                int dataColStart = 1;
+                if (GetEndTimes) dataColStart = 2;
+                for (int j = dataColStart; j < nColumns; j++)
                 {
-                    data[entry, j - 1] = double.Parse(tokens[j]);
+                    data[entry, j - dataColStart] = double.Parse(tokens[j]);
                 }
             }
             catch
@@ -151,8 +171,16 @@ namespace Omniscient
             if (nDataLines < 0)
                 return ReturnCode.CORRUPTED_FILE;
 
-            data = new double[nDataLines, nColumns - 1];
+            if (GetEndTimes)
+            {
+                data = new double[nDataLines, nColumns - 2];
+            }
+            else
+            {
+                data = new double[nDataLines, nColumns - 1];
+            }
             timeStamps = new DateTime[nDataLines];
+            if (GetEndTimes) endTimes = new DateTime[nDataLines];
 
             nRecords = nDataLines;
 
@@ -174,31 +202,69 @@ namespace Omniscient
 
                 if (TimeStampFormat == "")
                 {
-                    for (int i = nHeaders; i < lines.Length; i++)
+                    if (GetEndTimes)
                     {
-                        entry = i - nHeaders;
-                        tokens = lines[i].Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
-                        if (tokens.Length < nColumns)
-                            return ReturnCode.CORRUPTED_FILE;
-                        timeStamps[entry] = DateTime.Parse(tokens[0].Trim(TRIM_CHARS));
-                        for (int j = 1; j < nColumns; j++)
+                        for (int i = nHeaders; i < lines.Length; i++)
                         {
-                            data[entry, j - 1] = double.Parse(tokens[j]);
+                            entry = i - nHeaders;
+                            tokens = lines[i].Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
+                            if (tokens.Length < nColumns)
+                                return ReturnCode.CORRUPTED_FILE;
+                            timeStamps[entry] = DateTime.Parse(tokens[0].Trim(TRIM_CHARS));
+                            endTimes[entry] = DateTime.Parse(tokens[1].Trim(TRIM_CHARS));
+                            for (int j = 2; j < nColumns; j++)
+                            {
+                                data[entry, j - 2] = double.Parse(tokens[j]);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        for (int i = nHeaders; i < lines.Length; i++)
+                        {
+                            entry = i - nHeaders;
+                            tokens = lines[i].Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
+                            if (tokens.Length < nColumns)
+                                return ReturnCode.CORRUPTED_FILE;
+                            timeStamps[entry] = DateTime.Parse(tokens[0].Trim(TRIM_CHARS));
+                            for (int j = 1; j < nColumns; j++)
+                            {
+                                data[entry, j - 1] = double.Parse(tokens[j]);
+                            }
                         }
                     }
                 }
                 else
                 {
-                    for (int i = nHeaders; i < lines.Length; i++)
+                    if (GetEndTimes)
                     {
-                        entry = i - nHeaders;
-                        tokens = lines[i].Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
-                        if (tokens.Length < nColumns)
-                            return ReturnCode.CORRUPTED_FILE;
-                        timeStamps[entry] = DateTime.ParseExact(tokens[0].Trim(TRIM_CHARS), TimeStampFormat, CULTURE_INFO);
-                        for (int j = 1; j < nColumns; j++)
+                        for (int i = nHeaders; i < lines.Length; i++)
                         {
-                            data[entry, j - 1] = double.Parse(tokens[j]);
+                            entry = i - nHeaders;
+                            tokens = lines[i].Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
+                            if (tokens.Length < nColumns)
+                                return ReturnCode.CORRUPTED_FILE;
+                            timeStamps[entry] = DateTime.ParseExact(tokens[0].Trim(TRIM_CHARS), TimeStampFormat, CULTURE_INFO);
+                            endTimes[entry] = DateTime.ParseExact(tokens[1].Trim(TRIM_CHARS), TimeStampFormat, CULTURE_INFO);
+                            for (int j = 2; j < nColumns; j++)
+                            {
+                                data[entry, j - 2] = double.Parse(tokens[j]);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        for (int i = nHeaders; i < lines.Length; i++)
+                        {
+                            entry = i - nHeaders;
+                            tokens = lines[i].Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
+                            if (tokens.Length < nColumns)
+                                return ReturnCode.CORRUPTED_FILE;
+                            timeStamps[entry] = DateTime.ParseExact(tokens[0].Trim(TRIM_CHARS), TimeStampFormat, CULTURE_INFO);
+                            for (int j = 1; j < nColumns; j++)
+                            {
+                                data[entry, j - 1] = double.Parse(tokens[j]);
+                            }
                         }
                     }
                 }
