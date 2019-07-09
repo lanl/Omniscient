@@ -122,6 +122,7 @@
     <Compile Include="DeclarationEditor.Designer.cs">
       <DependentUpon>DeclarationEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="Events\DataPresentEG.cs" />
     <Compile Include="Instruments\ImageInstrument.cs" />
     <Compile Include="IntervalOfReview.cs" />
     <Compile Include="IOUtility.cs" />
