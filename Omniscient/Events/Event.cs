@@ -37,30 +37,17 @@ namespace Omniscient
         }
 
         EventGenerator eventGenerator;
-        DateTime StartTime;
-        DateTime EndTime;
-
-        DateTime MaxTime;
-        double maxValue;
-
-        string comment;
+        public DateTime StartTime { get; set; }
+        public DateTime EndTime { get; set; }
+        public DateTime MaxTime { get; set; }
+        public double MaxValue { get; set; }
+        public string Comment { get; set; }
 
         public void AddAnalysisResult(AnalysisResult result) { analysisResults.Add(result); }
         public void AddAnalysisResults(List<AnalysisResult> results) { analysisResults.AddRange(results); }
 
         public TimeSpan GetDuration() { return EndTime - StartTime; }
 
-        public void SetStartTime(DateTime start) { StartTime = start; }
-        public void SetEndTime(DateTime end) { EndTime = end; }
-        public void SetMaxTime(DateTime max) { MaxTime = max; }
-        public void SetMaxValue(double max) { maxValue = max; }
-        public void SetComment(string newComment) { comment = newComment; }
-
-        public DateTime GetStartTime() { return StartTime; }
-        public DateTime GetEndTime() { return EndTime; }
-        public DateTime GetMaxTime() { return MaxTime; }
-        public double GetMaxValue() { return maxValue; }
-        public string GetComment() { return comment; }
         public EventGenerator GetEventGenerator() { return eventGenerator; }
         public List<AnalysisResult> GetAnalysisResults() { return analysisResults; }
     }

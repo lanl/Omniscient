@@ -69,8 +69,8 @@ namespace Omniscient
                     if (vals[i] >= threshold)
                     {
                         eve = new Event(this);
-                        eve.SetStartTime(times[i]);
-                        eve.SetComment(channel.Name + " is above threshold.");
+                        eve.StartTime = times[i];
+                        eve.Comment = channel.Name + " is above threshold.";
                         maxValue = vals[i];
                         maxTime = times[i];
                         inEvent = true;
@@ -88,11 +88,11 @@ namespace Omniscient
                     if (deltaT >= debounceTime)
                     {
                         if (durations != null)
-                            eve.SetEndTime(times[i - 1] + durations[i - 1]);
+                            eve.EndTime = times[i - 1] + durations[i - 1];
                         else
-                            eve.SetEndTime(times[i - 1]);
-                        eve.SetMaxValue(maxValue);
-                        eve.SetMaxTime(maxTime);
+                            eve.EndTime = times[i - 1];
+                        eve.MaxValue = maxValue;
+                        eve.MaxTime = maxTime;
                         events.Add(eve);
                         inEvent = false;
                         onTheDrop = false;
@@ -100,8 +100,8 @@ namespace Omniscient
                         if (vals[i] >= threshold)
                         {
                             eve = new Event(this);
-                            eve.SetStartTime(times[i]);
-                            eve.SetComment(channel.Name + " is above threshold.");
+                            eve.StartTime = times[i];
+                            eve.Comment = channel.Name + " is above threshold.";
                             maxValue = vals[i];
                             maxTime = times[i];
                             inEvent = true;
@@ -122,9 +122,9 @@ namespace Omniscient
                         // Event ended by dropping below threshold
                         if (times[i] - lastDrop >= debounceTime)
                         {
-                            eve.SetEndTime(lastDrop);
-                            eve.SetMaxValue(maxValue);
-                            eve.SetMaxTime(maxTime);
+                            eve.EndTime = lastDrop;
+                            eve.MaxValue = maxValue;
+                            eve.MaxTime = maxTime;
                             events.Add(eve);
                             inEvent = false;
                             onTheDrop = false;
@@ -144,9 +144,9 @@ namespace Omniscient
             }
             if (inEvent)
             {
-                eve.SetEndTime(times[times.Count - 1]);
-                eve.SetMaxValue(maxValue);
-                eve.SetMaxTime(maxTime);
+                eve.EndTime = times[times.Count - 1];
+                eve.MaxValue = maxValue;
+                eve.MaxTime = maxTime;
                 events.Add(eve);
                 inEvent = false;
             }

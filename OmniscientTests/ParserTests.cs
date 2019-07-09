@@ -9,6 +9,47 @@ namespace OmniscientTests
     public class ParserTests
     {
         [TestMethod]
+        public void WrittenEventFileCanBeParsed()
+        {
+            // Arrange
+            string fileName = "testEvents.csv";
+            List<Event> outEvents = new List<Event>()
+            {
+                new Event(null, new DateTime(2019,07,09,16,15,00), new DateTime(2019,07,09,16,16,00))
+                {
+                    Comment = "Events!"
+                },
+                new Event(null, new DateTime(2019,07,09,16,20,15), new DateTime(2019,07,09,16,21,30))
+                {
+                    Comment = "Events!",
+                    MaxValue = 42,
+                    MaxTime = new DateTime(2019,07,09,16,21,05)
+                },
+                new Event(null, new DateTime(2019,07,09,16,25,00), new DateTime(2019,07,09,16,29,00))
+                {
+                    Comment = "Events!"
+                }
+            };
+            EventWriter writer = new EventWriter();
+            EventParser parser = new EventParser();
+
+            // Act
+            writer.WriteEventFile(fileName, outEvents);
+            parser.ParseFile(fileName);
+
+            // Assert
+            for(int i=0; i<outEvents.Count; i++)
+            {
+                Assert.AreEqual(outEvents[i].StartTime.Ticks, parser.StartTime[i].Ticks);
+                Assert.AreEqual(outEvents[i].EndTime.Ticks, parser.EndTime[i].Ticks);
+                Assert.AreEqual(outEvents[i].MaxValue, parser.MaxValue[i]);
+                Assert.AreEqual(outEvents[i].MaxTime.Ticks, parser.MaxTime[i].Ticks);
+                Assert.AreEqual(outEvents[i].Comment, parser.Comments[i]);
+            }
+
+        }
+
+        [TestMethod]
         public void WrittenCHNCanBeParsed()
         {
             //Arrange

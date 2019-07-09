@@ -605,13 +605,13 @@ namespace Omniscient
                 {
                     foreach (Event eve in Core.Events)
                     {
-                        if (eve.GetStartTime() < end && eve.GetEndTime() > start && eventCount < MAX_HIGHLIGHTED_EVENTS)
+                        if (eve.StartTime < end && eve.EndTime > start && eventCount < MAX_HIGHLIGHTED_EVENTS)
                         {
-                            double width = eve.GetEndTime().ToOADate() - eve.GetStartTime().ToOADate();
+                            double width = eve.EndTime.ToOADate() - eve.StartTime.ToOADate();
                             RectangleAnnotation rect = new RectangleAnnotation();
                             rect.AxisX = chart.ChartAreas[0].AxisX;
                             rect.AxisY = chart.ChartAreas[0].AxisY;
-                            rect.AnchorX = eve.GetStartTime().ToOADate() + width/2;
+                            rect.AnchorX = eve.StartTime.ToOADate() + width/2;
                             rect.AnchorY = rect.AxisY.Minimum;
                             rect.IsSizeAlwaysRelative = false;
                             rect.LineWidth = 0;
@@ -622,10 +622,10 @@ namespace Omniscient
                                 rect.BackColor = System.Drawing.Color.FromArgb(128, 243, 243, 21);
                                 rect.BackHatchStyle = ChartHatchStyle.WideUpwardDiagonal;
                             }
-                            //rect.Width = (eve.GetEndTime().Ticks - eve.GetStartTime().Ticks > 0) ? 
-                            //    rect.AxisX.ValueToPixelPosition(eve.GetEndTime().ToOADate()) - rect.AxisX.ValueToPixelPosition(eve.GetStartTime().ToOADate()) :
-                            //    rect.AxisX.ValueToPixelPosition((eve.GetStartTime() + TimeSpan.FromSeconds(5)).ToOADate()) - rect.AxisX.ValueToPixelPosition(eve.GetStartTime().ToOADate());
-                            rect.Width = eve.GetEndTime().ToOADate() - eve.GetStartTime().ToOADate();
+                            //rect.Width = (eve.EndTime.Ticks - eve.StartTime.Ticks > 0) ? 
+                            //    rect.AxisX.ValueToPixelPosition(eve.EndTime.ToOADate()) - rect.AxisX.ValueToPixelPosition(eve.StartTime.ToOADate()) :
+                            //    rect.AxisX.ValueToPixelPosition((eve.StartTime + TimeSpan.FromSeconds(5)).ToOADate()) - rect.AxisX.ValueToPixelPosition(eve.StartTime.ToOADate());
+                            rect.Width = eve.EndTime.ToOADate() - eve.StartTime.ToOADate();
                             double tempHeight = rect.AxisY.Maximum - rect.AxisY.Minimum;
                             if (tempHeight < 290000000) rect.Height = rect.AxisY.Maximum - rect.AxisY.Minimum;
                             else if(!double.IsNaN(tempHeight))
@@ -1535,12 +1535,12 @@ namespace Omniscient
             {
                 EventGridView.Rows.Add(
                     Core.Events[i].GetEventGenerator().Name,
-                    Core.Events[i].GetStartTime().ToString("MM/dd/yy HH:mm:ss"),
-                    Core.Events[i].GetEndTime().ToString("MM/dd/yy HH:mm:ss"),
+                    Core.Events[i].StartTime.ToString("MM/dd/yy HH:mm:ss"),
+                    Core.Events[i].EndTime.ToString("MM/dd/yy HH:mm:ss"),
                     Core.Events[i].GetDuration().TotalSeconds,
-                    Core.Events[i].GetMaxValue(),
-                    Core.Events[i].GetMaxTime().ToString("MM/dd/yy HH:mm:ss"),
-                    Core.Events[i].GetComment());
+                    Core.Events[i].MaxValue,
+                    Core.Events[i].MaxTime.ToString("MM/dd/yy HH:mm:ss"),
+                    Core.Events[i].Comment);
                 EventGridView.Rows[i].Tag = Core.Events[i];
             }
             if (HighlightEventsCheckBox.Checked)

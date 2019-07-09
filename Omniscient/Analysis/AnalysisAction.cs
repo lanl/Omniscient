@@ -42,16 +42,16 @@ namespace Omniscient
             List<string> targetFiles = new List<string>();
             for (int dc = 0; dc < dataCompilers.Count(); dc++)
             {
-                List<DataFile> dataFiles = channels[dc].GetFiles(ChannelCompartment.View, eve.GetStartTime(), eve.GetEndTime());
+                List<DataFile> dataFiles = channels[dc].GetFiles(ChannelCompartment.View, eve.StartTime, eve.EndTime);
                 rawFiles = new List<string>();
                 foreach (DataFile dataFile in dataFiles)
                     rawFiles.Add(dataFile.FileName);
-                targetFile = compiledFileName.Replace("||s||", eve.GetStartTime().ToString("yyyy-MM-dd-HH-mm-ss"));
+                targetFile = compiledFileName.Replace("||s||", eve.StartTime.ToString("yyyy-MM-dd-HH-mm-ss"));
                 targetFile = targetFile.Replace("||#||", dc.ToString());
                 targetFiles.Add(targetFile);
                 if (dataCompilers[dc] != null)
                 {
-                    dataCompilers[dc].Compile(rawFiles, eve.GetStartTime(), eve.GetEndTime(), targetFiles[dc]);
+                    dataCompilers[dc].Compile(rawFiles, eve.StartTime, eve.EndTime, targetFiles[dc]);
                 }
             }
             analysis.Run(targetFiles);

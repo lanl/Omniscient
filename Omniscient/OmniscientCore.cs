@@ -163,7 +163,7 @@ namespace Omniscient
                 Events.AddRange(eg.GenerateEvents(start, end));
                 eg.RunActions();
             }
-            Events.Sort((x, y) => x.GetStartTime().CompareTo(y.GetStartTime()));
+            Events.Sort((x, y) => x.StartTime.CompareTo(y.StartTime));
         }
 
         /// <summary>

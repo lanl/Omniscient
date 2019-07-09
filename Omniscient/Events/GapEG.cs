@@ -45,11 +45,11 @@ namespace Omniscient
                 if(times[i] - times[i-1] > interval)
                 {
                     eve = new Event(this);
-                    eve.SetStartTime(times[i-1]);
-                    eve.SetEndTime(times[i]);
-                    eve.SetMaxTime(times[i - 1]);
-                    eve.SetMaxValue(0);
-                    eve.SetComment(channel.Name + " has a gap.");
+                    eve.StartTime = times[i-1];
+                    eve.EndTime = times[i];
+                    eve.MaxTime = times[i - 1];
+                    eve.MaxValue = 0;
+                    eve.Comment = channel.Name + " has a gap.";
                     events.Add(eve);
                 }
             }

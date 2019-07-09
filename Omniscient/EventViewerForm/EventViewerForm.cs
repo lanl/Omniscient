@@ -36,12 +36,12 @@ namespace Omniscient
         private void EventViewerForm_Load(object sender, EventArgs e)
         {
             EventGeneratorTextBox.Text = eve.GetEventGenerator().Name;
-            StartTimeTextBox.Text = eve.GetStartTime().ToString("MM/dd/yy HH:mm:ss");
-            EndTimeTextBox.Text = eve.GetEndTime().ToString("MM/dd/yy HH:mm:ss");
+            StartTimeTextBox.Text = eve.StartTime.ToString("MM/dd/yy HH:mm:ss");
+            EndTimeTextBox.Text = eve.EndTime.ToString("MM/dd/yy HH:mm:ss");
             DurationTextBox.Text = eve.GetDuration().TotalSeconds.ToString() + " s";
-            MaxValueTextBox.Text = eve.GetMaxValue().ToString();
-            MaxTimeTextBox.Text = eve.GetMaxTime().ToString("MM/dd/yy HH:mm:ss");
-            CommentTextBox.Text = eve.GetComment();
+            MaxValueTextBox.Text = eve.MaxValue.ToString();
+            MaxTimeTextBox.Text = eve.MaxTime.ToString("MM/dd/yy HH:mm:ss");
+            CommentTextBox.Text = eve.Comment;
 
             if(eve.GetAnalysisResults().Count() > 0)
             {

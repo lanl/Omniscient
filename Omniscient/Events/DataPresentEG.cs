@@ -28,9 +28,9 @@ namespace Omniscient
             for (int i = 0; i < times.Count; i++)
             {
                 eve = new Event(this, times[i], times[i] + durations[i]);
-                eve.SetMaxValue(vals[i]);
-                eve.SetMaxTime(times[i] + TimeSpan.FromTicks(durations[i].Ticks / 2));
-                eve.SetComment("Data present in " + channel.Name);
+                eve.MaxValue = vals[i];
+                eve.MaxTime = times[i] + TimeSpan.FromTicks(durations[i].Ticks / 2);
+                eve.Comment = "Data present in " + channel.Name;
                 events.Add(eve);
             }
             return events;

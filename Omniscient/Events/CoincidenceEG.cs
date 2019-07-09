@@ -91,24 +91,24 @@ namespace Omniscient
                 switch (timingType)
                 {
                     case TimingType.START_TO_START:
-                        aTime = eventsA[aIndex].GetStartTime();
-                        bTime = eventsB[bIndex].GetStartTime();
+                        aTime = eventsA[aIndex].StartTime;
+                        bTime = eventsB[bIndex].StartTime;
                         break;
                     case TimingType.START_TO_END:
-                        aTime = eventsA[aIndex].GetStartTime();
-                        bTime = eventsB[bIndex].GetEndTime();
+                        aTime = eventsA[aIndex].StartTime;
+                        bTime = eventsB[bIndex].EndTime;
                         break;
                     case TimingType.END_TO_START:
-                        aTime = eventsA[aIndex].GetEndTime();
-                        bTime = eventsB[bIndex].GetStartTime();
+                        aTime = eventsA[aIndex].EndTime;
+                        bTime = eventsB[bIndex].StartTime;
                         break;
                     case TimingType.END_TO_END:
-                        aTime = eventsA[aIndex].GetEndTime();
-                        bTime = eventsB[bIndex].GetEndTime();
+                        aTime = eventsA[aIndex].EndTime;
+                        bTime = eventsB[bIndex].EndTime;
                         break;
                     case TimingType.MAX_TO_MAX:
-                        aTime = eventsA[aIndex].GetMaxTime();
-                        bTime = eventsB[bIndex].GetMaxTime();
+                        aTime = eventsA[aIndex].MaxTime;
+                        bTime = eventsB[bIndex].MaxTime;
                         break;
                 }
                 delta = bTime - aTime;
@@ -118,15 +118,15 @@ namespace Omniscient
                     Event eve = new Event(this);
                     if (aTime < bTime)
                     {
-                        eve.SetStartTime(eventsA[aIndex].GetStartTime());
-                        eve.SetEndTime(eventsB[bIndex].GetEndTime());
+                        eve.StartTime = eventsA[aIndex].StartTime;
+                        eve.EndTime = eventsB[bIndex].EndTime;
                     }
                     else
                     {
-                        eve.SetStartTime(eventsB[bIndex].GetStartTime());
-                        eve.SetEndTime(eventsA[aIndex].GetEndTime());
+                        eve.StartTime = eventsB[bIndex].StartTime;
+                        eve.EndTime = eventsA[aIndex].EndTime;
                     }
-                    eve.SetComment("Coincidence!");
+                    eve.Comment = "Coincidence!";
                     events.Add(eve);
                     aIndex++;
                     bIndex++;
