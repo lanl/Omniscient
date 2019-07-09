@@ -39,13 +39,14 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="LiveCharts, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
@@ -122,6 +123,7 @@
       <DependentUpon>DeclarationEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Instruments\ImageInstrument.cs" />
+    <Compile Include="IntervalOfReview.cs" />
     <Compile Include="IOUtility.cs" />
     <Compile Include="MainDialogs\ChartOptionsDialog.cs">
       <SubType>Form</SubType>
