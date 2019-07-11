@@ -1249,7 +1249,33 @@ namespace Omniscient
                     }
                 }
             }
+
+            // Check for a ManualEG
+            if (!(manualIOR is null))
+            {
+                if (mouseTime >= manualIOR.TimeRange.Start && mouseTime <= manualIOR.TimeRange.End)
+                {
+                    foreach (EventGenerator eg in Core.ActiveEventGenerators)
+                    {
+                        if (eg is ManualEG)
+                        {
+                            ManualEG manualEG = eg as ManualEG;
+                            MenuItem menuItem = new MenuItem("Add event to " + manualEG.Name);
+                            menuItem.Tag = manualEG;
+                            menuItem.Click += ManualEGMenuItem_Click;
+                            chartMenu.MenuItems.Add(menuItem);
+                        }
+                    }
+                }
+            }
             chartMenu.Show(activeChart, new Point((int)mouseX, (int)mouseY));
+        }
+
+        private void ManualEGMenuItem_Click(object sender, EventArgs e)
+        {
+            MenuItem menuItem = (MenuItem)sender;
+            ManualEG manualEG = menuItem.Tag as ManualEG;
+            manualEG.AddEvent(manualIOR.TimeRange.Start, manualIOR.TimeRange.End, "Manual Event");
         }
 
         private void ImageMenuItem_Click(object sender, EventArgs e)

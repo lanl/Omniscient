@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 
 namespace Omniscient
 {
-    public class Event
+    public class Event : IComparable
     {
         List<AnalysisResult> analysisResults;
 
@@ -50,5 +50,15 @@ namespace Omniscient
 
         public EventGenerator GetEventGenerator() { return eventGenerator; }
         public List<AnalysisResult> GetAnalysisResults() { return analysisResults; }
+
+        public int CompareTo(object obj)
+        {
+            if (obj == null) return 1;
+            Event otherEve = obj as Event;
+            if (otherEve != null)
+                return this.StartTime.CompareTo(otherEve.StartTime);
+            else
+                throw new ArgumentException("Object is not an Event");
+        }
     }
 }

@@ -36,7 +36,8 @@ namespace Omniscient
             new ThresholdEGHookup(),
             new CoincidenceEGHookup(),
             new GapEGHookup(),
-            new DataPresentEGHookup()
+            new DataPresentEGHookup(),
+            new ManualEGHookup()
         };
 
         protected DetectionSystem eventWatcher;
