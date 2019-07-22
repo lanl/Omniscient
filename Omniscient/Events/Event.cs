@@ -34,6 +34,7 @@ namespace Omniscient
             eventGenerator = myGenerator;
             StartTime = start;
             EndTime = end;
+            analysisResults = new List<AnalysisResult>();
         }
 
         EventGenerator eventGenerator;

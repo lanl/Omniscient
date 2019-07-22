@@ -17,6 +17,7 @@ namespace Omniscient
             eventGeneratorType = "Manual";
             dataFolder = "Data\\" + id.ToString("X8");
             dataFile = dataFolder + "\\Events.csv";
+            CheckFoldersExist();
             LoadEvents();
         }
 
@@ -53,6 +54,12 @@ namespace Omniscient
                 Comment = comment
             });
             Events.Sort();
+            WriteEvents();
+        }
+
+        public void RemoveEvent(Event eve)
+        {
+            Events.Remove(eve);
             WriteEvents();
         }
 

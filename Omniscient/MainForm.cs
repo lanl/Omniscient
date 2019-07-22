@@ -1555,9 +1555,13 @@ namespace Omniscient
         private void GenerateEvents(DateTime start, DateTime end)
         {
             Core.GenerateEvents(start, end);
+            DisplayEvents();
+        }
 
+        private void DisplayEvents()
+        {
             EventGridView.Rows.Clear();
-            for (int i=0; i < Core.Events.Count(); i++)
+            for (int i = 0; i < Core.Events.Count(); i++)
             {
                 EventGridView.Rows.Add(
                     Core.Events[i].GetEventGenerator().Name,
@@ -1832,6 +1836,35 @@ namespace Omniscient
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             Core.Shutdown();
+        }
+
+        private void EventGridView_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                Event eve = EventGridView.Rows[e.RowIndex].Tag as Event;
+                ContextMenu menu = new ContextMenu();
+
+                if (!(eve is null) && eve.GetEventGenerator() is ManualEG)
+                {
+                    MenuItem menuItem = new MenuItem("Remove event from " + eve.GetEventGenerator().Name);
+                    menuItem.Tag = eve;
+                    menuItem.Click += RemoveEventMenuItem_Click;
+                    menu.MenuItems.Add(menuItem);
+                }
+
+                menu.Show(sender as Control, new Point(e.X, e.Y));
+            }
+        }
+
+        private void RemoveEventMenuItem_Click(object sender, EventArgs e)
+        {
+            Event eve = (sender as MenuItem).Tag as Event;
+            ManualEG eg = eve.GetEventGenerator() as ManualEG;
+            eg.RemoveEvent(eve);
+
+            Core.Events.Remove(eve);
+            DisplayEvents();
         }
     }
 }

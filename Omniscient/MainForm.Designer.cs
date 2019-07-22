@@ -179,7 +179,7 @@ namespace Omniscient
             this.StripChartControlPanel.Controls.Add(this.StripChartScroll);
             this.StripChartControlPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.StripChartControlPanel.Location = new System.Drawing.Point(0, 0);
-            this.StripChartControlPanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.StripChartControlPanel.Margin = new System.Windows.Forms.Padding(4);
             this.StripChartControlPanel.Name = "StripChartControlPanel";
             this.StripChartControlPanel.Size = new System.Drawing.Size(955, 540);
             this.StripChartControlPanel.TabIndex = 1;
@@ -189,7 +189,7 @@ namespace Omniscient
             this.StripChartsPanel.Controls.Add(this.StripChartsLayoutPanel);
             this.StripChartsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.StripChartsPanel.Location = new System.Drawing.Point(0, 0);
-            this.StripChartsPanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.StripChartsPanel.Margin = new System.Windows.Forms.Padding(4);
             this.StripChartsPanel.Name = "StripChartsPanel";
             this.StripChartsPanel.Size = new System.Drawing.Size(955, 523);
             this.StripChartsPanel.TabIndex = 2;
@@ -205,7 +205,7 @@ namespace Omniscient
             this.StripChartsLayoutPanel.Controls.Add(this.StripChart2, 0, 2);
             this.StripChartsLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.StripChartsLayoutPanel.Location = new System.Drawing.Point(0, 0);
-            this.StripChartsLayoutPanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.StripChartsLayoutPanel.Margin = new System.Windows.Forms.Padding(4);
             this.StripChartsLayoutPanel.Name = "StripChartsLayoutPanel";
             this.StripChartsLayoutPanel.RowCount = 4;
             this.StripChartsLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
@@ -223,7 +223,7 @@ namespace Omniscient
             legend1.Name = "Legend1";
             this.StripChart0.Legends.Add(legend1);
             this.StripChart0.Location = new System.Drawing.Point(6, 6);
-            this.StripChart0.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.StripChart0.Margin = new System.Windows.Forms.Padding(4);
             this.StripChart0.Name = "StripChart0";
             series1.ChartArea = "ChartArea1";
             series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
@@ -245,7 +245,7 @@ namespace Omniscient
             legend2.Name = "Legend1";
             this.StripChart3.Legends.Add(legend2);
             this.StripChart3.Location = new System.Drawing.Point(6, 396);
-            this.StripChart3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.StripChart3.Margin = new System.Windows.Forms.Padding(4);
             this.StripChart3.Name = "StripChart3";
             series2.ChartArea = "ChartArea1";
             series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
@@ -267,7 +267,7 @@ namespace Omniscient
             legend3.Name = "Legend1";
             this.StripChart1.Legends.Add(legend3);
             this.StripChart1.Location = new System.Drawing.Point(6, 136);
-            this.StripChart1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.StripChart1.Margin = new System.Windows.Forms.Padding(4);
             this.StripChart1.Name = "StripChart1";
             series3.ChartArea = "ChartArea1";
             series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
@@ -289,7 +289,7 @@ namespace Omniscient
             legend4.Name = "Legend1";
             this.StripChart2.Legends.Add(legend4);
             this.StripChart2.Location = new System.Drawing.Point(6, 266);
-            this.StripChart2.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.StripChart2.Margin = new System.Windows.Forms.Padding(4);
             this.StripChart2.Name = "StripChart2";
             series4.ChartArea = "ChartArea1";
             series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
@@ -412,7 +412,7 @@ namespace Omniscient
             this.ChannelsLabelPanel.Controls.Add(this.label1);
             this.ChannelsLabelPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.ChannelsLabelPanel.Location = new System.Drawing.Point(7, 0);
-            this.ChannelsLabelPanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ChannelsLabelPanel.Margin = new System.Windows.Forms.Padding(4);
             this.ChannelsLabelPanel.Name = "ChannelsLabelPanel";
             this.ChannelsLabelPanel.Size = new System.Drawing.Size(409, 25);
             this.ChannelsLabelPanel.TabIndex = 7;
@@ -543,7 +543,7 @@ namespace Omniscient
             this.RightPanel.Controls.Add(this.groupBox1);
             this.RightPanel.Dock = System.Windows.Forms.DockStyle.Right;
             this.RightPanel.Location = new System.Drawing.Point(1252, 55);
-            this.RightPanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.RightPanel.Margin = new System.Windows.Forms.Padding(4);
             this.RightPanel.MinimumSize = new System.Drawing.Size(393, 0);
             this.RightPanel.Name = "RightPanel";
             this.RightPanel.Size = new System.Drawing.Size(420, 827);
@@ -556,7 +556,7 @@ namespace Omniscient
             this.ChannelsPanel.Controls.Add(this.ChannelsLabelPanel);
             this.ChannelsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ChannelsPanel.Location = new System.Drawing.Point(0, 0);
-            this.ChannelsPanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ChannelsPanel.Margin = new System.Windows.Forms.Padding(4);
             this.ChannelsPanel.Name = "ChannelsPanel";
             this.ChannelsPanel.Padding = new System.Windows.Forms.Padding(7, 0, 0, 0);
             this.ChannelsPanel.Size = new System.Drawing.Size(420, 537);
@@ -577,9 +577,9 @@ namespace Omniscient
             this.groupBox1.Controls.Add(this.label11);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.groupBox1.Location = new System.Drawing.Point(0, 537);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
             this.groupBox1.Size = new System.Drawing.Size(420, 290);
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
@@ -593,7 +593,7 @@ namespace Omniscient
             this.tabControl1.Controls.Add(this.Chart4TabPage);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.tabControl1.Location = new System.Drawing.Point(4, 163);
-            this.tabControl1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabControl1.Margin = new System.Windows.Forms.Padding(4);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(412, 123);
@@ -603,9 +603,9 @@ namespace Omniscient
             // 
             this.Chart1TabPage.Controls.Add(this.C1LogScaleCheckBox);
             this.Chart1TabPage.Location = new System.Drawing.Point(4, 25);
-            this.Chart1TabPage.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Chart1TabPage.Margin = new System.Windows.Forms.Padding(4);
             this.Chart1TabPage.Name = "Chart1TabPage";
-            this.Chart1TabPage.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Chart1TabPage.Padding = new System.Windows.Forms.Padding(4);
             this.Chart1TabPage.Size = new System.Drawing.Size(404, 94);
             this.Chart1TabPage.TabIndex = 0;
             this.Chart1TabPage.Text = "Chart 1";
@@ -615,7 +615,7 @@ namespace Omniscient
             // 
             this.C1LogScaleCheckBox.AutoSize = true;
             this.C1LogScaleCheckBox.Location = new System.Drawing.Point(13, 12);
-            this.C1LogScaleCheckBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.C1LogScaleCheckBox.Margin = new System.Windows.Forms.Padding(4);
             this.C1LogScaleCheckBox.Name = "C1LogScaleCheckBox";
             this.C1LogScaleCheckBox.Size = new System.Drawing.Size(93, 21);
             this.C1LogScaleCheckBox.TabIndex = 0;
@@ -627,9 +627,9 @@ namespace Omniscient
             // 
             this.Chart2TabPage.Controls.Add(this.C2LogScaleCheckBox);
             this.Chart2TabPage.Location = new System.Drawing.Point(4, 25);
-            this.Chart2TabPage.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Chart2TabPage.Margin = new System.Windows.Forms.Padding(4);
             this.Chart2TabPage.Name = "Chart2TabPage";
-            this.Chart2TabPage.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Chart2TabPage.Padding = new System.Windows.Forms.Padding(4);
             this.Chart2TabPage.Size = new System.Drawing.Size(404, 94);
             this.Chart2TabPage.TabIndex = 1;
             this.Chart2TabPage.Text = "Chart 2";
@@ -639,7 +639,7 @@ namespace Omniscient
             // 
             this.C2LogScaleCheckBox.AutoSize = true;
             this.C2LogScaleCheckBox.Location = new System.Drawing.Point(13, 12);
-            this.C2LogScaleCheckBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.C2LogScaleCheckBox.Margin = new System.Windows.Forms.Padding(4);
             this.C2LogScaleCheckBox.Name = "C2LogScaleCheckBox";
             this.C2LogScaleCheckBox.Size = new System.Drawing.Size(93, 21);
             this.C2LogScaleCheckBox.TabIndex = 1;
@@ -651,7 +651,7 @@ namespace Omniscient
             // 
             this.Chart3TabPage.Controls.Add(this.C3LogScaleCheckBox);
             this.Chart3TabPage.Location = new System.Drawing.Point(4, 25);
-            this.Chart3TabPage.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Chart3TabPage.Margin = new System.Windows.Forms.Padding(4);
             this.Chart3TabPage.Name = "Chart3TabPage";
             this.Chart3TabPage.Size = new System.Drawing.Size(404, 94);
             this.Chart3TabPage.TabIndex = 2;
@@ -662,7 +662,7 @@ namespace Omniscient
             // 
             this.C3LogScaleCheckBox.AutoSize = true;
             this.C3LogScaleCheckBox.Location = new System.Drawing.Point(13, 12);
-            this.C3LogScaleCheckBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.C3LogScaleCheckBox.Margin = new System.Windows.Forms.Padding(4);
             this.C3LogScaleCheckBox.Name = "C3LogScaleCheckBox";
             this.C3LogScaleCheckBox.Size = new System.Drawing.Size(93, 21);
             this.C3LogScaleCheckBox.TabIndex = 1;
@@ -674,7 +674,7 @@ namespace Omniscient
             // 
             this.Chart4TabPage.Controls.Add(this.C4LogScaleCheckBox);
             this.Chart4TabPage.Location = new System.Drawing.Point(4, 25);
-            this.Chart4TabPage.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Chart4TabPage.Margin = new System.Windows.Forms.Padding(4);
             this.Chart4TabPage.Name = "Chart4TabPage";
             this.Chart4TabPage.Size = new System.Drawing.Size(404, 94);
             this.Chart4TabPage.TabIndex = 3;
@@ -685,7 +685,7 @@ namespace Omniscient
             // 
             this.C4LogScaleCheckBox.AutoSize = true;
             this.C4LogScaleCheckBox.Location = new System.Drawing.Point(13, 12);
-            this.C4LogScaleCheckBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.C4LogScaleCheckBox.Margin = new System.Windows.Forms.Padding(4);
             this.C4LogScaleCheckBox.Name = "C4LogScaleCheckBox";
             this.C4LogScaleCheckBox.Size = new System.Drawing.Size(93, 21);
             this.C4LogScaleCheckBox.TabIndex = 1;
@@ -696,7 +696,7 @@ namespace Omniscient
             // RangeUpdateButton
             // 
             this.RangeUpdateButton.Location = new System.Drawing.Point(247, 123);
-            this.RangeUpdateButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.RangeUpdateButton.Margin = new System.Windows.Forms.Padding(4);
             this.RangeUpdateButton.Name = "RangeUpdateButton";
             this.RangeUpdateButton.Size = new System.Drawing.Size(79, 32);
             this.RangeUpdateButton.TabIndex = 15;
@@ -715,7 +715,7 @@ namespace Omniscient
             "Months",
             "Years"});
             this.RangeComboBox.Location = new System.Drawing.Point(188, 57);
-            this.RangeComboBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.RangeComboBox.Margin = new System.Windows.Forms.Padding(4);
             this.RangeComboBox.Name = "RangeComboBox";
             this.RangeComboBox.Size = new System.Drawing.Size(136, 24);
             this.RangeComboBox.TabIndex = 14;
@@ -725,7 +725,7 @@ namespace Omniscient
             // RangeTextBox
             // 
             this.RangeTextBox.Location = new System.Drawing.Point(63, 57);
-            this.RangeTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.RangeTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.RangeTextBox.Name = "RangeTextBox";
             this.RangeTextBox.Size = new System.Drawing.Size(116, 22);
             this.RangeTextBox.TabIndex = 13;
@@ -749,7 +749,7 @@ namespace Omniscient
             this.EndTimePicker.Enabled = false;
             this.EndTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Time;
             this.EndTimePicker.Location = new System.Drawing.Point(63, 87);
-            this.EndTimePicker.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.EndTimePicker.Margin = new System.Windows.Forms.Padding(4);
             this.EndTimePicker.Name = "EndTimePicker";
             this.EndTimePicker.ShowUpDown = true;
             this.EndTimePicker.Size = new System.Drawing.Size(116, 22);
@@ -760,7 +760,7 @@ namespace Omniscient
             this.StartTimePicker.CustomFormat = "MMM dd, yyyy\'";
             this.StartTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Time;
             this.StartTimePicker.Location = new System.Drawing.Point(63, 26);
-            this.StartTimePicker.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.StartTimePicker.Margin = new System.Windows.Forms.Padding(4);
             this.StartTimePicker.Name = "StartTimePicker";
             this.StartTimePicker.ShowUpDown = true;
             this.StartTimePicker.Size = new System.Drawing.Size(116, 22);
@@ -773,7 +773,7 @@ namespace Omniscient
             this.StartDatePicker.CustomFormat = "MMM dd, yyyy\'";
             this.StartDatePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.StartDatePicker.Location = new System.Drawing.Point(188, 26);
-            this.StartDatePicker.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.StartDatePicker.Margin = new System.Windows.Forms.Padding(4);
             this.StartDatePicker.Name = "StartDatePicker";
             this.StartDatePicker.Size = new System.Drawing.Size(136, 22);
             this.StartDatePicker.TabIndex = 9;
@@ -787,7 +787,7 @@ namespace Omniscient
             this.EndDatePicker.Enabled = false;
             this.EndDatePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.EndDatePicker.Location = new System.Drawing.Point(188, 87);
-            this.EndDatePicker.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.EndDatePicker.Margin = new System.Windows.Forms.Padding(4);
             this.EndDatePicker.Name = "EndDatePicker";
             this.EndDatePicker.Size = new System.Drawing.Size(136, 22);
             this.EndDatePicker.TabIndex = 8;
@@ -820,7 +820,7 @@ namespace Omniscient
             this.LeftPanel.Controls.Add(this.BottomLeftPanel);
             this.LeftPanel.Dock = System.Windows.Forms.DockStyle.Left;
             this.LeftPanel.Location = new System.Drawing.Point(0, 55);
-            this.LeftPanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.LeftPanel.Margin = new System.Windows.Forms.Padding(4);
             this.LeftPanel.MinimumSize = new System.Drawing.Size(293, 0);
             this.LeftPanel.Name = "LeftPanel";
             this.LeftPanel.Padding = new System.Windows.Forms.Padding(7, 6, 7, 6);
@@ -834,7 +834,7 @@ namespace Omniscient
             this.SitesTreeView.ImageIndex = 0;
             this.SitesTreeView.ImageList = this.TreeImageList;
             this.SitesTreeView.Location = new System.Drawing.Point(7, 84);
-            this.SitesTreeView.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.SitesTreeView.Margin = new System.Windows.Forms.Padding(4);
             this.SitesTreeView.Name = "SitesTreeView";
             this.SitesTreeView.SelectedImageIndex = 0;
             this.SitesTreeView.ShowNodeToolTips = true;
@@ -859,7 +859,7 @@ namespace Omniscient
             this.TopLeftPanel.Controls.Add(this.PresetsComboBox);
             this.TopLeftPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.TopLeftPanel.Location = new System.Drawing.Point(7, 6);
-            this.TopLeftPanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.TopLeftPanel.Margin = new System.Windows.Forms.Padding(4);
             this.TopLeftPanel.Name = "TopLeftPanel";
             this.TopLeftPanel.Size = new System.Drawing.Size(279, 78);
             this.TopLeftPanel.TabIndex = 13;
@@ -867,7 +867,7 @@ namespace Omniscient
             // PresetSaveButton
             // 
             this.PresetSaveButton.Location = new System.Drawing.Point(185, 4);
-            this.PresetSaveButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.PresetSaveButton.Margin = new System.Windows.Forms.Padding(4);
             this.PresetSaveButton.Name = "PresetSaveButton";
             this.PresetSaveButton.Size = new System.Drawing.Size(64, 28);
             this.PresetSaveButton.TabIndex = 13;
@@ -878,7 +878,7 @@ namespace Omniscient
             // PresetNameTextBox
             // 
             this.PresetNameTextBox.Location = new System.Drawing.Point(4, 7);
-            this.PresetNameTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.PresetNameTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.PresetNameTextBox.Name = "PresetNameTextBox";
             this.PresetNameTextBox.Size = new System.Drawing.Size(172, 22);
             this.PresetNameTextBox.TabIndex = 12;
@@ -889,7 +889,7 @@ namespace Omniscient
             this.PresetsComboBox.Items.AddRange(new object[] {
             "UCVS Default View"});
             this.PresetsComboBox.Location = new System.Drawing.Point(4, 39);
-            this.PresetsComboBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.PresetsComboBox.Margin = new System.Windows.Forms.Padding(4);
             this.PresetsComboBox.Name = "PresetsComboBox";
             this.PresetsComboBox.Size = new System.Drawing.Size(244, 24);
             this.PresetsComboBox.TabIndex = 11;
@@ -903,7 +903,7 @@ namespace Omniscient
             this.BottomLeftPanel.Controls.Add(this.label8);
             this.BottomLeftPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.BottomLeftPanel.Location = new System.Drawing.Point(7, 740);
-            this.BottomLeftPanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.BottomLeftPanel.Margin = new System.Windows.Forms.Padding(4);
             this.BottomLeftPanel.Name = "BottomLeftPanel";
             this.BottomLeftPanel.Size = new System.Drawing.Size(279, 81);
             this.BottomLeftPanel.TabIndex = 12;
@@ -912,7 +912,7 @@ namespace Omniscient
             // 
             this.GlobalEndTextBox.BackColor = System.Drawing.SystemColors.Control;
             this.GlobalEndTextBox.Location = new System.Drawing.Point(136, 49);
-            this.GlobalEndTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.GlobalEndTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.GlobalEndTextBox.Name = "GlobalEndTextBox";
             this.GlobalEndTextBox.Size = new System.Drawing.Size(112, 22);
             this.GlobalEndTextBox.TabIndex = 10;
@@ -922,7 +922,7 @@ namespace Omniscient
             // 
             this.GlobalStartTextBox.BackColor = System.Drawing.SystemColors.Control;
             this.GlobalStartTextBox.Location = new System.Drawing.Point(136, 12);
-            this.GlobalStartTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.GlobalStartTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.GlobalStartTextBox.Name = "GlobalStartTextBox";
             this.GlobalStartTextBox.Size = new System.Drawing.Size(112, 22);
             this.GlobalStartTextBox.TabIndex = 9;
@@ -953,7 +953,7 @@ namespace Omniscient
             this.CenterSplitContainer.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.CenterSplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.CenterSplitContainer.Location = new System.Drawing.Point(293, 55);
-            this.CenterSplitContainer.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.CenterSplitContainer.Margin = new System.Windows.Forms.Padding(4);
             this.CenterSplitContainer.Name = "CenterSplitContainer";
             this.CenterSplitContainer.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -975,7 +975,7 @@ namespace Omniscient
             this.BottomPanel.Controls.Add(this.EventControlPanel);
             this.BottomPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.BottomPanel.Location = new System.Drawing.Point(0, 0);
-            this.BottomPanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.BottomPanel.Margin = new System.Windows.Forms.Padding(4);
             this.BottomPanel.Name = "BottomPanel";
             this.BottomPanel.Size = new System.Drawing.Size(955, 273);
             this.BottomPanel.TabIndex = 9;
@@ -993,11 +993,12 @@ namespace Omniscient
             this.Comment});
             this.EventGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.EventGridView.Location = new System.Drawing.Point(0, 42);
-            this.EventGridView.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.EventGridView.Margin = new System.Windows.Forms.Padding(4);
             this.EventGridView.Name = "EventGridView";
             this.EventGridView.Size = new System.Drawing.Size(955, 231);
             this.EventGridView.TabIndex = 2;
             this.EventGridView.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.EventGridView_CellDoubleClick);
+            this.EventGridView.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.EventGridView_CellMouseClick);
             // 
             // EventGenerator
             // 
@@ -1044,7 +1045,7 @@ namespace Omniscient
             this.EventControlPanel.Controls.Add(this.GenerateEventsButton);
             this.EventControlPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.EventControlPanel.Location = new System.Drawing.Point(0, 0);
-            this.EventControlPanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.EventControlPanel.Margin = new System.Windows.Forms.Padding(4);
             this.EventControlPanel.Name = "EventControlPanel";
             this.EventControlPanel.Size = new System.Drawing.Size(955, 42);
             this.EventControlPanel.TabIndex = 3;
@@ -1054,7 +1055,7 @@ namespace Omniscient
             this.RightEventControlPanel.Controls.Add(this.HighlightEventsCheckBox);
             this.RightEventControlPanel.Dock = System.Windows.Forms.DockStyle.Right;
             this.RightEventControlPanel.Location = new System.Drawing.Point(706, 0);
-            this.RightEventControlPanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.RightEventControlPanel.Margin = new System.Windows.Forms.Padding(4);
             this.RightEventControlPanel.Name = "RightEventControlPanel";
             this.RightEventControlPanel.Size = new System.Drawing.Size(249, 42);
             this.RightEventControlPanel.TabIndex = 3;
@@ -1063,7 +1064,7 @@ namespace Omniscient
             // 
             this.HighlightEventsCheckBox.AutoSize = true;
             this.HighlightEventsCheckBox.Location = new System.Drawing.Point(105, 12);
-            this.HighlightEventsCheckBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.HighlightEventsCheckBox.Margin = new System.Windows.Forms.Padding(4);
             this.HighlightEventsCheckBox.Name = "HighlightEventsCheckBox";
             this.HighlightEventsCheckBox.Size = new System.Drawing.Size(132, 21);
             this.HighlightEventsCheckBox.TabIndex = 1;
@@ -1084,7 +1085,7 @@ namespace Omniscient
             // GenerateEventsButton
             // 
             this.GenerateEventsButton.Location = new System.Drawing.Point(7, 4);
-            this.GenerateEventsButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.GenerateEventsButton.Margin = new System.Windows.Forms.Padding(4);
             this.GenerateEventsButton.Name = "GenerateEventsButton";
             this.GenerateEventsButton.Size = new System.Drawing.Size(139, 28);
             this.GenerateEventsButton.TabIndex = 0;
@@ -1114,7 +1115,7 @@ namespace Omniscient
             this.Controls.Add(this.menuStrip1);
             this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip1;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "MainForm";
             this.Padding = new System.Windows.Forms.Padding(0, 0, 7, 0);
             this.Text = "Omniscient (v. Demo 12)";
