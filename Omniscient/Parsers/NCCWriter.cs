@@ -108,6 +108,10 @@ namespace Omniscient
                     for (int i = 0; i < cycle.MultiplicityA.Length; ++i)
                         binaryWriter.Write(cycle.MultiplicityA[i]);
                 }
+                else
+                {
+                    binaryWriter.Write((ushort)0);
+                }
             }
 
             writeStream.Close();
