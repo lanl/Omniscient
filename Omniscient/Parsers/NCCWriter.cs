@@ -100,11 +100,14 @@ namespace Omniscient
                 binaryWriter.Write(cycle.A);
                 binaryWriter.Write(cycle.Scaler1);
                 binaryWriter.Write(cycle.Scaler2);
-                binaryWriter.Write((ushort)cycle.MultiplicityRPlusA.Length);
-                for(int i=0; i< cycle.MultiplicityRPlusA.Length; ++i)
-                    binaryWriter.Write(cycle.MultiplicityRPlusA[i]);
-                for (int i = 0; i < cycle.MultiplicityA.Length; ++i)
-                    binaryWriter.Write(cycle.MultiplicityA[i]);
+                if (!(cycle.MultiplicityRPlusA is null) && !(cycle.MultiplicityA is null))
+                {
+                    binaryWriter.Write((ushort)cycle.MultiplicityRPlusA.Length);
+                    for (int i = 0; i < cycle.MultiplicityRPlusA.Length; ++i)
+                        binaryWriter.Write(cycle.MultiplicityRPlusA[i]);
+                    for (int i = 0; i < cycle.MultiplicityA.Length; ++i)
+                        binaryWriter.Write(cycle.MultiplicityA[i]);
+                }
             }
 
             writeStream.Close();

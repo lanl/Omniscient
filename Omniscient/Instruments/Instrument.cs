@@ -177,13 +177,14 @@ namespace Omniscient
             }
             ///////////////////////////////////////////////////////////////////
 
-            int startIndex = Array.FindIndex(dataFileTimes.ToArray(), x => x >= startDate);
-            int endIndex = Array.FindIndex(dataFileTimes.ToArray(), x => x >= endDate);
+            int startIndex = Array.FindIndex(dataFileTimes.ToArray(), x => x >= startDate.Date);
+            int endIndex = Array.FindIndex(dataFileTimes.ToArray(), x => x >= endDate.Date);
 
             if (startIndex == -1) return;
             if (endIndex == -1) endIndex = (dataFileTimes.Length) - 1;
             if (endIndex == -1) startIndex = 0;
 
+            ClearData(compartment);
             for (int i = startIndex; i <= endIndex; ++i)
             {
                 returnCode = IngestFile(compartment, dataFileNames[i]);

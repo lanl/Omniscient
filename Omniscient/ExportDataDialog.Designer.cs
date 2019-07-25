@@ -59,6 +59,23 @@
             this.CancelButton = new System.Windows.Forms.Button();
             this.ExportButton = new System.Windows.Forms.Button();
             this.WriteHeadersCheckBox = new System.Windows.Forms.CheckBox();
+            this.FileFormatComboBox = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.ItemIDTextBox = new System.Windows.Forms.TextBox();
+            this.ConfigIDTextBox = new System.Windows.Forms.TextBox();
+            this.DetectorIDTextBox = new System.Windows.Forms.TextBox();
+            this.DetectorTypeTextBox = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.MeasurementTypeComboBox = new System.Windows.Forms.ComboBox();
+            this.SelectNoneButton = new System.Windows.Forms.Button();
+            this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // InstrumentComboBox
@@ -74,9 +91,9 @@
             // ChannelTreeView
             // 
             this.ChannelTreeView.CheckBoxes = true;
-            this.ChannelTreeView.Location = new System.Drawing.Point(75, 38);
+            this.ChannelTreeView.Location = new System.Drawing.Point(75, 67);
             this.ChannelTreeView.Name = "ChannelTreeView";
-            this.ChannelTreeView.Size = new System.Drawing.Size(307, 171);
+            this.ChannelTreeView.Size = new System.Drawing.Size(307, 142);
             this.ChannelTreeView.TabIndex = 1;
             // 
             // label1
@@ -91,7 +108,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(15, 38);
+            this.label2.Location = new System.Drawing.Point(15, 67);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(54, 13);
             this.label2.TabIndex = 3;
@@ -100,7 +117,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(38, 270);
+            this.label3.Location = new System.Drawing.Point(38, 499);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(26, 13);
             this.label3.TabIndex = 4;
@@ -109,14 +126,14 @@
             // FileTextBox
             // 
             this.FileTextBox.Enabled = false;
-            this.FileTextBox.Location = new System.Drawing.Point(75, 267);
+            this.FileTextBox.Location = new System.Drawing.Point(75, 496);
             this.FileTextBox.Name = "FileTextBox";
             this.FileTextBox.Size = new System.Drawing.Size(281, 20);
             this.FileTextBox.TabIndex = 5;
             // 
             // FileButton
             // 
-            this.FileButton.Location = new System.Drawing.Point(362, 266);
+            this.FileButton.Location = new System.Drawing.Point(362, 495);
             this.FileButton.Name = "FileButton";
             this.FileButton.Size = new System.Drawing.Size(20, 20);
             this.FileButton.TabIndex = 6;
@@ -126,7 +143,6 @@
             // EndTimePicker
             // 
             this.EndTimePicker.CustomFormat = "MMM dd, yyyy\'";
-            this.EndTimePicker.Enabled = false;
             this.EndTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Time;
             this.EndTimePicker.Location = new System.Drawing.Point(75, 241);
             this.EndTimePicker.Name = "EndTimePicker";
@@ -157,7 +173,6 @@
             // EndDatePicker
             // 
             this.EndDatePicker.CustomFormat = "MMM dd, yyyy\'";
-            this.EndDatePicker.Enabled = false;
             this.EndDatePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.EndDatePicker.Location = new System.Drawing.Point(178, 241);
             this.EndDatePicker.Name = "EndDatePicker";
@@ -205,7 +220,7 @@
             // 
             // CancelButton
             // 
-            this.CancelButton.Location = new System.Drawing.Point(288, 317);
+            this.CancelButton.Location = new System.Drawing.Point(288, 521);
             this.CancelButton.Name = "CancelButton";
             this.CancelButton.Size = new System.Drawing.Size(94, 28);
             this.CancelButton.TabIndex = 20;
@@ -215,7 +230,7 @@
             // 
             // ExportButton
             // 
-            this.ExportButton.Location = new System.Drawing.Point(178, 317);
+            this.ExportButton.Location = new System.Drawing.Point(178, 521);
             this.ExportButton.Name = "ExportButton";
             this.ExportButton.Size = new System.Drawing.Size(94, 28);
             this.ExportButton.TabIndex = 21;
@@ -229,19 +244,171 @@
             this.WriteHeadersCheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.WriteHeadersCheckBox.Checked = true;
             this.WriteHeadersCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.WriteHeadersCheckBox.Location = new System.Drawing.Point(282, 293);
+            this.WriteHeadersCheckBox.Location = new System.Drawing.Point(6, 19);
             this.WriteHeadersCheckBox.Name = "WriteHeadersCheckBox";
             this.WriteHeadersCheckBox.Size = new System.Drawing.Size(100, 17);
             this.WriteHeadersCheckBox.TabIndex = 22;
             this.WriteHeadersCheckBox.Text = "Write Headers: ";
             this.WriteHeadersCheckBox.UseVisualStyleBackColor = true;
             // 
+            // FileFormatComboBox
+            // 
+            this.FileFormatComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.FileFormatComboBox.FormattingEnabled = true;
+            this.FileFormatComboBox.Items.AddRange(new object[] {
+            "CSV",
+            "NCC"});
+            this.FileFormatComboBox.Location = new System.Drawing.Point(75, 268);
+            this.FileFormatComboBox.Name = "FileFormatComboBox";
+            this.FileFormatComboBox.Size = new System.Drawing.Size(88, 21);
+            this.FileFormatComboBox.TabIndex = 23;
+            this.FileFormatComboBox.SelectedIndexChanged += new System.EventHandler(this.FileFormatComboBox_SelectedIndexChanged);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(4, 271);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(61, 13);
+            this.label4.TabIndex = 24;
+            this.label4.Text = "File Format:";
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.WriteHeadersCheckBox);
+            this.groupBox1.Location = new System.Drawing.Point(72, 295);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(310, 49);
+            this.groupBox1.TabIndex = 25;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "CSV";
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.ItemIDTextBox);
+            this.groupBox2.Controls.Add(this.ConfigIDTextBox);
+            this.groupBox2.Controls.Add(this.DetectorIDTextBox);
+            this.groupBox2.Controls.Add(this.DetectorTypeTextBox);
+            this.groupBox2.Controls.Add(this.label9);
+            this.groupBox2.Controls.Add(this.label8);
+            this.groupBox2.Controls.Add(this.label7);
+            this.groupBox2.Controls.Add(this.label6);
+            this.groupBox2.Controls.Add(this.label5);
+            this.groupBox2.Controls.Add(this.MeasurementTypeComboBox);
+            this.groupBox2.Location = new System.Drawing.Point(75, 353);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(307, 136);
+            this.groupBox2.TabIndex = 26;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "NCC";
+            // 
+            // ItemIDTextBox
+            // 
+            this.ItemIDTextBox.Location = new System.Drawing.Point(113, 112);
+            this.ItemIDTextBox.Name = "ItemIDTextBox";
+            this.ItemIDTextBox.Size = new System.Drawing.Size(129, 20);
+            this.ItemIDTextBox.TabIndex = 34;
+            // 
+            // ConfigIDTextBox
+            // 
+            this.ConfigIDTextBox.Location = new System.Drawing.Point(113, 88);
+            this.ConfigIDTextBox.Name = "ConfigIDTextBox";
+            this.ConfigIDTextBox.Size = new System.Drawing.Size(50, 20);
+            this.ConfigIDTextBox.TabIndex = 33;
+            this.ConfigIDTextBox.Text = "01";
+            // 
+            // DetectorIDTextBox
+            // 
+            this.DetectorIDTextBox.Location = new System.Drawing.Point(113, 64);
+            this.DetectorIDTextBox.Name = "DetectorIDTextBox";
+            this.DetectorIDTextBox.Size = new System.Drawing.Size(50, 20);
+            this.DetectorIDTextBox.TabIndex = 32;
+            // 
+            // DetectorTypeTextBox
+            // 
+            this.DetectorTypeTextBox.Location = new System.Drawing.Point(113, 40);
+            this.DetectorTypeTextBox.Name = "DetectorTypeTextBox";
+            this.DetectorTypeTextBox.Size = new System.Drawing.Size(50, 20);
+            this.DetectorTypeTextBox.TabIndex = 31;
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(63, 116);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(44, 13);
+            this.label9.TabIndex = 30;
+            this.label9.Text = "Item ID:";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(21, 91);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(86, 13);
+            this.label8.TabIndex = 29;
+            this.label8.Text = "Configuration ID:";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(42, 66);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(65, 13);
+            this.label7.TabIndex = 28;
+            this.label7.Text = "Detector ID:";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(29, 41);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(78, 13);
+            this.label6.TabIndex = 27;
+            this.label6.Text = "Detector Type:";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(6, 16);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(101, 13);
+            this.label5.TabIndex = 26;
+            this.label5.Text = "Measurement Type:";
+            // 
+            // MeasurementTypeComboBox
+            // 
+            this.MeasurementTypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.MeasurementTypeComboBox.FormattingEnabled = true;
+            this.MeasurementTypeComboBox.Items.AddRange(new object[] {
+            "Background",
+            "Normalization",
+            "Verification"});
+            this.MeasurementTypeComboBox.Location = new System.Drawing.Point(113, 13);
+            this.MeasurementTypeComboBox.Name = "MeasurementTypeComboBox";
+            this.MeasurementTypeComboBox.Size = new System.Drawing.Size(130, 21);
+            this.MeasurementTypeComboBox.TabIndex = 25;
+            // 
+            // SelectNoneButton
+            // 
+            this.SelectNoneButton.Location = new System.Drawing.Point(75, 38);
+            this.SelectNoneButton.Name = "SelectNoneButton";
+            this.SelectNoneButton.Size = new System.Drawing.Size(85, 23);
+            this.SelectNoneButton.TabIndex = 27;
+            this.SelectNoneButton.Text = "Select None";
+            this.SelectNoneButton.UseVisualStyleBackColor = true;
+            this.SelectNoneButton.Click += new System.EventHandler(this.SelectNoneButton_Click);
+            // 
             // ExportDataDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(394, 357);
-            this.Controls.Add(this.WriteHeadersCheckBox);
+            this.ClientSize = new System.Drawing.Size(394, 561);
+            this.Controls.Add(this.SelectNoneButton);
+            this.Controls.Add(this.groupBox2);
+            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.FileFormatComboBox);
             this.Controls.Add(this.ExportButton);
             this.Controls.Add(this.CancelButton);
             this.Controls.Add(this.AllButton);
@@ -261,6 +428,11 @@
             this.Controls.Add(this.InstrumentComboBox);
             this.Name = "ExportDataDialog";
             this.Text = "ExportDataDialog";
+            this.Load += new System.EventHandler(this.ExportDataDialog_Load);
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -286,5 +458,20 @@
         private System.Windows.Forms.Button CancelButton;
         private System.Windows.Forms.Button ExportButton;
         private System.Windows.Forms.CheckBox WriteHeadersCheckBox;
+        private System.Windows.Forms.ComboBox FileFormatComboBox;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.TextBox ItemIDTextBox;
+        private System.Windows.Forms.TextBox ConfigIDTextBox;
+        private System.Windows.Forms.TextBox DetectorIDTextBox;
+        private System.Windows.Forms.TextBox DetectorTypeTextBox;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ComboBox MeasurementTypeComboBox;
+        private System.Windows.Forms.Button SelectNoneButton;
     }
 }

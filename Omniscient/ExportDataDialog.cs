@@ -35,6 +35,8 @@ namespace Omniscient
         DateTime ChartEndTime { get; set; }
         List<Instrument> Instruments { get; set; }
         Instrument SelectedInstrument { get; set; }
+
+        private string dialogFilter;
         public ExportDataDialog(List<Instrument> instruments, DateTime globalStart, DateTime globalEnd, DateTime startDate, DateTime startTime, DateTime endDate, DateTime endTime)
         {
             InitializeComponent();
@@ -107,7 +109,7 @@ namespace Omniscient
         private void FileButton_Click(object sender, EventArgs e)
         {
             SaveFileDialog dialog = new SaveFileDialog();
-            dialog.Filter = "CSV File |*.csv";
+            dialog.Filter = dialogFilter;
             dialog.Title = "Export File";
             dialog.OverwritePrompt = true;
             dialog.ValidateNames = true;
@@ -119,43 +121,8 @@ namespace Omniscient
             }
         }
 
-        private void ExportButton_Click(object sender, EventArgs e)
+        private void ExportCSV(string fileName, List<Channel> selectedChannels, DateTime start, DateTime end)
         {
-            // Validate channels
-            List<Channel> selectedChannels = new List<Channel>();
-            foreach (TreeNode node in ChannelTreeView.Nodes)
-            {
-                if (node.Checked) selectedChannels.Add((Channel)node.Tag);
-            }
-            if (selectedChannels.Count == 0)
-            {
-                MessageBox.Show("No channels selected!");
-                return;
-            }
-
-            // Validate date range
-            DateTime start = StartDatePicker.Value.Date + StartTimePicker.Value.TimeOfDay;
-            DateTime end = EndDatePicker.Value.Date + EndTimePicker.Value.TimeOfDay;
-            if (start >= end)
-            {
-                MessageBox.Show("Negative or 0 time range selected!");
-                return;
-            }
-
-            // Validate file
-            string fileName = FileTextBox.Text;
-            try
-            {
-                File.WriteAllText(fileName, "");
-            }
-            catch
-            {
-                MessageBox.Show("Cannot write to file!");
-                return;
-            }
-
-            // All tests pass: let's do this
-            System.Windows.Forms.Cursor.Current = Cursors.WaitCursor;
             try
             {
                 foreach (Channel chan in selectedChannels) chan.GetInstrument().LoadData(ChannelCompartment.Process, start, end);
@@ -197,6 +164,237 @@ namespace Omniscient
             MessageBox.Show("Export complete!");
             DialogResult = DialogResult.OK;
             Dispose();
+        }
+
+        private void ExportNCC(string fileName, List<Channel> selectedChannels, DateTime start, DateTime end)
+        {
+            // Validate detector type
+            if (DetectorTypeTextBox.Text.Length > 4)
+            {
+                MessageBox.Show("Detector type must be 4 or fewer characters");
+                return;
+            }
+            while(DetectorTypeTextBox.Text.Length < 4)
+            {
+                DetectorTypeTextBox.Text += " ";
+            }
+
+            // Validate detector ID
+            if (DetectorIDTextBox.Text.Length > 3)
+            {
+                MessageBox.Show("Detector ID must be 3 or fewer characters");
+                return;
+            }
+            while (DetectorIDTextBox.Text.Length < 3)
+            {
+                DetectorIDTextBox.Text += " ";
+            }
+
+            // Validate configuration ID
+            if (ConfigIDTextBox.Text.Length > 2)
+            {
+                MessageBox.Show("Configuration ID must be 2 or fewer characters");
+                return;
+            }
+            while (ConfigIDTextBox.Text.Length < 2)
+            {
+                ConfigIDTextBox.Text += " ";
+            }
+
+            // Validate item ID
+            if (ItemIDTextBox.Text.Length > 12)
+            {
+                MessageBox.Show("Item ID must be 12 or fewer characters");
+                return;
+            }
+            while (ItemIDTextBox.Text.Length < 12)
+            {
+                ItemIDTextBox.Text += " ";
+            }
+
+            NCCWriter writer = new NCCWriter();
+            if (MeasurementTypeComboBox.SelectedIndex == MeasurementTypeComboBox.FindStringExact("Background"))
+            {
+                writer.NCCMode = NCCWriter.NCCType.BACKGROUND;
+            }
+            else if (MeasurementTypeComboBox.SelectedIndex == MeasurementTypeComboBox.FindStringExact("Normalization"))
+            {
+                writer.NCCMode = NCCWriter.NCCType.NORMALIZATION;
+            }
+            if (MeasurementTypeComboBox.SelectedIndex == MeasurementTypeComboBox.FindStringExact("Verification"))
+            {
+                writer.NCCMode = NCCWriter.NCCType.VERIFICATION;
+            }
+
+            writer.SetDetectorType(DetectorTypeTextBox.Text);
+            writer.SetDetectorID(DetectorIDTextBox.Text);
+            writer.SetConfigurationID(ConfigIDTextBox.Text);
+            writer.SetItemID(ItemIDTextBox.Text);
+
+            writer.Cycles = new List<NCCWriter.Cycle>();
+
+            foreach (Channel chan in selectedChannels) chan.GetInstrument().LoadData(ChannelCompartment.Process, start, end);
+            List<DateTime> dates = selectedChannels[0].GetTimeStamps(ChannelCompartment.Process);
+
+            for (int i = 0; i < dates.Count; i++)
+            {
+                if (dates[i] >= start && dates[i] <= end)
+                {
+                    NCCWriter.Cycle cycle = new NCCWriter.Cycle();
+                    cycle.DateAndTime = dates[i];
+                    if (i < dates.Count - 1)
+                    {
+                        cycle.CountSeconds = (ushort)(dates[i + 1] - dates[i]).TotalSeconds;
+                    }
+                    else
+                    {
+                        cycle.CountSeconds = (ushort)(dates[i] - dates[i - 1]).TotalSeconds;
+                    }
+
+                    cycle.Totals = selectedChannels[0].GetValues(ChannelCompartment.Process)[i];
+
+                    switch (selectedChannels.Count)
+                    {
+                        case 1:
+                            cycle.RPlusA = 0;
+                            cycle.A = 0;
+                            cycle.Scaler1 = 0;
+                            cycle.Scaler2 = 0;
+                            break;
+                        case 2:
+                            cycle.RPlusA = selectedChannels[1].GetValues(ChannelCompartment.Process)[i];
+                            cycle.A = 0;
+                            cycle.Scaler1 = 0;
+                            cycle.Scaler2 = 0;
+                            break;
+                        case 3:
+                            cycle.RPlusA = selectedChannels[1].GetValues(ChannelCompartment.Process)[i];
+                            cycle.A = selectedChannels[2].GetValues(ChannelCompartment.Process)[i];
+                            cycle.Scaler1 = 0;
+                            cycle.Scaler2 = 0;
+                            break;
+                        case 4:
+                            cycle.RPlusA = selectedChannels[1].GetValues(ChannelCompartment.Process)[i];
+                            cycle.A = selectedChannels[2].GetValues(ChannelCompartment.Process)[i];
+                            cycle.Scaler1 = selectedChannels[3].GetValues(ChannelCompartment.Process)[i];
+                            cycle.Scaler2 = 0;
+                            break;
+                        default:
+                            cycle.RPlusA = selectedChannels[1].GetValues(ChannelCompartment.Process)[i];
+                            cycle.A = selectedChannels[2].GetValues(ChannelCompartment.Process)[i];
+                            cycle.Scaler1 = selectedChannels[3].GetValues(ChannelCompartment.Process)[i];
+                            cycle.Scaler2 = selectedChannels[4].GetValues(ChannelCompartment.Process)[i];
+                            break;
+                    }
+                    writer.Cycles.Add(cycle);
+                }
+            }
+
+            try
+            {
+                writer.WriteNeutronCyclesFile(FileTextBox.Text);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Export Error\n" + ex.Message);
+                System.Windows.Forms.Cursor.Current = Cursors.Default;
+                return;
+            }
+
+            MessageBox.Show("Export complete!");
+            DialogResult = DialogResult.OK;
+            Dispose();
+        }
+
+        private void ExportButton_Click(object sender, EventArgs e)
+        {
+            // Validate channels
+            List<Channel> selectedChannels = new List<Channel>();
+            foreach (TreeNode node in ChannelTreeView.Nodes)
+            {
+                if (node.Checked) selectedChannels.Add((Channel)node.Tag);
+            }
+            if (selectedChannels.Count == 0)
+            {
+                MessageBox.Show("No channels selected!");
+                return;
+            }
+
+            // Validate date range
+            DateTime start = StartDatePicker.Value.Date + StartTimePicker.Value.TimeOfDay;
+            DateTime end = EndDatePicker.Value.Date + EndTimePicker.Value.TimeOfDay;
+            if (start >= end)
+            {
+                MessageBox.Show("Negative or 0 time range selected!");
+                return;
+            }
+
+            // Validate file
+            string fileName = FileTextBox.Text;
+            try
+            {
+                File.WriteAllText(fileName, "");
+            }
+            catch
+            {
+                MessageBox.Show("Cannot write to file!");
+                return;
+            }
+
+            // All tests pass: let's do this
+            System.Windows.Forms.Cursor.Current = Cursors.WaitCursor;
+            if (FileFormatComboBox.SelectedIndex == FileFormatComboBox.FindStringExact("CSV"))
+            {
+                ExportCSV(fileName, selectedChannels, start, end);
+            }
+            else if (FileFormatComboBox.SelectedIndex == FileFormatComboBox.FindStringExact("NCC"))
+            {
+                ExportNCC(fileName, selectedChannels, start, end);
+            }
+        }
+
+        private void ExportDataDialog_Load(object sender, EventArgs e)
+        {
+            FileFormatComboBox.SelectedIndex = FileFormatComboBox.FindStringExact("CSV");
+            MeasurementTypeComboBox.SelectedIndex = MeasurementTypeComboBox.FindStringExact("Verification");
+        }
+
+        private void FileFormatComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            FileTextBox.Text = "";
+
+            if (FileFormatComboBox.SelectedIndex == FileFormatComboBox.FindStringExact("CSV"))
+            {
+                dialogFilter = "CSV File |*.csv";
+
+                WriteHeadersCheckBox.Enabled = true;
+
+                MeasurementTypeComboBox.Enabled = false;
+                DetectorTypeTextBox.Enabled = false;
+                DetectorIDTextBox.Enabled = false;
+                ConfigIDTextBox.Enabled = false;
+                ItemIDTextBox.Enabled = false;
+            }
+            else if (FileFormatComboBox.SelectedIndex == FileFormatComboBox.FindStringExact("NCC"))
+            {
+                dialogFilter = "NCC File |*.ncc";
+
+                WriteHeadersCheckBox.Enabled = false;
+
+                MeasurementTypeComboBox.Enabled = true;
+                DetectorTypeTextBox.Enabled = true;
+                DetectorIDTextBox.Enabled = true;
+                ConfigIDTextBox.Enabled = true;
+                ItemIDTextBox.Enabled = true;
+            }
+        }
+
+        private void SelectNoneButton_Click(object sender, EventArgs e)
+        {
+            foreach (TreeNode node in ChannelTreeView.Nodes)
+            {
+                node.Checked = false;
+            }
         }
     }
 }
