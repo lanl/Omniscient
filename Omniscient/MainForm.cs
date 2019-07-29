@@ -1843,11 +1843,18 @@ namespace Omniscient
             if (e.Button == MouseButtons.Right)
             {
                 Event eve = EventGridView.Rows[e.RowIndex].Tag as Event;
+                if (eve is null) return;
                 ContextMenu menu = new ContextMenu();
+                // Export data range
+                MenuItem menuItem = new MenuItem("Export data during event");
+                menuItem.Tag = eve;
+                menuItem.Click += ExportDataMenuItem_Click;
+                menu.MenuItems.Add(menuItem);
 
-                if (!(eve is null) && eve.GetEventGenerator() is ManualEG)
+                // Remove from manual event generator
+                if (eve.GetEventGenerator() is ManualEG)
                 {
-                    MenuItem menuItem = new MenuItem("Remove event from " + eve.GetEventGenerator().Name);
+                    menuItem = new MenuItem("Remove event from " + eve.GetEventGenerator().Name);
                     menuItem.Tag = eve;
                     menuItem.Click += RemoveEventMenuItem_Click;
                     menu.MenuItems.Add(menuItem);
@@ -1855,6 +1862,23 @@ namespace Omniscient
 
                 menu.Show(sender as Control, new Point(e.X, e.Y));
             }
+        }
+
+        private void ExportDataMenuItem_Click(object sender, EventArgs e)
+        {
+            Event eve = (sender as MenuItem).Tag as Event;
+
+            if (Core.ActiveInstruments.Count == 0)
+            {
+                MessageBox.Show("No active Instruments for exporting data!");
+                return;
+            }
+            System.Windows.Forms.Cursor.Current = Cursors.WaitCursor;
+
+            ExportDataDialog dialog = new ExportDataDialog(Core.ActiveInstruments, Core.GlobalStart, Core.GlobalEnd,
+                eve.StartTime, eve.StartTime, eve.EndTime, eve.EndTime);
+            dialog.ShowDialog();
+            return;
         }
 
         private void RemoveEventMenuItem_Click(object sender, EventArgs e)

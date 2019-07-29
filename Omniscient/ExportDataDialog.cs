@@ -57,10 +57,10 @@ namespace Omniscient
 
             FileButton.Image = Properties.Resources.OpenIcon;
 
-            StartDatePicker.Value = GlobalStart;
-            StartTimePicker.Value = GlobalStart;
-            EndDatePicker.Value = GlobalEnd;
-            EndTimePicker.Value = GlobalEnd;
+            StartDatePicker.Value = ChartStartDate;
+            StartTimePicker.Value = ChartStartTime;
+            EndDatePicker.Value = ChartEndDate;
+            EndTimePicker.Value = ChartEndTime;
         }
 
         private void CancelButton_Click(object sender, EventArgs e)
