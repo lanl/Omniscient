@@ -24,9 +24,7 @@ namespace Omniscient
     public class NCCParser
     {
         public NCCWriter.NCCType NCCMode;
-        private string detectorType;
         private string detectorID;
-        private string configurationID;
         private string itemID;
         private DateTime startDateTime;
         public List<NCCWriter.Cycle> Cycles;
@@ -36,9 +34,7 @@ namespace Omniscient
         public NCCParser()
         {
             NCCMode = NCCWriter.NCCType.VERIFICATION;
-            detectorType = "XXXX";
-            detectorID = "YYY";
-            configurationID = "ZZ";
+            detectorID = "XXXXXXXXXXX";
             itemID = "ItemID      ";
             Cycles = new List<NCCWriter.Cycle>();
         }
@@ -61,11 +57,7 @@ namespace Omniscient
                 default:
                     return ReturnCode.CORRUPTED_FILE;
             }
-            detectorType = new string(readBinary.ReadChars(4));
-            readBinary.ReadChar();
-            detectorID = new string(readBinary.ReadChars(3));
-            readBinary.ReadChar();
-            configurationID = new string(readBinary.ReadChars(2));
+            detectorID = new string(readBinary.ReadChars(11));
             itemID = new string(readBinary.ReadChars(12));
             string dateTimeString = new string(readBinary.ReadChars(16));
             startDateTime = new DateTime(2000 + int.Parse(dateTimeString.Substring(0, 2)),
@@ -140,9 +132,7 @@ namespace Omniscient
             return ReturnCode.SUCCESS;
         }
 
-        public string GetDetectorType() { return detectorType; }
         public string GetDetectorID() { return detectorID; }
-        public string GetConfigurationID() { return configurationID; }
         public string GetItemID() { return itemID.TrimEnd(' '); }
         public DateTime GetStartDateTime() { return startDateTime; }
     }

@@ -168,37 +168,15 @@ namespace Omniscient
 
         private void ExportNCC(string fileName, List<Channel> selectedChannels, DateTime start, DateTime end)
         {
-            // Validate detector type
-            if (DetectorTypeTextBox.Text.Length > 4)
-            {
-                MessageBox.Show("Detector type must be 4 or fewer characters");
-                return;
-            }
-            while(DetectorTypeTextBox.Text.Length < 4)
-            {
-                DetectorTypeTextBox.Text += " ";
-            }
-
             // Validate detector ID
-            if (DetectorIDTextBox.Text.Length > 3)
+            if (DetectorIDTextBox.Text.Length > 11)
             {
-                MessageBox.Show("Detector ID must be 3 or fewer characters");
+                MessageBox.Show("Detector ID must be 11 or fewer characters");
                 return;
             }
-            while (DetectorIDTextBox.Text.Length < 3)
+            while (DetectorIDTextBox.Text.Length < 11)
             {
                 DetectorIDTextBox.Text += " ";
-            }
-
-            // Validate configuration ID
-            if (ConfigIDTextBox.Text.Length > 2)
-            {
-                MessageBox.Show("Configuration ID must be 2 or fewer characters");
-                return;
-            }
-            while (ConfigIDTextBox.Text.Length < 2)
-            {
-                ConfigIDTextBox.Text += " ";
             }
 
             // Validate item ID
@@ -226,9 +204,7 @@ namespace Omniscient
                 writer.NCCMode = NCCWriter.NCCType.VERIFICATION;
             }
 
-            writer.SetDetectorType(DetectorTypeTextBox.Text);
             writer.SetDetectorID(DetectorIDTextBox.Text);
-            writer.SetConfigurationID(ConfigIDTextBox.Text);
             writer.SetItemID(ItemIDTextBox.Text);
 
             writer.Cycles = new List<NCCWriter.Cycle>();
@@ -370,9 +346,7 @@ namespace Omniscient
                 WriteHeadersCheckBox.Enabled = true;
 
                 MeasurementTypeComboBox.Enabled = false;
-                DetectorTypeTextBox.Enabled = false;
                 DetectorIDTextBox.Enabled = false;
-                ConfigIDTextBox.Enabled = false;
                 ItemIDTextBox.Enabled = false;
             }
             else if (FileFormatComboBox.SelectedIndex == FileFormatComboBox.FindStringExact("NCC"))
@@ -382,9 +356,7 @@ namespace Omniscient
                 WriteHeadersCheckBox.Enabled = false;
 
                 MeasurementTypeComboBox.Enabled = true;
-                DetectorTypeTextBox.Enabled = true;
                 DetectorIDTextBox.Enabled = true;
-                ConfigIDTextBox.Enabled = true;
                 ItemIDTextBox.Enabled = true;
             }
         }

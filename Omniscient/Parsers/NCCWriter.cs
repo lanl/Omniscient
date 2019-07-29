@@ -38,9 +38,7 @@ namespace Omniscient
         }
 
         public NCCType NCCMode;
-        private string detectorType;
         private string detectorID;
-        private string configurationID;
         private string itemID;
         public List<Cycle> Cycles;
 
@@ -49,9 +47,7 @@ namespace Omniscient
         public NCCWriter()
         {
             NCCMode = NCCType.VERIFICATION;
-            detectorType = "XXXX";
-            detectorID = "YYY";
-            configurationID = "ZZ";
+            detectorID = "XXXXXXXXXXX";
             itemID = "ItemID      ";
             Cycles = new List<Cycle>();
         }
@@ -81,11 +77,7 @@ namespace Omniscient
                     binaryWriter.Write('V');
                     break;
             }
-            binaryWriter.Write(detectorType.ToCharArray());       // 4 characters
-            binaryWriter.Write('/');
-            binaryWriter.Write(detectorID.ToCharArray());         // 3 characters
-            binaryWriter.Write('/');
-            binaryWriter.Write(configurationID.ToCharArray());    // 2 characters
+            binaryWriter.Write(detectorID.ToCharArray());         // 11 characters
             binaryWriter.Write(itemID.ToCharArray());             // 12 characters
             binaryWriter.Write(Cycles[0].DateAndTime.ToString("yy.MM.ddHH:mm:ss").ToCharArray());
             binaryWriter.Write((ushort)Cycles.Count);
@@ -119,24 +111,10 @@ namespace Omniscient
             return ReturnCode.SUCCESS;
         }
 
-        public ReturnCode SetDetectorType(string newType)
-        {
-            if (newType.Length != 4) return ReturnCode.BAD_INPUT;
-            detectorType = newType;
-            return ReturnCode.SUCCESS;
-        }
-
         public ReturnCode SetDetectorID(string newID)
         {
-            if (newID.Length != 3) return ReturnCode.BAD_INPUT;
+            if (newID.Length != 11) return ReturnCode.BAD_INPUT;
             detectorID = newID;
-            return ReturnCode.SUCCESS;
-        }
-
-        public ReturnCode SetConfigurationID(string newID)
-        {
-            if (newID.Length != 2) return ReturnCode.BAD_INPUT;
-            configurationID = newID;
             return ReturnCode.SUCCESS;
         }
 
@@ -148,9 +126,7 @@ namespace Omniscient
             return ReturnCode.SUCCESS;
         }
 
-        public string GetDetectorType() { return detectorType; }
         public string GetDetectorID() { return detectorID; }
-        public string GetConfigurationID() { return configurationID; }
         public string GetItemID() { return itemID.TrimEnd(' '); }
     }
 }

@@ -144,9 +144,7 @@ namespace OmniscientTests
         {
             //Arrange
             NCCWriter writer = new NCCWriter();
-            writer.SetDetectorType("TEST");
-            writer.SetDetectorID("007");
-            writer.SetConfigurationID("42");
+            writer.SetDetectorID("12345678910");
             writer.SetItemID("Test Item");
             writer.NCCMode = NCCWriter.NCCType.VERIFICATION;
 
@@ -183,9 +181,7 @@ namespace OmniscientTests
 
             //Assert
             Assert.IsTrue(parser.NCCMode == writer.NCCMode, "NCC Modes are not equal!");
-            Assert.IsTrue(parser.GetDetectorType() == writer.GetDetectorType(), "Detector types are not equal!");
             Assert.IsTrue(parser.GetDetectorID() == writer.GetDetectorID(), "Detector IDs are not equal!");
-            Assert.IsTrue(parser.GetConfigurationID() == writer.GetConfigurationID(), "Configuration IDs are not equal!");
             Assert.IsTrue(parser.GetStartDateTime() == writer.Cycles[0].DateAndTime, "Start times are not equal!");
             Assert.IsTrue(parser.Cycles.Count == writer.Cycles.Count, "Number of cycles are not equal");
             for (int c=0; c < parser.Cycles.Count; ++c)
