@@ -307,8 +307,10 @@ namespace Omniscient
         /// </summary>
         private void UpdateGlobalStartEnd()
         {
-            DateTime earliest = new DateTime(3000, 1, 1);
-            DateTime latest = new DateTime(1000, 1, 1);
+            DateTime ABSOLUTE_EARLIST = new DateTime(3000, 1, 1);
+            DateTime earliest = ABSOLUTE_EARLIST;
+            DateTime ABSOLUTE_LATEST = new DateTime(1000, 1, 1);
+            DateTime latest = ABSOLUTE_LATEST;
             DateTime chStart;
             DateTime chEnd;
 
@@ -334,11 +336,12 @@ namespace Omniscient
                 }
                 */
                 DateTimeRange range = inst.Cache.GetDataFilesTimeRange();
-                if (range.Start < earliest) earliest = range.Start;
-                if (range.End > latest) latest = range.End;
+                if (earliest > DateTime.MinValue && range.Start < earliest) earliest = range.Start;
+                if (latest < DateTime.MaxValue && range.End > latest) latest = range.End;
             }
 
             if (earliest > latest) return;
+            if (earliest == ABSOLUTE_EARLIST || latest == ABSOLUTE_LATEST) return;
 
             // Update global start and end
             GlobalStart = earliest;

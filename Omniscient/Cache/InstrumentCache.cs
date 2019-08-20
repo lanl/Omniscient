@@ -113,7 +113,10 @@ namespace Omniscient
 
         public DateTimeRange GetDataFilesTimeRange()
         {
-            return new DateTimeRange(DataFiles[0].DataStart, DataFiles.Last().DataEnd);
+            if (DataFiles.Count > 0)
+                return new DateTimeRange(DataFiles[0].DataStart, DataFiles.Last().DataEnd);
+            else
+                return new DateTimeRange(DateTime.MinValue, DateTime.MinValue);
         }
 
         public void LoadDataIntoInstrument(ChannelCompartment compartment, DateTimeRange timeRange)
