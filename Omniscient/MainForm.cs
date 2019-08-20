@@ -737,8 +737,10 @@ namespace Omniscient
         /// When a user selects an instrument in the tree view of the site 
         /// manager, AddChannelPanels is called to populate the appropriate
         /// channel panels.</summary>
+        bool addingChannelPanels = false;
         private void AddChannelPanels(Instrument inst)
         {
+            addingChannelPanels = true;
             System.Windows.Forms.Cursor.Current = Cursors.WaitCursor;
             Core.ActivateInstrument(inst);
             System.Windows.Forms.Cursor.Current = Cursors.Default;
@@ -764,11 +766,12 @@ namespace Omniscient
             ChannelsLabelPanel.SendToBack();
             ChannelsPanel.ResumeLayout();
             UpdateGlobalStartEnd();
+            addingChannelPanels = false;
         }
 
         private void OnChannelPannelSymbolChanged(object sender, EventArgs e)
         {
-            UpdatesCharts();
+            if (!addingChannelPanels) UpdatesCharts();
         }
 
         private void RemoveChannelPanels(Instrument inst)

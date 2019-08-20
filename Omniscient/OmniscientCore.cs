@@ -134,6 +134,7 @@ namespace Omniscient
             //instrument.LoadData(ChannelCompartment.View, new DateTime(1900, 1, 1), new DateTime(2100, 1, 1));
             Cache.AddInstrumentCache(instrument.Cache);
             UpdateGlobalStartEnd();
+            instrument.LoadData(ChannelCompartment.View, _viewStart, _viewEnd);
         }
 
         public void DeactivateInstrument(Instrument instrument)
