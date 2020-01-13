@@ -27,6 +27,7 @@ namespace Omniscient
 
         public static readonly InstrumentHookup[] Hookups = new InstrumentHookup[]
         {
+            new ATPMInstrumentHookup(),
             new CSVInstrumentHookup(),
             new GRANDInstrumentHookup(),
             new ImageInstrumentHookup(),
