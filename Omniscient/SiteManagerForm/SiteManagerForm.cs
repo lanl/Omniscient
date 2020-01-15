@@ -131,34 +131,6 @@ namespace Omniscient
             }
         }
 
-        public string VCTypeToString(VirtualChannel.VirtualChannelType vcType)
-        {
-            switch (vcType)
-            {
-                case VirtualChannel.VirtualChannelType.RATIO:
-                    return "Ratio";
-                case VirtualChannel.VirtualChannelType.SUM:
-                    return "Sum";
-                case VirtualChannel.VirtualChannelType.DIFFERENCE:
-                    return "Difference";
-                case VirtualChannel.VirtualChannelType.ADD_CONST:
-                    return "Add Constant";
-                case VirtualChannel.VirtualChannelType.SCALE:
-                    return "Scale";
-                case VirtualChannel.VirtualChannelType.DELAY:
-                    return "Delay";
-                case VirtualChannel.VirtualChannelType.CONVOLVE:
-                    return "Convolve";
-                case VirtualChannel.VirtualChannelType.LOCAL_MAX:
-                    return "Local Max";
-                case VirtualChannel.VirtualChannelType.LOCAL_MIN:
-                    return "Local Min";
-                case VirtualChannel.VirtualChannelType.ROI:
-                    return "ROI";
-            }
-            return "Weird Things Are Happening";
-        }
-
         private void SetupVirtualChannelGroupBox()
         {
             Instrument inst = (Instrument)SitesTreeView.SelectedNode.Tag;
