@@ -56,6 +56,7 @@ namespace Omniscient
         public string InstrumentType { get; protected set; }
         protected string dataFolder;
         protected string filePrefix;
+        protected string fileSuffix;
 
         protected string[] dataFileNames;
         protected DateTime[] dataFileTimes;
@@ -123,7 +124,10 @@ namespace Omniscient
                 foreach (string file in filesInDirectory)
                 {
                     string fileAbrev = file.Substring(file.LastIndexOf('\\') + 1);
-                    if (fileAbrev.Substring(fileAbrev.Length - 4).ToLower() == ("." + FileExtension) && fileAbrev.ToLower().StartsWith(filePrefix.ToLower()))
+                    if (fileAbrev.Length > (fileSuffix.Length + FileExtension.Length)
+                        && fileAbrev.Substring(fileAbrev.Length - (FileExtension.Length + 1)).ToLower() == ("." + FileExtension) 
+                        && fileAbrev.ToLower().StartsWith(filePrefix)
+                        && fileAbrev.Substring(fileAbrev.Length - (FileExtension.Length + 1 + fileSuffix.Length), fileSuffix.Length).ToLower() == fileSuffix)
                     {
                         fileDate = GetFileDate(file);
                         if (fileDate > DateTime.MinValue)
@@ -213,12 +217,18 @@ namespace Omniscient
 
         public void SetFilePrefix(string newPrefix)
         {
-            filePrefix = newPrefix;
+            filePrefix = newPrefix.ToLower();
         }
-        
+
+        public void SetFileSuffix(string newSuffix)
+        {
+            fileSuffix = newSuffix.ToLower();
+        }
+
         public string GetInstrumentType() { return InstrumentType; }
         public string GetDataFolder() { return dataFolder; }
         public string GetFilePrefix() { return filePrefix; }
+        public string GetFileSuffix() { return fileSuffix; }
         public int GetNumChannels() { return numChannels; }
         public Channel[] GetStandardChannels()
         {
@@ -246,6 +256,7 @@ namespace Omniscient
             List<Parameter> parameters = new List<Parameter>()
             {
                 new StringParameter("File Prefix") { Value = filePrefix },
+                new StringParameter("File Suffix") { Value = fileSuffix },
                 new DirectoryParameter("Data Directory"){ Value = dataFolder },
                 new BoolParameter("Include Subdirectories") {Value = IncludeSubDirectories ? 
                                                                 BoolParameter.True : BoolParameter.False}
@@ -262,6 +273,10 @@ namespace Omniscient
                 {
                     case "File Prefix":
                         instrument.filePrefix = param.Value;
+                        break;
+                    case "File Suffix":
+                        if (param.Value is null) instrument.fileSuffix = "";
+                        else instrument.fileSuffix = param.Value;
                         break;
                     case "Data Directory":
                         instrument.SetDataFolder(param.Value);
@@ -338,6 +353,7 @@ namespace Omniscient
         public List<ParameterTemplate> TemplateParameters { get; set; } = new List<ParameterTemplate>()
         {
             new ParameterTemplate("File Prefix", ParameterType.String),
+            new ParameterTemplate("File Suffix", ParameterType.String),
             new ParameterTemplate("Data Directory", ParameterType.Directory),
             new ParameterTemplate("Include Subdirectories", ParameterType.Bool)
         };

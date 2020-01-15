@@ -91,6 +91,7 @@ namespace Omniscient
             numChannels = nChannels;
             FileExtension = FILE_EXTENSION;
             filePrefix = "";
+            fileSuffix = "";
 
             Delimiter = CSVParser.DelimiterType.Comma;
             NumberOfHeaders = 0;

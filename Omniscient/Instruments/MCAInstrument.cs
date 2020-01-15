@@ -60,6 +60,7 @@ namespace Omniscient
             InstrumentType = "MCA";
             FileExtension = FILE_EXTENSION;
             filePrefix = "";
+            fileSuffix = "";
             SpectrumParser = new CHNParser();
 
             numChannels = NUM_CHANNELS;

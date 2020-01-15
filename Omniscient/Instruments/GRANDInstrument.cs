@@ -40,6 +40,7 @@ namespace Omniscient
             InstrumentType = "GRAND";
             FileExtension = FILE_EXTENSION;
             filePrefix = "";
+            fileSuffix = "";
             FileExtension = "bid";
             bidParser = new BIDParser();
 

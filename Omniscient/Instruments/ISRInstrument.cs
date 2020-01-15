@@ -37,6 +37,7 @@ namespace Omniscient
             InstrumentType = "ISR";
             FileExtension = FILE_EXTENSION;
             filePrefix = "";
+            fileSuffix = "";
             isrParser = new ISRParser();
 
             numChannels = NUM_CHANNELS;

@@ -35,6 +35,7 @@ namespace Omniscient
         {
             InstrumentType = "Declaration";
             filePrefix = "";
+            fileSuffix = "";
             FileExtension = "dec";
             decFiles = new string[0];
             decDates = new DateTime[0];

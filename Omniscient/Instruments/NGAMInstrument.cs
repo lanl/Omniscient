@@ -41,6 +41,7 @@ namespace Omniscient
             InstrumentType = "NGAM";
             FileExtension = FILE_EXTENSION;
             filePrefix = "";
+            fileSuffix = "";
             vbfParser = new VBFParser();
 
             numChannels = NUM_CHANNELS;

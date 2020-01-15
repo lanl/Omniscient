@@ -33,7 +33,7 @@ namespace Omniscient
             InstrumentType = "Image";
             FileExtension = FILE_EXTENSION;
             filePrefix = "";
-
+            fileSuffix = "";
             numChannels = 1;
             channels = new Channel[numChannels];
             channels[0] = new Channel(Name + "-Channel", this, Channel.ChannelType.VIDEO, 0);

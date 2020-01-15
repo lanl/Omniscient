@@ -24,6 +24,7 @@ namespace Omniscient
             InstrumentType = "ATPM";
             FileExtension = FILE_EXTENSION;
             filePrefix = "";
+            fileSuffix = "";
             FileExtension = "dat";
             atpmParser = new ATPMParser();
 
