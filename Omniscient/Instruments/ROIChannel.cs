@@ -23,29 +23,191 @@ namespace Omniscient
     {
         ROI roi;
 
+        public double Start
+        {
+            get { return roi.GetROIStart(); }
+            set { roi.SetROIStart(value); }
+        }
+        public double End
+        {
+            get { return roi.GetROIEnd(); }
+            set { roi.SetROIEnd(value); }
+        }
+        public double BG1_Start
+        {
+            get { return roi.GetBG1Start(); }
+            set { roi.SetBG1Start(value); }
+        }
+        public double BG1_End
+        {
+            get { return roi.GetBG1End(); }
+            set { roi.SetBG1End(value); }
+        }
+        public double BG2_Start
+        {
+            get { return roi.GetBG2Start(); }
+            set { roi.SetBG2Start(value); }
+        }
+        public double BG2_End
+        {
+            get { return roi.GetBG2End(); }
+            set { roi.SetBG2End(value); }
+        }
+        public ROI.BG_Type BGType
+        {
+            get { return roi.GetBGType(); }
+            set { roi.SetBGType(value); }
+        }
+
         public ROIChannel(string newName, MCAInstrument parent, ChannelType newType, uint id) : base(newName, parent, newType, id)
         {
             VCType = "ROI";
             roi = new ROI();
         }
 
-        public void AddDataPoint(ChannelCompartment compartment, DateTime time, Spectrum spectrum, TimeSpan duration, DataFile file)
+        public override void CalculateValues(ChannelCompartment compartment)
         {
-            timeStamps[(int)compartment].Add(time);
-            values[(int)compartment].Add(roi.GetROICountRate(spectrum));
-            durations[(int)compartment].Add(duration);
-            files[(int)compartment].Add(file);
-        }
+            MCAInstrument mca = Parent as MCAInstrument;
+            List<DataFile> chanFiles = mca.GetChannels()[0].GetFiles(compartment);
+            SpectrumParser parser = mca.SpectrumParser;
 
-        public override void CalculateValues(ChannelCompartment compartment){}
+            // Initialize
+            timeStamps[(int)compartment] = new List<DateTime>(chanFiles.Count);
+            values[(int)compartment] = new List<double>(chanFiles.Count);
+            durations[(int)compartment] = new List<TimeSpan>(chanFiles.Count);
+            files[(int)compartment] = new List<DataFile>(chanFiles.Count);
+
+            // Calculate
+            ReturnCode returnCode;
+            Spectrum spectrum;
+            for (int i=0; i<chanFiles.Count; i++)
+            {
+                returnCode = parser.ParseSpectrumFile(chanFiles[i].FileName);
+                spectrum = parser.GetSpectrum();
+                timeStamps[(int)compartment].Add(spectrum.GetStartTime());
+                durations[(int)compartment].Add(TimeSpan.FromSeconds(spectrum.GetRealTime()));
+                values[(int)compartment].Add(roi.GetROICountRate(spectrum));
+                files[(int)compartment].Add(chanFiles[i]);
+            }
+        }
 
         public override List<Parameter> GetParameters()
         {
-            throw new NotImplementedException();
+            string bg_type = "";
+            switch (BGType)
+            {
+                case ROI.BG_Type.NONE:
+                    bg_type = "None";
+                    break;
+                case ROI.BG_Type.FLAT:
+                    bg_type = "Flat";
+                    break;
+                case ROI.BG_Type.LINEAR:
+                    bg_type = "Linear";
+                    break;
+            }
+            return new List<Parameter>()
+            {
+                new DoubleParameter("Start (keV)")
+                {
+                    Value = Start.ToString()
+                },
+                new DoubleParameter("End (keV)")
+                {
+                    Value = End.ToString()
+                },
+                new EnumParameter("BG Type")
+                {
+                    Value = bg_type,
+                    ValidValues = new List<string>(){ "None", "Flat", "Linear"}
+                },
+                new DoubleParameter("BG1 Start (keV)")
+                {
+                    Value = BG1_Start.ToString()
+                },
+                new DoubleParameter("BG1 End (keV)")
+                {
+                    Value = BG1_End.ToString()
+                },
+                new DoubleParameter("BG2 Start (keV)")
+                {
+                    Value = BG2_Start.ToString()
+                },
+                new DoubleParameter("BG2 End (keV)")
+                {
+                    Value = BG2_End.ToString()
+                }
+            };
         }
 
         public ROI GetROI() { return roi; }
 
         public void SetROI(ROI newROI) { roi = newROI; }
     }
+
+
+    public class ROIChannelHookup : VirtualChannelHookup
+    {
+        public ROIChannelHookup()
+        {
+            TemplateParameters = new List<ParameterTemplate>()
+            {
+                new ParameterTemplate("Start (keV)", ParameterType.Double),
+                new ParameterTemplate("End (keV)", ParameterType.Double),
+                new ParameterTemplate("BG Type", ParameterType.Enum, new List<string>(){ "None", "Flat", "Linear" }),
+                new ParameterTemplate("BG1 Start (keV)", ParameterType.Double),
+                new ParameterTemplate("BG1 End (keV)", ParameterType.Double),
+                new ParameterTemplate("BG2 Start (keV)", ParameterType.Double),
+                new ParameterTemplate("BG2 End (keV)", ParameterType.Double),
+            };
+        }
+
+        public override string Type { get { return "ROI"; } }
+
+        public override VirtualChannel FromParameters(Instrument parent, string newName, List<Parameter> parameters, uint id)
+        {
+            ROIChannel roiChannel = new ROIChannel(newName, parent as MCAInstrument, Channel.ChannelType.DURATION_VALUE, id);
+
+            foreach (Parameter param in parameters)
+            {
+                switch (param.Name)
+                {
+                    case "Start (keV)":
+                        roiChannel.Start = ((DoubleParameter)param).ToDouble();
+                        break;
+                    case "End (keV)":
+                        roiChannel.End = ((DoubleParameter)param).ToDouble();
+                        break;
+                    case "BG Type":
+                        switch (param.Value)
+                        {
+                            case "None":
+                                roiChannel.BGType = ROI.BG_Type.NONE;
+                                break;
+                            case "Flat":
+                                roiChannel.BGType = ROI.BG_Type.FLAT;
+                                break;
+                            case "Linear":
+                                roiChannel.BGType = ROI.BG_Type.LINEAR;
+                                break;
+                        }
+                        break;
+                    case "BG1 Start (keV)":
+                        roiChannel.BG1_Start = ((DoubleParameter)param).ToDouble();
+                        break;
+                    case "BG1 End (keV)":
+                        roiChannel.BG1_End = ((DoubleParameter)param).ToDouble();
+                        break;
+                    case "BG2 Start (keV)":
+                        roiChannel.BG2_Start = ((DoubleParameter)param).ToDouble();
+                        break;
+                    case "BG2 End (keV)":
+                        roiChannel.BG2_End = ((DoubleParameter)param).ToDouble();
+                        break;
+                }
+            }
+            return roiChannel;
+        }
+    }
 }
+

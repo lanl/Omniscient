@@ -62,7 +62,7 @@ namespace Omniscient
 
             foreach (ParameterTemplate pTemplate in templates)
             {
-                string paramNameStr = pTemplate.Name.Replace(' ', '_');
+                string paramNameStr = pTemplate.Name.Replace(' ', '_').Replace("(", "--.-..").Replace(")","..-.--");
                 switch (pTemplate.Type)
                 {
                     case ParameterType.String:

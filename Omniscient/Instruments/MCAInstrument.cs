@@ -27,7 +27,7 @@ namespace Omniscient
         private const int COUNT_RATE = 0;
 
 
-        SpectrumParser spectrumParser;
+        public SpectrumParser SpectrumParser { get; private set; }
 
         public override string FileExtension
         {
@@ -36,17 +36,17 @@ namespace Omniscient
             {
                 if (value == "chn")
                 {
-                    spectrumParser = new CHNParser();
+                    SpectrumParser = new CHNParser();
                     _fileExtension = value;
                 }
                 else if (value == "spe")
                 {
-                    spectrumParser = new SPEParser();
+                    SpectrumParser = new SPEParser();
                     _fileExtension = value;
                 }
                 else if (value == "n42")
                 {
-                    spectrumParser = new N42Parser();
+                    SpectrumParser = new N42Parser();
                     _fileExtension = value;
                 }
                 else
@@ -60,7 +60,7 @@ namespace Omniscient
             InstrumentType = "MCA";
             FileExtension = FILE_EXTENSION;
             filePrefix = "";
-            spectrumParser = new CHNParser();
+            SpectrumParser = new CHNParser();
 
             numChannels = NUM_CHANNELS;
             channels = new Channel[numChannels];
@@ -69,17 +69,17 @@ namespace Omniscient
 
         public override DateTime GetFileDate(string file)
         {
-            if (spectrumParser.ParseSpectrumFile(file) == ReturnCode.SUCCESS)
+            if (SpectrumParser.ParseSpectrumFile(file) == ReturnCode.SUCCESS)
             {
-                return spectrumParser.GetSpectrum().GetStartTime();
+                return SpectrumParser.GetSpectrum().GetStartTime();
             }
             return DateTime.MinValue;
         }
 
         public override ReturnCode IngestFile(ChannelCompartment compartment, string fileName)
         {
-            ReturnCode returnCode = spectrumParser.ParseSpectrumFile(fileName);
-            Spectrum spectrum = spectrumParser.GetSpectrum();
+            ReturnCode returnCode = SpectrumParser.ParseSpectrumFile(fileName);
+            Spectrum spectrum = SpectrumParser.GetSpectrum();
             DateTime time = spectrum.GetStartTime();
             TimeSpan duration = TimeSpan.FromSeconds(spectrum.GetRealTime());
             DataFile dataFile = new DataFile(fileName, time, time+duration);
@@ -89,15 +89,6 @@ namespace Omniscient
                 counts += spectrum.GetCounts()[ch];
             }
             channels[COUNT_RATE].AddDataPoint(compartment, time, counts / spectrum.GetLiveTime(), duration, dataFile);
-
-
-            foreach (VirtualChannel chan in virtualChannels)
-            {
-                if (chan is ROIChannel)
-                {
-                    ((ROIChannel)chan).AddDataPoint(compartment, time, spectrum, duration, dataFile);
-                }
-            }
             return ReturnCode.SUCCESS;
         }
 

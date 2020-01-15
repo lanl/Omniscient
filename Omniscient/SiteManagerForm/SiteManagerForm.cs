@@ -147,21 +147,11 @@ namespace Omniscient
             }
             VirtualChannelNameTextBox.Text = chan.Name;
             VirtualChannelTypeTextBox.Text = chan.VCType;
-            if (chan.VCType == "ROI")
-            {
-                PopulateROIVCPanel(chan, inst);
-                VCParameterListPanel.Visible = false;
-                VCParameterListPanel.BringToFront();
-                ROIVCPanel.Visible = true;
-            }
-            else
-            {
-                List<Parameter> parameters = chan.GetParameters();
-                VCParameterListPanel.LoadParameters(parameters);
-                ROIVCPanel.Visible = false;
-                ROIVCPanel.BringToFront();
-                VCParameterListPanel.Visible = true;
-            }
+            
+            List<Parameter> parameters = chan.GetParameters();
+            VCParameterListPanel.LoadParameters(parameters);
+            ROIVCPanel.Visible = false;
+            VCParameterListPanel.Visible = true;
             VirtualChannelGroupBox.Visible = true;
             ChannelGroupBox.Visible = false;
         }
@@ -386,60 +376,23 @@ namespace Omniscient
 
             string name = VirtualChannelNameTextBox.Text;
             string type = VirtualChannelTypeTextBox.Text;
-            if ( type == "ROI")
+            
+            if (!VCParameterListPanel.ValidateInput()) return null;
+            VirtualChannelHookup hookup = VirtualChannel.GetHookup(type);
+            List<VirtualChannel> virtualChannels = inst.GetVirtualChannels();
+            int index = -1;
+            for (int i=0; i< virtualChannels.Count; i++)
             {
-                ROIChannel roiChan = (ROIChannel)chan;
-                ROI roi = roiChan.GetROI();
-                try
+                if (virtualChannels[i] == chan)
                 {
-                    roi.SetROIStart(double.Parse(ROIStartTextBox.Text));
-                    roi.SetROIEnd(double.Parse(ROIEndTextBox.Text));
-                    roi.SetBG1Start(double.Parse(BG1StartTextBox.Text));
-                    roi.SetBG1End(double.Parse(BG1EndTextBox.Text));
-                    roi.SetBG2Start(double.Parse(BG2StartTextBox.Text));
-                    roi.SetBG2End(double.Parse(BG2EndTextBox.Text));
+                    index = i;
+                    break;
                 }
-                catch
-                {
-                    MessageBox.Show("Invalid ROI or BG bounds!");
-                    return null;
-                }
-                switch (ROIBackgroundComboBox.Text)
-                {
-                    case "None":
-                        roi.SetBGType(ROI.BG_Type.NONE);
-                        break;
-                    case "Flat":
-                        roi.SetBGType(ROI.BG_Type.FLAT);
-                        break;
-                    case "Linear":
-                        roi.SetBGType(ROI.BG_Type.LINEAR);
-                        break;
-                    default:
-                        MessageBox.Show("Invalid background type!");
-                        return null;
-                }
-                roiChan.SetROI(roi);
             }
-            else
-            {
-                if (!VCParameterListPanel.ValidateInput()) return null;
-                VirtualChannelHookup hookup = VirtualChannel.GetHookup(type);
-                List<VirtualChannel> virtualChannels = inst.GetVirtualChannels();
-                int index = -1;
-                for (int i=0; i< virtualChannels.Count; i++)
-                {
-                    if (virtualChannels[i] == chan)
-                    {
-                        index = i;
-                        break;
-                    }
-                }
 
-                chan.Delete();
-                chan = hookup.FromParameters(inst, name, VCParameterListPanel.Parameters, chan.ID);
-                chan.SetIndex(index);
-            }
+            chan.Delete();
+            chan = hookup.FromParameters(inst, name, VCParameterListPanel.Parameters, chan.ID);
+            chan.SetIndex(index);
             return chan;
         }
 
@@ -817,18 +770,6 @@ namespace Omniscient
                 uniqueName = !siteMan.ContainsName(name);
             }
 
-            if (dialog.vcType == "ROI")
-            {
-                VirtualChannel roiChannel = new ROIChannel(name, (MCAInstrument)inst, Channel.ChannelType.DURATION_VALUE, 0);
-                siteMan.Save();
-                UpdateSitesTree();
-                siteManChanged = true;
-                SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(inst.Name, true)[0];
-                ChannelsComboBox.SelectedItem = name;
-                selectedVirtualChannel = roiChannel;
-                return;
-            }
-
             VirtualChannelHookup hookup = VirtualChannel.GetHookup(dialog.vcType);
 
             List<string> validInstrumentChannels = new List<string>();
@@ -869,32 +810,6 @@ namespace Omniscient
             SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(inst.Name, true)[0];
             ChannelsComboBox.SelectedItem = name;
             selectedVirtualChannel = virtualChannel;
-        }
-        
-        private void PopulateROIVCPanel(VirtualChannel chan, Instrument inst)
-        {
-            ROIChannel roiChan = (ROIChannel)chan;
-            ROI roi = roiChan.GetROI();
-            ROIStartTextBox.Text = roi.GetROIStart().ToString();
-            ROIEndTextBox.Text = roi.GetROIEnd().ToString();
-            
-            switch(roiChan.GetROI().GetBGType())
-            {
-                case ROI.BG_Type.NONE:
-                    ROIBackgroundComboBox.Text = "None";
-                    break;
-                case ROI.BG_Type.FLAT:
-                    ROIBackgroundComboBox.Text = "Flat";
-                    break;
-                case ROI.BG_Type.LINEAR:
-                    ROIBackgroundComboBox.Text = "Linear";
-                    break;
-            }
-
-            BG1StartTextBox.Text = roi.GetBG1Start().ToString();
-            BG1EndTextBox.Text = roi.GetBG1End().ToString();
-            BG2StartTextBox.Text = roi.GetBG2Start().ToString();
-            BG2EndTextBox.Text = roi.GetBG2End().ToString();
         }
 
         private void VirtualChannelsComboBox_SelectedIndexChanged(object sender, EventArgs e)

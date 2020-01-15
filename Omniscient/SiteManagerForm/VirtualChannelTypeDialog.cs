@@ -33,6 +33,7 @@ namespace Omniscient
             int count = 0;
             foreach(VirtualChannelHookup hookup in VirtualChannel.Hookups)
             {
+                if (hookup is ROIChannelHookup) continue;
                 Button button = new Button();
                 button.Text = hookup.Type;
                 button.Click += VCButton_Click;

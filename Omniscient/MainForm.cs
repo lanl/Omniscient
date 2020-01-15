@@ -1206,7 +1206,7 @@ namespace Omniscient
                                     if (chan.GetInstrument() is MCAInstrument)
                                     {
                                         MenuItem menuItem = new MenuItem("View " + chan.Name + " in Inspectrum");
-                                        menuItem.Tag = chan.GetFiles(ChannelCompartment.View)[meas].FileName;
+                                        menuItem.Tag = inst.GetChannels()[0].GetFiles(ChannelCompartment.View)[meas].FileName;   // refer to main channel - virtual channels have issues with files
                                         menuItem.Click += PlotSpectrumMenuItem_Click;
                                         chartMenu.MenuItems.Add(menuItem);
                                     }

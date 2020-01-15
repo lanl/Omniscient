@@ -142,37 +142,7 @@ namespace Omniscient
                                         {
                                             try
                                             {
-                                                if (chanNode.Attributes["type"]?.InnerText != "ROI")
-                                                {
-                                                    VirtualChannel chan = VirtualChannel.FromXML(chanNode, newInstrument);
-                                                }
-                                                else
-                                                {
-                                                    ROIChannel chan = new ROIChannel(chanNode.Attributes["name"]?.InnerText,
-                                                                                            (MCAInstrument)newInstrument, Channel.ChannelType.DURATION_VALUE,
-                                                                                            uint.Parse(siteNode.Attributes["ID"]?.InnerText, System.Globalization.NumberStyles.HexNumber));
-                                                    ROI roi = chan.GetROI();
-                                                    roi.SetROIStart(double.Parse(chanNode.Attributes["roi_start"]?.InnerText));
-                                                    roi.SetROIEnd(double.Parse(chanNode.Attributes["roi_end"]?.InnerText));
-                                                    roi.SetBG1Start(double.Parse(chanNode.Attributes["bg1_start"]?.InnerText));
-                                                    roi.SetBG1End(double.Parse(chanNode.Attributes["bg1_end"]?.InnerText));
-                                                    roi.SetBG2Start(double.Parse(chanNode.Attributes["bg2_start"]?.InnerText));
-                                                    roi.SetBG2End(double.Parse(chanNode.Attributes["bg2_end"]?.InnerText));
-                                                    switch (chanNode.Attributes["bg_type"]?.InnerText)
-                                                    {
-                                                        case "None":
-                                                            roi.SetBGType(ROI.BG_Type.NONE);
-                                                            break;
-                                                        case "Flat":
-                                                            roi.SetBGType(ROI.BG_Type.FLAT);
-                                                            break;
-                                                        case "Linear":
-                                                            roi.SetBGType(ROI.BG_Type.LINEAR);
-                                                            break;
-                                                        default:
-                                                            return ReturnCode.CORRUPTED_FILE;
-                                                    }
-                                                }
+                                                VirtualChannel chan = VirtualChannel.FromXML(chanNode, newInstrument);
                                             }
                                             catch { return ReturnCode.CORRUPTED_FILE; }
                                         }
