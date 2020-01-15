@@ -33,7 +33,8 @@ namespace Omniscient
             new ImageInstrumentHookup(),
             new ISRInstrumentHookup(),
             new MCAInstrumentHookup(),
-            new NGAMInstrumentHookup()
+            new NGAMInstrumentHookup(),
+            new THDInstrumentHookup()
         };
         public override string Name
         {
@@ -126,8 +127,8 @@ namespace Omniscient
                     string fileAbrev = file.Substring(file.LastIndexOf('\\') + 1);
                     if (fileAbrev.Length > (fileSuffix.Length + FileExtension.Length)
                         && fileAbrev.Substring(fileAbrev.Length - (FileExtension.Length + 1)).ToLower() == ("." + FileExtension) 
-                        && fileAbrev.ToLower().StartsWith(filePrefix)
-                        && fileAbrev.Substring(fileAbrev.Length - (FileExtension.Length + 1 + fileSuffix.Length), fileSuffix.Length).ToLower() == fileSuffix)
+                        && fileAbrev.ToLower().StartsWith(filePrefix.ToLower())
+                        && fileAbrev.Substring(fileAbrev.Length - (FileExtension.Length + 1 + fileSuffix.Length), fileSuffix.Length).ToLower() == fileSuffix.ToLower())
                     {
                         fileDate = GetFileDate(file);
                         if (fileDate > DateTime.MinValue)
