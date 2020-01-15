@@ -150,7 +150,6 @@ namespace Omniscient
             
             List<Parameter> parameters = chan.GetParameters();
             VCParameterListPanel.LoadParameters(parameters);
-            ROIVCPanel.Visible = false;
             VCParameterListPanel.Visible = true;
             VirtualChannelGroupBox.Visible = true;
             ChannelGroupBox.Visible = false;

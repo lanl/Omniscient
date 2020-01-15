@@ -48,23 +48,9 @@ namespace Omniscient
             this.TypeLabel = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.InstrumentPanel = new System.Windows.Forms.Panel();
-            this.InstTypeTextBox = new System.Windows.Forms.TextBox();
+            this.ChannelSettingsPanel = new System.Windows.Forms.Panel();
             this.VirtualChannelGroupBox = new System.Windows.Forms.GroupBox();
-            this.ROIVCPanel = new System.Windows.Forms.Panel();
-            this.label20 = new System.Windows.Forms.Label();
-            this.BG2EndTextBox = new System.Windows.Forms.TextBox();
-            this.BG2StartTextBox = new System.Windows.Forms.TextBox();
-            this.label21 = new System.Windows.Forms.Label();
-            this.label18 = new System.Windows.Forms.Label();
-            this.BG1EndTextBox = new System.Windows.Forms.TextBox();
-            this.BG1StartTextBox = new System.Windows.Forms.TextBox();
-            this.label19 = new System.Windows.Forms.Label();
-            this.label15 = new System.Windows.Forms.Label();
-            this.ROIBackgroundComboBox = new System.Windows.Forms.ComboBox();
-            this.label17 = new System.Windows.Forms.Label();
-            this.ROIEndTextBox = new System.Windows.Forms.TextBox();
-            this.ROIStartTextBox = new System.Windows.Forms.TextBox();
-            this.label16 = new System.Windows.Forms.Label();
+            this.VCParameterListPanel = new Omniscient.Controls.ParameterListPanel();
             this.VCTopPanel = new System.Windows.Forms.Panel();
             this.VirtualChannelTypeTextBox = new System.Windows.Forms.TextBox();
             this.VCDownButton = new System.Windows.Forms.Button();
@@ -72,6 +58,12 @@ namespace Omniscient
             this.label8 = new System.Windows.Forms.Label();
             this.VirtualChannelNameTextBox = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
+            this.ChannelGroupBox = new System.Windows.Forms.GroupBox();
+            this.ChannelParameterListPanel = new Omniscient.Controls.ParameterListPanel();
+            this.ChannelNameTextBox = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.InstTypeTextBox = new System.Windows.Forms.TextBox();
+            this.InstrumentParameterListPanel = new Omniscient.Controls.ParameterListPanel();
             this.RemoveVirtualChannelButton = new System.Windows.Forms.Button();
             this.AddVirtualChannelButton = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
@@ -104,17 +96,11 @@ namespace Omniscient
             this.panel4 = new System.Windows.Forms.Panel();
             this.ExportButton = new System.Windows.Forms.Button();
             this.ImportButton = new System.Windows.Forms.Button();
-            this.ChannelSettingsPanel = new System.Windows.Forms.Panel();
-            this.ChannelGroupBox = new System.Windows.Forms.GroupBox();
-            this.ChannelNameTextBox = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.VCParameterListPanel = new Omniscient.Controls.ParameterListPanel();
-            this.InstrumentParameterListPanel = new Omniscient.Controls.ParameterListPanel();
-            this.ChannelParameterListPanel = new Omniscient.Controls.ParameterListPanel();
             this.InstrumentPanel.SuspendLayout();
+            this.ChannelSettingsPanel.SuspendLayout();
             this.VirtualChannelGroupBox.SuspendLayout();
-            this.ROIVCPanel.SuspendLayout();
             this.VCTopPanel.SuspendLayout();
+            this.ChannelGroupBox.SuspendLayout();
             this.NewButtonPanel.SuspendLayout();
             this.BottomRightPanel.SuspendLayout();
             this.LeftPanel.SuspendLayout();
@@ -124,8 +110,6 @@ namespace Omniscient
             this.NamePanel.SuspendLayout();
             this.LeftRightPanel.SuspendLayout();
             this.panel4.SuspendLayout();
-            this.ChannelSettingsPanel.SuspendLayout();
-            this.ChannelGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // SitesTreeView
@@ -187,18 +171,19 @@ namespace Omniscient
             this.InstrumentPanel.Size = new System.Drawing.Size(362, 470);
             this.InstrumentPanel.TabIndex = 9;
             // 
-            // InstTypeTextBox
+            // ChannelSettingsPanel
             // 
-            this.InstTypeTextBox.Enabled = false;
-            this.InstTypeTextBox.Location = new System.Drawing.Point(102, 8);
-            this.InstTypeTextBox.Name = "InstTypeTextBox";
-            this.InstTypeTextBox.Size = new System.Drawing.Size(160, 20);
-            this.InstTypeTextBox.TabIndex = 23;
+            this.ChannelSettingsPanel.Controls.Add(this.VirtualChannelGroupBox);
+            this.ChannelSettingsPanel.Controls.Add(this.ChannelGroupBox);
+            this.ChannelSettingsPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.ChannelSettingsPanel.Location = new System.Drawing.Point(0, 194);
+            this.ChannelSettingsPanel.Name = "ChannelSettingsPanel";
+            this.ChannelSettingsPanel.Size = new System.Drawing.Size(362, 276);
+            this.ChannelSettingsPanel.TabIndex = 24;
             // 
             // VirtualChannelGroupBox
             // 
             this.VirtualChannelGroupBox.Controls.Add(this.VCParameterListPanel);
-            this.VirtualChannelGroupBox.Controls.Add(this.ROIVCPanel);
             this.VirtualChannelGroupBox.Controls.Add(this.VCTopPanel);
             this.VirtualChannelGroupBox.Dock = System.Windows.Forms.DockStyle.Top;
             this.VirtualChannelGroupBox.Location = new System.Drawing.Point(0, 100);
@@ -208,145 +193,16 @@ namespace Omniscient
             this.VirtualChannelGroupBox.TabStop = false;
             this.VirtualChannelGroupBox.Text = "Virtual Channel";
             // 
-            // ROIVCPanel
+            // VCParameterListPanel
             // 
-            this.ROIVCPanel.Controls.Add(this.label20);
-            this.ROIVCPanel.Controls.Add(this.BG2EndTextBox);
-            this.ROIVCPanel.Controls.Add(this.BG2StartTextBox);
-            this.ROIVCPanel.Controls.Add(this.label21);
-            this.ROIVCPanel.Controls.Add(this.label18);
-            this.ROIVCPanel.Controls.Add(this.BG1EndTextBox);
-            this.ROIVCPanel.Controls.Add(this.BG1StartTextBox);
-            this.ROIVCPanel.Controls.Add(this.label19);
-            this.ROIVCPanel.Controls.Add(this.label15);
-            this.ROIVCPanel.Controls.Add(this.ROIBackgroundComboBox);
-            this.ROIVCPanel.Controls.Add(this.label17);
-            this.ROIVCPanel.Controls.Add(this.ROIEndTextBox);
-            this.ROIVCPanel.Controls.Add(this.ROIStartTextBox);
-            this.ROIVCPanel.Controls.Add(this.label16);
-            this.ROIVCPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.ROIVCPanel.Location = new System.Drawing.Point(3, 78);
-            this.ROIVCPanel.Name = "ROIVCPanel";
-            this.ROIVCPanel.Size = new System.Drawing.Size(356, 116);
-            this.ROIVCPanel.TabIndex = 10;
-            // 
-            // label20
-            // 
-            this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(186, 89);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(10, 13);
-            this.label20.TabIndex = 45;
-            this.label20.Text = "-";
-            // 
-            // BG2EndTextBox
-            // 
-            this.BG2EndTextBox.Location = new System.Drawing.Point(202, 85);
-            this.BG2EndTextBox.Name = "BG2EndTextBox";
-            this.BG2EndTextBox.Size = new System.Drawing.Size(52, 20);
-            this.BG2EndTextBox.TabIndex = 44;
-            // 
-            // BG2StartTextBox
-            // 
-            this.BG2StartTextBox.Location = new System.Drawing.Point(128, 85);
-            this.BG2StartTextBox.Name = "BG2StartTextBox";
-            this.BG2StartTextBox.Size = new System.Drawing.Size(52, 20);
-            this.BG2StartTextBox.TabIndex = 43;
-            // 
-            // label21
-            // 
-            this.label21.AutoSize = true;
-            this.label21.Location = new System.Drawing.Point(22, 88);
-            this.label21.Name = "label21";
-            this.label21.Size = new System.Drawing.Size(98, 13);
-            this.label21.TabIndex = 42;
-            this.label21.Text = "BG 2 Bounds (keV)";
-            // 
-            // label18
-            // 
-            this.label18.AutoSize = true;
-            this.label18.Location = new System.Drawing.Point(186, 63);
-            this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(10, 13);
-            this.label18.TabIndex = 41;
-            this.label18.Text = "-";
-            // 
-            // BG1EndTextBox
-            // 
-            this.BG1EndTextBox.Location = new System.Drawing.Point(202, 59);
-            this.BG1EndTextBox.Name = "BG1EndTextBox";
-            this.BG1EndTextBox.Size = new System.Drawing.Size(52, 20);
-            this.BG1EndTextBox.TabIndex = 40;
-            // 
-            // BG1StartTextBox
-            // 
-            this.BG1StartTextBox.Location = new System.Drawing.Point(128, 59);
-            this.BG1StartTextBox.Name = "BG1StartTextBox";
-            this.BG1StartTextBox.Size = new System.Drawing.Size(52, 20);
-            this.BG1StartTextBox.TabIndex = 39;
-            // 
-            // label19
-            // 
-            this.label19.AutoSize = true;
-            this.label19.Location = new System.Drawing.Point(22, 62);
-            this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(98, 13);
-            this.label19.TabIndex = 38;
-            this.label19.Text = "BG 1 Bounds (keV)";
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(31, 35);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(92, 13);
-            this.label15.TabIndex = 37;
-            this.label15.Text = "Background Type";
-            // 
-            // ROIBackgroundComboBox
-            // 
-            this.ROIBackgroundComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.ROIBackgroundComboBox.FormattingEnabled = true;
-            this.ROIBackgroundComboBox.Items.AddRange(new object[] {
-            "None",
-            "Flat",
-            "Linear"});
-            this.ROIBackgroundComboBox.Location = new System.Drawing.Point(128, 32);
-            this.ROIBackgroundComboBox.Name = "ROIBackgroundComboBox";
-            this.ROIBackgroundComboBox.Size = new System.Drawing.Size(127, 21);
-            this.ROIBackgroundComboBox.TabIndex = 36;
-            // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(186, 10);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(10, 13);
-            this.label17.TabIndex = 35;
-            this.label17.Text = "-";
-            // 
-            // ROIEndTextBox
-            // 
-            this.ROIEndTextBox.Location = new System.Drawing.Point(202, 6);
-            this.ROIEndTextBox.Name = "ROIEndTextBox";
-            this.ROIEndTextBox.Size = new System.Drawing.Size(52, 20);
-            this.ROIEndTextBox.TabIndex = 34;
-            // 
-            // ROIStartTextBox
-            // 
-            this.ROIStartTextBox.Location = new System.Drawing.Point(128, 6);
-            this.ROIStartTextBox.Name = "ROIStartTextBox";
-            this.ROIStartTextBox.Size = new System.Drawing.Size(52, 20);
-            this.ROIStartTextBox.TabIndex = 33;
-            // 
-            // label16
-            // 
-            this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(30, 9);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(93, 13);
-            this.label16.TabIndex = 20;
-            this.label16.Text = "ROI Bounds (keV)";
+            this.VCParameterListPanel.AutoScroll = true;
+            this.VCParameterListPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.VCParameterListPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.VCParameterListPanel.Location = new System.Drawing.Point(3, 78);
+            this.VCParameterListPanel.Name = "VCParameterListPanel";
+            this.VCParameterListPanel.Padding = new System.Windows.Forms.Padding(5);
+            this.VCParameterListPanel.Size = new System.Drawing.Size(356, 120);
+            this.VCParameterListPanel.TabIndex = 11;
             // 
             // VCTopPanel
             // 
@@ -414,6 +270,63 @@ namespace Omniscient
             this.label7.Size = new System.Drawing.Size(35, 13);
             this.label7.TabIndex = 4;
             this.label7.Text = "Name";
+            // 
+            // ChannelGroupBox
+            // 
+            this.ChannelGroupBox.Controls.Add(this.ChannelParameterListPanel);
+            this.ChannelGroupBox.Controls.Add(this.ChannelNameTextBox);
+            this.ChannelGroupBox.Controls.Add(this.label4);
+            this.ChannelGroupBox.Dock = System.Windows.Forms.DockStyle.Top;
+            this.ChannelGroupBox.Location = new System.Drawing.Point(0, 0);
+            this.ChannelGroupBox.Name = "ChannelGroupBox";
+            this.ChannelGroupBox.Size = new System.Drawing.Size(362, 100);
+            this.ChannelGroupBox.TabIndex = 22;
+            this.ChannelGroupBox.TabStop = false;
+            this.ChannelGroupBox.Text = "Channel";
+            // 
+            // ChannelParameterListPanel
+            // 
+            this.ChannelParameterListPanel.AutoScroll = true;
+            this.ChannelParameterListPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.ChannelParameterListPanel.Location = new System.Drawing.Point(6, 45);
+            this.ChannelParameterListPanel.Name = "ChannelParameterListPanel";
+            this.ChannelParameterListPanel.Padding = new System.Windows.Forms.Padding(5);
+            this.ChannelParameterListPanel.Size = new System.Drawing.Size(350, 49);
+            this.ChannelParameterListPanel.TabIndex = 23;
+            // 
+            // ChannelNameTextBox
+            // 
+            this.ChannelNameTextBox.Location = new System.Drawing.Point(97, 19);
+            this.ChannelNameTextBox.Name = "ChannelNameTextBox";
+            this.ChannelNameTextBox.Size = new System.Drawing.Size(160, 20);
+            this.ChannelNameTextBox.TabIndex = 7;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(56, 23);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(35, 13);
+            this.label4.TabIndex = 6;
+            this.label4.Text = "Name";
+            // 
+            // InstTypeTextBox
+            // 
+            this.InstTypeTextBox.Enabled = false;
+            this.InstTypeTextBox.Location = new System.Drawing.Point(102, 8);
+            this.InstTypeTextBox.Name = "InstTypeTextBox";
+            this.InstTypeTextBox.Size = new System.Drawing.Size(160, 20);
+            this.InstTypeTextBox.TabIndex = 23;
+            // 
+            // InstrumentParameterListPanel
+            // 
+            this.InstrumentParameterListPanel.AutoScroll = true;
+            this.InstrumentParameterListPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.InstrumentParameterListPanel.Location = new System.Drawing.Point(6, 34);
+            this.InstrumentParameterListPanel.Name = "InstrumentParameterListPanel";
+            this.InstrumentParameterListPanel.Padding = new System.Windows.Forms.Padding(5);
+            this.InstrumentParameterListPanel.Size = new System.Drawing.Size(350, 120);
+            this.InstrumentParameterListPanel.TabIndex = 22;
             // 
             // RemoveVirtualChannelButton
             // 
@@ -743,76 +656,6 @@ namespace Omniscient
             this.ImportButton.UseVisualStyleBackColor = true;
             this.ImportButton.Click += new System.EventHandler(this.ImportButton_Click);
             // 
-            // ChannelSettingsPanel
-            // 
-            this.ChannelSettingsPanel.Controls.Add(this.VirtualChannelGroupBox);
-            this.ChannelSettingsPanel.Controls.Add(this.ChannelGroupBox);
-            this.ChannelSettingsPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.ChannelSettingsPanel.Location = new System.Drawing.Point(0, 194);
-            this.ChannelSettingsPanel.Name = "ChannelSettingsPanel";
-            this.ChannelSettingsPanel.Size = new System.Drawing.Size(362, 276);
-            this.ChannelSettingsPanel.TabIndex = 24;
-            // 
-            // ChannelGroupBox
-            // 
-            this.ChannelGroupBox.Controls.Add(this.ChannelParameterListPanel);
-            this.ChannelGroupBox.Controls.Add(this.ChannelNameTextBox);
-            this.ChannelGroupBox.Controls.Add(this.label4);
-            this.ChannelGroupBox.Dock = System.Windows.Forms.DockStyle.Top;
-            this.ChannelGroupBox.Location = new System.Drawing.Point(0, 0);
-            this.ChannelGroupBox.Name = "ChannelGroupBox";
-            this.ChannelGroupBox.Size = new System.Drawing.Size(362, 100);
-            this.ChannelGroupBox.TabIndex = 22;
-            this.ChannelGroupBox.TabStop = false;
-            this.ChannelGroupBox.Text = "Channel";
-            // 
-            // ChannelNameTextBox
-            // 
-            this.ChannelNameTextBox.Location = new System.Drawing.Point(97, 19);
-            this.ChannelNameTextBox.Name = "ChannelNameTextBox";
-            this.ChannelNameTextBox.Size = new System.Drawing.Size(160, 20);
-            this.ChannelNameTextBox.TabIndex = 7;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(56, 23);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(35, 13);
-            this.label4.TabIndex = 6;
-            this.label4.Text = "Name";
-            // 
-            // VCParameterListPanel
-            // 
-            this.VCParameterListPanel.AutoScroll = true;
-            this.VCParameterListPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.VCParameterListPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.VCParameterListPanel.Location = new System.Drawing.Point(3, 194);
-            this.VCParameterListPanel.Name = "VCParameterListPanel";
-            this.VCParameterListPanel.Padding = new System.Windows.Forms.Padding(5);
-            this.VCParameterListPanel.Size = new System.Drawing.Size(356, 120);
-            this.VCParameterListPanel.TabIndex = 11;
-            // 
-            // InstrumentParameterListPanel
-            // 
-            this.InstrumentParameterListPanel.AutoScroll = true;
-            this.InstrumentParameterListPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.InstrumentParameterListPanel.Location = new System.Drawing.Point(6, 34);
-            this.InstrumentParameterListPanel.Name = "InstrumentParameterListPanel";
-            this.InstrumentParameterListPanel.Padding = new System.Windows.Forms.Padding(5);
-            this.InstrumentParameterListPanel.Size = new System.Drawing.Size(350, 120);
-            this.InstrumentParameterListPanel.TabIndex = 22;
-            // 
-            // ChannelParameterListPanel
-            // 
-            this.ChannelParameterListPanel.AutoScroll = true;
-            this.ChannelParameterListPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.ChannelParameterListPanel.Location = new System.Drawing.Point(6, 45);
-            this.ChannelParameterListPanel.Name = "ChannelParameterListPanel";
-            this.ChannelParameterListPanel.Padding = new System.Windows.Forms.Padding(5);
-            this.ChannelParameterListPanel.Size = new System.Drawing.Size(350, 49);
-            this.ChannelParameterListPanel.TabIndex = 23;
-            // 
             // SiteManagerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -828,11 +671,12 @@ namespace Omniscient
             this.Load += new System.EventHandler(this.SiteManagerForm_Load);
             this.InstrumentPanel.ResumeLayout(false);
             this.InstrumentPanel.PerformLayout();
+            this.ChannelSettingsPanel.ResumeLayout(false);
             this.VirtualChannelGroupBox.ResumeLayout(false);
-            this.ROIVCPanel.ResumeLayout(false);
-            this.ROIVCPanel.PerformLayout();
             this.VCTopPanel.ResumeLayout(false);
             this.VCTopPanel.PerformLayout();
+            this.ChannelGroupBox.ResumeLayout(false);
+            this.ChannelGroupBox.PerformLayout();
             this.NewButtonPanel.ResumeLayout(false);
             this.BottomRightPanel.ResumeLayout(false);
             this.LeftPanel.ResumeLayout(false);
@@ -844,9 +688,6 @@ namespace Omniscient
             this.NamePanel.PerformLayout();
             this.LeftRightPanel.ResumeLayout(false);
             this.panel4.ResumeLayout(false);
-            this.ChannelSettingsPanel.ResumeLayout(false);
-            this.ChannelGroupBox.ResumeLayout(false);
-            this.ChannelGroupBox.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -891,21 +732,6 @@ namespace Omniscient
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Button VCDownButton;
         private System.Windows.Forms.Button VCUpButton;
-        private System.Windows.Forms.Panel ROIVCPanel;
-        private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.ComboBox ROIBackgroundComboBox;
-        private System.Windows.Forms.Label label17;
-        private System.Windows.Forms.TextBox ROIEndTextBox;
-        private System.Windows.Forms.TextBox ROIStartTextBox;
-        private System.Windows.Forms.Label label16;
-        private System.Windows.Forms.Label label20;
-        private System.Windows.Forms.TextBox BG2EndTextBox;
-        private System.Windows.Forms.TextBox BG2StartTextBox;
-        private System.Windows.Forms.Label label21;
-        private System.Windows.Forms.Label label18;
-        private System.Windows.Forms.TextBox BG1EndTextBox;
-        private System.Windows.Forms.TextBox BG1StartTextBox;
-        private System.Windows.Forms.Label label19;
         private System.Windows.Forms.Panel SystemPanel;
         private System.Windows.Forms.CheckBox DeclarationCheckBox;
         private System.Windows.Forms.Button DeclarationsDirectoryButton;
