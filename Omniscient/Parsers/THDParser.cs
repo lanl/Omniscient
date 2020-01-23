@@ -118,7 +118,11 @@ namespace Omniscient
         {
             try
             {
-                fileString = File.ReadAllText(newFileName);
+                using (FileStream readStream = new FileStream(newFileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                {
+                    StreamReader textReader = new StreamReader(readStream);
+                    fileString = textReader.ReadToEnd();
+                }
             }
             catch (Exception ex)
             {
@@ -142,7 +146,11 @@ namespace Omniscient
         {
             try
             {
-                fileString = File.ReadAllText(newFileName);
+                using (FileStream readStream = new FileStream(newFileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                {
+                    StreamReader textReader = new StreamReader(readStream);
+                    fileString = textReader.ReadToEnd();
+                }
             }
             catch (Exception ex)
             {

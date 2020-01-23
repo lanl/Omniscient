@@ -208,6 +208,7 @@ namespace Omniscient
                 string[] tokens;
                 for (int l=0; l<lines.Length; l++)
                 {
+                    if (lines[l].Length < 4 || !char.IsDigit(lines[l][0]) || !char.IsDigit(lines[l][1])) continue;  // Needs to start with a date (i.e. numbers)
                     tokens = lines[l].Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
                     nCells[l] = tokens.Length;
                     if (nCells[l] == 1) continue;

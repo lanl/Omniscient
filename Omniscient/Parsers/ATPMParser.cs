@@ -98,7 +98,7 @@ namespace Omniscient
 
             try
             {
-                readStream = new FileStream(fileName, FileMode.Open);
+                readStream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                 BinaryReader readBinary = new BinaryReader(readStream);
                 ReadHeader(readBinary);
                 Records = new ATPMRecord[1];

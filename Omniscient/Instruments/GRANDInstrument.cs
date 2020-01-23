@@ -89,6 +89,12 @@ namespace Omniscient
             return ReturnCode.SUCCESS;
         }
 
+        public override ReturnCode AutoIngestFile(ChannelCompartment compartment, string fileName)
+        {
+            if (fileName.Substring(fileName.Length - 4).ToLower() != "bid") return ReturnCode.BAD_INPUT;
+            return base.AutoIngestFile(compartment, fileName);
+        }
+
         public override List<Parameter> GetParameters()
         {
             return GetStandardInstrumentParameters();
