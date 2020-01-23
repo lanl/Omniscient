@@ -74,7 +74,7 @@ namespace Omniscient
             try
             {
                 // Read header
-                readStream = new FileStream(fileName, FileMode.Open);
+                readStream = new FileStream(fileName, FileMode.Open, FileAccess.Read,FileShare.ReadWrite);
                 BinaryReader readBinary = new BinaryReader(readStream);
                 fileTypeCheck = readBinary.ReadInt16();
                 MCANumber = readBinary.ReadInt16();

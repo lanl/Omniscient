@@ -31,17 +31,20 @@ namespace Omniscient
         public string Name { get; private set; }
         public ParameterType Type { get; private set; }
         public List<string> ValidValues { get; private set; }
-        public ParameterTemplate(string name, ParameterType type)
+        public bool Visible { get; set; }
+        public ParameterTemplate(string name, ParameterType type, bool visible=true)
         {
             Name = name;
             Type = type;
             ValidValues = new List<string>();
+            Visible = visible;
         }
-        public ParameterTemplate(string name, ParameterType type, List<string> validValues)
+        public ParameterTemplate(string name, ParameterType type, List<string> validValues, bool visible=true)
         {
             Name = name;
             Type = type;
             ValidValues = validValues;
+            Visible = visible;
         }
     }
 
@@ -63,49 +66,52 @@ namespace Omniscient
             foreach (ParameterTemplate pTemplate in templates)
             {
                 string paramNameStr = pTemplate.Name.Replace(' ', '_');
+                Parameter param = null;
                 switch (pTemplate.Type)
                 {
                     case ParameterType.String:
-                        parameters.Add(new StringParameter(pTemplate.Name) { Value = node.Attributes[paramNameStr]?.InnerText });
+                        param = new StringParameter(pTemplate.Name) { Value = node.Attributes[paramNameStr]?.InnerText };
                         break;
                     case ParameterType.Int:
-                        parameters.Add(new IntParameter(pTemplate.Name) { Value = node.Attributes[paramNameStr]?.InnerText });
+                        param = new IntParameter(pTemplate.Name) { Value = node.Attributes[paramNameStr]?.InnerText };
                         break;
                     case ParameterType.Double:
-                        parameters.Add(new DoubleParameter(pTemplate.Name) { Value = node.Attributes[paramNameStr]?.InnerText });
+                        param = new DoubleParameter(pTemplate.Name) { Value = node.Attributes[paramNameStr]?.InnerText };
                         break;
                     case ParameterType.Bool:
-                        parameters.Add(new BoolParameter(pTemplate.Name) { Value = node.Attributes[paramNameStr]?.InnerText });
+                        param = new BoolParameter(pTemplate.Name) { Value = node.Attributes[paramNameStr]?.InnerText };
                         break;
                     case ParameterType.Enum:
-                        parameters.Add(new EnumParameter(pTemplate.Name)
+                        param = new EnumParameter(pTemplate.Name)
                         {
                             Value = node.Attributes[paramNameStr]?.InnerText,
                             ValidValues = pTemplate.ValidValues
-                        });
+                        };
                         break;
                     case ParameterType.SystemChannel:
-                        parameters.Add(new SystemChannelParameter(pTemplate.Name, system) { Value = node.Attributes[paramNameStr]?.InnerText });
+                        param = new SystemChannelParameter(pTemplate.Name, system) { Value = node.Attributes[paramNameStr]?.InnerText };
                         break;
                     case ParameterType.SystemEventGenerator:
-                        parameters.Add(new SystemEventGeneratorParameter(pTemplate.Name, system) { Value = node.Attributes[paramNameStr]?.InnerText });
+                        param = new SystemEventGeneratorParameter(pTemplate.Name, system) { Value = node.Attributes[paramNameStr]?.InnerText };
                         break;
                     case ParameterType.TimeSpan:
-                        parameters.Add(new TimeSpanParameter(pTemplate.Name) { Value = node.Attributes[paramNameStr]?.InnerText });
+                        param = new TimeSpanParameter(pTemplate.Name) { Value = node.Attributes[paramNameStr]?.InnerText };
                         break;
                     case ParameterType.DateTimeFormat:
-                        parameters.Add(new DateTimeFormatParameter(pTemplate.Name) { Value = node.Attributes[paramNameStr]?.InnerText });
+                        param = new DateTimeFormatParameter(pTemplate.Name) { Value = node.Attributes[paramNameStr]?.InnerText };
                         break;
                     case ParameterType.FileName:
-                        parameters.Add(new FileNameParameter(pTemplate.Name) { Value = node.Attributes[paramNameStr]?.InnerText });
+                        param = new FileNameParameter(pTemplate.Name) { Value = node.Attributes[paramNameStr]?.InnerText };
                         break;
                     case ParameterType.Directory:
-                        parameters.Add(new DirectoryParameter(pTemplate.Name) { Value = node.Attributes[paramNameStr]?.InnerText });
+                        param = new DirectoryParameter(pTemplate.Name) { Value = node.Attributes[paramNameStr]?.InnerText };
                         break;
                     case ParameterType.InstrumentChannel:
-                        parameters.Add(new InstrumentChannelParameter(pTemplate.Name, instrument) { Value = node.Attributes[paramNameStr]?.InnerText });
+                        param = new InstrumentChannelParameter(pTemplate.Name, instrument) { Value = node.Attributes[paramNameStr]?.InnerText };
                         break;
                 }
+                param.Visible = pTemplate.Visible; 
+                parameters.Add(param);
             }
             return parameters;
         }
@@ -113,12 +119,14 @@ namespace Omniscient
 
         public string Name { get; set; }
         public string Value { get; set; }
+        public bool Visible { get; set; }
 
-        public Parameter(string name, ParameterType type)
+        public Parameter(string name, ParameterType type, bool visible=true)
         {
             Value = "";
             Name = name;
             Type = type;
+            Visible = visible;
         }
         public abstract bool Validate();
     }

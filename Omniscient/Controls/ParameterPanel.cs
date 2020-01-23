@@ -64,6 +64,7 @@ namespace Omniscient
                     InitializeDirectory();
                     break;
             }
+            Visible = param.Visible;
             this.ResumeLayout();
             NameLabel.Text = param.Name +":";
         }

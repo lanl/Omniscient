@@ -130,7 +130,7 @@ namespace Omniscient
             {
                 try
                 {
-                    string[] tokens = lines[dateMeaLine + 1].Replace('-',' ').Replace(':', ' ').Split(' ');
+                    string[] tokens = lines[dateMeaLine + 1].Replace('-',' ').Replace(':', ' ').Replace('/', ' ').Split(' ');
                     int month = int.Parse(tokens[0]);
                     int day = int.Parse(tokens[1]);
                     int year = int.Parse(tokens[2]);

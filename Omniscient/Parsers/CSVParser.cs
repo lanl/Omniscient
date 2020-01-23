@@ -23,6 +23,10 @@ namespace Omniscient
 {
     public class CSVParser
     {
+        private const string NOT_A_TIMESTAMP = "NOT A TIMESTAMP";
+        private DateTime lowerBound = new DateTime(1900, 1, 1);
+        private DateTime upperBound = new DateTime(3000, 1, 1);
+
         public enum DelimiterType { Comma, CommaOrWhitespace };
 
         private System.Globalization.CultureInfo CULTURE_INFO = new CultureInfo("en-US");
@@ -167,6 +171,136 @@ namespace Omniscient
             return ReturnCode.SUCCESS;
         }
 
+        /// <summary>
+        /// Attempt to configure parser to parse file
+        /// </summary>
+        /// <param name="newFileName"></param>
+        /// <returns></returns>
+        public ReturnCode AutoConfigureFromFile(string newFileName)
+        {
+            // Read all lines
+            fileName = newFileName;
+            string[] lines;
+            try
+            {
+                lines = IOUtility.PermissiveReadAllLines(fileName);
+            }
+            catch (Exception ex)
+            {
+                return ReturnCode.COULD_NOT_OPEN_FILE;
+            }
+            if (lines.Length < 1) return ReturnCode.CORRUPTED_FILE;
+
+            // Initialize
+            bool successfullyConfigured = false;
+            int[] timeStampPosition = new int[lines.Length];
+            int[] nCells = new int[lines.Length];
+            for (int i = 0; i < timeStampPosition.Length; i++)
+            {
+                timeStampPosition[i] = -1;
+                nCells[i] = -1;
+            }
+            List<DelimiterType> delimeterOptions = new List<DelimiterType>() { DelimiterType.Comma, DelimiterType.CommaOrWhitespace };
+            // Try to find a time stamp in each line and count number of cells
+            foreach (DelimiterType delimiterType in delimeterOptions)
+            {
+                char[] delimiters = GetDelimiterChars(delimiterType);
+                string[] tokens;
+                for (int l=0; l<lines.Length; l++)
+                {
+                    tokens = lines[l].Split(delimiters, StringSplitOptions.RemoveEmptyEntries);
+                    nCells[l] = tokens.Length;
+                    for (int t=0; t< tokens.Length; t++)
+                    { 
+                        if (GetTimeStampFormat(tokens[t].Trim(TRIM_CHARS)) != NOT_A_TIMESTAMP)
+                        {
+                            timeStampPosition[l] = t;
+                            break;
+                        }
+                    }
+                }
+
+                // Assumption: last line is definitely data. Data lines above it should look like it.
+                if (timeStampPosition[lines.Length - 1] != 0) continue;
+                int totalColumns = nCells[lines.Length - 1];
+                if (totalColumns < 2) continue;     // Needs to be a timestamp and some data
+
+                // At this point we should have a working file. Just need to know how many header lines
+
+                NumberOfColumns = totalColumns;
+                Delimiter = delimiterType;
+                TimeStampFormat = GetTimeStampFormat(lines[lines.Length - 1].
+                    Split(delimiters, StringSplitOptions.RemoveEmptyEntries)[0].
+                    Trim(TRIM_CHARS));
+                GetEndTimes = false;                        // TODO: Make this more flexible
+                for (int l = lines.Length - 2; l>=0; l--)
+                {
+                    if (timeStampPosition[l] != timeStampPosition[lines.Length-1] ||
+                        nCells[l] != totalColumns)
+                    {
+                        NumberOfHeaders = l + 1;
+                        break;
+                    }
+                }
+                successfullyConfigured = true;
+                break;
+            }
+
+            if(successfullyConfigured) return ReturnCode.SUCCESS;
+            else return ReturnCode.FAIL;
+        }
+
+        private string GetTimeStampFormat(string str)
+        {
+            
+            string[] formatOptions = new string[] { "yyyy-MM-dd HH:mm:ss",
+                                                    "yyyy-MM-ddTHH:mm:ss",
+                                                    "yyyy/MM/dd HH:mm:ss",
+                                                    "yyyy/MM/ddTHH:mm:ss",
+                                                    "MM-dd-yyyy HH:mm:ss",
+                                                    "MM/dd/yyyy HH:mm:ss",
+                                                    "MM-dd-yyyyTHH:mm:ss",
+                                                    "MM/dd/yyyyTHH:mm:ss",
+                                                    "yyyyMMddTHHmmss" };
+            DateTime dateTime;
+
+            // First try the default parser
+            try
+            {
+                dateTime = DateTime.Parse(str);
+                if (dateTime > lowerBound && dateTime < upperBound) return "";
+            }
+            catch { }
+
+            // Try each format option
+            foreach (string format in formatOptions)
+            {
+                try
+                {
+                    dateTime = DateTime.ParseExact(str, format, CULTURE_INFO);
+                    if (dateTime > lowerBound && dateTime < upperBound) return format;
+                }
+                catch { }
+            }
+
+            return NOT_A_TIMESTAMP;
+        }
+
+        private char[] GetDelimiterChars(DelimiterType delimiterType)
+        {
+            char[] delimiters = new char[] { ',' };
+            switch (delimiterType)
+            {
+                case DelimiterType.Comma:
+                    delimiters = new char[] { ',' };
+                    break;
+                case DelimiterType.CommaOrWhitespace:
+                    delimiters = new char[] { ',', ' ', '\t' };
+                    break;
+            }
+            return delimiters;
+        }
+
         public ReturnCode ParseFile(string newFileName)
         {
             fileName = newFileName;
@@ -197,16 +331,7 @@ namespace Omniscient
 
             nRecords = nDataLines;
 
-            char[] delimiters = new char[] { ',' };
-            switch (Delimiter)
-            {
-                case DelimiterType.Comma:
-                    delimiters = new char[] { ',' };
-                    break;
-                case DelimiterType.CommaOrWhitespace:
-                    delimiters = new char[] { ',', ' ', '\t' };
-                    break;
-            }
+            char[] delimiters = GetDelimiterChars(Delimiter);
 
             int entry;
             try
