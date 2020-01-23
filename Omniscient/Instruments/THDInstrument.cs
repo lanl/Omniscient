@@ -11,9 +11,9 @@ namespace Omniscient
         private const string FILE_EXTENSION = "dat";
 
         private const int NUM_CHANNELS = 3;
-        private const int data0 = 0;
-        private const int data1 = 1;
-        private const int data2 = 2;
+        private const int TEMP = 0;
+        private const int HUMIDITY = 1;
+        private const int DEW = 2;
 
         THDParser thdParser;
 
@@ -28,9 +28,9 @@ namespace Omniscient
 
             numChannels = NUM_CHANNELS;
             channels = new Channel[numChannels];
-            channels[data0] = new Channel(Name + "-0", this, Channel.ChannelType.COUNT_RATE, 0);
-            channels[data1] = new Channel(Name + "-1", this, Channel.ChannelType.COUNT_RATE, 0);
-            channels[data2] = new Channel(Name + "-2", this, Channel.ChannelType.COUNT_RATE, 0);
+            channels[TEMP] = new Channel(Name + "-Temperature", this, Channel.ChannelType.COUNT_RATE, 0);
+            channels[HUMIDITY] = new Channel(Name + "-Humidity", this, Channel.ChannelType.COUNT_RATE, 0);
+            channels[DEW] = new Channel(Name + "-Dew_Point", this, Channel.ChannelType.COUNT_RATE, 0);
         }
 
         public override DateTime GetFileDate(string file)
@@ -53,9 +53,9 @@ namespace Omniscient
             for (int r = 0; r < numRecords; ++r)
             {
                 time = thdParser.Records[r].time;
-                channels[data0].AddDataPoint(compartment, time, thdParser.Records[r].data0, dataFile);
-                channels[data1].AddDataPoint(compartment, time, thdParser.Records[r].data1, dataFile);
-                channels[data2].AddDataPoint(compartment, time, thdParser.Records[r].data2, dataFile);
+                channels[TEMP].AddDataPoint(compartment, time, thdParser.Records[r].data0, dataFile);
+                channels[HUMIDITY].AddDataPoint(compartment, time, thdParser.Records[r].data1, dataFile);
+                channels[DEW].AddDataPoint(compartment, time, thdParser.Records[r].data2, dataFile);
             }
 
             dataFile.DataEnd = time;

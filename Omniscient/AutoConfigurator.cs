@@ -118,7 +118,9 @@ namespace Omniscient
                         inst.SetDataFolder(instDirectory.FullName);
                         inst.FileMode = true;
                         inst.FileModeFile = fileName;
-                        break;
+
+                        siteManager.Save();
+                        return ReturnCode.SUCCESS;
                     }
                 }
                 catch (Exception ex)
@@ -130,7 +132,7 @@ namespace Omniscient
 
             siteManager.Save();
 
-            return ReturnCode.SUCCESS;
+            return ReturnCode.FAIL;
         }
     }
 }

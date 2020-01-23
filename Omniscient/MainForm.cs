@@ -1907,7 +1907,7 @@ namespace Omniscient
             };
             if (dialog.ShowDialog() == DialogResult.OK)
             {
-                autoConfigurator.ConfigFromFile(dialog.FileName);
+                if (autoConfigurator.ConfigFromFile(dialog.FileName) != ReturnCode.SUCCESS) MessageBox.Show("Could not open file!");
                 ClearPanels();
                 if (Core.SiteManager.Reload() != ReturnCode.SUCCESS) MessageBox.Show("Warning: Bad trouble loading the site manager!");
                 if (presetMan.Reload() != ReturnCode.SUCCESS) MessageBox.Show("Warning: Bad trouble loading the preset manager!");
