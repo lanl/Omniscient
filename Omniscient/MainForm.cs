@@ -1896,6 +1896,8 @@ namespace Omniscient
 
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
+            System.Windows.Forms.Cursor.Current = Cursors.WaitCursor;
+
             AutoConfigurator autoConfigurator = new AutoConfigurator(Core.SiteManager);
             OpenFileDialog dialog = new OpenFileDialog()
             {
@@ -1912,6 +1914,7 @@ namespace Omniscient
                 UpdateSitesTree();
             }
 
+            System.Windows.Forms.Cursor.Current = Cursors.Default;
         }
     }
 }
