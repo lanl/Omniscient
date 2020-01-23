@@ -45,6 +45,8 @@ namespace Omniscient
         public override ReturnCode IngestFile(ChannelCompartment compartment, string fileName)
         {
             ReturnCode returnCode = thdParser.ParseFile(fileName);
+            if (returnCode != ReturnCode.SUCCESS) return returnCode;
+
             DataFile dataFile = new DataFile(fileName, thdParser.Date);
             int numRecords = thdParser.Records.Count;
             DateTime time = DateTime.MinValue;

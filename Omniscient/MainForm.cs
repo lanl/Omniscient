@@ -1893,5 +1893,25 @@ namespace Omniscient
             Core.Events.Remove(eve);
             DisplayEvents();
         }
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            AutoConfigurator autoConfigurator = new AutoConfigurator(Core.SiteManager);
+            OpenFileDialog dialog = new OpenFileDialog()
+            {
+                CheckFileExists = true,
+                CheckPathExists = true,
+                Title = "Open Data File",
+            };
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                autoConfigurator.ConfigFromFile(dialog.FileName);
+                ClearPanels();
+                if (Core.SiteManager.Reload() != ReturnCode.SUCCESS) MessageBox.Show("Warning: Bad trouble loading the site manager!");
+                if (presetMan.Reload() != ReturnCode.SUCCESS) MessageBox.Show("Warning: Bad trouble loading the preset manager!");
+                UpdateSitesTree();
+            }
+
+        }
     }
 }

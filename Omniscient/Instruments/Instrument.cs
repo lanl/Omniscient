@@ -52,6 +52,9 @@ namespace Omniscient
             }
         }
 
+        public bool FileMode { get; set; } = false;
+        public string FileModeFile { get; set; } = "";
+
         public InstrumentCache Cache { get; private set; }
 		
         public string InstrumentType { get; protected set; }
@@ -105,6 +108,15 @@ namespace Omniscient
 
         public void ScanDataFolder()
         {
+            // File Mode
+            if (FileMode)
+            {
+                dataFileNames = new string[] { FileModeFile };
+                dataFileTimes = new DateTime[] { GetFileDate(FileModeFile) };
+                Cache.SetDataFiles(dataFileNames, dataFileTimes);
+                return;
+            }
+
             if (string.IsNullOrEmpty(dataFolder) || !Directory.Exists(dataFolder)) return;
             List<string> dataFileList = new List<string>();
             List<DateTime> dataFileDateList = new List<DateTime>();
@@ -203,6 +215,17 @@ namespace Omniscient
             LoadVirtualChannels(compartment);
         }
         public abstract ReturnCode IngestFile(ChannelCompartment compartment, string fileName);
+        
+        /// <summary>
+        /// Automatically configure instrument to ingest file, and ingest file, if possible
+        /// </summary>
+        /// <param name="compartment"></param>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
+        public virtual ReturnCode AutoIngestFile(ChannelCompartment compartment, string fileName)
+        {
+            return IngestFile(compartment, fileName);
+        }
         public void ClearData(ChannelCompartment compartment)
         {
             foreach (Channel ch in GetChannels())
@@ -260,7 +283,11 @@ namespace Omniscient
                 new StringParameter("File Suffix") { Value = fileSuffix },
                 new DirectoryParameter("Data Directory"){ Value = dataFolder },
                 new BoolParameter("Include Subdirectories") {Value = IncludeSubDirectories ? 
-                                                                BoolParameter.True : BoolParameter.False}
+                                                                BoolParameter.True : BoolParameter.False},
+                new BoolParameter("File Mode") {Value = FileMode ?
+                                                                BoolParameter.True : BoolParameter.False,
+                    Visible = false},
+                new StringParameter("File Mode File"){ Value = FileModeFile, Visible = false}
             };
             return parameters;
         }
@@ -284,6 +311,12 @@ namespace Omniscient
                         break;
                     case "Include Subdirectories":
                         instrument.IncludeSubDirectories = ((BoolParameter)param).ToBool();
+                        break;
+                    case "File Mode":
+                        instrument.FileMode = ((BoolParameter)param).ToBool();
+                        break;
+                    case "File Mode File":
+                        instrument.FileModeFile = param.Value;
                         break;
                 }
             }
@@ -356,7 +389,9 @@ namespace Omniscient
             new ParameterTemplate("File Prefix", ParameterType.String),
             new ParameterTemplate("File Suffix", ParameterType.String),
             new ParameterTemplate("Data Directory", ParameterType.Directory),
-            new ParameterTemplate("Include Subdirectories", ParameterType.Bool)
+            new ParameterTemplate("Include Subdirectories", ParameterType.Bool),
+            new ParameterTemplate("File Mode", ParameterType.Bool, false),
+            new ParameterTemplate("File Mode File", ParameterType.String, false)
         };
     }
 }

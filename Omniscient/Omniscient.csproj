@@ -95,6 +95,7 @@
     <Compile Include="Analysis\FRAMUraniumResultParser.cs" />
     <Compile Include="Analysis\ResultParser.cs" />
     <Compile Include="Analysis\SpectrumCompiler.cs" />
+    <Compile Include="AutoConfigurator.cs" />
     <Compile Include="Cache\CacheLevelData.cs" />
     <Compile Include="Cache\CacheManager.cs" />
     <Compile Include="Cache\DataMonitor.cs" />

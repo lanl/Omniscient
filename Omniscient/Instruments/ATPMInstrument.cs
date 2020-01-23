@@ -48,6 +48,8 @@ namespace Omniscient
         public override ReturnCode IngestFile(ChannelCompartment compartment, string fileName)
         {
             ReturnCode returnCode = atpmParser.ParseFile(fileName);
+            if (returnCode != ReturnCode.SUCCESS) return returnCode;
+
             DataFile dataFile = new DataFile(fileName, atpmParser.Date);
             int numRecords = atpmParser.Records.Length;
             DateTime time = DateTime.MinValue;

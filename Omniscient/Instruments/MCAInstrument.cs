@@ -80,7 +80,10 @@ namespace Omniscient
         public override ReturnCode IngestFile(ChannelCompartment compartment, string fileName)
         {
             ReturnCode returnCode = SpectrumParser.ParseSpectrumFile(fileName);
+            if (returnCode != ReturnCode.SUCCESS) return returnCode;
+
             Spectrum spectrum = SpectrumParser.GetSpectrum();
+
             DateTime time = spectrum.GetStartTime();
             TimeSpan duration = TimeSpan.FromSeconds(spectrum.GetRealTime());
             DataFile dataFile = new DataFile(fileName, time, time+duration);
@@ -90,7 +93,22 @@ namespace Omniscient
                 counts += spectrum.GetCounts()[ch];
             }
             channels[COUNT_RATE].AddDataPoint(compartment, time, counts / spectrum.GetLiveTime(), duration, dataFile);
+           
+            dataFile.DataEnd = time + duration;
+
             return ReturnCode.SUCCESS;
+        }
+
+        public override ReturnCode AutoIngestFile(ChannelCompartment compartment, string fileName)
+        {
+            FileExtension = "chn";
+            if (IngestFile(compartment, fileName) == ReturnCode.SUCCESS) return ReturnCode.SUCCESS;
+            FileExtension = "spe";
+            if (IngestFile(compartment, fileName) == ReturnCode.SUCCESS) return ReturnCode.SUCCESS;
+            FileExtension = "n42";
+            if (IngestFile(compartment, fileName) == ReturnCode.SUCCESS) return ReturnCode.SUCCESS;
+
+            return ReturnCode.FAIL;
         }
 
         public override List<Parameter> GetParameters()

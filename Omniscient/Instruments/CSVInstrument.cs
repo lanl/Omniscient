@@ -213,6 +213,28 @@ namespace Omniscient
             return ReturnCode.SUCCESS;
         }
 
+        public override ReturnCode AutoIngestFile(ChannelCompartment compartment, string fileName)
+        {
+            if (csvParser.AutoConfigureFromFile(fileName) == ReturnCode.SUCCESS)
+            {
+                Delimiter = csvParser.Delimiter;
+                HasEndTimes = csvParser.GetEndTimes;
+                if (HasEndTimes)
+                {
+                    SetNumberOfChannels(csvParser.NumberOfColumns - 2);
+                }
+                else
+                {
+                    SetNumberOfChannels(csvParser.NumberOfColumns - 1);
+                }
+                NumberOfHeaders = csvParser.NumberOfHeaders;
+                TimeStampFormat = csvParser.TimeStampFormat;
+                MakeNewParser();
+                return IngestFile(compartment, fileName);
+            }
+            else return ReturnCode.FAIL;
+        }
+
         public override DateTime GetFileDate(string file)
         {
             if (csvParser.ParseFirstEntry(file) == ReturnCode.SUCCESS)
