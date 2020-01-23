@@ -99,7 +99,7 @@ namespace Omniscient
 
             try
             {
-                readStream = new FileStream(fileName, FileMode.Open);
+                readStream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                 BinaryReader readBinary = new BinaryReader(readStream);
                 ReadHeader(readBinary);
                 readStream.Close();
@@ -120,7 +120,7 @@ namespace Omniscient
 
             try
             {
-                readStream = new FileStream(fileName, FileMode.Open);
+                readStream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                 BinaryReader readBinary = new BinaryReader(readStream);
                 ReadHeader(readBinary);
                 ReadDataRecords(readBinary);
