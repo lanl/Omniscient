@@ -184,7 +184,7 @@ namespace Omniscient
             ///////////////////////////////////////////////////////////////////
 
             int startIndex = Array.FindIndex(dataFileTimes.ToArray(), x => x >= startDate.Date);
-            int endIndex = Array.FindIndex(dataFileTimes.ToArray(), x => x >= endDate.Date);
+            int endIndex = Array.FindIndex(dataFileTimes.ToArray(), x => x >= endDate.Date.AddDays(1));
 
             if (startIndex == -1) return;
             if (endIndex == -1) endIndex = (dataFileTimes.Length) - 1;
