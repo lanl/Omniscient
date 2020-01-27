@@ -26,6 +26,7 @@ namespace Omniscient
     /// </summary>
     public abstract class Persister
     {
+        public static string AppDataDirectory = "";
         private static Random random = new Random();
         /// <summary>
         /// A list of taken Persister IDs. All Persisters have a unique ID.

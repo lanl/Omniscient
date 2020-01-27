@@ -64,13 +64,15 @@ namespace Omniscient
 
         private string cacheDirectory;
 
-        public InstrumentCache(Instrument instrument)
+        public InstrumentCache(Instrument instrument, string appDataDirectory)
         {
             this.Instrument = instrument;
             MemoryUsed = 0;
             MemoryAllocation = 1_250_000_000;
 
-            cacheDirectory = "Cache\\" + Instrument.ID.ToString("X8");
+            cacheDirectory = Path.Combine(appDataDirectory, "Cache");
+
+            cacheDirectory = Path.Combine(cacheDirectory, Instrument.ID.ToString("X8"));
 
             if (!Directory.Exists("Cache")) Directory.CreateDirectory("Cache");
             if (!Directory.Exists(cacheDirectory)) Directory.CreateDirectory(cacheDirectory);

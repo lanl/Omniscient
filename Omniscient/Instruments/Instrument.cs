@@ -86,7 +86,7 @@ namespace Omniscient
             virtualChannels = new List<VirtualChannel>();
             dataFileNames = new string[0];
             dataFileTimes = new DateTime[0];
-            Cache = new InstrumentCache(this);
+            Cache = new InstrumentCache(this, AppDataDirectory);
         }
 
         public void LoadVirtualChannels(ChannelCompartment compartment)

@@ -49,10 +49,11 @@ namespace Omniscient
         /// </summary>
         public event EventHandler StateChanged;
 
-        public CacheManager()
+        public CacheManager(string appDataDirectory)
         {
+            string cacheDir = Path.Combine(appDataDirectory, "Cache");
             // Make sure a Cache directory exists
-            if (!Directory.Exists("Cache")) Directory.CreateDirectory("Cache");
+            if (!Directory.Exists(cacheDir)) Directory.CreateDirectory(cacheDir);
 
             InstrumentCaches = new List<InstrumentCache>();
 

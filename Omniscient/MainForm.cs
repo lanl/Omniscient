@@ -24,6 +24,7 @@ using System.IO;
 using System.Windows.Forms.DataVisualization.Charting;
 
 using System.Windows.Media;
+using System.Configuration;
 
 using Omniscient.MainDialogs;
 
@@ -67,12 +68,24 @@ namespace Omniscient
         IntervalOfReview manualIOR = null;
         ///////////////////////////////////////////////////////////////////////
 
+        string appDataDirectory;
+
         /// <summary>
         /// MainForm constructor
         /// </summary>
         public MainForm()
         {
-            Core = new OmniscientCore();
+            // Get the App Data Directory
+            appDataDirectory = Properties.Settings.Default.AppDataDirectory;
+            if (appDataDirectory.ToLower() == "appdata") appDataDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Omniscient";
+            try { if (appDataDirectory != "" && !Directory.Exists(appDataDirectory)) Directory.CreateDirectory(appDataDirectory); }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Could not access application data directory. Check config file.");
+            }
+            Persister.AppDataDirectory = appDataDirectory;
+
+            Core = new OmniscientCore(appDataDirectory);
             if (Core.ErrorMessage != "")
             {
                 MessageBox.Show(Core.ErrorMessage);
@@ -242,7 +255,8 @@ namespace Omniscient
         
         public void LoadPresets()
         {
-            presetMan = new PresetManager("Presets.xml", Core.SiteManager);
+            string presetsPath = Path.Combine(appDataDirectory, "Presets.xml");
+            presetMan = new PresetManager(presetsPath, Core.SiteManager);
             ReturnCode returnCode = presetMan.Reload();
             if (returnCode == ReturnCode.FILE_DOESNT_EXIST)
             {
