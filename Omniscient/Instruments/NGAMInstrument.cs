@@ -36,6 +36,25 @@ namespace Omniscient
 
         VBFParser vbfParser;
 
+        public override string FileExtension
+        {
+            get { return _fileExtension; }
+            set
+            {
+                if (value == "vbf")
+                {
+                    _fileExtension = value;
+                }
+                else if (value == "adc")
+                {
+                    _fileExtension = value;
+                }
+                else
+                    throw new ArgumentException("File extension must be vbf or adc!");
+                //ScanDataFolder();
+            }
+        }
+
         public NGAMInstrument(DetectionSystem parent, string name, uint id) : base(parent, name, id)
         {
             InstrumentType = "NGAM";
@@ -90,17 +109,39 @@ namespace Omniscient
 
         public override List<Parameter> GetParameters()
         {
-            return GetStandardInstrumentParameters();
+            List<Parameter> parameters = GetStandardInstrumentParameters();
+            parameters.Add(new EnumParameter("File Extension")
+            {
+                Value = FileExtension,
+                ValidValues = { "vbf", "adc" }
+            });
+            return parameters;
         }
+
         public override void ApplyParameters(List<Parameter> parameters)
         {
             ApplyStandardInstrumentParameters(this, parameters);
+            foreach (Parameter param in parameters)
+            {
+                switch (param.Name)
+                {
+                    case "File Extension":
+                        if (!(param.Value is null)) FileExtension = param.Value;
+                        break;
+                }
+            }
         }
     }
 
     public class NGAMInstrumentHookup : InstrumentHookup
     {
-        public NGAMInstrumentHookup() { }
+        public NGAMInstrumentHookup() 
+        {
+            TemplateParameters.Add(new ParameterTemplate("File Extension", ParameterType.Enum)
+            {
+                ValidValues = { "vbf", "adc" }
+            });
+        }
 
         public override string Type { get { return "NGAM"; } }
 
@@ -108,6 +149,15 @@ namespace Omniscient
         {
             NGAMInstrument instrument = new NGAMInstrument(parent, newName, id);
             Instrument.ApplyStandardInstrumentParameters(instrument, parameters);
+            foreach (Parameter param in parameters)
+            {
+                switch (param.Name)
+                {
+                    case "File Extension":
+                        if (!(param.Value is null)) instrument.FileExtension = param.Value;
+                        break;
+                }
+            }
             return instrument;
         }
     }
