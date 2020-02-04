@@ -50,6 +50,7 @@ namespace Omniscient
 
         private bool[] logScale;
         private bool[] autoScale;
+        private bool[] showLegend;
         double[] chartMaxPointValue;
         double[] chartMinPointValue;
 
@@ -92,10 +93,12 @@ namespace Omniscient
             }
             logScale = new bool[N_CHARTS];
             autoScale = new bool[N_CHARTS];
+            showLegend = new bool[N_CHARTS];
             for (int c = 0; c < N_CHARTS; c++)
             {
                 logScale[c] = false;
                 autoScale[c] = true;
+                showLegend[c] = true;
             }
             InitializeComponent();
             charts = new Chart[] { StripChart0, StripChart1, StripChart2, StripChart3 };
@@ -557,6 +560,7 @@ namespace Omniscient
                 }
             }
             if(autoScale[chartNum]) AutoScaleYAxes(chartNum);
+            chart.Legends[0].Enabled = showLegend[chartNum];
             chart.ChartAreas[0].AxisY.Minimum = chartMinY[chartNum];
             chart.ChartAreas[0].AxisY.Maximum = chartMaxY[chartNum];
             chart.ResumeLayout();
@@ -1160,6 +1164,22 @@ namespace Omniscient
                 chartMenu.MenuItems.Add(menuItem);
             }
 
+            // Toggle legend
+            if (showLegend[chartNum])
+            {
+                MenuItem menuItem = new MenuItem("Hide legend");
+                menuItem.Tag = chartNum;
+                menuItem.Click += ShowLegendMenuClick;
+                chartMenu.MenuItems.Add(menuItem);
+            }
+            else
+            {
+                MenuItem menuItem = new MenuItem("Show legend");
+                menuItem.Tag = chartNum;
+                menuItem.Click += ShowLegendMenuClick;
+                chartMenu.MenuItems.Add(menuItem);
+            }
+
             // Toggle log scale
             if (logScale[chartNum])
             {
@@ -1286,6 +1306,14 @@ namespace Omniscient
                 }
             }
             chartMenu.Show(activeChart, new Point((int)mouseX, (int)mouseY));
+        }
+
+        private void ShowLegendMenuClick(object sender, EventArgs e)
+        {
+            MenuItem menuItem = (MenuItem)sender;
+            int chartNum = (int)menuItem.Tag;
+            showLegend[chartNum] = !showLegend[chartNum];
+            UpdateChart(chartNum);
         }
 
         private void ManualEGMenuItem_Click(object sender, EventArgs e)
