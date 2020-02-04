@@ -44,18 +44,18 @@ namespace Omniscient
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea5 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend5 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea6 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend6 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea7 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend7 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea8 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend8 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series8 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.StripChartControlPanel = new System.Windows.Forms.Panel();
             this.StripChartsPanel = new System.Windows.Forms.Panel();
@@ -141,6 +141,8 @@ namespace Omniscient
             this.EventsWarningLabel = new System.Windows.Forms.Label();
             this.GenerateEventsButton = new System.Windows.Forms.Button();
             this.ButtonImageList = new System.Windows.Forms.ImageList(this.components);
+            this.BackwardButton = new System.Windows.Forms.ToolStripButton();
+            this.ForwardButton = new System.Windows.Forms.ToolStripButton();
             this.StripChartControlPanel.SuspendLayout();
             this.StripChartsPanel.SuspendLayout();
             this.StripChartsLayoutPanel.SuspendLayout();
@@ -214,18 +216,18 @@ namespace Omniscient
             // 
             // StripChart0
             // 
-            chartArea1.Name = "ChartArea1";
-            this.StripChart0.ChartAreas.Add(chartArea1);
+            chartArea5.Name = "ChartArea1";
+            this.StripChart0.ChartAreas.Add(chartArea5);
             this.StripChart0.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend1.Name = "Legend1";
-            this.StripChart0.Legends.Add(legend1);
+            legend5.Name = "Legend1";
+            this.StripChart0.Legends.Add(legend5);
             this.StripChart0.Location = new System.Drawing.Point(5, 5);
             this.StripChart0.Name = "StripChart0";
-            series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
-            series1.Legend = "Legend1";
-            series1.Name = "Series1";
-            this.StripChart0.Series.Add(series1);
+            series5.ChartArea = "ChartArea1";
+            series5.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series5.Legend = "Legend1";
+            series5.Name = "Series1";
+            this.StripChart0.Series.Add(series5);
             this.StripChart0.Size = new System.Drawing.Size(705, 95);
             this.StripChart0.TabIndex = 5;
             this.StripChart0.Text = "chart1";
@@ -235,18 +237,18 @@ namespace Omniscient
             // 
             // StripChart3
             // 
-            chartArea2.Name = "ChartArea1";
-            this.StripChart3.ChartAreas.Add(chartArea2);
+            chartArea6.Name = "ChartArea1";
+            this.StripChart3.ChartAreas.Add(chartArea6);
             this.StripChart3.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend2.Name = "Legend1";
-            this.StripChart3.Legends.Add(legend2);
+            legend6.Name = "Legend1";
+            this.StripChart3.Legends.Add(legend6);
             this.StripChart3.Location = new System.Drawing.Point(5, 314);
             this.StripChart3.Name = "StripChart3";
-            series2.ChartArea = "ChartArea1";
-            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
-            series2.Legend = "Legend1";
-            series2.Name = "Series1";
-            this.StripChart3.Series.Add(series2);
+            series6.ChartArea = "ChartArea1";
+            series6.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series6.Legend = "Legend1";
+            series6.Name = "Series1";
+            this.StripChart3.Series.Add(series6);
             this.StripChart3.Size = new System.Drawing.Size(705, 97);
             this.StripChart3.TabIndex = 6;
             this.StripChart3.Text = "chart1";
@@ -256,18 +258,18 @@ namespace Omniscient
             // 
             // StripChart1
             // 
-            chartArea3.Name = "ChartArea1";
-            this.StripChart1.ChartAreas.Add(chartArea3);
+            chartArea7.Name = "ChartArea1";
+            this.StripChart1.ChartAreas.Add(chartArea7);
             this.StripChart1.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend3.Name = "Legend1";
-            this.StripChart1.Legends.Add(legend3);
+            legend7.Name = "Legend1";
+            this.StripChart1.Legends.Add(legend7);
             this.StripChart1.Location = new System.Drawing.Point(5, 108);
             this.StripChart1.Name = "StripChart1";
-            series3.ChartArea = "ChartArea1";
-            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
-            series3.Legend = "Legend1";
-            series3.Name = "Series1";
-            this.StripChart1.Series.Add(series3);
+            series7.ChartArea = "ChartArea1";
+            series7.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series7.Legend = "Legend1";
+            series7.Name = "Series1";
+            this.StripChart1.Series.Add(series7);
             this.StripChart1.Size = new System.Drawing.Size(705, 95);
             this.StripChart1.TabIndex = 7;
             this.StripChart1.Text = "chart2";
@@ -277,18 +279,18 @@ namespace Omniscient
             // 
             // StripChart2
             // 
-            chartArea4.Name = "ChartArea1";
-            this.StripChart2.ChartAreas.Add(chartArea4);
+            chartArea8.Name = "ChartArea1";
+            this.StripChart2.ChartAreas.Add(chartArea8);
             this.StripChart2.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend4.Name = "Legend1";
-            this.StripChart2.Legends.Add(legend4);
+            legend8.Name = "Legend1";
+            this.StripChart2.Legends.Add(legend8);
             this.StripChart2.Location = new System.Drawing.Point(5, 211);
             this.StripChart2.Name = "StripChart2";
-            series4.ChartArea = "ChartArea1";
-            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
-            series4.Legend = "Legend1";
-            series4.Name = "Series1";
-            this.StripChart2.Series.Add(series4);
+            series8.ChartArea = "ChartArea1";
+            series8.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series8.Legend = "Legend1";
+            series8.Name = "Series1";
+            this.StripChart2.Series.Add(series8);
             this.StripChart2.Size = new System.Drawing.Size(705, 95);
             this.StripChart2.TabIndex = 8;
             this.StripChart2.Text = "chart3";
@@ -459,6 +461,8 @@ namespace Omniscient
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripButton1,
             this.toolStripSeparator1,
+            this.BackwardButton,
+            this.ForwardButton,
             this.MouseTimeToolStripLabel,
             this.MarkerToolStripLabel});
             this.toolStrip1.Location = new System.Drawing.Point(0, 24);
@@ -479,7 +483,6 @@ namespace Omniscient
             // 
             // toolStripSeparator1
             // 
-            this.toolStripSeparator1.Margin = new System.Windows.Forms.Padding(0, 0, 180, 0);
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 27);
             // 
@@ -585,7 +588,7 @@ namespace Omniscient
             this.Chart1TabPage.Controls.Add(this.C1LogScaleCheckBox);
             this.Chart1TabPage.Location = new System.Drawing.Point(4, 22);
             this.Chart1TabPage.Name = "Chart1TabPage";
-            this.Chart1TabPage.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.Chart1TabPage.Padding = new System.Windows.Forms.Padding(3);
             this.Chart1TabPage.Size = new System.Drawing.Size(301, 74);
             this.Chart1TabPage.TabIndex = 0;
             this.Chart1TabPage.Text = "Chart 1";
@@ -607,7 +610,7 @@ namespace Omniscient
             this.Chart2TabPage.Controls.Add(this.C2LogScaleCheckBox);
             this.Chart2TabPage.Location = new System.Drawing.Point(4, 22);
             this.Chart2TabPage.Name = "Chart2TabPage";
-            this.Chart2TabPage.Padding = new System.Windows.Forms.Padding(3, 3, 3, 3);
+            this.Chart2TabPage.Padding = new System.Windows.Forms.Padding(3);
             this.Chart2TabPage.Size = new System.Drawing.Size(301, 74);
             this.Chart2TabPage.TabIndex = 1;
             this.Chart2TabPage.Text = "Chart 2";
@@ -785,7 +788,7 @@ namespace Omniscient
             this.LeftPanel.Location = new System.Drawing.Point(0, 51);
             this.LeftPanel.MinimumSize = new System.Drawing.Size(220, 0);
             this.LeftPanel.Name = "LeftPanel";
-            this.LeftPanel.Padding = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.LeftPanel.Padding = new System.Windows.Forms.Padding(5);
             this.LeftPanel.Size = new System.Drawing.Size(220, 665);
             this.LeftPanel.TabIndex = 5;
             // 
@@ -1046,6 +1049,29 @@ namespace Omniscient
             this.ButtonImageList.Images.SetKeyName(2, "Plus");
             this.ButtonImageList.Images.SetKeyName(3, "Delete");
             // 
+            // BackwardButton
+            // 
+            this.BackwardButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.BackwardButton.Image = ((System.Drawing.Image)(resources.GetObject("BackwardButton.Image")));
+            this.BackwardButton.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.BackwardButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.BackwardButton.Name = "BackwardButton";
+            this.BackwardButton.Size = new System.Drawing.Size(23, 24);
+            this.BackwardButton.Text = "Go Backward";
+            this.BackwardButton.Click += new System.EventHandler(this.BackwardButton_Click);
+            // 
+            // ForwardButton
+            // 
+            this.ForwardButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.ForwardButton.Image = ((System.Drawing.Image)(resources.GetObject("ForwardButton.Image")));
+            this.ForwardButton.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.ForwardButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.ForwardButton.Margin = new System.Windows.Forms.Padding(0, 1, 136, 2);
+            this.ForwardButton.Name = "ForwardButton";
+            this.ForwardButton.Size = new System.Drawing.Size(23, 24);
+            this.ForwardButton.Text = "Go Forward";
+            this.ForwardButton.Click += new System.EventHandler(this.ForwardButton_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1199,6 +1225,8 @@ namespace Omniscient
         private System.Windows.Forms.DataVisualization.Charting.Chart StripChart3;
         private System.Windows.Forms.DataVisualization.Charting.Chart StripChart1;
         private System.Windows.Forms.DataVisualization.Charting.Chart StripChart2;
+        private ToolStripButton BackwardButton;
+        private ToolStripButton ForwardButton;
     }
 }
 

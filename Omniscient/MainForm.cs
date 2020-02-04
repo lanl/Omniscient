@@ -103,6 +103,7 @@ namespace Omniscient
             InitializeComponent();
             charts = new Chart[] { StripChart0, StripChart1, StripChart2, StripChart3 };
             Core.ViewChanged += Core_OnViewChanged;
+            UpdateForwardBackButtons();
         }
 
         private void Core_OnViewChanged(object sender, EventArgs e)
@@ -931,8 +932,12 @@ namespace Omniscient
                     break;
             }
             newEnd = newEnd.AddTicks(StartTimePicker.Value.TimeOfDay.Ticks);
-            Core.ChangeView(StartDatePicker.Value.Date.AddTicks(StartTimePicker.Value.TimeOfDay.Ticks),
-                newEnd);
+            if (StartDatePicker.Value.Date.AddTicks(StartTimePicker.Value.TimeOfDay.Ticks) != Core.ViewStart ||
+                newEnd != Core.ViewEnd)
+            { 
+                ChangeView(StartDatePicker.Value.Date.AddTicks(StartTimePicker.Value.TimeOfDay.Ticks),
+                    newEnd);
+            }
             EndDatePicker.Value = Core.ViewEnd.Date;
             EndTimePicker.Value = Core.ViewEnd;
         }
@@ -1118,7 +1123,7 @@ namespace Omniscient
             {
                 e.NewValue = StripChartScroll.Maximum - StripChartScroll.LargeChange;
             }
-            Core.ShiftView(ReferenceSecondsToDateTime(e.NewValue) - ReferenceSecondsToDateTime(e.OldValue));
+            ShiftView(ReferenceSecondsToDateTime(e.NewValue) - ReferenceSecondsToDateTime(e.OldValue));
         }
 
         /// <summary>
@@ -1773,19 +1778,19 @@ namespace Omniscient
             if (e.Button == MouseButtons.Right)
             {
                 // Drag Range
-                Core.ShiftView(DateTime.FromOADate(chart.ChartAreas[0].AxisX.Minimum) -
+                ShiftView(DateTime.FromOADate(chart.ChartAreas[0].AxisX.Minimum) -
                     DateTime.FromOADate(chart.ChartAreas[0].AxisX.Minimum+mouseDelta));
             }
             else if (mouseDelta/range < -0.02 && !controlPressed)
             {
                 // Zoom out
-                Core.ChangeView(DateTime.FromOADate(chart.ChartAreas[0].AxisX.Minimum - range / 2),
+                ChangeView(DateTime.FromOADate(chart.ChartAreas[0].AxisX.Minimum - range / 2),
                     DateTime.FromOADate(chart.ChartAreas[0].AxisX.Maximum + range / 2));
             }
             else if (mouseDelta / range > 0.02 && !controlPressed)
             {
                 // Zoom in
-                Core.ChangeView(DateTime.FromOADate(mouseDownX),
+                ChangeView(DateTime.FromOADate(mouseDownX),
                     DateTime.FromOADate(mouseUpX));
             }
             else if (!controlPressed || 
@@ -1876,6 +1881,14 @@ namespace Omniscient
             {
                 controlPressed = false;
             }
+            if (e.KeyCode == Keys.Left && controlPressed)
+            {
+                GoBack();
+            }
+            if (e.KeyCode == Keys.Right && controlPressed)
+            {
+                GoForward();
+            }
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -1957,6 +1970,72 @@ namespace Omniscient
             }
 
             System.Windows.Forms.Cursor.Current = Cursors.Default;
+        }
+
+        LinkedList<DateTimeRange> BackHistory = new LinkedList<DateTimeRange>();
+        LinkedList<DateTimeRange> ForwardHistory = new LinkedList<DateTimeRange>();
+
+        private void ChangeView(DateTime startTime, DateTime endTime)
+        {
+            if (BackHistory.Count == 0 ||
+                (BackHistory.Last.Value.Start != Core.ViewStart ||
+                BackHistory.Last.Value.End != Core.ViewEnd))
+            { 
+                BackHistory.AddLast(new LinkedListNode<DateTimeRange>(new DateTimeRange(Core.ViewStart, Core.ViewEnd)));
+                ForwardHistory.Clear();
+            }
+            Core.ChangeView(startTime, endTime);
+            UpdateForwardBackButtons();
+        }
+
+        private void ShiftView(TimeSpan shift)
+        {
+            if (BackHistory.Count == 0 ||
+                (BackHistory.Last.Value.Start != Core.ViewStart ||
+                BackHistory.Last.Value.End != Core.ViewEnd))
+            {
+                BackHistory.AddLast(new LinkedListNode<DateTimeRange>(new DateTimeRange(Core.ViewStart, Core.ViewEnd)));
+                ForwardHistory.Clear();
+            }
+            Core.ShiftView(shift);
+            UpdateForwardBackButtons();
+        }
+
+        private void GoBack()
+        {
+            if (BackHistory.Count == 0) return;
+            ForwardHistory.AddLast(new LinkedListNode<DateTimeRange>(new DateTimeRange(Core.ViewStart, Core.ViewEnd)));
+            Core.ChangeView(BackHistory.Last.Value.Start, BackHistory.Last.Value.End);
+            BackHistory.RemoveLast();
+            UpdateForwardBackButtons();
+        }
+
+        private void GoForward()
+        {
+            if (ForwardHistory.Count == 0) return;
+            BackHistory.AddLast(new LinkedListNode<DateTimeRange>(new DateTimeRange(Core.ViewStart, Core.ViewEnd)));
+            Core.ChangeView(ForwardHistory.Last.Value.Start, ForwardHistory.Last.Value.End);
+            ForwardHistory.RemoveLast();
+            UpdateForwardBackButtons();
+        }
+
+        private void BackwardButton_Click(object sender, EventArgs e)
+        {
+            GoBack();
+        }
+
+        private void ForwardButton_Click(object sender, EventArgs e)
+        {
+            GoForward();
+        }
+
+        private void UpdateForwardBackButtons()
+        {
+            if (BackHistory.Count == 0) BackwardButton.Enabled = false;
+            else BackwardButton.Enabled = true;
+
+            if (ForwardHistory.Count == 0) ForwardButton.Enabled = false;
+            else ForwardButton.Enabled = true;
         }
     }
 }
