@@ -290,9 +290,13 @@ namespace Omniscient
                     Instrument.IngestFile(ChannelCompartment.Cache, file.FileName);
                 }
             }
+            Channel[] channels = Instrument.GetChannels();
+            foreach (Channel channel in channels)
+            {
+                channel.Sort(ChannelCompartment.Cache);
+            }
             Instrument.LoadVirtualChannels(ChannelCompartment.Cache);
 
-            Channel[] channels = Instrument.GetChannels();
             dayCache.BaseData = new ChannelCacheLevelData[channels.Length];
             for (int ch = 0; ch < channels.Length; ch++)
             {

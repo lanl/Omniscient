@@ -129,6 +129,9 @@ namespace Omniscient
                 directories.AddRange(GetSubdirectories(dataFolder));
             }
 
+            // Try using the file names to get dates
+            if (NameConvensionScan(directories)) return;
+
             string[] filesInDirectory;
             foreach (string directory in directories)
             {
@@ -161,6 +164,150 @@ namespace Omniscient
             Array.Sort(dataFileTimes, dataFileNames);
             Cache.SetDataFiles(dataFileNames, dataFileTimes);
         }
+
+        private bool NameConvensionScan(List<string> directories)
+        {
+            const int MIN_FILE_NAME_LENGTH = 6 + 4; 
+
+            List<string> dataFileList = new List<string>();
+            List<DateTime> dataFileDateList = new List<DateTime>();
+            string[] filesInDirectory;
+            string fileAbrev;
+
+            int nameDateOffset = 0;
+            bool usesDateSpacers = true;
+
+            foreach (string directory in directories)
+            {
+                // Only one directory - just check file naming
+                filesInDirectory = Directory.GetFiles(directory);
+                foreach (string file in filesInDirectory)
+                {
+                    fileAbrev = file.Substring(file.LastIndexOf('\\') + 1);
+                    if (fileAbrev.Length > (fileSuffix.Length + FileExtension.Length)
+                        && fileAbrev.Substring(fileAbrev.Length - (FileExtension.Length + 1)).ToLower() == ("." + FileExtension)
+                        && fileAbrev.ToLower().StartsWith(filePrefix.ToLower())
+                        && fileAbrev.Substring(fileAbrev.Length - (FileExtension.Length + 1 + fileSuffix.Length), fileSuffix.Length).ToLower() == fileSuffix.ToLower())
+                    {
+                        dataFileList.Add(file);
+                    }
+                }
+            }
+            foreach (string file in dataFileList)
+            {
+                fileAbrev = file.Substring(file.LastIndexOf('\\') + 1);
+                if (fileAbrev.Length < MIN_FILE_NAME_LENGTH) return false;
+
+                DateTime fileDate;
+
+                // Try current setting for nameDateOffset
+                fileDate = ParseDateFromFileName(file, nameDateOffset, usesDateSpacers);
+
+                if (fileDate > DateTime.MinValue)
+                {
+                    dataFileDateList.Add(fileDate);
+                }
+                else
+                {
+                    if (!SearchForDateInFileName(file, out nameDateOffset, out usesDateSpacers)) return false;
+                    fileDate = ParseDateFromFileName(file, nameDateOffset, usesDateSpacers);
+                    dataFileDateList.Add(fileDate);
+                }
+            }
+
+            dataFileNames = dataFileList.ToArray();
+            dataFileTimes = dataFileDateList.ToArray();
+
+            Array.Sort(dataFileTimes, dataFileNames);
+            Cache.SetDataFiles(dataFileNames, dataFileTimes);
+            return true;
+        }
+
+        private DateTime ParseDateFromFileName(string file, int nameDateOffset, bool usesDateSpacers)
+        {
+            string fileAbrev = file.Substring(file.LastIndexOf('\\') + 1);
+            int year = 0;
+            int month = 0;
+            int day = 0;
+            bool foundDay = false;
+
+            if (fileAbrev.Length < nameDateOffset + 10) return DateTime.MinValue;
+
+            year = 0;
+            if (int.TryParse(fileAbrev.Substring(nameDateOffset, 4), out year) && year > 1900 && year < 3000)
+            {
+                month = 0;
+                if (usesDateSpacers)
+                {
+                    if (int.TryParse(fileAbrev.Substring(nameDateOffset + 5, 2), out month) && month > 0 && month < 13)
+                    {
+                        day = 0;
+                        if (int.TryParse(fileAbrev.Substring(nameDateOffset + 8, 2), out day) && day > 0 && day < 32)
+                        {
+                            foundDay = true;
+                        }
+                    }
+                }
+                else
+                {
+                    if (int.TryParse(fileAbrev.Substring(nameDateOffset + 4, 2), out month) && month > 0 && month < 13)
+                    {
+                        day = 0;
+                        if (int.TryParse(fileAbrev.Substring(nameDateOffset + 6, 2), out day) && day > 0 && day < 32)
+                        {
+                            foundDay = true;
+                        }
+                    }
+                }
+            }
+
+            if (foundDay) return new DateTime(year, month, day);
+            else return DateTime.MinValue;
+        }
+
+        private bool SearchForDateInFileName(string file, out int offset, out bool usesSpacers)
+        {
+            string fileAbrev = file.Substring(file.LastIndexOf('\\') + 1);
+            int year;
+            int month;
+            int day;
+
+            usesSpacers = true;
+            for (int off = 0; off < fileAbrev.Length - 10; off++)
+            {
+                if (int.TryParse(fileAbrev.Substring(off, 4), out year) && year > 1900 && year < 3000)
+                {
+                    if (int.TryParse(fileAbrev.Substring(off + 5, 2), out month) && month > 0 && month < 13)
+                    {
+                        if (int.TryParse(fileAbrev.Substring(off + 8, 2), out day) && day > 0 && day < 32)
+                        {
+                            offset = off;
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            usesSpacers = false;
+            for (int off = 0; off < fileAbrev.Length - 10; off++)
+            {
+                if (int.TryParse(fileAbrev.Substring(off, 4), out year) && year > 1900 && year < 3000)
+                {
+                    if (int.TryParse(fileAbrev.Substring(off + 4, 2), out month) && month > 0 && month < 13)
+                    {
+                        if (int.TryParse(fileAbrev.Substring(off + 6, 2), out day) && day > 0 && day < 32)
+                        {
+                            offset = off;
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            offset = 0;
+            return false;
+        }
+
         public abstract DateTime GetFileDate(string file);
 
         public DateTimeRange GetLoadedRange(ChannelCompartment compartment)
