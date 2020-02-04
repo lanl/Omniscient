@@ -1776,20 +1776,20 @@ namespace Omniscient
                 Core.ShiftView(DateTime.FromOADate(chart.ChartAreas[0].AxisX.Minimum) -
                     DateTime.FromOADate(chart.ChartAreas[0].AxisX.Minimum+mouseDelta));
             }
-            else if (mouseDelta/range < -0.05 && !controlPressed)
+            else if (mouseDelta/range < -0.02 && !controlPressed)
             {
                 // Zoom out
                 Core.ChangeView(DateTime.FromOADate(chart.ChartAreas[0].AxisX.Minimum - range / 2),
                     DateTime.FromOADate(chart.ChartAreas[0].AxisX.Maximum + range / 2));
             }
-            else if (mouseDelta / range > 0.05 && !controlPressed)
+            else if (mouseDelta / range > 0.02 && !controlPressed)
             {
                 // Zoom in
                 Core.ChangeView(DateTime.FromOADate(mouseDownX),
                     DateTime.FromOADate(mouseUpX));
             }
             else if (!controlPressed || 
-                ((mouseDelta / range < 0.05) && (mouseDelta/range > -0.05)))
+                ((mouseDelta / range < 0.02) && (mouseDelta/range > -0.02)))
             {
                 // This is nothing - just do nothing
                 drawingZoomBox = false;
