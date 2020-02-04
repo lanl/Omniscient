@@ -97,8 +97,10 @@ namespace Omniscient
             }
 
             // Make sure the instrument doesn't already exist
-            foreach(Instrument existingInst in system.GetInstruments())
+            Instrument existingInst;
+            for (int i=system.GetInstruments().Count-1; i>=0; i--)
             {
+                existingInst = system.GetInstruments()[i];
                 if (existingInst.Name == instName)
                 {
                     existingInst.Delete();
