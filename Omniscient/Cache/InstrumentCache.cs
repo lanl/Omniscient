@@ -70,15 +70,15 @@ namespace Omniscient
             MemoryUsed = 0;
             MemoryAllocation = 1_250_000_000;
 
-            cacheDirectory = Path.Combine(appDataDirectory, "Cache");
+            string generalCacheDirectory = Path.Combine(appDataDirectory, "Cache");
 
-            cacheDirectory = Path.Combine(cacheDirectory, Instrument.ID.ToString("X8"));
+            cacheDirectory = Path.Combine(generalCacheDirectory, Instrument.ID.ToString("X8"));
 
-            if (!Directory.Exists("Cache")) Directory.CreateDirectory("Cache");
+            if (!Directory.Exists(generalCacheDirectory)) Directory.CreateDirectory(generalCacheDirectory);
             if (!Directory.Exists(cacheDirectory)) Directory.CreateDirectory(cacheDirectory);
 
             TenMinuteMonitor = new DataMonitor();
-            TenMinuteMonitor.FileListFile = cacheDirectory + "\\FileListFile.csv";
+            TenMinuteMonitor.FileListFile = Path.Combine(cacheDirectory,"FileListFile.csv");
             TenMinuteScans = new List<FileScan>();
 
             DataFiles = new List<DataFile>();
