@@ -1438,6 +1438,11 @@ namespace Omniscient
                 {
                     GetChart(i).Invalidate();
                 }
+                if (chart.ChartAreas[0].AxisX.Maximum < mouseTime.ToOADate() ||
+                    (chart.ChartAreas[0].AxisX.Minimum > mouseTime.ToOADate()))
+                {
+                    StripChart_MouseUp(downChart, e);
+                }
             }
         }
 
@@ -1709,7 +1714,9 @@ namespace Omniscient
         {
             downChart = (Chart)sender;
             mouseDownX = downChart.ChartAreas[0].AxisX.PixelPositionToValue(e.X);
-            if (e.Button == MouseButtons.Left)
+            if (e.Button == MouseButtons.Left &&
+                mouseDownX >= downChart.ChartAreas[0].AxisX.Minimum &&
+                mouseDownX <= downChart.ChartAreas[0].AxisX.Maximum)
             {
                 drawingZoomBox = true;
             }
@@ -1759,6 +1766,8 @@ namespace Omniscient
 
         private void StripChart_MouseUp(object sender, MouseEventArgs e)
         {
+            if (!drawingZoomBox) return;
+
             Chart chart = (Chart)sender;
             if (chart != downChart) return;
             mouseUpX = 0;
