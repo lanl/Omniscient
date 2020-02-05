@@ -62,7 +62,9 @@ namespace Omniscient
         double mouseX = 0;
         double mouseY = 0;
         double mouseDownX = 0;
+        double mouseDownY = 0;
         double mouseUpX = 0;
+        double mouseUpY = 0;
         DateTime mouseTime;
         private bool showMarker = false;
         private double markerValue = 0;
@@ -1425,6 +1427,7 @@ namespace Omniscient
             activeChart = chart;
             mouseX = e.X;
             mouseY = e.Y;
+            if (mouseY < 0) mouseY = 0;
             try
             {
                 mouseTime = DateTime.FromOADate(chart.ChartAreas[0].AxisX.PixelPositionToValue(mouseX));
@@ -1432,7 +1435,7 @@ namespace Omniscient
             }
             catch
             { }
-            if (drawingZoomBox)
+            if (drawingXZoomBox)
             {
                 for (int i=0; i<N_CHARTS; i++)
                 {
@@ -1440,6 +1443,18 @@ namespace Omniscient
                 }
                 if (chart.ChartAreas[0].AxisX.Maximum < mouseTime.ToOADate() ||
                     (chart.ChartAreas[0].AxisX.Minimum > mouseTime.ToOADate()))
+                {
+                    StripChart_MouseUp(downChart, e);
+                }
+            }
+            if (drawingYZoomBox)
+            {
+                for (int i = 0; i < N_CHARTS; i++)
+                {
+                    GetChart(i).Invalidate();
+                }
+                if (chart.ChartAreas[0].AxisY.Maximum < chart.ChartAreas[0].AxisY.PixelPositionToValue(mouseY) ||
+                    (chart.ChartAreas[0].AxisY.Minimum > chart.ChartAreas[0].AxisY.PixelPositionToValue(mouseY)))
                 {
                     StripChart_MouseUp(downChart, e);
                 }
@@ -1709,16 +1724,25 @@ namespace Omniscient
         }
 
         Chart downChart;
-        bool drawingZoomBox = false;
+        bool drawingXZoomBox = false;
+        bool drawingYZoomBox = false;
         private void StripChart_MouseDown(object sender, MouseEventArgs e)
         {
             downChart = (Chart)sender;
             mouseDownX = downChart.ChartAreas[0].AxisX.PixelPositionToValue(e.X);
+            mouseDownY = downChart.ChartAreas[0].AxisY.PixelPositionToValue(e.Y);
             if (e.Button == MouseButtons.Left &&
                 mouseDownX >= downChart.ChartAreas[0].AxisX.Minimum &&
                 mouseDownX <= downChart.ChartAreas[0].AxisX.Maximum)
             {
-                drawingZoomBox = true;
+                drawingXZoomBox = true;
+            }
+            else if (e.Button == MouseButtons.Left &&
+                mouseDownX < downChart.ChartAreas[0].AxisX.Minimum &&
+                mouseDownY >= downChart.ChartAreas[0].AxisY.Minimum &&
+                mouseDownY <= downChart.ChartAreas[0].AxisY.Maximum)
+            {
+                drawingYZoomBox = true;
             }
         }
 
@@ -1766,10 +1790,34 @@ namespace Omniscient
 
         private void StripChart_MouseUp(object sender, MouseEventArgs e)
         {
-            if (!drawingZoomBox) return;
+            if (!drawingXZoomBox && !drawingYZoomBox) return;
 
             Chart chart = (Chart)sender;
             if (chart != downChart) return;
+            int chartNum = (int)chart.Tag;
+
+            if (drawingYZoomBox)
+            {
+                double mouseY = e.Y > 0 ? chart.ChartAreas[0].AxisY.PixelPositionToValue(e.Y) : 0;
+                if (mouseY > mouseDownY)
+                {
+                    chartMinY[chartNum] = mouseDownY;
+                    chartMaxY[chartNum] = mouseY;
+                }
+                else
+                {
+                    double mid = (chart.ChartAreas[0].AxisY.Maximum + chart.ChartAreas[0].AxisY.Minimum)/2;
+                    double radius = mid - chart.ChartAreas[0].AxisY.Minimum;
+                    chartMinY[chartNum] = mid - 2*radius;
+                    chartMaxY[chartNum] = mid + 2*radius;
+                }
+                autoScale[chartNum] = false;
+                drawingYZoomBox = false;
+                UpdateChart(chartNum);
+                return;
+            }
+
+
             mouseUpX = 0;
             try
             {
@@ -1779,7 +1827,8 @@ namespace Omniscient
             {
                 return;
             }
-            drawingZoomBox = false;
+            drawingXZoomBox = false;
+            drawingYZoomBox = false;
             
             double mouseDelta = mouseUpX - mouseDownX;
             double range = chart.ChartAreas[0].AxisX.Maximum - chart.ChartAreas[0].AxisX.Minimum;
@@ -1806,7 +1855,7 @@ namespace Omniscient
                 ((mouseDelta / range < 0.02) && (mouseDelta/range > -0.02)))
             {
                 // This is nothing - just do nothing
-                drawingZoomBox = false;
+                drawingXZoomBox = false;
                 return;
             }
             else
@@ -1843,14 +1892,22 @@ namespace Omniscient
         public void StripChart_Paint(object sender, PaintEventArgs e)
         {
             Chart chart = (Chart)sender;
+            int chartNum = (int)chart.Tag;
             Axis X = chart.ChartAreas[0].AxisX;
             Axis Y = chart.ChartAreas[0].AxisY;
-            if (drawingZoomBox)
+            if (drawingXZoomBox)
             {
                 int xStart = (int)X.ValueToPixelPosition(mouseDownX);
                 int xNow = (int)X.ValueToPixelPosition(mouseTime.ToOADate());
                 e.Graphics.DrawRectangle(Pens.Gray, Math.Min(xStart, xNow), (int)Y.ValueToPixelPosition(Y.Maximum),
                     Math.Abs(xStart - xNow), (int)Y.ValueToPixelPosition(Y.Minimum) - (int)Y.ValueToPixelPosition(Y.Maximum));
+            }
+            if (drawingYZoomBox && chartNum == (int)downChart.Tag)
+            {
+                int yStart = (int)Y.ValueToPixelPosition(mouseDownY);
+                int yNow = (int)mouseY;
+                e.Graphics.DrawRectangle(Pens.Gray, (int)X.ValueToPixelPosition(X.Minimum), Math.Min(yStart, yNow),
+                    (int)X.ValueToPixelPosition(X.Maximum) - (int)X.ValueToPixelPosition(X.Minimum), Math.Abs(yStart - yNow));
             }
             if (!(manualIOR is null) && chart == manualIORChart)
             {
