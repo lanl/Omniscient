@@ -2002,8 +2002,32 @@ namespace Omniscient
                     menu.MenuItems.Add(menuItem);
                 }
 
+                menuItem = new MenuItem("View event");
+                menuItem.Tag = eve;
+                menuItem.Click += ViewEvent_Click;
+                menu.MenuItems.Add(menuItem);
+
                 menu.Show(sender as Control, new Point(e.X, e.Y));
             }
+        }
+
+        private void ViewEvent_Click(object sender, EventArgs e)
+        {
+            Event eve = (sender as MenuItem).Tag as Event;
+            DateTime start = eve.StartTime;
+            DateTime end = eve.EndTime;
+            DateTime eventMid = eve.StartTime.AddTicks((end - start).Ticks / 2);
+            TimeSpan range;
+            if (end- start < Core.ViewEnd - Core.ViewStart)
+            {
+                range = Core.ViewEnd - Core.ViewStart;
+            }
+            else
+            {
+                range = TimeSpan.FromTicks((end - start).Ticks*2);
+            }
+
+            ChangeView(eventMid.AddTicks(-range.Ticks / 2), eventMid.AddTicks(range.Ticks / 2));
         }
 
         private void ExportDataMenuItem_Click(object sender, EventArgs e)
