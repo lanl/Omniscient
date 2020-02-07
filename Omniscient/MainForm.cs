@@ -2007,7 +2007,10 @@ namespace Omniscient
                 menuItem.Click += ViewEvent_Click;
                 menu.MenuItems.Add(menuItem);
 
-                menu.Show(sender as Control, new Point(e.X, e.Y));
+                Point location = EventGridView.GetCellDisplayRectangle(e.ColumnIndex, e.RowIndex, false).Location;
+                location.X += e.X;
+                location.Y += e.Y;
+                menu.Show(EventGridView,location);
             }
         }
 
