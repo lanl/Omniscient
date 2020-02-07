@@ -22,7 +22,6 @@ namespace Omniscient
 {
     public class EventWriter
     {
-        private const int VERSION = 1;
         private const string DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss.fff";
         public ReturnCode WriteEventFile(string fileName, List<Event> events)
         {
@@ -32,7 +31,7 @@ namespace Omniscient
             catch { return ReturnCode.COULD_NOT_OPEN_FILE; }
 
             // Write header
-            writeStream.WriteLine("Event List,Version," + VERSION.ToString());
+            writeStream.WriteLine("Event List, Omniscient Version," + OmniscientCore.VERSION);
             writeStream.WriteLine("Event Start,Event End,Duration,Max Value,Max Time,Comments");
 
             // Write event content

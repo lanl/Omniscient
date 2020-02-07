@@ -1645,6 +1645,7 @@ namespace Omniscient
             }
             if (HighlightEventsCheckBox.Checked)
                 DrawSections();
+            ToolStripStatusLabel.Text = Core.Events.Count.ToString() + " Events Generated";
         }
 
         private void HighlightEventsCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -2102,6 +2103,35 @@ namespace Omniscient
 
             if (ForwardHistory.Count == 0) ForwardButton.Enabled = false;
             else ForwardButton.Enabled = true;
+        }
+
+        private void ExportEventsButton_Click(object sender, EventArgs e)
+        {
+            // Nobody wants an empty file
+            if (Core.Events.Count == 0) return;
+
+            SaveFileDialog dialog = new SaveFileDialog()
+            {
+                DefaultExt = "csv",
+                OverwritePrompt = true,
+                FileName = "events.csv"
+            };
+            if (dialog.ShowDialog() != DialogResult.OK) return;
+
+            // Abort if file location is unwritable
+            try
+            {
+                File.WriteAllText(dialog.FileName, "");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Could not write to file location!");
+                return;
+            }
+
+            // Write file
+            EventWriter writer = new EventWriter();
+            writer.WriteEventFile(dialog.FileName, Core.Events);
         }
     }
 }
