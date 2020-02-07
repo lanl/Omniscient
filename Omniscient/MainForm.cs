@@ -572,29 +572,36 @@ namespace Omniscient
 
         private void AutoScaleYAxes(int chartNum)
         {
-            double maxOrderOfMagnitude = Math.Pow(10,Math.Floor(Math.Log10(chartMaxPointValue[chartNum])));
-            double firstDigit = Math.Floor(chartMaxPointValue[chartNum] / maxOrderOfMagnitude);
-            double maxMinRatio = chartMaxPointValue[chartNum] / chartMinPointValue[chartNum];
+            Tuple<double, double> result = AutoRoundRange(chartMinPointValue[chartNum],
+                chartMaxPointValue[chartNum],
+                logScale[chartNum]);
 
-            if(logScale[chartNum])
+            chartMinY[chartNum] = result.Item1;
+            chartMaxY[chartNum] = result.Item2;
+        }
+
+        private Tuple<double,double> AutoRoundRange(double min, double max, bool log)
+        {
+            double maxOrderOfMagnitude = Math.Pow(10, Math.Floor(Math.Log10(max)));
+            double firstDigit = Math.Floor(max / maxOrderOfMagnitude);
+            double maxMinRatio = max / min;
+
+            if (log)
             {
-                double minOrderOfMagnitude = Math.Pow(10, Math.Floor(Math.Log10(chartMinPointValue[chartNum])));
-                chartMinY[chartNum] = minOrderOfMagnitude;
-                chartMaxY[chartNum] = maxOrderOfMagnitude * 10;
+                double minOrderOfMagnitude = Math.Pow(10, Math.Floor(Math.Log10(min)));
+                return new Tuple<double, double>(minOrderOfMagnitude, maxOrderOfMagnitude * 10);
             }
-            else if(maxMinRatio > 2)
+            else if (maxMinRatio > 2)
             {
-                chartMinY[chartNum] = 0;
-                chartMaxY[chartNum] = (firstDigit+1)*maxOrderOfMagnitude;
+                return new Tuple<double, double>(0, (firstDigit + 1) * maxOrderOfMagnitude);
             }
             else
             {
-                double minOrderOfMagnitude = Math.Pow(10,Math.Floor(Math.Log10(chartMinPointValue[chartNum])));
-                double maxMinDifference = chartMaxPointValue[chartNum] - chartMinPointValue[chartNum];
+                double minOrderOfMagnitude = Math.Pow(10, Math.Floor(Math.Log10(min)));
+                double maxMinDifference = max - min;
                 double diffOoM = Math.Pow(10, Math.Floor(Math.Log10(maxMinDifference)));
 
-                chartMinY[chartNum] = Math.Floor(chartMinPointValue[chartNum] / (diffOoM)) * diffOoM;
-                chartMaxY[chartNum] = Math.Ceiling(chartMaxPointValue[chartNum] / (diffOoM)) * diffOoM;
+                return new Tuple<double, double>(Math.Floor(min / (diffOoM)) * diffOoM, Math.Ceiling(max / (diffOoM)) * diffOoM);
             }
         }
 
@@ -1800,18 +1807,28 @@ namespace Omniscient
             if (drawingYZoomBox)
             {
                 double mouseY = e.Y > 0 ? chart.ChartAreas[0].AxisY.PixelPositionToValue(e.Y) : 0;
+                double newMin;
+                double newMax;
                 if (mouseY > mouseDownY)
                 {
-                    chartMinY[chartNum] = mouseDownY;
-                    chartMaxY[chartNum] = mouseY;
+                    newMin = mouseDownY;
+                    newMax = mouseY;
                 }
                 else
                 {
                     double mid = (chart.ChartAreas[0].AxisY.Maximum + chart.ChartAreas[0].AxisY.Minimum)/2;
                     double radius = mid - chart.ChartAreas[0].AxisY.Minimum;
-                    chartMinY[chartNum] = mid - 2*radius;
-                    chartMaxY[chartNum] = mid + 2*radius;
+                    newMin = mid - 2 * radius;
+                    newMax = mid + 2 * radius;
                 }
+                if(!controlPressed)
+                { 
+                    Tuple<double, double> rounded = AutoRoundRange(newMin, newMax, logScale[chartNum]);
+                    newMin = rounded.Item1;
+                    newMax = rounded.Item2;
+                }
+                chartMinY[chartNum] = newMin;
+                chartMaxY[chartNum] = newMax;
                 autoScale[chartNum] = false;
                 drawingYZoomBox = false;
                 UpdateChart(chartNum);
