@@ -1,5 +1,18 @@
 Omniscient Change Log
 
+##  0.4.9
+2020-02-07
+
+### New Features
+* There is a button to export the list of Events in the Event List.
+* When Events are generated, the number of Events is shown in the status bar.
+* Users can right click on an Event in the Event List and select "View Event" to move the view to the Event.
+* The Y-axis will auto scale when using the mouse to zoom in. This can be overriden by holding down the CTRL button.
+
+### Bug Fixes
+* The context menu for the Event Grid now shows up where the user clicks.
+
+
 ##  0.4.8
 2020-02-05
 

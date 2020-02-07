@@ -25,7 +25,7 @@ namespace Omniscient
         /// <summary>
         /// Version of Omniscient
         /// </summary>
-        public static readonly string VERSION = "0.4.8i";
+        public static readonly string VERSION = "0.4.9i";
 
         public event EventHandler ViewChanged;
 
