@@ -46,6 +46,8 @@ namespace Omniscient
 
         private int headerSize;
 
+        private int contentSize;
+
         public BIDParser()
         {
             fileName = "";
@@ -60,24 +62,36 @@ namespace Omniscient
             return new DateTime(1952, 1, 1).AddSeconds((double)timeIn);
         }
 
-        private void ReadHeader(BinaryReader readBinary)
+        private ReturnCode ReadHeader(BinaryReader readBinary)
         {
-            headerSize = int.Parse(new string(readBinary.ReadChars(4)));
-            readBinary.ReadBytes(5);                                        // Not used
-            MICVersion = new string(readBinary.ReadChars(5));
-            stationID = new string(readBinary.ReadChars(3));
-            int year = 2000 + int.Parse(new string(readBinary.ReadChars(3)));
-            int month = int.Parse(new string(readBinary.ReadChars(3)));
-            int day = int.Parse(new string(readBinary.ReadChars(3)));
-            date = new DateTime(year, month, day);
+            try
+            { 
+                headerSize = int.Parse(new string(readBinary.ReadChars(4)));
+                readBinary.ReadBytes(5);                                        // Not used
+                MICVersion = new string(readBinary.ReadChars(5));
+                stationID = new string(readBinary.ReadChars(3));
+                int year = 2000 + int.Parse(new string(readBinary.ReadChars(3)));
+                int month = int.Parse(new string(readBinary.ReadChars(3)));
+                int day = int.Parse(new string(readBinary.ReadChars(3)));
+                date = new DateTime(year, month, day);
+
+                if (headerSize != 69 || date < new DateTime(1952, 1, 1) || date > new DateTime(3000, 1, 1))
+                    return ReturnCode.CORRUPTED_FILE;
+                else
+                    return ReturnCode.SUCCESS;
+            }
+            catch
+            {
+                return ReturnCode.CORRUPTED_FILE;
+            }
         }
 
         private void ReadDataRecords(BinaryReader readBinary)
         {
             readBinary.ReadBytes(headerSize - 22);                            // Spare room in header
-            long numBytes = readBinary.BaseStream.Length;
+            
             // Read data records
-            numRecords = (int)((numBytes - 73) / 36);
+            numRecords = (int)((contentSize - 73) / 36);
             records = new BIDRecord[numRecords];
             for (int r = 0; r < numRecords; ++r)
             {
@@ -95,6 +109,24 @@ namespace Omniscient
             }
         }
 
+        /// <summary>
+        /// Returns a BinaryReader which has skipped past the ASN1 header.
+        /// Returns null if BID data cannot be found.
+        /// </summary>
+        /// <param name="bytes"></param>
+        /// <returns></returns>
+        private BinaryReader GetASN1Content(byte[] bytes)
+        {
+            ASN1Skipper skipper = new ASN1Skipper(bytes);
+            ASN1Element element = skipper.FindContentElement(new byte[] { 0x20, 0x20, 0x36, 0x39 });
+            if (element is null) return null;
+            contentSize = element.Length;
+            MemoryStream stream = new MemoryStream(bytes);
+            BinaryReader reader = new BinaryReader(stream);
+            stream.Seek(element.DataStart, SeekOrigin.Begin);
+            return reader;
+        }
+
         // ParseHeader is for quickly reading some header data without reading in the whole file
         public ReturnCode ParseHeader(string newFileName)
         {
@@ -105,8 +137,23 @@ namespace Omniscient
             {
                 readStream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                 BinaryReader readBinary = new BinaryReader(readStream);
-                ReadHeader(readBinary);
+                int nBytesToRead = 4096;
+                if (readStream.Length < nBytesToRead) nBytesToRead = (int)readStream.Length;
+                byte[] bytes = readBinary.ReadBytes(nBytesToRead);
                 readStream.Close();
+
+                MemoryStream stream = new MemoryStream(bytes);
+                readBinary = new BinaryReader(stream);
+
+                if (ReadHeader(readBinary) != ReturnCode.SUCCESS)
+                {
+                    // Try as a signed file
+                    readBinary = GetASN1Content(bytes);
+                    if (readBinary is null) return ReturnCode.CORRUPTED_FILE;
+                    if (ReadHeader(readBinary) != ReturnCode.SUCCESS) return ReturnCode.CORRUPTED_FILE;
+                }
+
+                stream.Close();
                 numRecords = 0;
             }
             catch (Exception ex)
@@ -126,7 +173,21 @@ namespace Omniscient
             {
                 readStream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                 BinaryReader readBinary = new BinaryReader(readStream);
-                ReadHeader(readBinary);
+                contentSize = (int)readStream.Length;
+                byte[] bytes = readBinary.ReadBytes(contentSize);
+                readStream.Close();
+
+                MemoryStream stream = new MemoryStream(bytes);
+                readBinary = new BinaryReader(stream);
+
+                if (ReadHeader(readBinary) != ReturnCode.SUCCESS)
+                {
+                    // Try as a signed file
+                    readBinary = GetASN1Content(bytes);
+                    if (readBinary is null) return ReturnCode.CORRUPTED_FILE;
+                    if (ReadHeader(readBinary) != ReturnCode.SUCCESS) return ReturnCode.CORRUPTED_FILE;
+                }
+
                 ReadDataRecords(readBinary);
                 readStream.Close();
             }
