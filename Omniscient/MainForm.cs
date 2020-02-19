@@ -267,7 +267,6 @@ namespace Omniscient
             if (returnCode == ReturnCode.FILE_DOESNT_EXIST)
             {
                 presetMan.WriteBlank();
-                MessageBox.Show("Presets.xml not found. A new one has been created.");
             }
             else if (returnCode != ReturnCode.SUCCESS) MessageBox.Show("Warning: Bad trouble loading the preset manager!");
             PresetsComboBox.Items.Clear();
