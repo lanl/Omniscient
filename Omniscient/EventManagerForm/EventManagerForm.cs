@@ -319,7 +319,7 @@ namespace Omniscient
             {
                 iteration++;
                 name = "New-" + hookup.Type + "-" + iteration.ToString();
-                uniqueName = !siteMan.ChildrenContainNameRecursive(name);
+                uniqueName = !eventWatcher.ChildrenContainName(name);
             }
 
             List<string> validSystemChannels = new List<string>();
@@ -392,9 +392,9 @@ namespace Omniscient
             DetectionSystem eventWatcher = (DetectionSystem)node.Parent.Tag;
             DetectionSystem sys = (DetectionSystem)eventWatcher;
 
-            if (action.Name != ActionsComboBox.Text && siteMan.ChildrenContainNameRecursive(ActionsComboBox.Text))
+            if (action.Name != ActionsComboBox.Text && sys.ChildrenContainName(ActionsComboBox.Text))
             {
-                MessageBox.Show("All items in the Site Manager require a unique name!");
+                MessageBox.Show("All items in the System require a unique name!");
                 return;
             }
             action.Name = ActionNameTextBox.Text;
@@ -460,9 +460,9 @@ namespace Omniscient
             {
                 DetectionSystem eventWatcher = (DetectionSystem)node.Parent.Tag;
                 EventGenerator eg = (EventGenerator)node.Tag;
-                if (eg.Name != NameTextBox.Text && siteMan.ChildrenContainNameRecursive(NameTextBox.Text))
+                if (eg.Name != NameTextBox.Text && eventWatcher.ChildrenContainName(NameTextBox.Text))
                 {
-                    MessageBox.Show("All items in the Site Manager and Event Manager require a unique name!");
+                    MessageBox.Show("All items in the System require a unique name!");
                     return;
                 }
                 if (!ParamListPanel.ValidateInput()) return;
@@ -513,7 +513,7 @@ namespace Omniscient
             {
                 iteration++;
                 name = "New-Action-" + iteration.ToString();
-                uniqueName = !siteMan.ChildrenContainNameRecursive(name);
+                uniqueName = !eg.ChildrenContainName(name);
             }
             CommandAction action = new CommandAction(eg, name, 0);
             siteMan.Save();
