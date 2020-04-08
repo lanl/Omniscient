@@ -76,7 +76,7 @@ namespace Omniscient
             foreach (Site site in siteMan.GetSites())
             {
                 TreeNode siteNode = new TreeNode(site.Name);
-                siteNode.Name = site.Name;
+                siteNode.Name = site.ID.ToString();
                 siteNode.Tag = site;
                 siteNode.ImageIndex = 0;
                 siteNode.SelectedImageIndex = 0;
@@ -84,7 +84,7 @@ namespace Omniscient
                 foreach (Facility fac in site.GetFacilities())
                 {
                     TreeNode facNode = new TreeNode(fac.Name);
-                    facNode.Name = fac.Name;
+                    facNode.Name = fac.ID.ToString();
                     facNode.Tag = fac;
                     facNode.ImageIndex = 1;
                     facNode.SelectedImageIndex = 1;
@@ -92,7 +92,7 @@ namespace Omniscient
                     foreach (DetectionSystem sys in fac.GetSystems())
                     {
                         TreeNode sysNode = new TreeNode(sys.Name);
-                        sysNode.Name = sys.Name;
+                        sysNode.Name = sys.ID.ToString();
                         sysNode.Tag = sys;
                         sysNode.ImageIndex = 2;
                         sysNode.SelectedImageIndex = 2;
@@ -102,7 +102,7 @@ namespace Omniscient
                             if (!(inst is DeclarationInstrument))
                             {
                                 TreeNode instNode = new TreeNode(inst.Name);
-                                instNode.Name = inst.Name;
+                                instNode.Name = inst.ID.ToString();
                                 instNode.Tag = inst;
                                 instNode.ImageIndex = 3;
                                 instNode.SelectedImageIndex = 3;
@@ -113,7 +113,7 @@ namespace Omniscient
                         foreach (EventGenerator eg in sys.GetEventGenerators())
                         {
                             TreeNode egNode = new TreeNode(eg.Name);
-                            egNode.Name = eg.Name;
+                            egNode.Name = eg.ID.ToString();
                             egNode.ForeColor = System.Drawing.SystemColors.GrayText;
                             egNode.Tag = eg;
                             egNode.ImageIndex = 4;
@@ -417,7 +417,7 @@ namespace Omniscient
                     return;
                 }
                 site.Name = NameTextBox.Text;
-                nodeName = site.Name;
+                nodeName = site.ID.ToString();
             }
             else if (node.Tag is Facility)
             {
@@ -428,7 +428,7 @@ namespace Omniscient
                     return;
                 }
                 fac.Name = NameTextBox.Text;
-                nodeName = fac.Name;
+                nodeName = fac.ID.ToString();
             }
             else if (node.Tag is DetectionSystem)
             {
@@ -439,7 +439,7 @@ namespace Omniscient
                     return;
                 }
                 sys.Name = NameTextBox.Text;
-                nodeName = sys.Name;
+                nodeName = sys.ID.ToString();
                 if(DeclarationCheckBox.Checked)
                 {
                     selectedSystem.GetDeclarationInstrument().SetFilePrefix(DeclarationPrefixTextBox.Text);
@@ -488,7 +488,7 @@ namespace Omniscient
                     }
                     chan = SaveChannel(inst, selectedChannel);
                 }
-                nodeName = inst.Name;
+                nodeName = inst.ID.ToString();
             }
             else if (node.Tag is EventGenerator)
             {
@@ -570,10 +570,11 @@ namespace Omniscient
                 uniqueName = !siteMan.ChildrenContainNameRecursive(name);
             }
             Site newSite = new Site(siteMan, name, 0);
+            string id = newSite.ID.ToString();
             siteMan.Save();
             UpdateSitesTree();
             siteManChanged = true;
-            SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(name, true)[0];
+            SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(id, true)[0];
         }
 
         private void NewFacilityButton_Click(object sender, EventArgs e)
@@ -619,11 +620,12 @@ namespace Omniscient
                 uniqueName = !siteMan.ChildrenContainNameRecursive(name);
             }
             Facility newFacility = new Facility(site, name, 0);
+            string id = newFacility.ID.ToString();
             newFacility.SetIndex(index);
             siteMan.Save();
             UpdateSitesTree();
             siteManChanged = true;
-            SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(name, true)[0];
+            SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(id, true)[0];
         }
 
         private void NewSystemButton_Click(object sender, EventArgs e)
@@ -663,11 +665,12 @@ namespace Omniscient
                 uniqueName = !siteMan.ChildrenContainNameRecursive(name);
             }
             DetectionSystem newSys = new DetectionSystem(fac, name, 0);
+            string id = newSys.ID.ToString();
             newSys.SetIndex(index);
             siteMan.Save();
             UpdateSitesTree();
             siteManChanged = true;
-            SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(name, true)[0];
+            SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(id, true)[0];
         }
 
         private void NewInstrumentButton_Click(object sender, EventArgs e)
@@ -738,11 +741,11 @@ namespace Omniscient
                 }
             }
             Instrument newInstrument = hookup.FromParameters(sys, name, parameters, 0);
-            
+            string id = newInstrument.ID.ToString();
             siteMan.Save();
             UpdateSitesTree();
             siteManChanged = true;
-            SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(name, true)[0];
+            SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(id, true)[0];
         }
 
         private void AddVirtualChannelButton_Click(object sender, EventArgs e)
@@ -806,7 +809,7 @@ namespace Omniscient
             siteMan.Save();
             UpdateSitesTree();
             siteManChanged = true;
-            SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(inst.Name, true)[0];
+            SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(inst.ID.ToString(), true)[0];
             ChannelsComboBox.SelectedItem = name;
             selectedVirtualChannel = virtualChannel;
         }
@@ -843,7 +846,7 @@ namespace Omniscient
             siteMan.Save();
             UpdateSitesTree();
             siteManChanged = true;
-            SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(inst.Name, true)[0];
+            SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(inst.ID.ToString(), true)[0];
             ResetFields();
         }
 
@@ -862,7 +865,7 @@ namespace Omniscient
                     siteMan.Save();
                     UpdateSitesTree();
                     siteManChanged = true;
-                    SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(site.Name, true)[0];
+                    SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(site.ID.ToString(), true)[0];
                 }
             }
             else if (node.Tag is Facility)
@@ -877,7 +880,7 @@ namespace Omniscient
                     siteMan.Save();
                     UpdateSitesTree();
                     siteManChanged = true;
-                    SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(fac.Name, true)[0];
+                    SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(fac.ID.ToString(), true)[0];
                 }
             }
             else if (node.Tag is DetectionSystem)
@@ -892,7 +895,7 @@ namespace Omniscient
                     siteMan.Save();
                     UpdateSitesTree();
                     siteManChanged = true;
-                    SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(sys.Name, true)[0];
+                    SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(sys.ID.ToString(), true)[0];
                 }
             }
             else if (node.Tag is Instrument)
@@ -907,7 +910,7 @@ namespace Omniscient
                     siteMan.Save();
                     UpdateSitesTree();
                     siteManChanged = true;
-                    SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(inst.Name, true)[0];
+                    SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(inst.ID.ToString(), true)[0];
                 }
             }
         }
@@ -927,7 +930,7 @@ namespace Omniscient
                     siteMan.Save();
                     UpdateSitesTree();
                     siteManChanged = true;
-                    SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(site.Name, true)[0];
+                    SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(site.ID.ToString(), true)[0];
                 }
             }
             else if (node.Tag is Facility)
@@ -942,7 +945,7 @@ namespace Omniscient
                     siteMan.Save();
                     UpdateSitesTree();
                     siteManChanged = true;
-                    SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(fac.Name, true)[0];
+                    SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(fac.ID.ToString(), true)[0];
                 }
             }
             else if (node.Tag is DetectionSystem)
@@ -957,7 +960,7 @@ namespace Omniscient
                     siteMan.Save();
                     UpdateSitesTree();
                     siteManChanged = true;
-                    SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(sys.Name, true)[0];
+                    SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(sys.ID.ToString(), true)[0];
                 }
             }
             else if (node.Tag is Instrument)
@@ -972,7 +975,7 @@ namespace Omniscient
                     siteMan.Save();
                     UpdateSitesTree();
                     siteManChanged = true;
-                    SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(inst.Name, true)[0];
+                    SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(inst.ID.ToString(), true)[0];
                 }
             }
         }
@@ -1001,7 +1004,7 @@ namespace Omniscient
                 siteMan.Save();
                 UpdateSitesTree();
                 siteManChanged = true;
-                SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(inst.Name, true)[0];
+                SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(inst.ID.ToString(), true)[0];
                 ChannelsComboBox.SelectedItem = chan.Name;
             }
         }
@@ -1031,7 +1034,7 @@ namespace Omniscient
                 siteMan.Save();
                 UpdateSitesTree();
                 siteManChanged = true;
-                SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(inst.Name, true)[0];
+                SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(inst.ID.ToString(), true)[0];
                 ChannelsComboBox.SelectedItem = chan.Name;
             }
         }

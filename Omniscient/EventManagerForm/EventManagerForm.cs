@@ -67,7 +67,7 @@ namespace Omniscient
             foreach (Site site in siteMan.GetSites())
             {
                 TreeNode siteNode = new TreeNode(site.Name);
-                siteNode.Name = site.Name;
+                siteNode.Name = site.ID.ToString();
                 siteNode.Tag = site;
                 siteNode.ImageIndex = 0;
                 siteNode.SelectedImageIndex = 0;
@@ -75,7 +75,7 @@ namespace Omniscient
                 foreach (Facility fac in site.GetFacilities())
                 {
                     TreeNode facNode = new TreeNode(fac.Name);
-                    facNode.Name = fac.Name;
+                    facNode.Name = fac.ID.ToString();
                     facNode.Tag = fac;
                     facNode.ImageIndex = 1;
                     facNode.SelectedImageIndex = 1;
@@ -83,7 +83,7 @@ namespace Omniscient
                     foreach (DetectionSystem sys in fac.GetSystems())
                     {
                         TreeNode sysNode = new TreeNode(sys.Name);
-                        sysNode.Name = sys.Name;
+                        sysNode.Name = sys.ID.ToString();
                         sysNode.Tag = sys;
                         sysNode.ImageIndex = 2;
                         sysNode.SelectedImageIndex = 2;
@@ -91,7 +91,7 @@ namespace Omniscient
                         foreach (Instrument inst in sys.GetInstruments())
                         {
                             TreeNode instNode = new TreeNode(inst.Name);
-                            instNode.Name = inst.Name;
+                            instNode.Name = inst.ID.ToString();
                             instNode.Tag = inst;
                             instNode.ImageIndex = 3;
                             instNode.SelectedImageIndex = 3;
@@ -101,7 +101,7 @@ namespace Omniscient
                         foreach (EventGenerator eg in sys.GetEventGenerators())
                         {
                             TreeNode egNode = new TreeNode(eg.Name);
-                            egNode.Name = eg.Name;
+                            egNode.Name = eg.ID.ToString();
                             egNode.NodeFont = new Font(SitesTreeView.Font, FontStyle.Bold);
                             egNode.Tag = eg;
                             egNode.ImageIndex = 4;
@@ -244,7 +244,7 @@ namespace Omniscient
                     siteMan.Save();
                     UpdateSitesTree();
                     siteManChanged = true;
-                    SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(eg.Name, true)[0];
+                    SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(eg.ID.ToString(), true)[0];
                 }
             }
         }
@@ -265,7 +265,7 @@ namespace Omniscient
                     siteMan.Save();
                     UpdateSitesTree();
                     siteManChanged = true;
-                    SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(eg.Name, true)[0];
+                    SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(eg.ID.ToString(), true)[0];
                 }
             }
         }
@@ -383,7 +383,7 @@ namespace Omniscient
             siteMan.Save();
             UpdateSitesTree();
             siteManChanged = true;
-            SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(eg.Name, true)[0];
+            SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(eg.ID.ToString(), true)[0];
         }
 
         private void SaveAction(EventGenerator eg, Action action)
@@ -495,7 +495,7 @@ namespace Omniscient
                 siteMan.Save();
                 UpdateSitesTree();
                 siteManChanged = true;
-                SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(eg.Name, true)[0];
+                SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(eg.ID.ToString(), true)[0];
                 if(act!=null)
                 {
                     ActionsComboBox.Text = act.Name;
@@ -519,7 +519,7 @@ namespace Omniscient
             siteMan.Save();
             UpdateSitesTree();
             siteManChanged = true;
-            SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(eg.Name, true)[0];
+            SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(eg.ID.ToString(), true)[0];
             ActionsComboBox.Text = name;
             selectedAction = action;
         }
@@ -542,7 +542,7 @@ namespace Omniscient
             siteMan.Save();
             UpdateSitesTree();
             siteManChanged = true;
-            SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(eg.Name, true)[0];
+            SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(eg.ID.ToString(), true)[0];
             ResetFields();
         }
 

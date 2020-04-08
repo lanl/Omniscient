@@ -254,7 +254,7 @@ namespace Omniscient
 
             while (Core.ActiveInstruments.Count>0)
             {
-                //SitesTreeView.Nodes.Find(activeInstruments[0].GetName(), true)[0].Checked = false;
+                //SitesTreeView.Nodes.Find(activeInstruments[0].ID.ToString(), true)[0].Checked = false;
                 RemoveChannelPanels(Core.ActiveInstruments[0]);
             }
         }
@@ -284,7 +284,7 @@ namespace Omniscient
             foreach (Site site in Core.SiteManager.GetSites())
             {
                 TreeNode siteNode = new TreeNode(site.Name);
-                siteNode.Name = site.Name;
+                siteNode.Name = site.ID.ToString();
                 siteNode.Tag = site;
                 siteNode.ImageIndex = 0;
                 siteNode.SelectedImageIndex = 0;
@@ -292,7 +292,7 @@ namespace Omniscient
                 foreach (Facility fac in site.GetFacilities())
                 {
                     TreeNode facNode = new TreeNode(fac.Name);
-                    facNode.Name = fac.Name;
+                    facNode.Name = fac.ID.ToString();
                     facNode.Tag = fac;
                     facNode.ImageIndex = 1;
                     facNode.SelectedImageIndex = 1;
@@ -300,7 +300,7 @@ namespace Omniscient
                     foreach (DetectionSystem sys in fac.GetSystems())
                     {
                         TreeNode sysNode = new TreeNode(sys.Name);
-                        sysNode.Name = sys.Name;
+                        sysNode.Name = sys.ID.ToString();
                         sysNode.Tag = sys;
                         sysNode.ImageIndex = 2;
                         sysNode.SelectedImageIndex = 2;
@@ -308,7 +308,7 @@ namespace Omniscient
                         foreach (Instrument inst in sys.GetInstruments())
                         {
                             TreeNode instNode = new TreeNode(inst.Name);
-                            instNode.Name = inst.Name;
+                            instNode.Name = inst.ID.ToString();
                             instNode.Tag = inst;
                             instNode.ImageIndex = 3;
                             instNode.SelectedImageIndex = 3;
@@ -318,7 +318,7 @@ namespace Omniscient
                         foreach (EventGenerator eg in sys.GetEventGenerators())
                         {
                             TreeNode egNode = new TreeNode(eg.Name);
-                            egNode.Name = eg.Name;
+                            egNode.Name = eg.ID.ToString();
                             egNode.Tag = eg;
                             egNode.ImageIndex = 4;
                             egNode.SelectedImageIndex = 4;
@@ -1516,7 +1516,7 @@ namespace Omniscient
 
             foreach (Instrument inst in preset.GetActiveInstruments())
             {
-                SitesTreeView.Nodes.Find(inst.Name, true)[0].Checked = true;
+                SitesTreeView.Nodes.Find(inst.ID.ToString(), true)[0].Checked = true;
             }
 
             // So, this next part could probably be more elegant...
@@ -1547,7 +1547,7 @@ namespace Omniscient
 
             foreach (EventGenerator eventGenerator in preset.GetActiveEventGenerators())
             {
-                SitesTreeView.Nodes.Find(eventGenerator.Name, true)[0].Checked = true;
+                SitesTreeView.Nodes.Find(eventGenerator.ID.ToString(), true)[0].Checked = true;
             }
 
             PresetNameTextBox.Text = preset.GetName();
