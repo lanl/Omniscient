@@ -42,35 +42,6 @@ namespace Omniscient
             throw new NotImplementedException();
         }
 
-        public bool ContainsName(string name)
-        {
-            foreach(Site site in sites)
-            {
-                if (site.Name == name) return true;
-                foreach(Facility fac in site.GetFacilities())
-                {
-                    if (fac.Name == name) return true;
-                    foreach(DetectionSystem sys in fac.GetSystems())
-                    {
-                        if (sys.Name == name) return true;
-                        foreach(Instrument inst in sys.GetInstruments())
-                        {
-                            if (inst.Name == name) return true;
-                            foreach(Channel chan in inst.GetChannels())
-                                if (chan.Name == name) return true;
-                        }
-                        foreach (EventGenerator eventGenerator in sys.GetEventGenerators())
-                        {
-                            if (eventGenerator.Name == name) return true;
-                            foreach (Action action in eventGenerator.GetActions())
-                                if (action.Name == name) return true;
-                        }
-                    }
-                }
-            }
-            return false;
-        }
-
         public ReturnCode Reload()
         {
             return LoadFromXML(xmlFile);

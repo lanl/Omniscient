@@ -159,6 +159,36 @@ namespace Omniscient
             TakenIDs.Remove(ID);
         }
 
+        /// <summary>
+        /// Returns true if any of the persister's immediate children have the given name.
+        /// Note: not recursive
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public bool ChildrenContainName(string name)
+        {
+            foreach (Persister child in Children)
+            {
+                if (child.Name == name) return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Returns true if any of the persister's children (recursive) have the given name.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public bool ChildrenContainNameRecursive(string name)
+        {
+            foreach (Persister child in Children)
+            {
+                if (child.Name == name) return true;
+                if (child.ChildrenContainNameRecursive(name)) return true;
+            }
+            return false;
+        }
+
         public override string ToString()
         {
             return Name;

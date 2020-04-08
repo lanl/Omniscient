@@ -319,7 +319,7 @@ namespace Omniscient
             {
                 iteration++;
                 name = "New-" + hookup.Type + "-" + iteration.ToString();
-                uniqueName = !siteMan.ContainsName(name);
+                uniqueName = !siteMan.ChildrenContainNameRecursive(name);
             }
 
             List<string> validSystemChannels = new List<string>();
@@ -392,7 +392,7 @@ namespace Omniscient
             DetectionSystem eventWatcher = (DetectionSystem)node.Parent.Tag;
             DetectionSystem sys = (DetectionSystem)eventWatcher;
 
-            if (action.Name != ActionsComboBox.Text && siteMan.ContainsName(ActionsComboBox.Text))
+            if (action.Name != ActionsComboBox.Text && siteMan.ChildrenContainNameRecursive(ActionsComboBox.Text))
             {
                 MessageBox.Show("All items in the Site Manager require a unique name!");
                 return;
@@ -460,7 +460,7 @@ namespace Omniscient
             {
                 DetectionSystem eventWatcher = (DetectionSystem)node.Parent.Tag;
                 EventGenerator eg = (EventGenerator)node.Tag;
-                if (eg.Name != NameTextBox.Text && siteMan.ContainsName(NameTextBox.Text))
+                if (eg.Name != NameTextBox.Text && siteMan.ChildrenContainNameRecursive(NameTextBox.Text))
                 {
                     MessageBox.Show("All items in the Site Manager and Event Manager require a unique name!");
                     return;
@@ -513,7 +513,7 @@ namespace Omniscient
             {
                 iteration++;
                 name = "New-Action-" + iteration.ToString();
-                uniqueName = !siteMan.ContainsName(name);
+                uniqueName = !siteMan.ChildrenContainNameRecursive(name);
             }
             CommandAction action = new CommandAction(eg, name, 0);
             siteMan.Save();

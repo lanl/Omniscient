@@ -351,7 +351,7 @@ namespace Omniscient
         private Channel SaveChannel(Instrument inst, Channel chan)
         {
             // Validate input
-            if (chan.Name != ChannelNameTextBox.Text && siteMan.ContainsName(ChannelNameTextBox.Text))
+            if (chan.Name != ChannelNameTextBox.Text && siteMan.ChildrenContainNameRecursive(ChannelNameTextBox.Text))
             {
                 MessageBox.Show("All items in the Site Manager require a unique name!");
                 return null;
@@ -367,7 +367,7 @@ namespace Omniscient
 
         private VirtualChannel SaveVirtualChannel(Instrument inst, VirtualChannel chan)
         {
-            if (chan.Name != VirtualChannelNameTextBox.Text && siteMan.ContainsName(VirtualChannelNameTextBox.Text))
+            if (chan.Name != VirtualChannelNameTextBox.Text && siteMan.ChildrenContainNameRecursive(VirtualChannelNameTextBox.Text))
             {
                 MessageBox.Show("All items in the Site Manager require a unique name!");
                 return null;
@@ -411,7 +411,7 @@ namespace Omniscient
             if (node.Tag is Site)
             {
                 Site site = (Site)node.Tag;
-                if(site.Name != NameTextBox.Text && siteMan.ContainsName(NameTextBox.Text))
+                if(site.Name != NameTextBox.Text && siteMan.ChildrenContainNameRecursive(NameTextBox.Text))
                 {
                     MessageBox.Show("All items in the Site Manager require a unique name!");
                     return;
@@ -422,7 +422,7 @@ namespace Omniscient
             else if (node.Tag is Facility)
             {
                 Facility fac = (Facility)node.Tag;
-                if (fac.Name != NameTextBox.Text && siteMan.ContainsName(NameTextBox.Text))
+                if (fac.Name != NameTextBox.Text && siteMan.ChildrenContainNameRecursive(NameTextBox.Text))
                 {
                     MessageBox.Show("All items in the Site Manager require a unique name!");
                     return;
@@ -433,7 +433,7 @@ namespace Omniscient
             else if (node.Tag is DetectionSystem)
             {
                 DetectionSystem sys = (DetectionSystem)node.Tag;
-                if (sys.Name != NameTextBox.Text && siteMan.ContainsName(NameTextBox.Text))
+                if (sys.Name != NameTextBox.Text && siteMan.ChildrenContainNameRecursive(NameTextBox.Text))
                 {
                     MessageBox.Show("All items in the Site Manager require a unique name!");
                     return;
@@ -450,7 +450,7 @@ namespace Omniscient
             else if (node.Tag is Instrument)
             {
                 Instrument inst = (Instrument)node.Tag;
-                if (inst.Name != NameTextBox.Text && siteMan.ContainsName(NameTextBox.Text))
+                if (inst.Name != NameTextBox.Text && siteMan.ChildrenContainNameRecursive(NameTextBox.Text))
                 {
                     MessageBox.Show("All items in the Site Manager require a unique name!");
                     return;
@@ -567,7 +567,7 @@ namespace Omniscient
             {
                 iteration++;
                 name = "New-Site-" + iteration.ToString();
-                uniqueName = !siteMan.ContainsName(name);
+                uniqueName = !siteMan.ChildrenContainNameRecursive(name);
             }
             Site newSite = new Site(siteMan, name, 0);
             siteMan.Save();
@@ -616,7 +616,7 @@ namespace Omniscient
             {
                 iteration++;
                 name = "New-Facility-" + iteration.ToString();
-                uniqueName = !siteMan.ContainsName(name);
+                uniqueName = !siteMan.ChildrenContainNameRecursive(name);
             }
             Facility newFacility = new Facility(site, name, 0);
             newFacility.SetIndex(index);
@@ -660,7 +660,7 @@ namespace Omniscient
             {
                 iteration++;
                 name = "New-System-" + iteration.ToString();
-                uniqueName = !siteMan.ContainsName(name);
+                uniqueName = !siteMan.ChildrenContainNameRecursive(name);
             }
             DetectionSystem newSys = new DetectionSystem(fac, name, 0);
             newSys.SetIndex(index);
@@ -705,7 +705,7 @@ namespace Omniscient
             {
                 iteration++;
                 name = "New-" + type + "-" + iteration.ToString();
-                uniqueName = !siteMan.ContainsName(name);
+                uniqueName = !siteMan.ChildrenContainNameRecursive(name);
             }
 
             InstrumentHookup hookup = Instrument.GetHookup(type);
@@ -766,7 +766,7 @@ namespace Omniscient
             {
                 iteration++;
                 name = "New-VC-" + iteration.ToString();
-                uniqueName = !siteMan.ContainsName(name);
+                uniqueName = !siteMan.ChildrenContainNameRecursive(name);
             }
 
             VirtualChannelHookup hookup = VirtualChannel.GetHookup(dialog.vcType);
