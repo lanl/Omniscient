@@ -233,15 +233,12 @@ namespace Omniscient
 
             if (fileAbrev.Length < nameDateOffset + 10) return DateTime.MinValue;
 
-            year = 0;
             if (int.TryParse(fileAbrev.Substring(nameDateOffset, 4), out year) && year > 1900 && year < 3000)
             {
-                month = 0;
                 if (usesDateSpacers)
                 {
                     if (int.TryParse(fileAbrev.Substring(nameDateOffset + 5, 2), out month) && month > 0 && month < 13)
                     {
-                        day = 0;
                         if (int.TryParse(fileAbrev.Substring(nameDateOffset + 8, 2), out day) && day > 0 && day < 32)
                         {
                             foundDay = true;
@@ -252,7 +249,6 @@ namespace Omniscient
                 {
                     if (int.TryParse(fileAbrev.Substring(nameDateOffset + 4, 2), out month) && month > 0 && month < 13)
                     {
-                        day = 0;
                         if (int.TryParse(fileAbrev.Substring(nameDateOffset + 6, 2), out day) && day > 0 && day < 32)
                         {
                             foundDay = true;

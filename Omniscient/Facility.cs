@@ -32,12 +32,6 @@ namespace Omniscient
             systems = new List<DetectionSystem>();
         }
 
-        public void AddSystem(DetectionSystem newSys)
-        {
-            systems.Add(newSys);
-            Children.Add(newSys);
-        }
-
         public List<DetectionSystem> GetSystems()
         {
             return systems;

@@ -32,12 +32,6 @@ namespace Omniscient
             facilities = new List<Facility>();
         }
 
-        public void AddFacility(Facility newFac)
-        {
-            facilities.Add(newFac);
-            Children.Add(newFac);
-        }
-
         public List<Facility> GetFacilities()
         {
             return facilities;
