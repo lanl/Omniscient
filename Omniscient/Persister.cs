@@ -158,5 +158,10 @@ namespace Omniscient
             }
             TakenIDs.Remove(ID);
         }
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 }

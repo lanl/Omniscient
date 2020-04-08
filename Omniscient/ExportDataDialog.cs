@@ -51,7 +51,7 @@ namespace Omniscient
             InstrumentComboBox.Items.Clear();
             foreach(Instrument instrument in Instruments)
             {
-                InstrumentComboBox.Items.Add(instrument.Name);
+                InstrumentComboBox.Items.Add(instrument);
             }
             InstrumentComboBox.SelectedIndex = 0;
 
@@ -87,14 +87,7 @@ namespace Omniscient
 
         private void InstrumentComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            foreach(Instrument instrument in Instruments)
-            {
-                if (instrument.Name == InstrumentComboBox.Text)
-                {
-                    SelectedInstrument = instrument;
-                    break;
-                }
-            }
+            SelectedInstrument = InstrumentComboBox.SelectedItem as Instrument;
 
             ChannelTreeView.Nodes.Clear();
             foreach(Channel channel in SelectedInstrument.GetChannels())
