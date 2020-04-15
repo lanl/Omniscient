@@ -2176,5 +2176,33 @@ namespace Omniscient
             EventWriter writer = new EventWriter();
             writer.WriteEventFile(dialog.FileName, Core.Events);
         }
+
+        private void CollapseLeftButton_Click(object sender, EventArgs e)
+        {
+            if (LeftLeftPanel.Visible)
+            {
+                LeftLeftPanel.Visible = false;
+                CollapseLeftButton.Text = ">";
+            }
+            else
+            {
+                LeftLeftPanel.Visible = true;
+                CollapseLeftButton.Text = "<";
+            }
+        }
+
+        private void CollapseRightButton_Click(object sender, EventArgs e)
+        {
+            if (RightRightPanel.Visible)
+            {
+                RightRightPanel.Visible = false;
+                CollapseRightButton.Text = "<";
+            }
+            else
+            {
+                RightRightPanel.Visible = true;
+                CollapseRightButton.Text = ">";
+            }
+        }
     }
 }

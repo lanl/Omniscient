@@ -93,6 +93,9 @@ namespace Omniscient
             this.ToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.ToolStripProgressBar = new System.Windows.Forms.ToolStripProgressBar();
             this.RightPanel = new System.Windows.Forms.Panel();
+            this.RightLeftPanel = new System.Windows.Forms.Panel();
+            this.CollapseRightButton = new System.Windows.Forms.Button();
+            this.RightRightPanel = new System.Windows.Forms.Panel();
             this.ChannelsPanel = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -115,17 +118,19 @@ namespace Omniscient
             this.label10 = new System.Windows.Forms.Label();
             this.label11 = new System.Windows.Forms.Label();
             this.LeftPanel = new System.Windows.Forms.Panel();
-            this.SitesTreeView = new Omniscient.Controls.ResponsiveTreeView();
+            this.LeftLeftPanel = new System.Windows.Forms.Panel();
             this.TreeImageList = new System.Windows.Forms.ImageList(this.components);
-            this.TopLeftPanel = new System.Windows.Forms.Panel();
-            this.PresetSaveButton = new System.Windows.Forms.Button();
-            this.PresetNameTextBox = new System.Windows.Forms.TextBox();
-            this.PresetsComboBox = new System.Windows.Forms.ComboBox();
             this.BottomLeftPanel = new System.Windows.Forms.Panel();
             this.GlobalEndTextBox = new System.Windows.Forms.TextBox();
             this.GlobalStartTextBox = new System.Windows.Forms.TextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
+            this.TopLeftPanel = new System.Windows.Forms.Panel();
+            this.PresetSaveButton = new System.Windows.Forms.Button();
+            this.PresetNameTextBox = new System.Windows.Forms.TextBox();
+            this.PresetsComboBox = new System.Windows.Forms.ComboBox();
+            this.LeftRightPanel = new System.Windows.Forms.Panel();
+            this.CollapseLeftButton = new System.Windows.Forms.Button();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.CenterSplitContainer = new System.Windows.Forms.SplitContainer();
             this.BottomPanel = new System.Windows.Forms.Panel();
@@ -141,9 +146,10 @@ namespace Omniscient
             this.RightEventControlPanel = new System.Windows.Forms.Panel();
             this.HighlightEventsCheckBox = new System.Windows.Forms.CheckBox();
             this.EventsWarningLabel = new System.Windows.Forms.Label();
+            this.ExportEventsButton = new System.Windows.Forms.Button();
             this.GenerateEventsButton = new System.Windows.Forms.Button();
             this.ButtonImageList = new System.Windows.Forms.ImageList(this.components);
-            this.ExportEventsButton = new System.Windows.Forms.Button();
+            this.SitesTreeView = new Omniscient.Controls.ResponsiveTreeView();
             this.StripChartControlPanel.SuspendLayout();
             this.StripChartsPanel.SuspendLayout();
             this.StripChartsLayoutPanel.SuspendLayout();
@@ -156,6 +162,8 @@ namespace Omniscient
             this.toolStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.RightPanel.SuspendLayout();
+            this.RightLeftPanel.SuspendLayout();
+            this.RightRightPanel.SuspendLayout();
             this.ChannelsPanel.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tabControl1.SuspendLayout();
@@ -164,8 +172,10 @@ namespace Omniscient
             this.Chart3TabPage.SuspendLayout();
             this.Chart4TabPage.SuspendLayout();
             this.LeftPanel.SuspendLayout();
-            this.TopLeftPanel.SuspendLayout();
+            this.LeftLeftPanel.SuspendLayout();
             this.BottomLeftPanel.SuspendLayout();
+            this.TopLeftPanel.SuspendLayout();
+            this.LeftRightPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.CenterSplitContainer)).BeginInit();
             this.CenterSplitContainer.Panel1.SuspendLayout();
             this.CenterSplitContainer.Panel2.SuspendLayout();
@@ -183,7 +193,7 @@ namespace Omniscient
             this.StripChartControlPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.StripChartControlPanel.Location = new System.Drawing.Point(0, 0);
             this.StripChartControlPanel.Name = "StripChartControlPanel";
-            this.StripChartControlPanel.Size = new System.Drawing.Size(715, 433);
+            this.StripChartControlPanel.Size = new System.Drawing.Size(661, 433);
             this.StripChartControlPanel.TabIndex = 1;
             // 
             // StripChartsPanel
@@ -192,7 +202,7 @@ namespace Omniscient
             this.StripChartsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.StripChartsPanel.Location = new System.Drawing.Point(0, 0);
             this.StripChartsPanel.Name = "StripChartsPanel";
-            this.StripChartsPanel.Size = new System.Drawing.Size(715, 416);
+            this.StripChartsPanel.Size = new System.Drawing.Size(661, 416);
             this.StripChartsPanel.TabIndex = 2;
             // 
             // StripChartsLayoutPanel
@@ -212,7 +222,7 @@ namespace Omniscient
             this.StripChartsLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.StripChartsLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.StripChartsLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.StripChartsLayoutPanel.Size = new System.Drawing.Size(715, 416);
+            this.StripChartsLayoutPanel.Size = new System.Drawing.Size(661, 416);
             this.StripChartsLayoutPanel.TabIndex = 1;
             // 
             // StripChart0
@@ -229,7 +239,7 @@ namespace Omniscient
             series1.Legend = "Legend1";
             series1.Name = "Series1";
             this.StripChart0.Series.Add(series1);
-            this.StripChart0.Size = new System.Drawing.Size(705, 95);
+            this.StripChart0.Size = new System.Drawing.Size(651, 95);
             this.StripChart0.TabIndex = 5;
             this.StripChart0.Text = "chart1";
             this.StripChart0.DoubleClick += new System.EventHandler(this.StripChart_DoubleClick);
@@ -250,7 +260,7 @@ namespace Omniscient
             series2.Legend = "Legend1";
             series2.Name = "Series1";
             this.StripChart3.Series.Add(series2);
-            this.StripChart3.Size = new System.Drawing.Size(705, 97);
+            this.StripChart3.Size = new System.Drawing.Size(651, 97);
             this.StripChart3.TabIndex = 6;
             this.StripChart3.Text = "chart1";
             this.StripChart3.DoubleClick += new System.EventHandler(this.StripChart_DoubleClick);
@@ -271,7 +281,7 @@ namespace Omniscient
             series3.Legend = "Legend1";
             series3.Name = "Series1";
             this.StripChart1.Series.Add(series3);
-            this.StripChart1.Size = new System.Drawing.Size(705, 95);
+            this.StripChart1.Size = new System.Drawing.Size(651, 95);
             this.StripChart1.TabIndex = 7;
             this.StripChart1.Text = "chart2";
             this.StripChart1.DoubleClick += new System.EventHandler(this.StripChart_DoubleClick);
@@ -292,7 +302,7 @@ namespace Omniscient
             series4.Legend = "Legend1";
             series4.Name = "Series1";
             this.StripChart2.Series.Add(series4);
-            this.StripChart2.Size = new System.Drawing.Size(705, 95);
+            this.StripChart2.Size = new System.Drawing.Size(651, 95);
             this.StripChart2.TabIndex = 8;
             this.StripChart2.Text = "chart3";
             this.StripChart2.DoubleClick += new System.EventHandler(this.StripChart_DoubleClick);
@@ -304,7 +314,7 @@ namespace Omniscient
             this.StripChartScroll.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.StripChartScroll.Location = new System.Drawing.Point(0, 416);
             this.StripChartScroll.Name = "StripChartScroll";
-            this.StripChartScroll.Size = new System.Drawing.Size(715, 17);
+            this.StripChartScroll.Size = new System.Drawing.Size(661, 17);
             this.StripChartScroll.TabIndex = 1;
             this.StripChartScroll.Scroll += new System.Windows.Forms.ScrollEventHandler(this.StripChartScroll_Scroll);
             // 
@@ -332,7 +342,7 @@ namespace Omniscient
             // exportToolStripMenuItem
             // 
             this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
-            this.exportToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exportToolStripMenuItem.Size = new System.Drawing.Size(134, 22);
             this.exportToolStripMenuItem.Text = "Export Data";
             this.exportToolStripMenuItem.Click += new System.EventHandler(this.exportToolStripMenuItem_Click);
             // 
@@ -408,7 +418,7 @@ namespace Omniscient
             this.ChannelsLabelPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.ChannelsLabelPanel.Location = new System.Drawing.Point(5, 0);
             this.ChannelsLabelPanel.Name = "ChannelsLabelPanel";
-            this.ChannelsLabelPanel.Size = new System.Drawing.Size(306, 20);
+            this.ChannelsLabelPanel.Size = new System.Drawing.Size(296, 20);
             this.ChannelsLabelPanel.TabIndex = 7;
             // 
             // label5
@@ -552,14 +562,46 @@ namespace Omniscient
             // 
             // RightPanel
             // 
-            this.RightPanel.Controls.Add(this.ChannelsPanel);
-            this.RightPanel.Controls.Add(this.groupBox1);
+            this.RightPanel.AutoSize = true;
+            this.RightPanel.Controls.Add(this.RightLeftPanel);
+            this.RightPanel.Controls.Add(this.RightRightPanel);
             this.RightPanel.Dock = System.Windows.Forms.DockStyle.Right;
-            this.RightPanel.Location = new System.Drawing.Point(939, 51);
-            this.RightPanel.MinimumSize = new System.Drawing.Size(295, 0);
+            this.RightPanel.Location = new System.Drawing.Point(927, 51);
+            this.RightPanel.MinimumSize = new System.Drawing.Size(10, 0);
             this.RightPanel.Name = "RightPanel";
-            this.RightPanel.Size = new System.Drawing.Size(315, 665);
+            this.RightPanel.Size = new System.Drawing.Size(327, 665);
             this.RightPanel.TabIndex = 7;
+            // 
+            // RightLeftPanel
+            // 
+            this.RightLeftPanel.Controls.Add(this.CollapseRightButton);
+            this.RightLeftPanel.Dock = System.Windows.Forms.DockStyle.Left;
+            this.RightLeftPanel.Location = new System.Drawing.Point(0, 0);
+            this.RightLeftPanel.Name = "RightLeftPanel";
+            this.RightLeftPanel.Padding = new System.Windows.Forms.Padding(2);
+            this.RightLeftPanel.Size = new System.Drawing.Size(22, 665);
+            this.RightLeftPanel.TabIndex = 8;
+            // 
+            // CollapseRightButton
+            // 
+            this.CollapseRightButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.CollapseRightButton.Location = new System.Drawing.Point(2, 2);
+            this.CollapseRightButton.Name = "CollapseRightButton";
+            this.CollapseRightButton.Size = new System.Drawing.Size(18, 661);
+            this.CollapseRightButton.TabIndex = 0;
+            this.CollapseRightButton.Text = ">";
+            this.CollapseRightButton.UseVisualStyleBackColor = true;
+            this.CollapseRightButton.Click += new System.EventHandler(this.CollapseRightButton_Click);
+            // 
+            // RightRightPanel
+            // 
+            this.RightRightPanel.Controls.Add(this.ChannelsPanel);
+            this.RightRightPanel.Controls.Add(this.groupBox1);
+            this.RightRightPanel.Dock = System.Windows.Forms.DockStyle.Right;
+            this.RightRightPanel.Location = new System.Drawing.Point(22, 0);
+            this.RightRightPanel.Name = "RightRightPanel";
+            this.RightRightPanel.Size = new System.Drawing.Size(305, 665);
+            this.RightRightPanel.TabIndex = 7;
             // 
             // ChannelsPanel
             // 
@@ -570,7 +612,7 @@ namespace Omniscient
             this.ChannelsPanel.Location = new System.Drawing.Point(0, 0);
             this.ChannelsPanel.Name = "ChannelsPanel";
             this.ChannelsPanel.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
-            this.ChannelsPanel.Size = new System.Drawing.Size(315, 429);
+            this.ChannelsPanel.Size = new System.Drawing.Size(305, 429);
             this.ChannelsPanel.TabIndex = 6;
             // 
             // groupBox1
@@ -589,7 +631,7 @@ namespace Omniscient
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.groupBox1.Location = new System.Drawing.Point(0, 429);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(315, 236);
+            this.groupBox1.Size = new System.Drawing.Size(305, 236);
             this.groupBox1.TabIndex = 5;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "View";
@@ -604,7 +646,7 @@ namespace Omniscient
             this.tabControl1.Location = new System.Drawing.Point(3, 133);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(309, 100);
+            this.tabControl1.Size = new System.Drawing.Size(299, 100);
             this.tabControl1.TabIndex = 16;
             // 
             // Chart1TabPage
@@ -613,7 +655,7 @@ namespace Omniscient
             this.Chart1TabPage.Location = new System.Drawing.Point(4, 22);
             this.Chart1TabPage.Name = "Chart1TabPage";
             this.Chart1TabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.Chart1TabPage.Size = new System.Drawing.Size(301, 74);
+            this.Chart1TabPage.Size = new System.Drawing.Size(291, 74);
             this.Chart1TabPage.TabIndex = 0;
             this.Chart1TabPage.Text = "Chart 1";
             this.Chart1TabPage.UseVisualStyleBackColor = true;
@@ -635,7 +677,7 @@ namespace Omniscient
             this.Chart2TabPage.Location = new System.Drawing.Point(4, 22);
             this.Chart2TabPage.Name = "Chart2TabPage";
             this.Chart2TabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.Chart2TabPage.Size = new System.Drawing.Size(301, 74);
+            this.Chart2TabPage.Size = new System.Drawing.Size(291, 74);
             this.Chart2TabPage.TabIndex = 1;
             this.Chart2TabPage.Text = "Chart 2";
             this.Chart2TabPage.UseVisualStyleBackColor = true;
@@ -656,7 +698,7 @@ namespace Omniscient
             this.Chart3TabPage.Controls.Add(this.C3LogScaleCheckBox);
             this.Chart3TabPage.Location = new System.Drawing.Point(4, 22);
             this.Chart3TabPage.Name = "Chart3TabPage";
-            this.Chart3TabPage.Size = new System.Drawing.Size(301, 74);
+            this.Chart3TabPage.Size = new System.Drawing.Size(291, 74);
             this.Chart3TabPage.TabIndex = 2;
             this.Chart3TabPage.Text = "Chart 3";
             this.Chart3TabPage.UseVisualStyleBackColor = true;
@@ -677,7 +719,7 @@ namespace Omniscient
             this.Chart4TabPage.Controls.Add(this.C4LogScaleCheckBox);
             this.Chart4TabPage.Location = new System.Drawing.Point(4, 22);
             this.Chart4TabPage.Name = "Chart4TabPage";
-            this.Chart4TabPage.Size = new System.Drawing.Size(301, 74);
+            this.Chart4TabPage.Size = new System.Drawing.Size(291, 74);
             this.Chart4TabPage.TabIndex = 3;
             this.Chart4TabPage.Text = "Chart 4";
             this.Chart4TabPage.UseVisualStyleBackColor = true;
@@ -805,30 +847,28 @@ namespace Omniscient
             // 
             // LeftPanel
             // 
-            this.LeftPanel.Controls.Add(this.SitesTreeView);
-            this.LeftPanel.Controls.Add(this.TopLeftPanel);
-            this.LeftPanel.Controls.Add(this.BottomLeftPanel);
+            this.LeftPanel.AutoSize = true;
+            this.LeftPanel.Controls.Add(this.LeftLeftPanel);
+            this.LeftPanel.Controls.Add(this.LeftRightPanel);
             this.LeftPanel.Dock = System.Windows.Forms.DockStyle.Left;
             this.LeftPanel.Location = new System.Drawing.Point(0, 51);
-            this.LeftPanel.MinimumSize = new System.Drawing.Size(220, 0);
+            this.LeftPanel.MinimumSize = new System.Drawing.Size(10, 0);
             this.LeftPanel.Name = "LeftPanel";
             this.LeftPanel.Padding = new System.Windows.Forms.Padding(5);
-            this.LeftPanel.Size = new System.Drawing.Size(220, 665);
+            this.LeftPanel.Size = new System.Drawing.Size(262, 665);
             this.LeftPanel.TabIndex = 5;
             // 
-            // SitesTreeView
+            // LeftLeftPanel
             // 
-            this.SitesTreeView.CheckBoxes = true;
-            this.SitesTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SitesTreeView.ImageIndex = 0;
-            this.SitesTreeView.ImageList = this.TreeImageList;
-            this.SitesTreeView.Location = new System.Drawing.Point(5, 68);
-            this.SitesTreeView.Name = "SitesTreeView";
-            this.SitesTreeView.SelectedImageIndex = 0;
-            this.SitesTreeView.ShowNodeToolTips = true;
-            this.SitesTreeView.Size = new System.Drawing.Size(210, 526);
-            this.SitesTreeView.TabIndex = 11;
-            this.SitesTreeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.SitesTreeView_AfterCheck);
+            this.LeftLeftPanel.Controls.Add(this.SitesTreeView);
+            this.LeftLeftPanel.Controls.Add(this.BottomLeftPanel);
+            this.LeftLeftPanel.Controls.Add(this.TopLeftPanel);
+            this.LeftLeftPanel.Dock = System.Windows.Forms.DockStyle.Left;
+            this.LeftLeftPanel.Location = new System.Drawing.Point(5, 5);
+            this.LeftLeftPanel.Name = "LeftLeftPanel";
+            this.LeftLeftPanel.Padding = new System.Windows.Forms.Padding(2);
+            this.LeftLeftPanel.Size = new System.Drawing.Size(230, 655);
+            this.LeftLeftPanel.TabIndex = 15;
             // 
             // TreeImageList
             // 
@@ -840,45 +880,6 @@ namespace Omniscient
             this.TreeImageList.Images.SetKeyName(3, "gauge");
             this.TreeImageList.Images.SetKeyName(4, "binoculars");
             // 
-            // TopLeftPanel
-            // 
-            this.TopLeftPanel.Controls.Add(this.PresetSaveButton);
-            this.TopLeftPanel.Controls.Add(this.PresetNameTextBox);
-            this.TopLeftPanel.Controls.Add(this.PresetsComboBox);
-            this.TopLeftPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.TopLeftPanel.Location = new System.Drawing.Point(5, 5);
-            this.TopLeftPanel.Name = "TopLeftPanel";
-            this.TopLeftPanel.Size = new System.Drawing.Size(210, 63);
-            this.TopLeftPanel.TabIndex = 13;
-            // 
-            // PresetSaveButton
-            // 
-            this.PresetSaveButton.Location = new System.Drawing.Point(139, 3);
-            this.PresetSaveButton.Name = "PresetSaveButton";
-            this.PresetSaveButton.Size = new System.Drawing.Size(48, 23);
-            this.PresetSaveButton.TabIndex = 13;
-            this.PresetSaveButton.Text = "Save";
-            this.PresetSaveButton.UseVisualStyleBackColor = true;
-            this.PresetSaveButton.Click += new System.EventHandler(this.PresetSaveButton_Click);
-            // 
-            // PresetNameTextBox
-            // 
-            this.PresetNameTextBox.Location = new System.Drawing.Point(3, 6);
-            this.PresetNameTextBox.Name = "PresetNameTextBox";
-            this.PresetNameTextBox.Size = new System.Drawing.Size(130, 20);
-            this.PresetNameTextBox.TabIndex = 12;
-            // 
-            // PresetsComboBox
-            // 
-            this.PresetsComboBox.FormattingEnabled = true;
-            this.PresetsComboBox.Items.AddRange(new object[] {
-            "UCVS Default View"});
-            this.PresetsComboBox.Location = new System.Drawing.Point(3, 32);
-            this.PresetsComboBox.Name = "PresetsComboBox";
-            this.PresetsComboBox.Size = new System.Drawing.Size(184, 21);
-            this.PresetsComboBox.TabIndex = 11;
-            this.PresetsComboBox.SelectedIndexChanged += new System.EventHandler(this.PresetsComboBox_SelectedIndexChanged);
-            // 
             // BottomLeftPanel
             // 
             this.BottomLeftPanel.Controls.Add(this.GlobalEndTextBox);
@@ -886,9 +887,9 @@ namespace Omniscient
             this.BottomLeftPanel.Controls.Add(this.label9);
             this.BottomLeftPanel.Controls.Add(this.label8);
             this.BottomLeftPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.BottomLeftPanel.Location = new System.Drawing.Point(5, 594);
+            this.BottomLeftPanel.Location = new System.Drawing.Point(2, 587);
             this.BottomLeftPanel.Name = "BottomLeftPanel";
-            this.BottomLeftPanel.Size = new System.Drawing.Size(210, 66);
+            this.BottomLeftPanel.Size = new System.Drawing.Size(226, 66);
             this.BottomLeftPanel.TabIndex = 12;
             // 
             // GlobalEndTextBox
@@ -927,11 +928,71 @@ namespace Omniscient
             this.label8.TabIndex = 7;
             this.label8.Text = "Data Start Date";
             // 
+            // TopLeftPanel
+            // 
+            this.TopLeftPanel.Controls.Add(this.PresetSaveButton);
+            this.TopLeftPanel.Controls.Add(this.PresetNameTextBox);
+            this.TopLeftPanel.Controls.Add(this.PresetsComboBox);
+            this.TopLeftPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.TopLeftPanel.Location = new System.Drawing.Point(2, 2);
+            this.TopLeftPanel.Name = "TopLeftPanel";
+            this.TopLeftPanel.Size = new System.Drawing.Size(226, 63);
+            this.TopLeftPanel.TabIndex = 13;
+            // 
+            // PresetSaveButton
+            // 
+            this.PresetSaveButton.Location = new System.Drawing.Point(139, 3);
+            this.PresetSaveButton.Name = "PresetSaveButton";
+            this.PresetSaveButton.Size = new System.Drawing.Size(48, 23);
+            this.PresetSaveButton.TabIndex = 13;
+            this.PresetSaveButton.Text = "Save";
+            this.PresetSaveButton.UseVisualStyleBackColor = true;
+            this.PresetSaveButton.Click += new System.EventHandler(this.PresetSaveButton_Click);
+            // 
+            // PresetNameTextBox
+            // 
+            this.PresetNameTextBox.Location = new System.Drawing.Point(3, 6);
+            this.PresetNameTextBox.Name = "PresetNameTextBox";
+            this.PresetNameTextBox.Size = new System.Drawing.Size(130, 20);
+            this.PresetNameTextBox.TabIndex = 12;
+            // 
+            // PresetsComboBox
+            // 
+            this.PresetsComboBox.FormattingEnabled = true;
+            this.PresetsComboBox.Items.AddRange(new object[] {
+            "UCVS Default View"});
+            this.PresetsComboBox.Location = new System.Drawing.Point(3, 32);
+            this.PresetsComboBox.Name = "PresetsComboBox";
+            this.PresetsComboBox.Size = new System.Drawing.Size(184, 21);
+            this.PresetsComboBox.TabIndex = 11;
+            this.PresetsComboBox.SelectedIndexChanged += new System.EventHandler(this.PresetsComboBox_SelectedIndexChanged);
+            // 
+            // LeftRightPanel
+            // 
+            this.LeftRightPanel.Controls.Add(this.CollapseLeftButton);
+            this.LeftRightPanel.Dock = System.Windows.Forms.DockStyle.Right;
+            this.LeftRightPanel.Location = new System.Drawing.Point(235, 5);
+            this.LeftRightPanel.Name = "LeftRightPanel";
+            this.LeftRightPanel.Padding = new System.Windows.Forms.Padding(2);
+            this.LeftRightPanel.Size = new System.Drawing.Size(22, 655);
+            this.LeftRightPanel.TabIndex = 14;
+            // 
+            // CollapseLeftButton
+            // 
+            this.CollapseLeftButton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.CollapseLeftButton.Location = new System.Drawing.Point(2, 2);
+            this.CollapseLeftButton.Name = "CollapseLeftButton";
+            this.CollapseLeftButton.Size = new System.Drawing.Size(18, 651);
+            this.CollapseLeftButton.TabIndex = 0;
+            this.CollapseLeftButton.Text = "<";
+            this.CollapseLeftButton.UseVisualStyleBackColor = true;
+            this.CollapseLeftButton.Click += new System.EventHandler(this.CollapseLeftButton_Click);
+            // 
             // CenterSplitContainer
             // 
             this.CenterSplitContainer.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.CenterSplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.CenterSplitContainer.Location = new System.Drawing.Point(220, 51);
+            this.CenterSplitContainer.Location = new System.Drawing.Point(262, 51);
             this.CenterSplitContainer.Name = "CenterSplitContainer";
             this.CenterSplitContainer.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -942,7 +1003,7 @@ namespace Omniscient
             // CenterSplitContainer.Panel2
             // 
             this.CenterSplitContainer.Panel2.Controls.Add(this.BottomPanel);
-            this.CenterSplitContainer.Size = new System.Drawing.Size(719, 665);
+            this.CenterSplitContainer.Size = new System.Drawing.Size(665, 665);
             this.CenterSplitContainer.SplitterDistance = 437;
             this.CenterSplitContainer.SplitterWidth = 5;
             this.CenterSplitContainer.TabIndex = 9;
@@ -954,7 +1015,7 @@ namespace Omniscient
             this.BottomPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.BottomPanel.Location = new System.Drawing.Point(0, 0);
             this.BottomPanel.Name = "BottomPanel";
-            this.BottomPanel.Size = new System.Drawing.Size(715, 219);
+            this.BottomPanel.Size = new System.Drawing.Size(661, 219);
             this.BottomPanel.TabIndex = 9;
             // 
             // EventGridView
@@ -971,7 +1032,7 @@ namespace Omniscient
             this.EventGridView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.EventGridView.Location = new System.Drawing.Point(0, 34);
             this.EventGridView.Name = "EventGridView";
-            this.EventGridView.Size = new System.Drawing.Size(715, 185);
+            this.EventGridView.Size = new System.Drawing.Size(661, 185);
             this.EventGridView.TabIndex = 2;
             this.EventGridView.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.EventGridView_CellDoubleClick);
             this.EventGridView.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.EventGridView_CellMouseClick);
@@ -1024,14 +1085,14 @@ namespace Omniscient
             this.EventControlPanel.Location = new System.Drawing.Point(0, 0);
             this.EventControlPanel.Name = "EventControlPanel";
             this.EventControlPanel.Padding = new System.Windows.Forms.Padding(3);
-            this.EventControlPanel.Size = new System.Drawing.Size(715, 34);
+            this.EventControlPanel.Size = new System.Drawing.Size(661, 34);
             this.EventControlPanel.TabIndex = 3;
             // 
             // RightEventControlPanel
             // 
             this.RightEventControlPanel.Controls.Add(this.HighlightEventsCheckBox);
             this.RightEventControlPanel.Dock = System.Windows.Forms.DockStyle.Right;
-            this.RightEventControlPanel.Location = new System.Drawing.Point(525, 3);
+            this.RightEventControlPanel.Location = new System.Drawing.Point(471, 3);
             this.RightEventControlPanel.Name = "RightEventControlPanel";
             this.RightEventControlPanel.Size = new System.Drawing.Size(187, 28);
             this.RightEventControlPanel.TabIndex = 3;
@@ -1056,6 +1117,18 @@ namespace Omniscient
             this.EventsWarningLabel.Size = new System.Drawing.Size(0, 13);
             this.EventsWarningLabel.TabIndex = 2;
             // 
+            // ExportEventsButton
+            // 
+            this.ExportEventsButton.Dock = System.Windows.Forms.DockStyle.Left;
+            this.ExportEventsButton.Location = new System.Drawing.Point(107, 3);
+            this.ExportEventsButton.Margin = new System.Windows.Forms.Padding(12, 3, 3, 3);
+            this.ExportEventsButton.Name = "ExportEventsButton";
+            this.ExportEventsButton.Size = new System.Drawing.Size(85, 28);
+            this.ExportEventsButton.TabIndex = 4;
+            this.ExportEventsButton.Text = "Export Events";
+            this.ExportEventsButton.UseVisualStyleBackColor = true;
+            this.ExportEventsButton.Click += new System.EventHandler(this.ExportEventsButton_Click);
+            // 
             // GenerateEventsButton
             // 
             this.GenerateEventsButton.Dock = System.Windows.Forms.DockStyle.Left;
@@ -1077,17 +1150,19 @@ namespace Omniscient
             this.ButtonImageList.Images.SetKeyName(2, "Plus");
             this.ButtonImageList.Images.SetKeyName(3, "Delete");
             // 
-            // ExportEventsButton
+            // SitesTreeView
             // 
-            this.ExportEventsButton.Dock = System.Windows.Forms.DockStyle.Left;
-            this.ExportEventsButton.Location = new System.Drawing.Point(107, 3);
-            this.ExportEventsButton.Margin = new System.Windows.Forms.Padding(12, 3, 3, 3);
-            this.ExportEventsButton.Name = "ExportEventsButton";
-            this.ExportEventsButton.Size = new System.Drawing.Size(85, 28);
-            this.ExportEventsButton.TabIndex = 4;
-            this.ExportEventsButton.Text = "Export Events";
-            this.ExportEventsButton.UseVisualStyleBackColor = true;
-            this.ExportEventsButton.Click += new System.EventHandler(this.ExportEventsButton_Click);
+            this.SitesTreeView.CheckBoxes = true;
+            this.SitesTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.SitesTreeView.ImageIndex = 0;
+            this.SitesTreeView.ImageList = this.TreeImageList;
+            this.SitesTreeView.Location = new System.Drawing.Point(2, 65);
+            this.SitesTreeView.Name = "SitesTreeView";
+            this.SitesTreeView.SelectedImageIndex = 0;
+            this.SitesTreeView.ShowNodeToolTips = true;
+            this.SitesTreeView.Size = new System.Drawing.Size(226, 522);
+            this.SitesTreeView.TabIndex = 11;
+            this.SitesTreeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.SitesTreeView_AfterCheck);
             // 
             // MainForm
             // 
@@ -1125,6 +1200,8 @@ namespace Omniscient
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.RightPanel.ResumeLayout(false);
+            this.RightLeftPanel.ResumeLayout(false);
+            this.RightRightPanel.ResumeLayout(false);
             this.ChannelsPanel.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
@@ -1138,10 +1215,12 @@ namespace Omniscient
             this.Chart4TabPage.ResumeLayout(false);
             this.Chart4TabPage.PerformLayout();
             this.LeftPanel.ResumeLayout(false);
-            this.TopLeftPanel.ResumeLayout(false);
-            this.TopLeftPanel.PerformLayout();
+            this.LeftLeftPanel.ResumeLayout(false);
             this.BottomLeftPanel.ResumeLayout(false);
             this.BottomLeftPanel.PerformLayout();
+            this.TopLeftPanel.ResumeLayout(false);
+            this.TopLeftPanel.PerformLayout();
+            this.LeftRightPanel.ResumeLayout(false);
             this.CenterSplitContainer.Panel1.ResumeLayout(false);
             this.CenterSplitContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.CenterSplitContainer)).EndInit();
@@ -1245,6 +1324,12 @@ namespace Omniscient
         private ToolStripButton BackwardButton;
         private ToolStripButton ForwardButton;
         private Button ExportEventsButton;
+        private Panel LeftLeftPanel;
+        private Panel LeftRightPanel;
+        private Button CollapseLeftButton;
+        private Panel RightLeftPanel;
+        private Button CollapseRightButton;
+        private Panel RightRightPanel;
     }
 }
 
