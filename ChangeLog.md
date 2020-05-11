@@ -1,5 +1,15 @@
 Omniscient Change Log
 
+##  0.5.0
+2020-05-11
+
+### New Features
+* BID files that are signed can be read.
+* The side panels in the Main Window can be hidden.
+* Channels that are in different instruments can have the same name and instruments that are in different systems can have the same name.
+* New icon!
+
+
 ##  0.4.9
 2020-02-07
 

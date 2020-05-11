@@ -4,6 +4,7 @@
 ## Copyright Notice
 This software is open source software available under the BSD-3 license.
 
+Copyright (c) 2020, International Atomic Energy Agency (IAEA), IAEA.org
 Copyright (c) 2018, Triad National Security, LLC
 All rights reserved.
 
