@@ -103,6 +103,7 @@ namespace Omniscient
                 showLegend[c] = true;
             }
             InitializeComponent();
+            Icon = Properties.Resources.OmniscientIcon;
             charts = new Chart[] { StripChart0, StripChart1, StripChart2, StripChart3 };
             Core.ViewChanged += Core_OnViewChanged;
             UpdateForwardBackButtons();
