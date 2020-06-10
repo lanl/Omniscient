@@ -490,6 +490,7 @@ namespace Omniscient
                     {
                         series.ChartType = SeriesChartType.Line;
                     }
+                    series.Color = chanPan.ChannelColor;
                     
                     if (chan.GetChannelType() == Channel.ChannelType.DURATION_VALUE)
                     {
@@ -559,6 +560,30 @@ namespace Omniscient
                             }
                         }
                     }
+
+                    bool alreadyExists = false;
+                    foreach (Series existingSeries in chart.Series)
+                    {
+                        if (series.Name == existingSeries.Name)
+                        {
+                            alreadyExists = true;
+                            break;
+                        }
+                    }
+
+                    if (alreadyExists)
+                    {
+                        int existingCount = 2;
+                        foreach (Series existingSeries in chart.Series)
+                        {
+                            if (existingSeries.Name.StartsWith(series.Name + " ("))
+                            {
+                                existingCount++;
+                            }
+                        }
+                        series.Name = series.Name + " (" + existingCount.ToString() + ")";
+                    }
+
                     chart.Series.Add(series);
                     series.Points.ResumeUpdates();
                 }

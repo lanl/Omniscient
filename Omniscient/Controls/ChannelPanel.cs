@@ -25,6 +25,21 @@ namespace Omniscient
 {
     public partial class ChannelPanel : UserControl
     {
+        public static readonly Color[] DefaultColors = new Color[]
+        {
+            Color.Blue,
+            Color.Red,
+            Color.Green,
+            Color.Cyan,
+            Color.Magenta,
+            Color.Coral,
+            Color.Black,
+            Color.Olive,
+            Color.Gold
+        };
+
+        public static int defaultColorCounter = 0;
+
         private const string LINE = "_";
         private const string DOT = "o";
 
@@ -35,11 +50,18 @@ namespace Omniscient
 
         public SymbolType Symbol { get; private set; }
 
+        public Color ChannelColor { get; private set; }
+
         private Channel channel;
 
         public ChannelPanel(Channel ch)
         {
             channel = ch;
+
+            ChannelColor = DefaultColors[defaultColorCounter];
+            defaultColorCounter++;
+            if (defaultColorCounter == DefaultColors.Length) defaultColorCounter = 0;
+
             InitializeComponent();
         }
 
@@ -55,6 +77,8 @@ namespace Omniscient
             SymbolComboBox.Items.Add(DOT);
             SymbolComboBox.SelectedItem = LINE;
             Symbol = SymbolType.Line;
+
+            ColorButton.BackColor = ChannelColor;
 
             NameToolTip.SetToolTip(NameTextBox, NameTextBox.Text);
         }
@@ -91,6 +115,24 @@ namespace Omniscient
             {
                 Symbol = SymbolType.Dot;
             }
+            SymbolChanged?.Invoke(sender, e);
+        }
+
+        private void ColorButton_Click(object sender, EventArgs e)
+        {
+            ColorDialog colorDialog = new ColorDialog();
+            colorDialog.Color = ChannelColor;
+            int[] customColors = new int[DefaultColors.Length];
+            for (int i=0; i<DefaultColors.Length; i++)
+            {
+                customColors[i] = ((int)DefaultColors[i].B << 16) + 
+                    ((int)DefaultColors[i].G << 8) + 
+                    ((int)DefaultColors[i].R);
+            }
+            colorDialog.CustomColors = customColors;
+            colorDialog.ShowDialog();
+            ChannelColor = colorDialog.Color;
+            ColorButton.BackColor = ChannelColor;
             SymbolChanged?.Invoke(sender, e);
         }
     }

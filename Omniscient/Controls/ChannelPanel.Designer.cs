@@ -49,6 +49,7 @@ namespace Omniscient
             this.Chart1CheckBox = new System.Windows.Forms.CheckBox();
             this.NameTextBox = new System.Windows.Forms.TextBox();
             this.NameToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.ColorButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // SymbolComboBox
@@ -56,9 +57,10 @@ namespace Omniscient
             this.SymbolComboBox.Dock = System.Windows.Forms.DockStyle.Left;
             this.SymbolComboBox.Font = new System.Drawing.Font("Microsoft PhagsPa", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SymbolComboBox.FormattingEnabled = true;
-            this.SymbolComboBox.Location = new System.Drawing.Point(240, 0);
+            this.SymbolComboBox.Location = new System.Drawing.Point(360, 0);
+            this.SymbolComboBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.SymbolComboBox.Name = "SymbolComboBox";
-            this.SymbolComboBox.Size = new System.Drawing.Size(45, 22);
+            this.SymbolComboBox.Size = new System.Drawing.Size(54, 30);
             this.SymbolComboBox.TabIndex = 12;
             this.SymbolComboBox.SelectedIndexChanged += new System.EventHandler(this.SymbolComboBox_SelectedIndexChanged);
             // 
@@ -66,10 +68,11 @@ namespace Omniscient
             // 
             this.Chart4CheckBox.AutoSize = true;
             this.Chart4CheckBox.Dock = System.Windows.Forms.DockStyle.Left;
-            this.Chart4CheckBox.Location = new System.Drawing.Point(215, 0);
+            this.Chart4CheckBox.Location = new System.Drawing.Point(322, 0);
+            this.Chart4CheckBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Chart4CheckBox.Name = "Chart4CheckBox";
-            this.Chart4CheckBox.Padding = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.Chart4CheckBox.Size = new System.Drawing.Size(25, 24);
+            this.Chart4CheckBox.Padding = new System.Windows.Forms.Padding(8, 0, 8, 0);
+            this.Chart4CheckBox.Size = new System.Drawing.Size(38, 37);
             this.Chart4CheckBox.TabIndex = 11;
             this.Chart4CheckBox.Tag = "4";
             this.Chart4CheckBox.UseVisualStyleBackColor = true;
@@ -79,10 +82,11 @@ namespace Omniscient
             // 
             this.Chart3CheckBox.AutoSize = true;
             this.Chart3CheckBox.Dock = System.Windows.Forms.DockStyle.Left;
-            this.Chart3CheckBox.Location = new System.Drawing.Point(190, 0);
+            this.Chart3CheckBox.Location = new System.Drawing.Point(284, 0);
+            this.Chart3CheckBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Chart3CheckBox.Name = "Chart3CheckBox";
-            this.Chart3CheckBox.Padding = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.Chart3CheckBox.Size = new System.Drawing.Size(25, 24);
+            this.Chart3CheckBox.Padding = new System.Windows.Forms.Padding(8, 0, 8, 0);
+            this.Chart3CheckBox.Size = new System.Drawing.Size(38, 37);
             this.Chart3CheckBox.TabIndex = 10;
             this.Chart3CheckBox.Tag = "3";
             this.Chart3CheckBox.UseVisualStyleBackColor = true;
@@ -92,10 +96,11 @@ namespace Omniscient
             // 
             this.Chart2CheckBox.AutoSize = true;
             this.Chart2CheckBox.Dock = System.Windows.Forms.DockStyle.Left;
-            this.Chart2CheckBox.Location = new System.Drawing.Point(165, 0);
+            this.Chart2CheckBox.Location = new System.Drawing.Point(246, 0);
+            this.Chart2CheckBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Chart2CheckBox.Name = "Chart2CheckBox";
-            this.Chart2CheckBox.Padding = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.Chart2CheckBox.Size = new System.Drawing.Size(25, 24);
+            this.Chart2CheckBox.Padding = new System.Windows.Forms.Padding(8, 0, 8, 0);
+            this.Chart2CheckBox.Size = new System.Drawing.Size(38, 37);
             this.Chart2CheckBox.TabIndex = 9;
             this.Chart2CheckBox.Tag = "2";
             this.Chart2CheckBox.UseVisualStyleBackColor = true;
@@ -105,10 +110,11 @@ namespace Omniscient
             // 
             this.Chart1CheckBox.AutoSize = true;
             this.Chart1CheckBox.Dock = System.Windows.Forms.DockStyle.Left;
-            this.Chart1CheckBox.Location = new System.Drawing.Point(140, 0);
+            this.Chart1CheckBox.Location = new System.Drawing.Point(208, 0);
+            this.Chart1CheckBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Chart1CheckBox.Name = "Chart1CheckBox";
-            this.Chart1CheckBox.Padding = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.Chart1CheckBox.Size = new System.Drawing.Size(25, 24);
+            this.Chart1CheckBox.Padding = new System.Windows.Forms.Padding(8, 0, 8, 0);
+            this.Chart1CheckBox.Size = new System.Drawing.Size(38, 37);
             this.Chart1CheckBox.TabIndex = 8;
             this.Chart1CheckBox.Tag = "1";
             this.Chart1CheckBox.UseVisualStyleBackColor = true;
@@ -119,8 +125,9 @@ namespace Omniscient
             this.NameTextBox.BackColor = System.Drawing.SystemColors.Control;
             this.NameTextBox.Dock = System.Windows.Forms.DockStyle.Left;
             this.NameTextBox.Location = new System.Drawing.Point(0, 0);
+            this.NameTextBox.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.NameTextBox.Name = "NameTextBox";
-            this.NameTextBox.Size = new System.Drawing.Size(140, 20);
+            this.NameTextBox.Size = new System.Drawing.Size(208, 26);
             this.NameTextBox.TabIndex = 7;
             // 
             // NameToolTip
@@ -131,18 +138,31 @@ namespace Omniscient
             this.NameToolTip.ReshowDelay = 25;
             this.NameToolTip.ShowAlways = true;
             // 
+            // ColorButton
+            // 
+            this.ColorButton.Dock = System.Windows.Forms.DockStyle.Left;
+            this.ColorButton.Location = new System.Drawing.Point(414, 0);
+            this.ColorButton.Margin = new System.Windows.Forms.Padding(8);
+            this.ColorButton.Name = "ColorButton";
+            this.ColorButton.Size = new System.Drawing.Size(37, 37);
+            this.ColorButton.TabIndex = 13;
+            this.ColorButton.UseVisualStyleBackColor = true;
+            this.ColorButton.Click += new System.EventHandler(this.ColorButton_Click);
+            // 
             // ChannelPanel
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.ColorButton);
             this.Controls.Add(this.SymbolComboBox);
             this.Controls.Add(this.Chart4CheckBox);
             this.Controls.Add(this.Chart3CheckBox);
             this.Controls.Add(this.Chart2CheckBox);
             this.Controls.Add(this.Chart1CheckBox);
             this.Controls.Add(this.NameTextBox);
+            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "ChannelPanel";
-            this.Size = new System.Drawing.Size(306, 24);
+            this.Size = new System.Drawing.Size(467, 37);
             this.Load += new System.EventHandler(this.ChannelPanel_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -158,5 +178,6 @@ namespace Omniscient
         public System.Windows.Forms.CheckBox Chart1CheckBox;
         private System.Windows.Forms.TextBox NameTextBox;
         private System.Windows.Forms.ToolTip NameToolTip;
+        private System.Windows.Forms.Button ColorButton;
     }
 }
