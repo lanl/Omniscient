@@ -2087,7 +2087,7 @@ namespace Omniscient
         LinkedList<DateTimeRange> BackHistory = new LinkedList<DateTimeRange>();
         LinkedList<DateTimeRange> ForwardHistory = new LinkedList<DateTimeRange>();
 
-        private void ChangeView(DateTime startTime, DateTime endTime)
+        private void ChangeView(DateTime startTime, DateTime endTime, bool holdRange = false)
         {
             if (BackHistory.Count == 0 ||
                 (BackHistory.Last.Value.Start != Core.ViewStart ||
@@ -2096,7 +2096,7 @@ namespace Omniscient
                 BackHistory.AddLast(new LinkedListNode<DateTimeRange>(new DateTimeRange(Core.ViewStart, Core.ViewEnd)));
                 ForwardHistory.Clear();
             }
-            Core.ChangeView(startTime, endTime);
+            Core.ChangeView(startTime, endTime, holdRange);
             UpdateForwardBackButtons();
         }
 
@@ -2205,6 +2205,18 @@ namespace Omniscient
                 RightRightPanel.Visible = true;
                 CollapseRightButton.Text = ">";
             }
+        }
+
+        private void ZoomFullRangeButton_Click(object sender, EventArgs e)
+        {
+            TimeSpan totalSpan = Core.GlobalEnd - Core.GlobalStart;
+            if (totalSpan.TotalDays > 32)
+            {
+                if (MessageBox.Show("You are about to display " + ((int)totalSpan.TotalDays).ToString() + " days of data. Do you want to contiune?", "That's a long time!", MessageBoxButtons.OKCancel)
+                    == DialogResult.Cancel)
+                    return;
+            }
+            ChangeView(Core.GlobalStart, Core.GlobalEnd, true);
         }
     }
 }
