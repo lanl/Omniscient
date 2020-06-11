@@ -274,7 +274,7 @@ namespace Omniscient
             PresetsComboBox.Items.Clear();
             foreach (Preset preset in presetMan.GetPresets())
             {
-                PresetsComboBox.Items.Add(preset.GetName());
+                PresetsComboBox.Items.Add(preset.Name);
             }
         }
 
@@ -482,7 +482,7 @@ namespace Omniscient
                     series.Points.SuspendUpdates();
                     series.ChartType = SeriesChartType.FastLine;
                     series.XValueType = ChartValueType.DateTime;
-                    if (chanPan.Symbol == ChannelPanel.SymbolType.Dot)
+                    if (chanPan.Config.Symbol == ChannelDisplayConfig.SymbolType.Dot)
                     {
                         series.ChartType = SeriesChartType.Point;
                     }
@@ -490,7 +490,7 @@ namespace Omniscient
                     {
                         series.ChartType = SeriesChartType.Line;
                     }
-                    series.Color = chanPan.ChannelColor;
+                    series.Color = chanPan.Config.SeriesColor;
                     
                     if (chan.GetChannelType() == Channel.ChannelType.DURATION_VALUE)
                     {
@@ -1538,7 +1538,10 @@ namespace Omniscient
         /// Called when a user selects a preset from the preset ComboBox.</summary>
         private void ApplyPreset(string presetName)
         {
-            Preset preset = presetMan.GetPresets().Single(p => p.GetName() == presetName);
+            DateTime startView = Core.ViewStart;
+            DateTime endView = Core.ViewEnd;
+
+            Preset preset = presetMan.GetPresets().Single(p => p.Name == presetName);
             ClearPanels();
 
             foreach (Instrument inst in preset.GetActiveInstruments())
@@ -1546,38 +1549,19 @@ namespace Omniscient
                 SitesTreeView.Nodes.Find(inst.ID.ToString(), true)[0].Checked = true;
             }
 
-            // So, this next part could probably be more elegant...
-            int c = 0;
-            foreach (Channel chan in preset.GetActiveChannels()[c])
+            foreach(Tuple<Channel, ChannelDisplayConfig> channelPreset in preset.ChannelPresets)
             {
-                chPanels.Single(cp => cp.GetChannel().Equals(chan)).Chart1CheckBox.Checked = true;
+                chPanels.Single(cp => cp.GetChannel().ID == channelPreset.Item1.ID).ApplyConfiguration(channelPreset.Item2);
             }
-
-            c = 1;
-            foreach (Channel chan in preset.GetActiveChannels()[c])
-            {
-                chPanels.Single(cp => cp.GetChannel().Equals(chan)).Chart2CheckBox.Checked = true;
-            }
-
-            c = 2;
-            foreach (Channel chan in preset.GetActiveChannels()[c])
-            {
-                chPanels.Single(cp => cp.GetChannel().Equals(chan)).Chart3CheckBox.Checked = true;
-            }
-
-            c = 3;
-            foreach (Channel chan in preset.GetActiveChannels()[c])
-            {
-                chPanels.Single(cp => cp.GetChannel().Equals(chan)).Chart4CheckBox.Checked = true;
-            }
-            // ... whatever.
 
             foreach (EventGenerator eventGenerator in preset.GetActiveEventGenerators())
             {
                 SitesTreeView.Nodes.Find(eventGenerator.ID.ToString(), true)[0].Checked = true;
             }
 
-            PresetNameTextBox.Text = preset.GetName();
+            PresetNameTextBox.Text = preset.Name;
+
+            ChangeView(startView, endView, true);
         }
 
         private void SavePreset(string newName)
@@ -1587,7 +1571,7 @@ namespace Omniscient
             // Remove preset with the same name, if it exists
             int indexToDelete = -1;
             for (int p=0; p <presetMan.GetPresets().Count; p++)
-                if (presetMan.GetPresets()[p].GetName() == newName)
+                if (presetMan.GetPresets()[p].Name == newName)
                     indexToDelete = p;
             if (indexToDelete >= 0)
             {
@@ -1600,14 +1584,7 @@ namespace Omniscient
                 preset.GetActiveInstruments().Add(inst);
             foreach (ChannelPanel cp in chPanels)
             {
-                if (cp.Chart1CheckBox.Checked)
-                    preset.AddChannel(cp.GetChannel(), 0);
-                if (cp.Chart2CheckBox.Checked)
-                    preset.AddChannel(cp.GetChannel(), 1);
-                if (cp.Chart3CheckBox.Checked)
-                    preset.AddChannel(cp.GetChannel(), 2);
-                if (cp.Chart4CheckBox.Checked)
-                    preset.AddChannel(cp.GetChannel(), 3);
+                preset.AddChannel(cp.GetChannel(), cp.Config.Copy());
             }
 
             //  Put all of the checked systems in the SitesTreeView in eventWatchers
@@ -1635,11 +1612,13 @@ namespace Omniscient
             else
             {
                 presetMan.GetPresets().Add(preset);
-                PresetsComboBox.Items.Add(preset.GetName());
+                PresetsComboBox.Items.Add(preset.Name);
             }
+            PresetsComboBox.SelectedItem = preset.Name;
 
             // Save the new preset to xml
             presetMan.Save();
+            MessageBox.Show("Saved preset \"" + preset.Name + "\"", "Save Preset");
         }
 
         private void PresetSaveButton_Click(object sender, EventArgs e)
@@ -2282,6 +2261,34 @@ namespace Omniscient
         private void ZoomToFullRange()
         {
             ChangeView(Core.GlobalStart, Core.GlobalEnd, true);
+        }
+
+        private void PresetDeleteButton_Click(object sender, EventArgs e)
+        {
+            DeletePreset(PresetNameTextBox.Text);
+        }
+
+        private void DeletePreset(string name)
+        {
+            int indexToDelete = -1;
+            for (int p = 0; p < presetMan.GetPresets().Count; p++)
+                if (presetMan.GetPresets()[p].Name == name)
+                    indexToDelete = p;
+            if (indexToDelete >= 0)
+            {
+                if (MessageBox.Show("Are you sure you want to delete preset: " + name + "?", "Delete Preset?", MessageBoxButtons.OKCancel)
+                    == DialogResult.Cancel)
+                {
+                    return;
+                }
+                presetMan.GetPresets().RemoveAt(indexToDelete);
+                presetMan.Save();
+                LoadPresets();
+            }
+            else
+            {
+                MessageBox.Show("Preset \"" + name + "\" does not exist.", "Nope");
+            }
         }
     }
 }

@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Drawing;
 
 namespace Omniscient
 {
@@ -24,27 +25,24 @@ namespace Omniscient
         private const int N_CHARTS = 4;
         List<EventGenerator> activeEventGenerators;
         List<Instrument> activeInstruments;
-        List<Channel>[] activeChannels;
-        string name;
+        public List<Tuple<Channel, ChannelDisplayConfig>> ChannelPresets { get; private set; }
+
+        public string Name { get; private set; }
 
         public Preset(string newName)
         {
-            name = newName;
+            Name = newName;
             activeEventGenerators = new List<EventGenerator>();
             activeInstruments = new List<Instrument>();
-            activeChannels = new List<Channel>[N_CHARTS];
-            for (int i = 0; i < N_CHARTS; i++)
-                activeChannels[i] = new List<Channel>();
+            ChannelPresets = new List<Tuple<Channel, ChannelDisplayConfig>>();
         }
 
-        public void AddChannel(Channel ch, int chart)
+        public void AddChannel(Channel ch, ChannelDisplayConfig config)
         {
-            activeChannels[chart].Add(ch);
+            ChannelPresets.Add(new Tuple<Channel, ChannelDisplayConfig>(ch, config));
         }
 
-        public string GetName() { return name; }
         public List<EventGenerator> GetActiveEventGenerators() { return activeEventGenerators; }
         public List<Instrument> GetActiveInstruments(){ return activeInstruments; }
-        public List<Channel>[] GetActiveChannels() { return activeChannels; }
     }
 }

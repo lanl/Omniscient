@@ -21,11 +21,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml;
 
 namespace Omniscient
 {
-    public partial class ChannelPanel : UserControl
+    public class ChannelDisplayConfig
     {
+        private const int N_CHARTS = 4;
+        public bool[] ChartActive { get; set; }
+        public enum SymbolType { Line, Dot }
+        public SymbolType Symbol { get; set; }
+        public Color SeriesColor { get; set; }
+
         public static readonly Color[] DefaultColors = new Color[]
         {
             Color.Blue,
@@ -41,29 +48,111 @@ namespace Omniscient
 
         public static int defaultColorCounter = 0;
 
+        public ChannelDisplayConfig()
+        {
+            ChartActive = new bool[N_CHARTS];
+            
+            SeriesColor = DefaultColors[defaultColorCounter];
+            defaultColorCounter++;
+            if (defaultColorCounter == DefaultColors.Length) defaultColorCounter = 0;
+        }
+
+        public ChannelDisplayConfig Copy()
+        {
+            ChannelDisplayConfig config = new ChannelDisplayConfig();
+            config.SeriesColor = SeriesColor;
+            config.Symbol = Symbol;
+            for (int chart = 0; chart < N_CHARTS; chart++)
+            {
+                config.ChartActive[chart] = ChartActive[chart];
+            }
+            return config;
+        }
+
+        public void ToXML(XmlWriter xmlWriter)
+        {
+            xmlWriter.WriteStartElement("ChannelDisplayConfig");
+            xmlWriter.WriteAttributeString("SeriesColor", SeriesColor.ToArgb().ToString());
+            switch (Symbol)
+            {
+                case SymbolType.Line:
+                    xmlWriter.WriteAttributeString("Symbol", "Line");
+                    break;
+                case SymbolType.Dot:
+                    xmlWriter.WriteAttributeString("Symbol", "Dot");
+                    break;
+            }
+            for(int chart=0; chart<N_CHARTS; chart++)
+            {
+                xmlWriter.WriteAttributeString("DisplayOnChart"+chart.ToString(), ChartActive[chart].ToString());
+            }
+            xmlWriter.WriteEndElement();
+        }
+
+        static public ChannelDisplayConfig FromXML(XmlNode node)
+        {
+            ChannelDisplayConfig config = new ChannelDisplayConfig();
+
+            config.SeriesColor = Color.FromArgb(int.Parse(node.Attributes["SeriesColor"]?.InnerText));
+
+            if (node.Attributes["Symbol"]?.InnerText == "Line")
+            {
+                config.Symbol = SymbolType.Line;
+            }
+            else if (node.Attributes["Symbol"]?.InnerText == "Dot")
+            {
+                config.Symbol = SymbolType.Dot;
+            }
+            for (int chart = 0; chart < N_CHARTS; chart++)
+            {
+                config.ChartActive[chart] = node.Attributes["DisplayOnChart" + chart.ToString()]?.InnerText == "True";
+            }
+            return config;
+        }
+    }
+
+    public partial class ChannelPanel : UserControl
+    {
         private const string LINE = "_";
         private const string DOT = "o";
 
         public event EventHandler CheckChanged;
         public event EventHandler SymbolChanged;
 
-        public enum SymbolType { Line, Dot }
-
-        public SymbolType Symbol { get; private set; }
-
-        public Color ChannelColor { get; private set; }
-
         private Channel channel;
+        internal static object SymbolType;
+
+        public ChannelDisplayConfig Config { get; private set; }
 
         public ChannelPanel(Channel ch)
         {
             channel = ch;
 
-            ChannelColor = DefaultColors[defaultColorCounter];
-            defaultColorCounter++;
-            if (defaultColorCounter == DefaultColors.Length) defaultColorCounter = 0;
+            Config = new ChannelDisplayConfig();
 
             InitializeComponent();
+        }
+
+        public void ApplyConfiguration(ChannelDisplayConfig config)
+        {
+            Config = config.Copy();
+            
+            Chart1CheckBox.Checked = Config.ChartActive[0];
+            Chart2CheckBox.Checked = Config.ChartActive[1];
+            Chart3CheckBox.Checked = Config.ChartActive[2];
+            Chart4CheckBox.Checked = Config.ChartActive[3];
+
+            switch (Config.Symbol)
+            {
+                case ChannelDisplayConfig.SymbolType.Dot:
+                    SymbolComboBox.SelectedItem = DOT;
+                    break;
+                case ChannelDisplayConfig.SymbolType.Line:
+                    SymbolComboBox.SelectedItem = LINE;
+                    break;
+            }
+
+            ColorButton.BackColor = Config.SeriesColor;
         }
 
         private void ChannelPanel_Load(object sender, EventArgs e)
@@ -77,9 +166,8 @@ namespace Omniscient
             SymbolComboBox.Items.Add(LINE);
             SymbolComboBox.Items.Add(DOT);
             SymbolComboBox.SelectedItem = LINE;
-            Symbol = SymbolType.Line;
 
-            ColorButton.BackColor = ChannelColor;
+            ColorButton.BackColor = Config.SeriesColor;
 
             NameToolTip.SetToolTip(NameTextBox, NameTextBox.Text);
         }
@@ -88,21 +176,25 @@ namespace Omniscient
 
         private void Chart1CheckBox_CheckedChanged(object sender, EventArgs e)
         {
+            Config.ChartActive[0] = Chart1CheckBox.Checked;
             CheckChanged?.Invoke(sender, e);
         }
 
         private void Chart2CheckBox_CheckedChanged(object sender, EventArgs e)
         {
+            Config.ChartActive[1] = Chart2CheckBox.Checked;
             CheckChanged?.Invoke(sender, e);
         }
 
         private void Chart3CheckBox_CheckedChanged(object sender, EventArgs e)
         {
+            Config.ChartActive[2] = Chart3CheckBox.Checked;
             CheckChanged?.Invoke(sender, e);
         }
 
         private void Chart4CheckBox_CheckedChanged(object sender, EventArgs e)
         {
+            Config.ChartActive[3] = Chart4CheckBox.Checked;
             CheckChanged?.Invoke(sender, e);
         }
 
@@ -110,11 +202,11 @@ namespace Omniscient
         {
             if ((string)SymbolComboBox.SelectedItem == LINE)
             {
-                Symbol = SymbolType.Line;
+                Config.Symbol = ChannelDisplayConfig.SymbolType.Line;
             }
             else
             {
-                Symbol = SymbolType.Dot;
+                Config.Symbol = ChannelDisplayConfig.SymbolType.Dot;
             }
             SymbolChanged?.Invoke(sender, e);
         }
@@ -122,18 +214,18 @@ namespace Omniscient
         private void ColorButton_Click(object sender, EventArgs e)
         {
             ColorDialog colorDialog = new ColorDialog();
-            colorDialog.Color = ChannelColor;
-            int[] customColors = new int[DefaultColors.Length];
-            for (int i=0; i<DefaultColors.Length; i++)
+            colorDialog.Color = Config.SeriesColor;
+            int[] customColors = new int[ChannelDisplayConfig.DefaultColors.Length];
+            for (int i=0; i< ChannelDisplayConfig.DefaultColors.Length; i++)
             {
-                customColors[i] = ((int)DefaultColors[i].B << 16) + 
-                    ((int)DefaultColors[i].G << 8) + 
-                    ((int)DefaultColors[i].R);
+                customColors[i] = ((int)ChannelDisplayConfig.DefaultColors[i].B << 16) + 
+                    ((int)ChannelDisplayConfig.DefaultColors[i].G << 8) + 
+                    ((int)ChannelDisplayConfig.DefaultColors[i].R);
             }
             colorDialog.CustomColors = customColors;
             colorDialog.ShowDialog();
-            ChannelColor = colorDialog.Color;
-            ColorButton.BackColor = ChannelColor;
+            Config.SeriesColor = colorDialog.Color;
+            ColorButton.BackColor = Config.SeriesColor;
             SymbolChanged?.Invoke(sender, e);
         }
     }

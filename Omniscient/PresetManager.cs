@@ -54,6 +54,7 @@ namespace Omniscient
 
             xmlWriter.WriteStartDocument();
             xmlWriter.WriteStartElement("Presets");
+            xmlWriter.WriteAttributeString("Omniscient_Version", OmniscientCore.VERSION);
             xmlWriter.WriteEndElement();
             xmlWriter.WriteEndDocument();
             xmlWriter.Close();
@@ -68,23 +69,42 @@ namespace Omniscient
                 XmlDocument doc = new XmlDocument();
                 doc.Load(fileName);
                 presets.Clear();
+
+                // Silently update presets if need be
+                if (doc.DocumentElement.Attributes["Omniscient_Version"] == null)
+                {
+                    WriteBlank();
+                    return ReturnCode.SUCCESS;
+                }
                 foreach (XmlNode presetNode in doc.DocumentElement.ChildNodes)
                 {
                     Preset newPreset = new Preset(presetNode.Attributes["name"]?.InnerText);
                     foreach (XmlNode siteNode in presetNode.ChildNodes)
                     {
-                        Site site = siteMan.GetSites().Single(s => s.Name == siteNode.Attributes["name"]?.InnerText);
+                        uint siteID = uint.Parse(siteNode.Attributes["ID"].InnerText, System.Globalization.NumberStyles.HexNumber);
+                        Site site;
+                        try { site = siteMan.GetSites().Single(s => s.ID == siteID); }
+                        catch { continue; }
                         foreach (XmlNode facilityNode in siteNode.ChildNodes)
                         {
-                            Facility fac = site.GetFacilities().Single(s => s.Name == facilityNode.Attributes["name"]?.InnerText);
+                            uint facID = uint.Parse(facilityNode.Attributes["ID"].InnerText, System.Globalization.NumberStyles.HexNumber);
+                            Facility fac;
+                            try { fac = site.GetFacilities().Single(s => s.ID == facID); }
+                            catch { continue; }
                             foreach (XmlNode systemNode in facilityNode.ChildNodes)
                             {
-                                DetectionSystem sys = fac.GetSystems().Single(s => s.Name == systemNode.Attributes["name"]?.InnerText);
+                                uint sysID = uint.Parse(systemNode.Attributes["ID"].InnerText, System.Globalization.NumberStyles.HexNumber);
+                                DetectionSystem sys;
+                                try { sys = fac.GetSystems().Single(s => s.ID == sysID); }
+                                catch { continue; }
                                 foreach (XmlNode instrumentNode in systemNode.ChildNodes)
                                 {
                                     if (instrumentNode.Name == "Instrument")
                                     {
-                                        Instrument inst = sys.GetInstruments().Single(i => i.Name == instrumentNode.Attributes["name"]?.InnerText);
+                                        uint instID = uint.Parse(instrumentNode.Attributes["ID"].InnerText, System.Globalization.NumberStyles.HexNumber);
+                                        Instrument inst;
+                                        try { inst = sys.GetInstruments().Single(i => i.ID == instID); }
+                                        catch { continue; }
                                         if (instrumentNode.Attributes["checked"] != null)
                                         {
                                             if (instrumentNode.Attributes["checked"].InnerText == "true")
@@ -92,17 +112,14 @@ namespace Omniscient
                                                 newPreset.GetActiveInstruments().Add(inst);
                                                 foreach (XmlNode chanNode in instrumentNode.ChildNodes)
                                                 {
-                                                    Channel chan = inst.GetChannels().Single(c => c.Name == chanNode.Attributes["name"]?.InnerText);
-                                                    foreach (XmlNode checkNode in chanNode.ChildNodes)
-                                                    {
-                                                        if (checkNode.Attributes["checked"] != null)
-                                                        {
-                                                            if (checkNode.Attributes["checked"].InnerText == "true")
-                                                            {
-                                                                newPreset.AddChannel(chan, int.Parse(checkNode.Attributes["chart"].InnerText));
-                                                            }
-                                                        }
+                                                    uint chanID = uint.Parse(chanNode.Attributes["ID"].InnerText, System.Globalization.NumberStyles.HexNumber);
+                                                    try
+                                                    { 
+                                                        Channel chan = inst.GetChannels().Single(c => c.ID == chanID);
+                                                        ChannelDisplayConfig config = ChannelDisplayConfig.FromXML(chanNode["ChannelDisplayConfig"]);
+                                                        newPreset.AddChannel(chan, config);
                                                     }
+                                                    catch { }
                                                 }
                                             }
                                         }
@@ -110,11 +127,16 @@ namespace Omniscient
                                     else if (instrumentNode.Name == "EventGenerator")
                                     {
                                         XmlNode eventGenNode = instrumentNode;
-                                        EventGenerator eventGenerator = sys.GetEventGenerators().Single(e => e.Name == eventGenNode.Attributes["name"]?.InnerText);
-                                        if (eventGenNode.Attributes["checked"].InnerText == "true")
+                                        try
                                         {
-                                            newPreset.GetActiveEventGenerators().Add(eventGenerator);
+                                            uint egID = uint.Parse(eventGenNode.Attributes["ID"].InnerText, System.Globalization.NumberStyles.HexNumber);
+                                            EventGenerator eventGenerator = sys.GetEventGenerators().Single(e => e.ID == egID);
+                                            if (eventGenNode.Attributes["checked"].InnerText == "true")
+                                            {
+                                                newPreset.GetActiveEventGenerators().Add(eventGenerator);
+                                            }
                                         }
+                                        catch { }
                                     }
                                     else
                                         return ReturnCode.CORRUPTED_FILE;
@@ -141,44 +163,46 @@ namespace Omniscient
 
             xmlWriter.WriteStartDocument();
             xmlWriter.WriteStartElement("Presets");
+            xmlWriter.WriteAttributeString("Omniscient_Version", OmniscientCore.VERSION);
             foreach (Preset preset in presets)
             {
                 xmlWriter.WriteStartElement("Preset");
-                xmlWriter.WriteAttributeString("name", preset.GetName());
+                xmlWriter.WriteAttributeString("name", preset.Name);
                 foreach (Site site in siteMan.GetSites())
                 {
                     xmlWriter.WriteStartElement("Site");
                     xmlWriter.WriteAttributeString("name", site.Name);
+                    xmlWriter.WriteAttributeString("ID", site.ID.ToString("X8"));
                     foreach (Facility fac in site.GetFacilities())
                     {
                         xmlWriter.WriteStartElement("Facility");
                         xmlWriter.WriteAttributeString("name", fac.Name);
+                        xmlWriter.WriteAttributeString("ID", fac.ID.ToString("X8"));
                         foreach (DetectionSystem sys in fac.GetSystems())
                         {
                             xmlWriter.WriteStartElement("System");
                             xmlWriter.WriteAttributeString("name", sys.Name);
+                            xmlWriter.WriteAttributeString("ID", sys.ID.ToString("X8"));
                             foreach (Instrument inst in sys.GetInstruments())
                             {
                                 xmlWriter.WriteStartElement("Instrument");
                                 xmlWriter.WriteAttributeString("name", inst.Name);
+                                xmlWriter.WriteAttributeString("ID", inst.ID.ToString("X8"));
                                 if (preset.GetActiveInstruments().Contains(inst))
                                 {
                                     xmlWriter.WriteAttributeString("checked", "true");
-                                    foreach (Channel ch in inst.GetChannels())
+                                    foreach (Tuple<Channel, ChannelDisplayConfig> channelPreset in preset.ChannelPresets)
                                     {
-                                        xmlWriter.WriteStartElement("Channel");
-                                        xmlWriter.WriteAttributeString("name", ch.Name);
-                                        for (int chart = 0; chart<N_CHARTS; chart++)
+                                        Channel channel = channelPreset.Item1;
+                                        ChannelDisplayConfig config = channelPreset.Item2;
+                                        if (inst.GetChannels().Contains(channel))
                                         {
-                                            if (preset.GetActiveChannels()[chart].Contains(ch))
-                                            {
-                                                xmlWriter.WriteStartElement("CheckBox");
-                                                xmlWriter.WriteAttributeString("chart", chart.ToString());
-                                                xmlWriter.WriteAttributeString("checked", "true");
-                                                xmlWriter.WriteEndElement();
-                                            }
+                                            xmlWriter.WriteStartElement("Channel");
+                                            xmlWriter.WriteAttributeString("name", channel.Name);
+                                            xmlWriter.WriteAttributeString("ID", channel.ID.ToString("X8"));
+                                            config.ToXML(xmlWriter);
+                                            xmlWriter.WriteEndElement();
                                         }
-                                        xmlWriter.WriteEndElement();
                                     }
                                 }
                                 xmlWriter.WriteEndElement();
@@ -189,6 +213,7 @@ namespace Omniscient
                                 {
                                     xmlWriter.WriteStartElement("EventGenerator");
                                     xmlWriter.WriteAttributeString("name", eventGenerator.Name);
+                                    xmlWriter.WriteAttributeString("ID", eventGenerator.ID.ToString("X8"));
                                     xmlWriter.WriteAttributeString("checked", "true");
                                     xmlWriter.WriteEndElement();
                                 }
