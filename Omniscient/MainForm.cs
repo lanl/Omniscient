@@ -2104,6 +2104,41 @@ namespace Omniscient
                 if (Core.SiteManager.Reload() != ReturnCode.SUCCESS) MessageBox.Show("Warning: Bad trouble loading the site manager!");
                 if (presetMan.Reload() != ReturnCode.SUCCESS) MessageBox.Show("Warning: Bad trouble loading the preset manager!");
                 UpdateSitesTree();
+                if (!(autoConfigurator.ConfiguredInstrument is null))
+                {
+                    SitesTreeView.Nodes.Find(autoConfigurator.ConfiguredInstrument.ID.ToString(), true)[0].Checked = true;
+
+                    // Zoom out, if reasonable
+                    TimeSpan totalSpan = Core.GlobalEnd - Core.GlobalStart;
+                    if (totalSpan.TotalDays < 32)
+                    {
+                        ZoomToFullRange();
+                    }
+
+                    // Select channels, if reasonable
+                    if (chPanels.Count < 5)
+                    {
+                        foreach (ChannelPanel channelPanel in chPanels)
+                        {
+                            channelPanel.Chart1CheckBox.Checked = true;
+                        }
+                    }
+                    else if (chPanels.Count < 9)
+                    {
+                        for (int i=0; i<(chPanels.Count/2 + chPanels.Count%2); i++)
+                        {
+                            chPanels[i].Chart1CheckBox.Checked = true;
+                        }
+                        for (int i = (chPanels.Count / 2 + chPanels.Count % 2); i < chPanels.Count; i++)
+                        {
+                            chPanels[i].Chart2CheckBox.Checked = true;
+                        }
+                    }
+                    else
+                    {
+                        chPanels[0].Chart1CheckBox.Checked = true;
+                    }
+                }
             }
 
             System.Windows.Forms.Cursor.Current = Cursors.Default;
@@ -2241,6 +2276,11 @@ namespace Omniscient
                     == DialogResult.Cancel)
                     return;
             }
+            ZoomToFullRange();
+        }
+
+        private void ZoomToFullRange()
+        {
             ChangeView(Core.GlobalStart, Core.GlobalEnd, true);
         }
     }

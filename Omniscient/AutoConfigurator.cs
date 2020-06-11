@@ -50,8 +50,11 @@ namespace Omniscient
     {
         SiteManager siteManager;
 
+        public Instrument ConfiguredInstrument { get; private set; }
+
         public AutoConfigurator(SiteManager manager)
         {
+            ConfiguredInstrument = null;
             siteManager = manager;
         }
 
@@ -161,6 +164,7 @@ namespace Omniscient
                         inst.FileModeFile = fileName;
 
                         siteManager.Save();
+                        ConfiguredInstrument = inst;
                         return ReturnCode.SUCCESS;
                     }
                 }
