@@ -206,8 +206,11 @@ namespace Omniscient
         {
             if (!changingView)
             {
+                // Do not allow zero-range
+                if ((end - start).TotalSeconds < 1) { return; }
                 changingView = true;
                 if (start > end) throw new DatesOutOfOrderException();
+                
                 bool newStart = start != ViewStart;
                 bool newEnd = end != ViewEnd;
 

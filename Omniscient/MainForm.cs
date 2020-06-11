@@ -985,6 +985,7 @@ namespace Omniscient
             System.Windows.Forms.Cursor.Current = Cursors.WaitCursor;
             if (bootingUp) return;
             if (RangeTextBox.Text == "") return;
+            if (RangeTextBox.Text == "0") RangeTextBox.Text = "1";
 
             int range;
             try
@@ -1004,7 +1005,7 @@ namespace Omniscient
             DateTime start = Core.ViewStart;
             DateTime end = Core.ViewEnd;
 
-            if (start >= end) return;
+            //if (start >= end) return;
             int startSeconds = DateTimeToReferenceSeconds(start);
             int endSeconds = DateTimeToReferenceSeconds(end);
             // Update Scrollbar
@@ -1134,6 +1135,7 @@ namespace Omniscient
 
         private void RangeTextBox_KeyDown(object sender, KeyEventArgs e)
         {
+            
             if (rangeChanged & e.KeyCode == Keys.Enter)
             {
                 UpdateRange();
@@ -2128,6 +2130,8 @@ namespace Omniscient
 
         private void ChangeView(DateTime startTime, DateTime endTime, bool holdRange = false)
         {
+            startTime = new DateTime(startTime.Ticks - (startTime.Ticks % TimeSpan.TicksPerSecond));
+            endTime = new DateTime((endTime.Ticks - 1) - ((endTime.Ticks-1) % TimeSpan.TicksPerSecond)).AddSeconds(1);
             if (BackHistory.Count == 0 ||
                 (BackHistory.Last.Value.Start != Core.ViewStart ||
                 BackHistory.Last.Value.End != Core.ViewEnd))
@@ -2141,6 +2145,7 @@ namespace Omniscient
 
         private void ShiftView(TimeSpan shift)
         {
+            shift = TimeSpan.FromSeconds(Math.Ceiling(shift.TotalSeconds));
             if (BackHistory.Count == 0 ||
                 (BackHistory.Last.Value.Start != Core.ViewStart ||
                 BackHistory.Last.Value.End != Core.ViewEnd))
