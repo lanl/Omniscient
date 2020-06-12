@@ -1,5 +1,20 @@
 Omniscient Change Log
 
+##  0.5.1
+2020-06-12
+
+### New Features
+* When using the "Open File" button, the instrument and its channels are automatically be selected and the display range is set to view the full range of data
+* There is a "Zoom to Full Range" button that zooms out to view the full range of data
+* The color of a series can be set from the channel panels (and will no longer automatically change as channels are selected and deselected)
+* Presets save which channels are displayed on which charts, their series colors, and line styles (connected lines or points])
+
+### Bug Fixes
+* Zooming into a range that was less than 1 second wide would make it very difficult to zoom out again
+* Zooming in by dragging the mouse off the chart would sometimes cause a crash
+* Presets could fail if two channels had the same name
+
+
 ##  0.5.0
 2020-05-11
 
@@ -17,7 +32,7 @@ Omniscient Change Log
 * There is a button to export the list of Events in the Event List.
 * When Events are generated, the number of Events is shown in the status bar.
 * Users can right click on an Event in the Event List and select "View Event" to move the view to the Event.
-* The Y-axis will auto scale when using the mouse to zoom in. This can be overriden by holding down the CTRL button.
+* The Y-axis will auto scale when using the mouse to zoom in. This can be overridden by holding down the CTRL button.
 
 ### Bug Fixes
 * The context menu for the Event Grid now shows up where the user clicks.
