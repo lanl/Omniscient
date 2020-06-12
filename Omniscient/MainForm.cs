@@ -1924,13 +1924,21 @@ namespace Omniscient
             {
                 int xStart = (int)X.ValueToPixelPosition(mouseDownX);
                 int xNow = (int)X.ValueToPixelPosition(mouseTime.ToOADate());
-                e.Graphics.DrawRectangle(Pens.Gray, Math.Min(xStart, xNow), (int)Y.ValueToPixelPosition(Y.Maximum),
-                    Math.Abs(xStart - xNow), (int)Y.ValueToPixelPosition(Y.Minimum) - (int)Y.ValueToPixelPosition(Y.Maximum));
+
+                // Don't go out of range
+                int xMin = Math.Min(xStart, xNow);
+                if (xMin < X.ValueToPixelPosition(X.Minimum)) xMin = (int) X.ValueToPixelPosition(X.Minimum);
+                int xMax = Math.Max(xStart, xNow);
+                if (xMax >= X.ValueToPixelPosition(X.Maximum)) xMax = (int)X.ValueToPixelPosition(X.Maximum)-1;
+
+                e.Graphics.DrawRectangle(Pens.Gray, xMin, (int)Y.ValueToPixelPosition(Y.Maximum),
+                    xMax-xMin, (int)Y.ValueToPixelPosition(Y.Minimum) - (int)Y.ValueToPixelPosition(Y.Maximum));
             }
             if (drawingYZoomBox && chartNum == (int)downChart.Tag)
             {
                 int yStart = (int)Y.ValueToPixelPosition(mouseDownY);
                 int yNow = (int)mouseY;
+
                 e.Graphics.DrawRectangle(Pens.Gray, (int)X.ValueToPixelPosition(X.Minimum), Math.Min(yStart, yNow),
                     (int)X.ValueToPixelPosition(X.Maximum) - (int)X.ValueToPixelPosition(X.Minimum), Math.Abs(yStart - yNow));
             }
