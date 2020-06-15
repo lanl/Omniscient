@@ -151,27 +151,18 @@ namespace Omniscient
         {
             this.Text = "Omniscient - Version " + OmniscientCore.VERSION;
             bootingUp = true;
-            StripChart0.MouseDown += new MouseEventHandler(StripChart_MouseClick);
-            StripChart1.MouseDown += new MouseEventHandler(StripChart_MouseClick);
-            StripChart2.MouseDown += new MouseEventHandler(StripChart_MouseClick);
-            StripChart3.MouseDown += new MouseEventHandler(StripChart_MouseClick);
-            StripChart0.MouseMove += new MouseEventHandler(StripChart_MouseMoved);
-            StripChart1.MouseMove += new MouseEventHandler(StripChart_MouseMoved);
-            StripChart2.MouseMove += new MouseEventHandler(StripChart_MouseMoved);
-            StripChart3.MouseMove += new MouseEventHandler(StripChart_MouseMoved);
-            StripChart0.MouseWheel += StripChart_MouseWheel;
-            StripChart1.MouseWheel += StripChart_MouseWheel;
-            StripChart2.MouseWheel += StripChart_MouseWheel;
-            StripChart3.MouseWheel += StripChart_MouseWheel;
-            StripChart0.Paint += new PaintEventHandler(StripChart_Paint);
-            StripChart1.Paint += new PaintEventHandler(StripChart_Paint);
-            StripChart2.Paint += new PaintEventHandler(StripChart_Paint);
-            StripChart3.Paint += new PaintEventHandler(StripChart_Paint);
 
-            StripChart0.SuppressExceptions = true;
-            StripChart1.SuppressExceptions = true;
-            StripChart2.SuppressExceptions = true;
-            StripChart3.SuppressExceptions = true;
+            for (int i = 0; i < N_CHARTS; i++)
+            {
+                Chart chart = GetChart(i);
+                chart.MouseDown += new MouseEventHandler(StripChart_MouseClick);
+                chart.MouseMove += new MouseEventHandler(StripChart_MouseMoved);
+                chart.MouseWheel += StripChart_MouseWheel;
+                chart.Paint += new PaintEventHandler(StripChart_Paint);
+                chart.Resize += Chart_Resize;
+
+                chart.SuppressExceptions = true;
+            }
 
             GlobalStartTextBox.Text = Core.GlobalStart.ToString("MMM dd, yyyy");
             GlobalEndTextBox.Text = Core.GlobalEnd.ToString("MMM dd, yyyy");
@@ -188,6 +179,31 @@ namespace Omniscient
             InitializeCharts();
             bootingUp = false;
             UpdateRange();
+        }
+
+        private void Chart_Resize(object sender, EventArgs e)
+        {
+            float positionX = 0;
+            float positionY = 0;
+            float positionWidth = 99.9F;
+            float positionHeight = 99.9F;
+            float plotX = 100.0F * 60.0F / StripChart0.Width;
+            float plotY = 100.0F * 20.0F / StripChart0.Height;
+            float plotWidth = 99.9F - 1.5F * plotX;
+            float plotHeight = 99.9F - 2.5F * plotY;
+
+            for (int i = 0; i < N_CHARTS; i++)
+            {
+                Chart chart = GetChart(i);
+                chart.ChartAreas[0].Position.X = positionX;
+                chart.ChartAreas[0].Position.Y = positionY;
+                chart.ChartAreas[0].Position.Width = positionWidth;
+                chart.ChartAreas[0].Position.Height = positionHeight;
+                chart.ChartAreas[0].InnerPlotPosition.X = plotX;
+                chart.ChartAreas[0].InnerPlotPosition.Y = plotY;
+                chart.ChartAreas[0].InnerPlotPosition.Width = plotWidth;
+                chart.ChartAreas[0].InnerPlotPosition.Height = plotHeight;
+            }
         }
 
         private void StripChart_MouseWheel(object sender, MouseEventArgs e)

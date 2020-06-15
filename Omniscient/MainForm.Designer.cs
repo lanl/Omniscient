@@ -235,7 +235,17 @@ namespace Omniscient
             // 
             // StripChart0
             // 
+            chartArea1.InnerPlotPosition.Auto = false;
+            chartArea1.InnerPlotPosition.Height = 63.33112F;
+            chartArea1.InnerPlotPosition.Width = 89.25123F;
+            chartArea1.InnerPlotPosition.X = 9.39757F;
+            chartArea1.InnerPlotPosition.Y = 9.49468F;
             chartArea1.Name = "ChartArea1";
+            chartArea1.Position.Auto = false;
+            chartArea1.Position.Height = 94F;
+            chartArea1.Position.Width = 77.70886F;
+            chartArea1.Position.X = 3F;
+            chartArea1.Position.Y = 3F;
             this.StripChart0.ChartAreas.Add(chartArea1);
             this.StripChart0.Dock = System.Windows.Forms.DockStyle.Fill;
             legend1.Name = "Legend1";
@@ -257,7 +267,17 @@ namespace Omniscient
             // 
             // StripChart3
             // 
+            chartArea2.InnerPlotPosition.Auto = false;
+            chartArea2.InnerPlotPosition.Height = 63.33112F;
+            chartArea2.InnerPlotPosition.Width = 89.25123F;
+            chartArea2.InnerPlotPosition.X = 9.39757F;
+            chartArea2.InnerPlotPosition.Y = 9.49468F;
             chartArea2.Name = "ChartArea1";
+            chartArea2.Position.Auto = false;
+            chartArea2.Position.Height = 94F;
+            chartArea2.Position.Width = 77.70886F;
+            chartArea2.Position.X = 3F;
+            chartArea2.Position.Y = 3F;
             this.StripChart3.ChartAreas.Add(chartArea2);
             this.StripChart3.Dock = System.Windows.Forms.DockStyle.Fill;
             legend2.Name = "Legend1";
@@ -279,7 +299,17 @@ namespace Omniscient
             // 
             // StripChart1
             // 
+            chartArea3.InnerPlotPosition.Auto = false;
+            chartArea3.InnerPlotPosition.Height = 63.33112F;
+            chartArea3.InnerPlotPosition.Width = 89.25123F;
+            chartArea3.InnerPlotPosition.X = 9.39757F;
+            chartArea3.InnerPlotPosition.Y = 9.49468F;
             chartArea3.Name = "ChartArea1";
+            chartArea3.Position.Auto = false;
+            chartArea3.Position.Height = 94F;
+            chartArea3.Position.Width = 77.70886F;
+            chartArea3.Position.X = 3F;
+            chartArea3.Position.Y = 3F;
             this.StripChart1.ChartAreas.Add(chartArea3);
             this.StripChart1.Dock = System.Windows.Forms.DockStyle.Fill;
             legend3.Name = "Legend1";
@@ -301,7 +331,17 @@ namespace Omniscient
             // 
             // StripChart2
             // 
+            chartArea4.InnerPlotPosition.Auto = false;
+            chartArea4.InnerPlotPosition.Height = 63.33112F;
+            chartArea4.InnerPlotPosition.Width = 89.25123F;
+            chartArea4.InnerPlotPosition.X = 9.39757F;
+            chartArea4.InnerPlotPosition.Y = 9.49468F;
             chartArea4.Name = "ChartArea1";
+            chartArea4.Position.Auto = false;
+            chartArea4.Position.Height = 94F;
+            chartArea4.Position.Width = 77.70886F;
+            chartArea4.Position.X = 3F;
+            chartArea4.Position.Y = 3F;
             this.StripChart2.ChartAreas.Add(chartArea4);
             this.StripChart2.Dock = System.Windows.Forms.DockStyle.Fill;
             legend4.Name = "Legend1";
