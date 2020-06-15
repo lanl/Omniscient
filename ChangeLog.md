@@ -1,5 +1,12 @@
 Omniscient Change Log
 
+##  0.9.0
+2020-06-15
+
+### New Features
+* The chart area is sized to make better use of space
+
+
 ##  0.5.1
 2020-06-12
 
