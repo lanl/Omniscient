@@ -183,26 +183,32 @@ namespace Omniscient
 
         private void Chart_Resize(object sender, EventArgs e)
         {
-            float positionX = 0;
-            float positionY = 0;
-            float positionWidth = 99.9F;
-            float positionHeight = 99.9F;
-            float plotX = 100.0F * 60.0F / StripChart0.Width;
-            float plotY = 100.0F * 20.0F / StripChart0.Height;
-            float plotWidth = 99.9F - 1.5F * plotX;
-            float plotHeight = 99.9F - 2.5F * plotY;
+            if (StripChart0.Width > 100)
+            { 
+                float positionX = 0;
+                float positionY = 0;
+                float positionWidth = 99.9F;
+                float positionHeight = 99.9F;
+                float plotX = 100.0F * 60.0F / StripChart0.Width;
+                float plotWidth = 99.9F - 1.5F * plotX;
 
-            for (int i = 0; i < N_CHARTS; i++)
-            {
-                Chart chart = GetChart(i);
-                chart.ChartAreas[0].Position.X = positionX;
-                chart.ChartAreas[0].Position.Y = positionY;
-                chart.ChartAreas[0].Position.Width = positionWidth;
-                chart.ChartAreas[0].Position.Height = positionHeight;
-                chart.ChartAreas[0].InnerPlotPosition.X = plotX;
-                chart.ChartAreas[0].InnerPlotPosition.Y = plotY;
-                chart.ChartAreas[0].InnerPlotPosition.Width = plotWidth;
-                chart.ChartAreas[0].InnerPlotPosition.Height = plotHeight;
+                for (int i = 0; i < N_CHARTS; i++)
+                {
+                    Chart chart = GetChart(i);
+                    if (chart.Height > 52)
+                    { 
+                        float plotY = 100.0F * 20.0F / chart.Height;
+                        float plotHeight = 99.9F - 2.5F * plotY;
+                        chart.ChartAreas[0].Position.X = positionX;
+                        chart.ChartAreas[0].Position.Y = positionY;
+                        chart.ChartAreas[0].Position.Width = positionWidth;
+                        chart.ChartAreas[0].Position.Height = positionHeight;
+                        chart.ChartAreas[0].InnerPlotPosition.X = plotX;
+                        chart.ChartAreas[0].InnerPlotPosition.Y = plotY;
+                        chart.ChartAreas[0].InnerPlotPosition.Width = plotWidth;
+                        chart.ChartAreas[0].InnerPlotPosition.Height = plotHeight;
+                    }
+                }
             }
         }
 
