@@ -42,7 +42,8 @@ namespace Omniscient
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Inspectrum));
-            this.SpecChart = new LiveCharts.WinForms.CartesianChart();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -55,6 +56,7 @@ namespace Omniscient
             this.DeadTimeStripTextBox = new System.Windows.Forms.ToolStripTextBox();
             this.LeftPanel = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.CalResetButton = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.CalSlopeTextBox = new System.Windows.Forms.TextBox();
@@ -67,24 +69,15 @@ namespace Omniscient
             this.FileNameTextBox = new System.Windows.Forms.TextBox();
             this.BottomPanel = new System.Windows.Forms.Panel();
             this.SpecPanel = new System.Windows.Forms.Panel();
-            this.vScrollBar1 = new System.Windows.Forms.VScrollBar();
-            this.hScrollBar1 = new System.Windows.Forms.HScrollBar();
-            this.CalResetButton = new System.Windows.Forms.Button();
+            this.SpecChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            this.HScroll = new System.Windows.Forms.HScrollBar();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.LeftPanel.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SpecPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.SpecChart)).BeginInit();
             this.SuspendLayout();
-            // 
-            // SpecChart
-            // 
-            this.SpecChart.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SpecChart.Location = new System.Drawing.Point(0, 0);
-            this.SpecChart.Name = "SpecChart";
-            this.SpecChart.Size = new System.Drawing.Size(786, 395);
-            this.SpecChart.TabIndex = 0;
-            this.SpecChart.Text = "cartesianChart1";
             // 
             // menuStrip1
             // 
@@ -193,6 +186,16 @@ namespace Omniscient
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Calibration";
             // 
+            // CalResetButton
+            // 
+            this.CalResetButton.Location = new System.Drawing.Point(13, 64);
+            this.CalResetButton.Name = "CalResetButton";
+            this.CalResetButton.Size = new System.Drawing.Size(181, 26);
+            this.CalResetButton.TabIndex = 8;
+            this.CalResetButton.Text = "Reset to File Calibration";
+            this.CalResetButton.UseVisualStyleBackColor = true;
+            this.CalResetButton.Click += new System.EventHandler(this.CalResetButton_Click);
+            // 
             // label5
             // 
             this.label5.AutoSize = true;
@@ -292,39 +295,36 @@ namespace Omniscient
             // SpecPanel
             // 
             this.SpecPanel.Controls.Add(this.SpecChart);
-            this.SpecPanel.Controls.Add(this.vScrollBar1);
-            this.SpecPanel.Controls.Add(this.hScrollBar1);
+            this.SpecPanel.Controls.Add(this.HScroll);
             this.SpecPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.SpecPanel.Location = new System.Drawing.Point(220, 49);
             this.SpecPanel.Name = "SpecPanel";
             this.SpecPanel.Size = new System.Drawing.Size(803, 412);
             this.SpecPanel.TabIndex = 5;
             // 
-            // vScrollBar1
+            // SpecChart
             // 
-            this.vScrollBar1.Dock = System.Windows.Forms.DockStyle.Right;
-            this.vScrollBar1.Location = new System.Drawing.Point(786, 0);
-            this.vScrollBar1.Name = "vScrollBar1";
-            this.vScrollBar1.Size = new System.Drawing.Size(17, 395);
-            this.vScrollBar1.TabIndex = 2;
+            chartArea3.Name = "ChartArea1";
+            this.SpecChart.ChartAreas.Add(chartArea3);
+            this.SpecChart.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.SpecChart.Location = new System.Drawing.Point(0, 0);
+            this.SpecChart.Name = "SpecChart";
+            series3.ChartArea = "ChartArea1";
+            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StepLine;
+            series3.Name = "Series1";
+            this.SpecChart.Series.Add(series3);
+            this.SpecChart.Size = new System.Drawing.Size(803, 395);
+            this.SpecChart.TabIndex = 3;
+            this.SpecChart.Text = "chart1";
             // 
-            // hScrollBar1
+            // HScroll
             // 
-            this.hScrollBar1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.hScrollBar1.Location = new System.Drawing.Point(0, 395);
-            this.hScrollBar1.Name = "hScrollBar1";
-            this.hScrollBar1.Size = new System.Drawing.Size(803, 17);
-            this.hScrollBar1.TabIndex = 1;
-            // 
-            // CalResetButton
-            // 
-            this.CalResetButton.Location = new System.Drawing.Point(13, 64);
-            this.CalResetButton.Name = "CalResetButton";
-            this.CalResetButton.Size = new System.Drawing.Size(181, 26);
-            this.CalResetButton.TabIndex = 8;
-            this.CalResetButton.Text = "Reset to File Calibration";
-            this.CalResetButton.UseVisualStyleBackColor = true;
-            this.CalResetButton.Click += new System.EventHandler(this.CalResetButton_Click);
+            this.HScroll.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.HScroll.Location = new System.Drawing.Point(0, 395);
+            this.HScroll.Name = "HScroll";
+            this.HScroll.Size = new System.Drawing.Size(803, 17);
+            this.HScroll.TabIndex = 1;
+            this.HScroll.Scroll += new System.Windows.Forms.ScrollEventHandler(this.HScroll_Scroll);
             // 
             // Inspectrum
             // 
@@ -340,6 +340,8 @@ namespace Omniscient
             this.Name = "Inspectrum";
             this.Text = "Inspectrum";
             this.Load += new System.EventHandler(this.Inspectrum_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Inspectrum_KeyDown);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Inspectrum_KeyUp);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
@@ -349,14 +351,13 @@ namespace Omniscient
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.SpecPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.SpecChart)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private LiveCharts.WinForms.CartesianChart SpecChart;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
@@ -381,8 +382,8 @@ namespace Omniscient
         private System.Windows.Forms.TextBox FileNameTextBox;
         private System.Windows.Forms.Panel BottomPanel;
         private System.Windows.Forms.Panel SpecPanel;
-        private System.Windows.Forms.VScrollBar vScrollBar1;
-        private System.Windows.Forms.HScrollBar hScrollBar1;
+        private System.Windows.Forms.HScrollBar HScroll;
         private System.Windows.Forms.Button CalResetButton;
+        private System.Windows.Forms.DataVisualization.Charting.Chart SpecChart;
     }
 }
