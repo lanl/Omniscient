@@ -1034,6 +1034,7 @@ namespace Omniscient
             StripChartScroll.Minimum =  DateTimeToReferenceSeconds(Core.GlobalStart);
             StripChartScroll.Maximum = DateTimeToReferenceSeconds(Core.GlobalEnd);
             if (startSeconds < StripChartScroll.Minimum) startSeconds = StripChartScroll.Minimum;
+            if (startSeconds > StripChartScroll.Maximum) startSeconds = StripChartScroll.Maximum;
             StripChartScroll.Value = startSeconds;
             StripChartScroll.SmallChange = endSeconds - startSeconds;
             StripChartScroll.LargeChange = endSeconds - startSeconds;
