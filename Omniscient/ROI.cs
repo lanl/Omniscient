@@ -1,5 +1,6 @@
 // This software is open source software available under the BSD-3 license.
 // 
+// Copyright (c) 2020, International Atomic Energy Agency (IAEA), IAEA.org
 // Copyright (c) 2018, Triad National Security, LLC
 // All rights reserved.
 // 
@@ -38,25 +39,31 @@ namespace Omniscient
             return "Weird things are happening...";
         }
 
-        double roiStart;    // keV
-        double roiEnd;      // keV
+        /// <summary>
+        /// If true, values are given in keV. 
+        /// If false, values are given as channel number.
+        /// </summary>
+        public bool InputKeV { get; set; }
 
-        double bg1Start;
-        double bg1End;
-        double bg2Start;
-        double bg2End;
+        public double ROIStart { get; set; }    // keV if InputKeV is true. Otherwise, channel.
+        public double ROIEnd { get; set; }      // keV if InputKeV is true. Otherwise, channel.
 
-        BG_Type bgType;
+        public double BG1Start { get; set; }
+        public double BG1End { get; set; }
+        public double BG2Start { get; set; }
+        public double BG2End { get; set; }
+
+        public BG_Type BGType { get; set; }
 
         public ROI()
         {
-            roiStart = 0;
-            roiEnd = 0;
-            bg1Start = 0;
-            bg1End = 0;
-            bg2Start = 0;
-            bg2End = 0;
-            bgType = BG_Type.NONE;
+            ROIStart = 0;
+            ROIEnd = 0;
+            BG1Start = 0;
+            BG1End = 0;
+            BG2Start = 0;
+            BG2End = 0;
+            BGType = BG_Type.NONE;
         }
 
         public double GetROICounts(Spectrum spec)
@@ -69,25 +76,47 @@ namespace Omniscient
             int bg1Bins = 0;
             double bg2Counts = 0;
             int bg2Bins = 0;
-            for (int i=0; i<bins.Length;i++)
-            {
-                if (bins[i] >= roiStart && bins[i] <= roiEnd)
+
+            if (InputKeV)
+            { 
+                for (int i=0; i<bins.Length;i++)
                 {
-                    totalCounts += counts[i];
-                    roiBins++;
+                    if (bins[i] >= ROIStart && bins[i] <= ROIEnd)
+                    {
+                        totalCounts += counts[i];
+                        roiBins++;
+                    }
+                    if (bins[i] >= BG1Start && bins[i] <= BG1End)
+                    {
+                        bg1Counts += counts[i];
+                        bg1Bins++;
+                    }
+                    if (bins[i] >= BG2Start && bins[i] <= BG2End)
+                    {
+                        bg2Counts += counts[i];
+                        bg2Bins++;
+                    }
                 }
-                if (bins[i] >= bg1Start && bins[i] <= bg1End)
+            }
+            else
+            {
+                for (int i = (int)BG1Start; i <= (int)BG1End; i++)
                 {
                     bg1Counts += counts[i];
                     bg1Bins++;
                 }
-                if (bins[i] >= bg2Start && bins[i] <= bg2End)
+                for (int i = (int)ROIStart; i <= (int)ROIEnd; i++)
+                {
+                    totalCounts += counts[i];
+                    roiBins++;
+                }
+                for (int i = (int)BG2Start; i <= (int)BG2End; i++)
                 {
                     bg2Counts += counts[i];
                     bg2Bins++;
                 }
             }
-            switch (bgType)
+            switch (BGType)
             {
                 case BG_Type.NONE:
                     return totalCounts;
@@ -104,21 +133,5 @@ namespace Omniscient
         {
             return GetROICounts(spec) / spec.GetLiveTime();
         }
-
-        public double GetROIStart() { return roiStart; }
-        public double GetROIEnd() { return roiEnd; }
-        public double GetBG1Start() { return bg1Start; }
-        public double GetBG1End() { return bg1End; }
-        public double GetBG2Start() { return bg2Start; }
-        public double GetBG2End() { return bg2End; }
-        public BG_Type GetBGType() { return bgType; }
-
-        public void SetROIStart(double newStart) { roiStart = newStart; }
-        public void SetROIEnd(double newEnd) { roiEnd = newEnd; }
-        public void SetBG1Start(double newStart) { bg1Start = newStart; }
-        public void SetBG1End(double newEnd) { bg1End = newEnd; }
-        public void SetBG2Start(double newStart) { bg2Start = newStart; }
-        public void SetBG2End(double newEnd) { bg2End = newEnd; }
-        public void SetBGType(BG_Type newType) { bgType = newType; }
     }
 }

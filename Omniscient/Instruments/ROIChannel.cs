@@ -24,40 +24,50 @@ namespace Omniscient
     {
         ROI roi;
 
+        /// <summary>
+        /// If true, values are given in keV. 
+        /// If false, values are given as channel number.
+        /// </summary>
+        public bool InputKeV 
+        { 
+            get { return roi.InputKeV; }
+            set { roi.InputKeV = value; } 
+        }
+
         public double Start
         {
-            get { return roi.GetROIStart(); }
-            set { roi.SetROIStart(value); }
+            get { return roi.ROIStart; }
+            set { roi.ROIStart = value; }
         }
         public double End
         {
-            get { return roi.GetROIEnd(); }
-            set { roi.SetROIEnd(value); }
+            get { return roi.ROIEnd; }
+            set { roi.ROIEnd = value; }
         }
         public double BG1_Start
         {
-            get { return roi.GetBG1Start(); }
-            set { roi.SetBG1Start(value); }
+            get { return roi.BG1Start; }
+            set { roi.BG1Start = value; }
         }
         public double BG1_End
         {
-            get { return roi.GetBG1End(); }
-            set { roi.SetBG1End(value); }
+            get { return roi.BG1End; }
+            set { roi.BG1End = value; }
         }
         public double BG2_Start
         {
-            get { return roi.GetBG2Start(); }
-            set { roi.SetBG2Start(value); }
+            get { return roi.BG2Start; }
+            set { roi.BG2Start = value; }
         }
         public double BG2_End
         {
-            get { return roi.GetBG2End(); }
-            set { roi.SetBG2End(value); }
+            get { return roi.BG2End; }
+            set { roi.BG2End = value; }
         }
         public ROI.BG_Type BGType
         {
-            get { return roi.GetBGType(); }
-            set { roi.SetBGType(value); }
+            get { return roi.BGType; }
+            set { roi.BGType = value; }
         }
 
         public ROIChannel(string newName, MCAInstrument parent, ChannelType newType, uint id) : base(newName, parent, newType, id)
@@ -109,6 +119,11 @@ namespace Omniscient
             }
             return new List<Parameter>()
             {
+                new EnumParameter("Input Mode")
+                {
+                    Value = InputKeV ? "keV" : "channel",
+                    ValidValues = new List<string>(){ "keV", "channel"}
+                },
                 new DoubleParameter("Start (keV)")
                 {
                     Value = Start.ToString()
@@ -153,6 +168,7 @@ namespace Omniscient
         {
             TemplateParameters = new List<ParameterTemplate>()
             {
+                new ParameterTemplate("Input Mode", ParameterType.Enum, new List<string>(){"keV", "channel" }),
                 new ParameterTemplate("Start (keV)", ParameterType.Double),
                 new ParameterTemplate("End (keV)", ParameterType.Double),
                 new ParameterTemplate("BG Type", ParameterType.Enum, new List<string>(){ "None", "Flat", "Linear" }),
@@ -168,11 +184,23 @@ namespace Omniscient
         public override VirtualChannel FromParameters(Instrument parent, string newName, List<Parameter> parameters, uint id)
         {
             ROIChannel roiChannel = new ROIChannel(newName, parent as MCAInstrument, Channel.ChannelType.DURATION_VALUE, id);
+            roiChannel.InputKeV = true;
 
             foreach (Parameter param in parameters)
             {
                 switch (param.Name)
                 {
+                    case "Input Mode":
+                        switch (param.Value)
+                        {
+                            case "keV":
+                                roiChannel.InputKeV = true;
+                                break;
+                            case "channel":
+                                roiChannel.InputKeV = false;
+                                break;
+                        }
+                        break;
                     case "Start (keV)":
                         roiChannel.Start = ((DoubleParameter)param).ToDouble();
                         break;
