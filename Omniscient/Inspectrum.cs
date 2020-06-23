@@ -55,6 +55,9 @@ namespace Omniscient
         bool controlPressed = false;
 
         const int H_SCROLL_MAX = 10000;
+        
+        public string FileName { get; private set; }
+        public string FileExt { get; private set; }
 
         public Inspectrum()
         {
@@ -77,6 +80,8 @@ namespace Omniscient
             series.ChartType = SeriesChartType.StepLine;
             series.XValueType = ChartValueType.Double;
             series.BorderWidth = 2;
+
+            series.Color = Color.Blue;
 
             List<double> energies = new List<double>();
             List<double> vals = new List<double>();
@@ -126,18 +131,18 @@ namespace Omniscient
         {
             Spectrum spectrum;
             string fileAbrev = fileName.Substring(fileName.LastIndexOf('\\') + 1);
-            string fileExt = fileAbrev.Substring(fileAbrev.Length - 3).ToLower();
-            if (fileExt == "chn")
+            FileExt = fileAbrev.Substring(fileAbrev.Length - 3).ToLower();
+            if (FileExt == "chn")
             {
                 chnParser.ParseSpectrumFile(fileName);
                 spectrum = chnParser.GetSpectrum();
             }
-            else if (fileExt == "spe")
+            else if (FileExt == "spe")
             {
                 speParser.ParseSpectrumFile(fileName);
                 spectrum = speParser.GetSpectrum();
             }
-            else if (fileExt == "n42")
+            else if (FileExt == "n42")
             {
                 n42Parser.ParseSpectrumFile(fileName);
                 spectrum = n42Parser.GetSpectrum();
@@ -164,6 +169,7 @@ namespace Omniscient
             counts = spectrum.GetCounts();
             DrawSpectrum();
 
+            FileName = fileName;
             fileLoaded = true;
         }
 
@@ -481,10 +487,24 @@ namespace Omniscient
         {
             if(fileLoaded)
             {
-                calibrationZero = chnParser.GetCalibrationZero();
-                calibrationSlope = chnParser.GetCalibrationSlope();
-                CalZeroTextBox.Text = string.Format("{0:F3}", chnParser.GetCalibrationZero());
-                CalSlopeTextBox.Text = string.Format("{0:F4}", chnParser.GetCalibrationSlope());
+                Spectrum spectrum;
+                if (FileExt == "chn")
+                {
+                    spectrum = chnParser.GetSpectrum();
+                }
+                else if (FileExt == "spe")
+                {
+                    spectrum = speParser.GetSpectrum();
+                }
+                else
+                {
+                    spectrum = n42Parser.GetSpectrum();
+                }
+
+                calibrationZero = spectrum.GetCalibrationZero();
+                calibrationSlope = spectrum.GetCalibrationSlope();
+                CalZeroTextBox.Text = string.Format("{0:F3}", calibrationZero);
+                CalSlopeTextBox.Text = string.Format("{0:F4}", calibrationSlope);
                 DrawSpectrum();
             }
         }
