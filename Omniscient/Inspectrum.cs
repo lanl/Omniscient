@@ -381,13 +381,12 @@ namespace Omniscient
             {
                 // This is nothing - just do nothing
                 drawingXZoomBox = false;
-                return;
             }
             else
             {
                 // TODO: Do some ROI stuff
-                return;
             }
+            SpecChart.Invalidate();
         }
 
         private void SpecChart_MouseMove(object sender, MouseEventArgs e)
