@@ -1,5 +1,6 @@
 // This software is open source software available under the BSD-3 license.
 // 
+// Copyright (c) 2020, International Atomic Energy Agency (IAEA), IAEA.org
 // Copyright (c) 2018, Triad National Security, LLC
 // All rights reserved.
 // 
@@ -30,6 +31,7 @@ namespace Omniscient
         CHNParser chnParser;
         SPEParser speParser;
         N42Parser n42Parser;
+        HGMParser hgmParser;
 
         bool calibrationChanged = false;
         bool fileLoaded = false;
@@ -68,6 +70,7 @@ namespace Omniscient
             chnParser = new CHNParser();
             speParser = new SPEParser();
             n42Parser = new N42Parser();
+            hgmParser = new HGMParser();
         }
 
         private void DrawSpectrum()
@@ -134,18 +137,31 @@ namespace Omniscient
             FileExt = fileAbrev.Substring(fileAbrev.Length - 3).ToLower();
             if (FileExt == "chn")
             {
+                SpectrumNumberUpDown.Value = 1;
+                SpectrumNumberUpDown.Enabled = false;
                 chnParser.ParseSpectrumFile(fileName);
                 spectrum = chnParser.GetSpectrum();
             }
             else if (FileExt == "spe")
             {
+                SpectrumNumberUpDown.Value = 1;
+                SpectrumNumberUpDown.Enabled = false;
                 speParser.ParseSpectrumFile(fileName);
                 spectrum = speParser.GetSpectrum();
             }
             else if (FileExt == "n42")
             {
+                SpectrumNumberUpDown.Value = 1;
+                SpectrumNumberUpDown.Enabled = false;
                 n42Parser.ParseSpectrumFile(fileName);
                 spectrum = n42Parser.GetSpectrum();
+            }
+            else if (FileExt == "hgm")
+            {
+                SpectrumNumberUpDown.Enabled = true;
+                hgmParser.ParseSpectrumFile(fileName);
+                spectrum = hgmParser.GetSpectrum();
+                SpectrumNumberUpDown.Value = 1;
             }
             else
             {
@@ -155,6 +171,15 @@ namespace Omniscient
 
             // Populate text fields
             FileNameTextBox.Text = fileName;
+
+            LoadSpectrum(spectrum);
+
+            FileName = fileName;
+            fileLoaded = true;
+        }
+
+        private void LoadSpectrum(Spectrum spectrum)
+        {
             DateTextBox.Text = spectrum.GetStartTime().ToString("dd-MMM-yyyy");
             TimeTextBox.Text = spectrum.GetStartTime().ToString("HH:mm:ss");
             CalZeroTextBox.Text = string.Format("{0:F3}", spectrum.GetCalibrationZero());
@@ -168,9 +193,6 @@ namespace Omniscient
             calibrationSlope = spectrum.GetCalibrationSlope();
             counts = spectrum.GetCounts();
             DrawSpectrum();
-
-            FileName = fileName;
-            fileLoaded = true;
         }
 
         public void LoadCHNFile(string fileName)
@@ -204,7 +226,7 @@ namespace Omniscient
         private void OpenFile()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Spectrum Files|*.chn;*.spe|chn files (*.chn)|*.chn|spe files (*.spe)|*.spe|All files (*.*)|*.*";
+            openFileDialog.Filter = "Spectrum Files|*.chn;*.spe;*.n42;*.hgm|chn files (*.chn)|*.chn|spe files (*.spe)|*.spe|N42 files (*.n42)|*.n42|HGM files (*.hgm)|*.hgm|All files (*.*)|*.*";
             openFileDialog.RestoreDirectory = true;
 
             if (openFileDialog.ShowDialog() == DialogResult.OK)
@@ -496,9 +518,13 @@ namespace Omniscient
                 {
                     spectrum = speParser.GetSpectrum();
                 }
-                else
+                else if (FileExt == "n42")
                 {
                     spectrum = n42Parser.GetSpectrum();
+                }
+                else
+                {
+                    spectrum = hgmParser.GetSpectrum();
                 }
 
                 calibrationZero = spectrum.GetCalibrationZero();
@@ -604,6 +630,22 @@ namespace Omniscient
         {
             SetChartRange(0, maxX);
             SetChartYBounds(0, maxY);
+        }
+
+        private void SpectrumNumberUpDown_ValueChanged(object sender, EventArgs e)
+        {
+            if (SpectrumNumberUpDown.Enabled && hgmParser.Spectra.Count > 0)
+            { 
+                int spectrumNumber = (int)SpectrumNumberUpDown.Value;
+
+                if (spectrumNumber < 1) SpectrumNumberUpDown.Value = 1;
+                else if (spectrumNumber > hgmParser.Spectra.Count) SpectrumNumberUpDown.Value = hgmParser.Spectra.Count;
+                else
+                {
+                    spectrumNumber -= 1;
+                    LoadSpectrum(hgmParser.Spectra[spectrumNumber]);
+                }
+            }
         }
     }
 }

@@ -44,6 +44,17 @@ namespace Omniscient
             counts = newCounts;
         }
 
+        public Spectrum(double zero, double slope, int[] newCounts,
+            DateTime newStartTime, double newRealTime, double newLiveTime)
+        {
+            calibrationZero = zero;
+            calibrationSlope = slope;
+            counts = newCounts;
+            startTime = newStartTime;
+            realTime = newRealTime;
+            liveTime = newLiveTime;
+        }
+
         public double[] GetBins()
         {
             double[] bins = new double[counts.Length];

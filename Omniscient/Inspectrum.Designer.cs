@@ -42,8 +42,8 @@ namespace Omniscient
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Inspectrum));
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -71,12 +71,15 @@ namespace Omniscient
             this.SpecPanel = new System.Windows.Forms.Panel();
             this.SpecChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.HScroll = new System.Windows.Forms.HScrollBar();
+            this.SpectrumNumberUpDown = new System.Windows.Forms.NumericUpDown();
+            this.label6 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.LeftPanel.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.SpecPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.SpecChart)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.SpectrumNumberUpDown)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -159,6 +162,8 @@ namespace Omniscient
             // 
             // LeftPanel
             // 
+            this.LeftPanel.Controls.Add(this.label6);
+            this.LeftPanel.Controls.Add(this.SpectrumNumberUpDown);
             this.LeftPanel.Controls.Add(this.groupBox1);
             this.LeftPanel.Controls.Add(this.TimeTextBox);
             this.LeftPanel.Controls.Add(this.label3);
@@ -236,6 +241,7 @@ namespace Omniscient
             // 
             // TimeTextBox
             // 
+            this.TimeTextBox.Enabled = false;
             this.TimeTextBox.Location = new System.Drawing.Point(120, 98);
             this.TimeTextBox.Name = "TimeTextBox";
             this.TimeTextBox.Size = new System.Drawing.Size(80, 20);
@@ -253,6 +259,7 @@ namespace Omniscient
             // 
             // DateTextBox
             // 
+            this.DateTextBox.Enabled = false;
             this.DateTextBox.Location = new System.Drawing.Point(12, 98);
             this.DateTextBox.Name = "DateTextBox";
             this.DateTextBox.Size = new System.Drawing.Size(80, 20);
@@ -279,6 +286,7 @@ namespace Omniscient
             // 
             // FileNameTextBox
             // 
+            this.FileNameTextBox.Enabled = false;
             this.FileNameTextBox.Location = new System.Drawing.Point(12, 30);
             this.FileNameTextBox.Name = "FileNameTextBox";
             this.FileNameTextBox.Size = new System.Drawing.Size(200, 20);
@@ -304,15 +312,15 @@ namespace Omniscient
             // 
             // SpecChart
             // 
-            chartArea3.Name = "ChartArea1";
-            this.SpecChart.ChartAreas.Add(chartArea3);
+            chartArea1.Name = "ChartArea1";
+            this.SpecChart.ChartAreas.Add(chartArea1);
             this.SpecChart.Dock = System.Windows.Forms.DockStyle.Fill;
             this.SpecChart.Location = new System.Drawing.Point(0, 0);
             this.SpecChart.Name = "SpecChart";
-            series3.ChartArea = "ChartArea1";
-            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StepLine;
-            series3.Name = "Series1";
-            this.SpecChart.Series.Add(series3);
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StepLine;
+            series1.Name = "Series1";
+            this.SpecChart.Series.Add(series1);
             this.SpecChart.Size = new System.Drawing.Size(803, 395);
             this.SpecChart.TabIndex = 3;
             this.SpecChart.Text = "chart1";
@@ -325,6 +333,23 @@ namespace Omniscient
             this.HScroll.Size = new System.Drawing.Size(803, 17);
             this.HScroll.TabIndex = 1;
             this.HScroll.Scroll += new System.Windows.Forms.ScrollEventHandler(this.HScroll_Scroll);
+            // 
+            // SpectrumNumberUpDown
+            // 
+            this.SpectrumNumberUpDown.Location = new System.Drawing.Point(120, 141);
+            this.SpectrumNumberUpDown.Name = "SpectrumNumberUpDown";
+            this.SpectrumNumberUpDown.Size = new System.Drawing.Size(80, 20);
+            this.SpectrumNumberUpDown.TabIndex = 7;
+            this.SpectrumNumberUpDown.ValueChanged += new System.EventHandler(this.SpectrumNumberUpDown_ValueChanged);
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(52, 143);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(62, 13);
+            this.label6.TabIndex = 8;
+            this.label6.Text = "Spectrum #";
             // 
             // Inspectrum
             // 
@@ -352,6 +377,7 @@ namespace Omniscient
             this.groupBox1.PerformLayout();
             this.SpecPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.SpecChart)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.SpectrumNumberUpDown)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -385,5 +411,7 @@ namespace Omniscient
         private System.Windows.Forms.HScrollBar HScroll;
         private System.Windows.Forms.Button CalResetButton;
         private System.Windows.Forms.DataVisualization.Charting.Chart SpecChart;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.NumericUpDown SpectrumNumberUpDown;
     }
 }
