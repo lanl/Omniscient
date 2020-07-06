@@ -126,6 +126,7 @@ namespace Omniscient
             string[] dateTokens;
             string[] timeTokens;
             int[] counts;
+            int elapsedTime = -1;
             DateTime dateTime;
             while (lineIndex < (lines.Length - nBins + 2))
             {
@@ -151,8 +152,11 @@ namespace Omniscient
                     counts[bin] = int.Parse(tokens[1]);
                     lineIndex++;
                 }
-                lineIndex+=2;
-                Spectra.Add(new Spectrum(0, 1, counts, dateTime, recordPeriod * recordsPerHGM, recordPeriod * recordsPerHGM));
+                timeTokens = lines[lineIndex].Split('=');
+                elapsedTime = int.Parse(timeTokens[1]);
+                lineIndex += 2;
+                if (elapsedTime > 0) Spectra.Add(new Spectrum(0, 1, counts, dateTime, elapsedTime, elapsedTime));
+                else Spectra.Add(new Spectrum(0, 1, counts, dateTime, recordPeriod * recordsPerHGM, recordPeriod * recordsPerHGM));
             }
 
             return ReturnCode.SUCCESS;
