@@ -2350,7 +2350,9 @@ namespace Omniscient
 
         private void ZoomToFullRange()
         {
+            System.Windows.Forms.Cursor.Current = Cursors.WaitCursor;
             ChangeView(Core.GlobalStart, Core.GlobalEnd, true);
+            System.Windows.Forms.Cursor.Current = Cursors.Default;
         }
 
         private void PresetDeleteButton_Click(object sender, EventArgs e)
@@ -2379,6 +2381,16 @@ namespace Omniscient
             {
                 MessageBox.Show("Preset \"" + name + "\" does not exist.", "Nope");
             }
+        }
+
+        private void ShiftStartButton_Click(object sender, EventArgs e)
+        {
+            ShiftView(Core.GlobalStart - Core.ViewStart);
+        }
+
+        private void ShiftEndButton_Click(object sender, EventArgs e)
+        {
+            ShiftView(Core.GlobalEnd - Core.ViewEnd);
         }
     }
 }
