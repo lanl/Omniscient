@@ -1319,6 +1319,17 @@ namespace Omniscient
                                     }
                                 }
                             }
+
+                            if (manualIOR != null && 
+                                chan.GetInstrument() is MCAInstrument &&
+                                mouseTime >= manualIOR.TimeRange.Start && 
+                                mouseTime <= manualIOR.TimeRange.End)
+                            {
+                                MenuItem menuItem = new MenuItem("View sum of " + chan.Name + " in Inspectrum");
+                                menuItem.Tag = chan;
+                                menuItem.Click += PlotSummedSpectraMenuItem_Click;
+                                chartMenu.MenuItems.Add(menuItem);
+                            }
                         }
                         else if (inst is ImageInstrument)
                         {
@@ -1372,6 +1383,47 @@ namespace Omniscient
                 }
             }
             chartMenu.Show(activeChart, new Point((int)mouseX, (int)mouseY));
+        }
+
+        private void PlotSummedSpectraMenuItem_Click(object sender, EventArgs e)
+        {
+            // Get a list of files in the range
+            Channel chan = ((MenuItem)sender).Tag as Channel;
+            MCAInstrument inst = chan.GetInstrument() as MCAInstrument;
+            List<DateTime> timeStamps = chan.GetTimeStamps(ChannelCompartment.View);
+            List<TimeSpan> durations = chan.GetDurations(ChannelCompartment.View);
+            List<DataFile> dataFiles = chan.GetFiles(ChannelCompartment.View);
+            List<string> files = new List<string>();
+            List<Spectrum> spectra = new List<Spectrum>();
+            List<Spectrum> fileSpectra = new List<Spectrum>();
+
+            inst.ClearData(ChannelCompartment.Process);
+            for (int meas = 0; meas < timeStamps.Count(); meas++)
+            {
+                if (timeStamps[meas] >= manualIOR.TimeRange.Start &&
+                    timeStamps[meas] + durations[meas] <= manualIOR.TimeRange.End)
+                {
+                    if (!files.Contains(dataFiles[meas].FileName))
+                    {
+                        files.Add(dataFiles[meas].FileName);
+                        inst.IngestFile(ChannelCompartment.Process, dataFiles[meas].FileName);
+                        fileSpectra = inst.SpectrumParser.GetSpectra();
+
+                        foreach (Spectrum spectrum in fileSpectra)
+                        {
+                            if (spectrum.GetStartTime() >= manualIOR.TimeRange.Start &&
+                                spectrum.GetStartTime().AddSeconds(spectrum.GetRealTime()) <= manualIOR.TimeRange.End)
+                            {
+                                spectra.Add(spectrum);
+                            }
+                        }
+                    }
+                }
+            }
+
+            Inspectrum inspectrum = new Inspectrum();
+            inspectrum.SumAndDisplaySpectra(spectra);
+            inspectrum.Show();
         }
 
         private void ShowLegendMenuClick(object sender, EventArgs e)

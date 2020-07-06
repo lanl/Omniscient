@@ -216,6 +216,63 @@ namespace Omniscient
             DrawSpectrum();
         }
 
+        public void SumAndDisplaySpectra(List<Spectrum> spectra)
+        {
+            double liveTime = 0;
+            double realTime = 0;
+            DateTime startTime = DateTime.Now;
+
+            if (spectra.Count == 0)
+            {
+                calibrationZero = 0;
+                calibrationSlope = 1;
+                counts = new int[1024];
+            }
+            else
+            { 
+                calibrationZero = spectra[0].GetCalibrationZero();
+                calibrationSlope = spectra[0].GetCalibrationSlope();
+                int nBins = spectra[0].GetCounts().Length;
+                startTime = spectra[0].GetStartTime();
+
+                foreach (Spectrum subspec in spectra)
+                {
+                    if (subspec.GetCalibrationSlope() != calibrationSlope &&
+                        subspec.GetCalibrationZero() != calibrationZero)
+                    {
+                        calibrationSlope = 1.0;
+                        calibrationZero = 0.0;
+                    }
+                    if (subspec.GetCounts().Length > nBins) nBins = subspec.GetCounts().Length;
+                    if (subspec.GetStartTime() < startTime) startTime = subspec.GetStartTime();
+                    liveTime += subspec.GetLiveTime();
+                    realTime += subspec.GetRealTime();
+                }
+
+                counts = new int[nBins];
+                int[] subspecCounts;
+                foreach (Spectrum subspec in spectra)
+                {
+                    subspecCounts = subspec.GetCounts();
+                    for (int i = 0; i < subspecCounts.Length; ++i)
+                    {
+                        counts[i] += subspecCounts[i];
+                    }
+                }
+            }
+
+            DateTextBox.Text = startTime.ToString("dd-MMM-yyyy");
+            TimeTextBox.Text = startTime.ToString("HH:mm:ss");
+            CalZeroTextBox.Text = string.Format("{0:F3}", calibrationZero);
+            CalSlopeTextBox.Text = string.Format("{0:F4}", calibrationSlope);
+
+            LiveTimeTextBox.Text = string.Format("{0:F1} sec", liveTime);
+            double deadTimePerc = 100 * (realTime - liveTime) / realTime;
+            DeadTimeStripTextBox.Text = string.Format("{0:F2} %", deadTimePerc);
+
+            DrawSpectrum();
+        }
+
         public void LoadCHNFile(string fileName)
         {
             if (chnParser.ParseSpectrumFile(fileName) == ReturnCode.SUCCESS)
