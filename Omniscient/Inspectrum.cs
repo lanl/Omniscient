@@ -130,7 +130,7 @@ namespace Omniscient
             SpecChart.ResumeLayout();
         }
 
-        public void LoadSpectrumFile(string fileName)
+        public void LoadSpectrumFile(string fileName, DateTime? specTime = null)
         {
             Spectrum spectrum;
             string fileAbrev = fileName.Substring(fileName.LastIndexOf('\\') + 1);
@@ -160,8 +160,29 @@ namespace Omniscient
             {
                 SpectrumNumberUpDown.Enabled = true;
                 hgmParser.ParseSpectrumFile(fileName);
-                spectrum = hgmParser.GetSpectrum();
-                SpectrumNumberUpDown.Value = 1;
+                if (specTime != null)
+                {
+                    List<Spectrum> spectra = hgmParser.Spectra;
+
+                    // If need be, fail gracefully
+                    spectrum = spectra[0];
+                    SpectrumNumberUpDown.Value = 1;
+
+                    for (int i=0; i< spectra.Count; ++i)
+                    {
+                        if (spectra[i].GetStartTime() == specTime)
+                        {
+                            spectrum = spectra[i];
+                            SpectrumNumberUpDown.Value = i+1;
+                            break;
+                        }
+                    }
+                }
+                else
+                { 
+                    spectrum = hgmParser.GetSpectrum();
+                    SpectrumNumberUpDown.Value = 1;
+                }
             }
             else
             {

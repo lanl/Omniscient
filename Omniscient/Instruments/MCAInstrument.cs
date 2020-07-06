@@ -27,6 +27,7 @@ namespace Omniscient
         private const int NUM_CHANNELS = 1;
         private const int COUNT_RATE = 0;
 
+        public static List<string> ValidExtensions = new List<string>() { "chn", "spe", "n42", "hgm" };
 
         public SpectrumParser SpectrumParser { get; private set; }
 
@@ -50,8 +51,13 @@ namespace Omniscient
                     SpectrumParser = new N42Parser();
                     _fileExtension = value;
                 }
+                else if (value == "hgm")
+                {
+                    SpectrumParser = new HGMParser();
+                    _fileExtension = value;
+                }
                 else
-                    throw new ArgumentException("File extension must be chn, spe, or n42!");
+                    throw new ArgumentException("File extension must be chn, spe, n42, hgm!");
                 //ScanDataFolder();
             }
         }
@@ -83,31 +89,34 @@ namespace Omniscient
             ReturnCode returnCode = SpectrumParser.ParseSpectrumFile(fileName);
             if (returnCode != ReturnCode.SUCCESS) return returnCode;
 
-            Spectrum spectrum = SpectrumParser.GetSpectrum();
+            List<Spectrum> spectra = SpectrumParser.GetSpectra();
+            
+            DateTime time = spectra[0].GetStartTime();
+            TimeSpan duration = TimeSpan.FromSeconds(spectra.Last().GetRealTime());
+            DataFile dataFile = new DataFile(fileName, time, spectra.Last().GetStartTime() + duration);
 
-            DateTime time = spectrum.GetStartTime();
-            TimeSpan duration = TimeSpan.FromSeconds(spectrum.GetRealTime());
-            DataFile dataFile = new DataFile(fileName, time, time+duration);
-            int counts = 0;
-            for (int ch = 0; ch < spectrum.GetNChannels(); ch++)
+            foreach (Spectrum spectrum in spectra)
             {
-                counts += spectrum.GetCounts()[ch];
+                time = spectrum.GetStartTime();
+                duration = TimeSpan.FromSeconds(spectrum.GetRealTime());
+                int counts = 0;
+                for (int ch = 0; ch < spectrum.GetNChannels(); ch++)
+                {
+                    counts += spectrum.GetCounts()[ch];
+                }
+                channels[COUNT_RATE].AddDataPoint(compartment, time, counts / spectrum.GetLiveTime(), duration, dataFile);
             }
-            channels[COUNT_RATE].AddDataPoint(compartment, time, counts / spectrum.GetLiveTime(), duration, dataFile);
-           
-            dataFile.DataEnd = time + duration;
-
+            
             return ReturnCode.SUCCESS;
         }
 
         public override ReturnCode AutoIngestFile(ChannelCompartment compartment, string fileName)
         {
-            FileExtension = "chn";
-            if (IngestFile(compartment, fileName) == ReturnCode.SUCCESS) return ReturnCode.SUCCESS;
-            FileExtension = "spe";
-            if (IngestFile(compartment, fileName) == ReturnCode.SUCCESS) return ReturnCode.SUCCESS;
-            FileExtension = "n42";
-            if (IngestFile(compartment, fileName) == ReturnCode.SUCCESS) return ReturnCode.SUCCESS;
+            foreach (string extension in ValidExtensions)
+            {
+                FileExtension = extension;
+                if (IngestFile(compartment, fileName) == ReturnCode.SUCCESS) return ReturnCode.SUCCESS;
+            }
 
             return ReturnCode.FAIL;
         }
@@ -118,8 +127,8 @@ namespace Omniscient
             parameters.Add(new EnumParameter("File Extension")
             {
                 Value = FileExtension,
-                ValidValues = { "chn", "spe", "n42" }
-            });
+                ValidValues = ValidExtensions
+            });;
             return parameters;
         }
 
@@ -144,7 +153,7 @@ namespace Omniscient
         {
             TemplateParameters.Add(new ParameterTemplate("File Extension", ParameterType.Enum)
             {
-                ValidValues = { "chn", "spe", "n42" }
+                ValidValues = { "chn", "spe", "n42", "hgm" }
             });
         }
 
