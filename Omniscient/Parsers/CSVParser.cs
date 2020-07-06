@@ -255,7 +255,8 @@ namespace Omniscient
 
         private string GetTimeStampFormat(string str)
         {
-            
+            if (str.Length < 16) return NOT_A_TIMESTAMP;
+
             string[] formatOptions = new string[] { "yyyy-MM-dd HH:mm:ss",
                                                     "yyyy-MM-ddTHH:mm:ss",
                                                     "yyyy/MM/dd HH:mm:ss",

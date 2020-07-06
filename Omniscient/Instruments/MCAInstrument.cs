@@ -115,7 +115,11 @@ namespace Omniscient
             foreach (string extension in ValidExtensions)
             {
                 FileExtension = extension;
-                if (IngestFile(compartment, fileName) == ReturnCode.SUCCESS) return ReturnCode.SUCCESS;
+                try
+                {
+                    if (IngestFile(compartment, fileName) == ReturnCode.SUCCESS) return ReturnCode.SUCCESS;
+                }
+                catch { }
             }
 
             return ReturnCode.FAIL;
