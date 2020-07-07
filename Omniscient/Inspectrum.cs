@@ -49,11 +49,16 @@ namespace Omniscient
 
         const int H_SCROLL_MAX = 10000;
 
+        bool autoScale;
+        bool logScale;
+
         public Inspectrum()
         {
             Core = new InspectrumCore();
-     
+            autoScale = true;
+            logScale = false;
             InitializeComponent();
+            SpecChart.SuppressExceptions = true;
         }
 
         public void EnterInstrumentMode(string startFile, DateTime startTime, string[] files, DateTime[] dates)
@@ -407,6 +412,61 @@ namespace Omniscient
             {
                 drawingYZoomBox = true;
             }
+            else if (e.Button == MouseButtons.Right)
+            {
+                CreateChartContextMenu(e);
+            }
+        }
+
+        private void ToggleYAxisAutoScale(object sender, EventArgs e)
+        {
+            autoScale = !autoScale;
+            if (autoScale)
+            {
+                AutoScaleRange(SpecChart.ChartAreas[0].AxisY.Minimum, SpecChart.ChartAreas[0].AxisY.Maximum);
+            }
+        }
+
+        private void ToggleYAxisLogScale(object sender, EventArgs e)
+        {
+            logScale = !logScale;
+            SpecChart.ChartAreas[0].AxisY.IsLogarithmic = logScale;
+            DrawSpectrum();
+        }
+
+        public void CreateChartContextMenu(MouseEventArgs e)
+        {
+            ContextMenu chartMenu = new ContextMenu();
+
+            // Toggle auto scale
+            if (autoScale)
+            {
+                MenuItem menuItem = new MenuItem("Do not auto-scale Y-Axis");
+                menuItem.Click += ToggleYAxisAutoScale;
+                chartMenu.MenuItems.Add(menuItem);
+            }
+            else
+            {
+                MenuItem menuItem = new MenuItem("Auto-scale Y-Axis");
+                menuItem.Click += ToggleYAxisAutoScale;
+                chartMenu.MenuItems.Add(menuItem);
+            }
+
+            // Toggle log scale
+            if (logScale)
+            {
+                MenuItem menuItem = new MenuItem("Switch to linear Y-Axis");
+                menuItem.Click += ToggleYAxisLogScale;
+                chartMenu.MenuItems.Add(menuItem);
+            }
+            else
+            {
+                MenuItem menuItem = new MenuItem("Switch to log Y-Axis");
+                menuItem.Click += ToggleYAxisLogScale;
+                chartMenu.MenuItems.Add(menuItem);
+            }
+
+            chartMenu.Show(SpecChart, new Point((int)e.X, (int)e.Y));
         }
 
         private void UpdateCalibration()
@@ -494,20 +554,47 @@ namespace Omniscient
             // Set the actual axis
             SpecChart.ChartAreas[0].AxisX.Minimum = min;
             SpecChart.ChartAreas[0].AxisX.Maximum = max;
+
+            if (autoScale)
+            {
+                AutoScaleRange(min, max);
+            }
+        }
+
+        private void AutoScaleRange(double min, double max)
+        {
+            double m = Core.CalibrationSlope;
+            double b = Core.CalibrationZero;
+            double bin;
+            int minCount = int.MaxValue;
+            int maxCount = int.MinValue;
+            int[] counts = Core.Counts;
+            for (int i = 0; i < counts.Length; i++)
+            {
+                bin = m * i + b;
+                if (bin >= min && bin <= max)
+                {
+                    if (counts[i] > maxCount) maxCount = counts[i];
+                    if (counts[i] < minCount) minCount = counts[i];
+                }
+            }
+            SetChartYBounds(minCount, maxCount);
         }
 
         private void SetChartYBounds(double min, double max)
         {
-            if (min < 0) min = 0;
+            if (autoScale)
+            { 
+                if (min < 0) min = 0;
 
-            double maxOrderOfMagnitude = Math.Pow(10, Math.Floor(Math.Log10(max)));
-            double firstDigit = Math.Floor(max / maxOrderOfMagnitude);
-            double maxMinRatio = max / min;
+                double maxOrderOfMagnitude = Math.Pow(10, Math.Floor(Math.Log10(max)));
+                double firstDigit = Math.Floor(max / maxOrderOfMagnitude);
+                double maxMinRatio = max / min;
 
-            Tuple<double, double> result = AutoRoundRange(min, max, false);
-            min = result.Item1;
-            max = result.Item2;
-
+                Tuple<double, double> result = AutoRoundRange(min, max, false);
+                min = result.Item1;
+                max = result.Item2;
+            }
             SpecChart.ChartAreas[0].AxisY.Minimum = min;
             SpecChart.ChartAreas[0].AxisY.Maximum = max;
         }
