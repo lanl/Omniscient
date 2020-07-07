@@ -318,5 +318,26 @@ namespace Omniscient
             LoadSpectrum(hgmParser.Spectra[index - 1]);
             FileSpectrumNumber = index;
         }
+
+        public ReturnCode ExportSpectrum(string fileName)
+        {
+            string extension = fileName.Substring(fileName.Length - 3).ToLower();
+            SpectrumWriter spectrumWriter;
+            switch(extension)
+            {
+                case "csv":
+                    spectrumWriter = new CSVSpectrumWriter();
+                    break;
+                case "chn":
+                    spectrumWriter = new CHNWriter();
+                    break;
+                default:
+                    return ReturnCode.BAD_INPUT;
+            }
+            spectrumWriter.SetSpectrum(new Spectrum(CalibrationZero, CalibrationSlope, Counts,
+                SpectrumStart, SpectrumRealTime.TotalSeconds, SpectrumLiveTime.TotalSeconds));
+
+            return spectrumWriter.WriteSpectrumFile(fileName);
+        }
     }
 }

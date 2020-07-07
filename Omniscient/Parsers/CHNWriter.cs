@@ -91,7 +91,7 @@ namespace Omniscient
             for (int i = 0; i < 64; i++)
                 binaryWriter.Write(RESERVED);
 
-            writeStream.Close();
+            binaryWriter.Close();
 
             return ReturnCode.SUCCESS;
         }

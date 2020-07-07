@@ -133,6 +133,7 @@ namespace Omniscient
 
         private void RefreshDisplay()
         {
+            FileNameTextBox.Text = Core.FileName;
             DateTextBox.Text = Core.SpectrumStart.ToString("dd-MMM-yyyy");
             TimeTextBox.Text = Core.SpectrumStart.ToString("HH:mm:ss");
             CalZeroTextBox.Text = string.Format("{0:F3}", Core.CalibrationZero);
@@ -587,6 +588,33 @@ namespace Omniscient
         {
             Core.LoadNextInstrumentSpectrum();
             RefreshDisplay();
+        }
+
+        private void OpenToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFile();
+        }
+
+        private void ExportToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog dialog = new SaveFileDialog();
+            dialog.Filter = "CSV File |*.csv|chn files (*.chn)|*.chn";
+            dialog.Title = "Export File";
+            dialog.OverwritePrompt = true;
+            dialog.ValidateNames = true;
+            dialog.AddExtension = true;
+
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                if (Core.ExportSpectrum(dialog.FileName) == ReturnCode.SUCCESS)
+                {
+                    MessageBox.Show("Exported spectrum!");
+                }
+                else
+                {
+                    MessageBox.Show("Export failed :-(");
+                }
+            }
         }
     }
 }

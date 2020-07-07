@@ -137,6 +137,7 @@
     <Compile Include="OmniscientCore.cs" />
     <Compile Include="Parsers\ASN1Skipper.cs" />
     <Compile Include="Parsers\ATPMParser.cs" />
+    <Compile Include="Parsers\CSVSpectrumWriter.cs" />
     <Compile Include="Parsers\EventParser.cs" />
     <Compile Include="Parsers\EventWriter.cs" />
     <Compile Include="Parsers\HGMParser.cs" />

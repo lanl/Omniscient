@@ -42,8 +42,8 @@ namespace Omniscient
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Inspectrum));
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -56,6 +56,8 @@ namespace Omniscient
             this.toolStripLabel2 = new System.Windows.Forms.ToolStripLabel();
             this.DeadTimeStripTextBox = new System.Windows.Forms.ToolStripTextBox();
             this.LeftPanel = new System.Windows.Forms.Panel();
+            this.NextSpecButton = new System.Windows.Forms.Button();
+            this.PreviousSpecButton = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
             this.SpectrumNumberUpDown = new System.Windows.Forms.NumericUpDown();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -74,8 +76,8 @@ namespace Omniscient
             this.SpecPanel = new System.Windows.Forms.Panel();
             this.SpecChart = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.HScroll = new System.Windows.Forms.HScrollBar();
-            this.PreviousSpecButton = new System.Windows.Forms.Button();
-            this.NextSpecButton = new System.Windows.Forms.Button();
+            this.OpenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ExportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.LeftPanel.SuspendLayout();
@@ -98,6 +100,9 @@ namespace Omniscient
             // 
             // fileToolStripMenuItem
             // 
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.OpenToolStripMenuItem,
+            this.ExportToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
@@ -195,6 +200,28 @@ namespace Omniscient
             this.LeftPanel.Name = "LeftPanel";
             this.LeftPanel.Size = new System.Drawing.Size(220, 529);
             this.LeftPanel.TabIndex = 3;
+            // 
+            // NextSpecButton
+            // 
+            this.NextSpecButton.Enabled = false;
+            this.NextSpecButton.Location = new System.Drawing.Point(117, 348);
+            this.NextSpecButton.Name = "NextSpecButton";
+            this.NextSpecButton.Size = new System.Drawing.Size(80, 23);
+            this.NextSpecButton.TabIndex = 10;
+            this.NextSpecButton.Text = "Next";
+            this.NextSpecButton.UseVisualStyleBackColor = true;
+            this.NextSpecButton.Click += new System.EventHandler(this.NextSpecButton_Click);
+            // 
+            // PreviousSpecButton
+            // 
+            this.PreviousSpecButton.Enabled = false;
+            this.PreviousSpecButton.Location = new System.Drawing.Point(15, 348);
+            this.PreviousSpecButton.Name = "PreviousSpecButton";
+            this.PreviousSpecButton.Size = new System.Drawing.Size(80, 23);
+            this.PreviousSpecButton.TabIndex = 9;
+            this.PreviousSpecButton.Text = "Previous";
+            this.PreviousSpecButton.UseVisualStyleBackColor = true;
+            this.PreviousSpecButton.Click += new System.EventHandler(this.PreviousSpecButton_Click);
             // 
             // label6
             // 
@@ -348,15 +375,15 @@ namespace Omniscient
             // 
             // SpecChart
             // 
-            chartArea3.Name = "ChartArea1";
-            this.SpecChart.ChartAreas.Add(chartArea3);
+            chartArea1.Name = "ChartArea1";
+            this.SpecChart.ChartAreas.Add(chartArea1);
             this.SpecChart.Dock = System.Windows.Forms.DockStyle.Fill;
             this.SpecChart.Location = new System.Drawing.Point(0, 0);
             this.SpecChart.Name = "SpecChart";
-            series3.ChartArea = "ChartArea1";
-            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StepLine;
-            series3.Name = "Series1";
-            this.SpecChart.Series.Add(series3);
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StepLine;
+            series1.Name = "Series1";
+            this.SpecChart.Series.Add(series1);
             this.SpecChart.Size = new System.Drawing.Size(803, 395);
             this.SpecChart.TabIndex = 3;
             this.SpecChart.Text = "chart1";
@@ -370,27 +397,19 @@ namespace Omniscient
             this.HScroll.TabIndex = 1;
             this.HScroll.Scroll += new System.Windows.Forms.ScrollEventHandler(this.HScroll_Scroll);
             // 
-            // PreviousSpecButton
+            // OpenToolStripMenuItem
             // 
-            this.PreviousSpecButton.Enabled = false;
-            this.PreviousSpecButton.Location = new System.Drawing.Point(15, 348);
-            this.PreviousSpecButton.Name = "PreviousSpecButton";
-            this.PreviousSpecButton.Size = new System.Drawing.Size(80, 23);
-            this.PreviousSpecButton.TabIndex = 9;
-            this.PreviousSpecButton.Text = "Previous";
-            this.PreviousSpecButton.UseVisualStyleBackColor = true;
-            this.PreviousSpecButton.Click += new System.EventHandler(this.PreviousSpecButton_Click);
+            this.OpenToolStripMenuItem.Name = "OpenToolStripMenuItem";
+            this.OpenToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.OpenToolStripMenuItem.Text = "Open";
+            this.OpenToolStripMenuItem.Click += new System.EventHandler(this.OpenToolStripMenuItem_Click);
             // 
-            // NextSpecButton
+            // ExportToolStripMenuItem
             // 
-            this.NextSpecButton.Enabled = false;
-            this.NextSpecButton.Location = new System.Drawing.Point(117, 348);
-            this.NextSpecButton.Name = "NextSpecButton";
-            this.NextSpecButton.Size = new System.Drawing.Size(80, 23);
-            this.NextSpecButton.TabIndex = 10;
-            this.NextSpecButton.Text = "Next";
-            this.NextSpecButton.UseVisualStyleBackColor = true;
-            this.NextSpecButton.Click += new System.EventHandler(this.NextSpecButton_Click);
+            this.ExportToolStripMenuItem.Name = "ExportToolStripMenuItem";
+            this.ExportToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.ExportToolStripMenuItem.Text = "Export";
+            this.ExportToolStripMenuItem.Click += new System.EventHandler(this.ExportToolStripMenuItem_Click);
             // 
             // Inspectrum
             // 
@@ -457,5 +476,7 @@ namespace Omniscient
         private System.Windows.Forms.ToolStripButton ZoomToRangeButton;
         private System.Windows.Forms.Button NextSpecButton;
         private System.Windows.Forms.Button PreviousSpecButton;
+        private System.Windows.Forms.ToolStripMenuItem OpenToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ExportToolStripMenuItem;
     }
 }
