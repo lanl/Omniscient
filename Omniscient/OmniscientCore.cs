@@ -130,8 +130,8 @@ namespace Omniscient
             Events = new List<Event>();
 
             GlobalStart = DateTime.Today.AddDays(-1);
-            GlobalEnd = DateTime.Today;
-            ChangeView(GlobalStart, GlobalEnd);
+            GlobalEnd = DateTime.Now;
+            ChangeView(GlobalStart, GlobalEnd, true);
         }
 
         public void ActivateInstrument(Instrument instrument)
@@ -260,39 +260,76 @@ namespace Omniscient
                         if (range > 6 * TimeSpan.TicksPerDay)
                         {
                             newRange = (range / TimeSpan.TicksPerDay) * TimeSpan.TicksPerDay;
-                            startT = startT - (startT % TimeSpan.TicksPerDay);
-                            if (startT < GlobalStart.Ticks) startT = GlobalStart.Ticks;
-
-                            endT = startT + newRange;
-                            if (endT <= GlobalEnd.Ticks)
+                            
+                            if (_viewEnd == GlobalEnd)
                             {
-                                reRanged = true;
+                                startT = endT - newRange;
+                                if (startT >= GlobalStart.Ticks)
+                                {
+                                    reRanged = true;
+                                }
+                                else reRanged = false;
                             }
-                            else reRanged = false;
+                            else
+                            { 
+                                startT = startT - (startT % TimeSpan.TicksPerDay);
+                                if (startT < GlobalStart.Ticks) startT = GlobalStart.Ticks;
+
+                                endT = startT + newRange;
+                                if (endT <= GlobalEnd.Ticks)
+                                {
+                                    reRanged = true;
+                                }
+                                else reRanged = false;
+                            }
                         }
                         if (!reRanged && range > 6 * TimeSpan.TicksPerHour)
                         {
                             newRange = (range / TimeSpan.TicksPerHour) * TimeSpan.TicksPerHour;
-                            startT = startT - (startT % TimeSpan.TicksPerHour);
-                            if (startT < GlobalStart.Ticks) startT = GlobalStart.Ticks;
-                            endT = startT + newRange;
-                            if (endT <= GlobalEnd.Ticks)
+                            if (_viewEnd == GlobalEnd)
                             {
-                                reRanged = true;
+                                startT = endT - newRange;
+                                if (startT >= GlobalStart.Ticks)
+                                {
+                                    reRanged = true;
+                                }
+                                else reRanged = false;
                             }
-                            else reRanged = false;
+                            else
+                            {
+                                startT = startT - (startT % TimeSpan.TicksPerHour);
+                                if (startT < GlobalStart.Ticks) startT = GlobalStart.Ticks;
+                                endT = startT + newRange;
+                                if (endT <= GlobalEnd.Ticks)
+                                {
+                                    reRanged = true;
+                                }
+                                else reRanged = false;
+                            }
                         }
                         if (!reRanged && range > 6 * TimeSpan.TicksPerMinute)
                         {
                             newRange = (range / TimeSpan.TicksPerMinute) * TimeSpan.TicksPerMinute;
-                            startT = startT - (startT % TimeSpan.TicksPerMinute);
-                            if (startT < GlobalStart.Ticks) startT = GlobalStart.Ticks;
-                            endT = startT + newRange;
-                            if (endT <= GlobalEnd.Ticks)
+                            if (_viewEnd == GlobalEnd)
                             {
-                                reRanged = true;
+                                startT = endT - newRange;
+                                if (startT >= GlobalStart.Ticks)
+                                {
+                                    reRanged = true;
+                                }
+                                else reRanged = false;
                             }
-                            else reRanged = false;
+                            else
+                            {
+                                startT = startT - (startT % TimeSpan.TicksPerMinute);
+                                if (startT < GlobalStart.Ticks) startT = GlobalStart.Ticks;
+                                endT = startT + newRange;
+                                if (endT <= GlobalEnd.Ticks)
+                                {
+                                    reRanged = true;
+                                }
+                                else reRanged = false;
+                            }
                         }
                         if (reRanged)
                         {
@@ -374,23 +411,27 @@ namespace Omniscient
             }
             if (changedRange)
             {
-                if (TimeSpan.FromTicks(tempViewEnd.Ticks - tempViewStart.Ticks).TotalDays > 1)
+                if ((tempViewEnd - tempViewStart).TotalDays > 1)
                 {
                     tempViewStart = tempViewEnd.AddDays(-1);
                 }
-                else if (TimeSpan.FromTicks(tempViewEnd.Ticks - tempViewStart.Ticks).TotalHours > 1)
+                else if ((tempViewEnd - tempViewStart).TotalHours > 18 && (tempViewEnd - GlobalStart).TotalHours > 24)
+                {
+                    tempViewStart = tempViewEnd.AddDays(-1);
+                }
+                else if ((tempViewEnd - tempViewStart).TotalHours > 1)
                 {
                     tempViewStart = tempViewEnd.AddHours(-1);
                 }
-                else if (TimeSpan.FromTicks(tempViewEnd.Ticks - tempViewStart.Ticks).TotalMinutes > 1)
+                else if ((tempViewEnd - tempViewStart).TotalMinutes > 1)
                 {
                     tempViewStart = tempViewEnd.AddMinutes(-1);
                 }
-                else if (TimeSpan.FromTicks(tempViewEnd.Ticks - tempViewStart.Ticks).TotalSeconds > 1)
+                else if ((tempViewEnd - tempViewStart).TotalSeconds > 1)
                 {
                     tempViewStart = tempViewEnd.AddSeconds(-1);
                 }
-                ChangeView(tempViewStart, tempViewEnd);
+                ChangeView(tempViewStart, tempViewEnd, true);
             }
         }
 
