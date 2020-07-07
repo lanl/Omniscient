@@ -27,18 +27,9 @@ namespace Omniscient
 {
     public partial class Inspectrum : Form
     {
-
-        CHNParser chnParser;
-        SPEParser speParser;
-        N42Parser n42Parser;
-        HGMParser hgmParser;
+        InspectrumCore Core;
 
         bool calibrationChanged = false;
-        bool fileLoaded = false;
-
-        double calibrationZero;
-        double calibrationSlope;
-        int[] counts;
 
         int mouseX = 0;
         int mouseY = 0;
@@ -57,22 +48,20 @@ namespace Omniscient
         bool controlPressed = false;
 
         const int H_SCROLL_MAX = 10000;
-        
-        public string FileName { get; private set; }
-        public string FileExt { get; private set; }
 
         public Inspectrum()
         {
-            calibrationZero = 0;
-            calibrationSlope = 1;
-            counts = new int[0];
+            Core = new InspectrumCore();
+     
             InitializeComponent();
-            chnParser = new CHNParser();
-            speParser = new SPEParser();
-            n42Parser = new N42Parser();
-            hgmParser = new HGMParser();
         }
 
+        public void EnterInstrumentMode(string startFile, DateTime startTime, string[] files, DateTime[] dates)
+        {
+            Core.EnterInstrumentMode(startFile, startTime, files, dates);
+            RefreshDisplay();
+        }
+        
         private void DrawSpectrum()
         {
             SpecChart.SuspendLayout();
@@ -92,15 +81,15 @@ namespace Omniscient
             maxX = 1;
             maxY = 1;
             minDelta = double.MaxValue;
-            for (int i = 0; i < counts.Length; ++i) //
+            for (int i = 0; i < Core.Counts.Length; ++i) //
             {
-                energy = calibrationZero + i * calibrationSlope;
+                energy = Core.CalibrationZero + i * Core.CalibrationSlope;
                 energies.Add(energy);
-                vals.Add(counts[i]);
+                vals.Add(Core.Counts[i]);
 
-                series.Points.AddXY(energy, counts[i]);
+                series.Points.AddXY(energy, Core.Counts[i]);
                 if (energy > maxX) maxX = energy;
-                if (counts[i] > maxY) maxY = counts[i];
+                if (Core.Counts[i] > maxY) maxY = Core.Counts[i];
                 if (i > 0)
                 {
                     if (energy - energies[i - 1] < minDelta) minDelta = energy - energies[i - 1];
@@ -132,173 +121,51 @@ namespace Omniscient
 
         public void LoadSpectrumFile(string fileName, DateTime? specTime = null)
         {
-            Spectrum spectrum;
-            string fileAbrev = fileName.Substring(fileName.LastIndexOf('\\') + 1);
-            FileExt = fileAbrev.Substring(fileAbrev.Length - 3).ToLower();
-            if (FileExt == "chn")
-            {
-                SpectrumNumberUpDown.Value = 1;
-                SpectrumNumberUpDown.Enabled = false;
-                chnParser.ParseSpectrumFile(fileName);
-                spectrum = chnParser.GetSpectrum();
-            }
-            else if (FileExt == "spe")
-            {
-                SpectrumNumberUpDown.Value = 1;
-                SpectrumNumberUpDown.Enabled = false;
-                speParser.ParseSpectrumFile(fileName);
-                spectrum = speParser.GetSpectrum();
-            }
-            else if (FileExt == "n42")
-            {
-                SpectrumNumberUpDown.Value = 1;
-                SpectrumNumberUpDown.Enabled = false;
-                n42Parser.ParseSpectrumFile(fileName);
-                spectrum = n42Parser.GetSpectrum();
-            }
-            else if (FileExt == "hgm")
-            {
-                SpectrumNumberUpDown.Enabled = true;
-                hgmParser.ParseSpectrumFile(fileName);
-                if (specTime != null)
-                {
-                    List<Spectrum> spectra = hgmParser.Spectra;
-
-                    // If need be, fail gracefully
-                    spectrum = spectra[0];
-                    SpectrumNumberUpDown.Value = 1;
-
-                    for (int i=0; i< spectra.Count; ++i)
-                    {
-                        if (spectra[i].GetStartTime() == specTime)
-                        {
-                            spectrum = spectra[i];
-                            SpectrumNumberUpDown.Value = i+1;
-                            break;
-                        }
-                    }
-                }
-                else
-                { 
-                    spectrum = hgmParser.GetSpectrum();
-                    SpectrumNumberUpDown.Value = 1;
-                }
-            }
-            else
-            {
-                MessageBox.Show("Invalid file type!");
-                return;
-            }
-
-            // Populate text fields
-            FileNameTextBox.Text = fileName;
-
-            LoadSpectrum(spectrum);
-
-            FileName = fileName;
-            fileLoaded = true;
-        }
-
-        private void LoadSpectrum(Spectrum spectrum)
-        {
-            DateTextBox.Text = spectrum.GetStartTime().ToString("dd-MMM-yyyy");
-            TimeTextBox.Text = spectrum.GetStartTime().ToString("HH:mm:ss");
-            CalZeroTextBox.Text = string.Format("{0:F3}", spectrum.GetCalibrationZero());
-            CalSlopeTextBox.Text = string.Format("{0:F4}", spectrum.GetCalibrationSlope());
-
-            LiveTimeTextBox.Text = string.Format("{0:F1} sec", spectrum.GetLiveTime());
-            double deadTimePerc = 100 * (spectrum.GetRealTime() - spectrum.GetLiveTime()) / spectrum.GetRealTime();
-            DeadTimeStripTextBox.Text = string.Format("{0:F2} %", deadTimePerc);
-
-            calibrationZero = spectrum.GetCalibrationZero();
-            calibrationSlope = spectrum.GetCalibrationSlope();
-            counts = spectrum.GetCounts();
-            DrawSpectrum();
+            Core.LoadSpectrumFile(fileName, specTime);
+            RefreshDisplay();
         }
 
         public void SumAndDisplaySpectra(List<Spectrum> spectra)
         {
-            double liveTime = 0;
-            double realTime = 0;
-            DateTime startTime = DateTime.Now;
-
-            if (spectra.Count == 0)
-            {
-                calibrationZero = 0;
-                calibrationSlope = 1;
-                counts = new int[1024];
-            }
-            else
-            { 
-                calibrationZero = spectra[0].GetCalibrationZero();
-                calibrationSlope = spectra[0].GetCalibrationSlope();
-                int nBins = spectra[0].GetCounts().Length;
-                startTime = spectra[0].GetStartTime();
-
-                foreach (Spectrum subspec in spectra)
-                {
-                    if (subspec.GetCalibrationSlope() != calibrationSlope &&
-                        subspec.GetCalibrationZero() != calibrationZero)
-                    {
-                        calibrationSlope = 1.0;
-                        calibrationZero = 0.0;
-                    }
-                    if (subspec.GetCounts().Length > nBins) nBins = subspec.GetCounts().Length;
-                    if (subspec.GetStartTime() < startTime) startTime = subspec.GetStartTime();
-                    liveTime += subspec.GetLiveTime();
-                    realTime += subspec.GetRealTime();
-                }
-
-                counts = new int[nBins];
-                int[] subspecCounts;
-                foreach (Spectrum subspec in spectra)
-                {
-                    subspecCounts = subspec.GetCounts();
-                    for (int i = 0; i < subspecCounts.Length; ++i)
-                    {
-                        counts[i] += subspecCounts[i];
-                    }
-                }
-            }
-
-            DateTextBox.Text = startTime.ToString("dd-MMM-yyyy");
-            TimeTextBox.Text = startTime.ToString("HH:mm:ss");
-            CalZeroTextBox.Text = string.Format("{0:F3}", calibrationZero);
-            CalSlopeTextBox.Text = string.Format("{0:F4}", calibrationSlope);
-
-            LiveTimeTextBox.Text = string.Format("{0:F1} sec", liveTime);
-            double deadTimePerc = 100 * (realTime - liveTime) / realTime;
-            DeadTimeStripTextBox.Text = string.Format("{0:F2} %", deadTimePerc);
-
-            DrawSpectrum();
+            Core.SumAndLoadSpectra(spectra);
+            RefreshDisplay();
         }
 
-        public void LoadCHNFile(string fileName)
+        private void RefreshDisplay()
         {
-            if (chnParser.ParseSpectrumFile(fileName) == ReturnCode.SUCCESS)
+            DateTextBox.Text = Core.SpectrumStart.ToString("dd-MMM-yyyy");
+            TimeTextBox.Text = Core.SpectrumStart.ToString("HH:mm:ss");
+            CalZeroTextBox.Text = string.Format("{0:F3}", Core.CalibrationZero);
+            CalSlopeTextBox.Text = string.Format("{0:F4}", Core.CalibrationSlope);
+
+            LiveTimeTextBox.Text = string.Format("{0:F1} sec", Core.SpectrumLiveTime.TotalSeconds);
+            DeadTimeStripTextBox.Text = string.Format("{0:F2} %", Core.SpectrumDeadTimePercent);
+
+            if (Core.FileSpectraCount > 1)
             {
-                // Populate text fields
-                FileNameTextBox.Text = fileName;
-                DateTextBox.Text = chnParser.GetStartDateTime().ToString("dd-MMM-yyyy");
-                TimeTextBox.Text = chnParser.GetStartDateTime().ToString("HH:mm:ss");
-                CalZeroTextBox.Text = string.Format("{0:F3}", chnParser.GetCalibrationZero());
-                CalSlopeTextBox.Text = string.Format("{0:F4}", chnParser.GetCalibrationSlope());
-
-                LiveTimeTextBox.Text = string.Format("{0:F1} sec", chnParser.GetLiveTime());
-                double deadTimePerc = 100 * (chnParser.GetRealTime() - chnParser.GetLiveTime()) / chnParser.GetRealTime();
-                DeadTimeStripTextBox.Text = string.Format("{0:F2} %", deadTimePerc);
-
-                calibrationZero = chnParser.GetCalibrationZero();
-                calibrationSlope = chnParser.GetCalibrationSlope();
-                counts = chnParser.GetCounts();
-                DrawSpectrum();
-
-                fileLoaded = true;
+                SpectrumNumberUpDown.Enabled = true;
+                SpectrumNumberUpDown.Value = Core.FileSpectrumNumber;
             }
             else
             {
-                MessageBox.Show("Error opening file!");
+                SpectrumNumberUpDown.Enabled = false;
+                SpectrumNumberUpDown.Value = 1;
             }
+
+            if (Core.InstrumentMode)
+            {
+                if (Core.EarlierSpectra) PreviousSpecButton.Enabled = true;
+                else PreviousSpecButton.Enabled = false;
+                if (Core.LaterSpectra) NextSpecButton.Enabled = true;
+                else NextSpecButton.Enabled = false;
+            }
+            else
+            {
+                NextSpecButton.Enabled = false;
+                PreviousSpecButton.Enabled = false;
+            }
+
+            DrawSpectrum();
         }
 
         private void OpenFile()
@@ -332,7 +199,7 @@ namespace Omniscient
             HScroll.Minimum = 0;
             HScroll.Maximum = H_SCROLL_MAX;
 
-            if (fileLoaded) DrawSpectrum();
+            if (Core.FileLoaded) DrawSpectrum();
         }
 
         private void SpecChart_GetToolTipText(object sender, ToolTipEventArgs e)
@@ -545,8 +412,8 @@ namespace Omniscient
         {
             try
             {
-                calibrationZero = double.Parse(CalZeroTextBox.Text);
-                calibrationSlope = double.Parse(CalSlopeTextBox.Text);
+                Core.CalibrationZero = double.Parse(CalZeroTextBox.Text);
+                Core.CalibrationSlope = double.Parse(CalSlopeTextBox.Text);
                 DrawSpectrum();
             }
             catch
@@ -585,31 +452,10 @@ namespace Omniscient
 
         private void CalResetButton_Click(object sender, EventArgs e)
         {
-            if(fileLoaded)
+            if(Core.FileLoaded)
             {
-                Spectrum spectrum;
-                if (FileExt == "chn")
-                {
-                    spectrum = chnParser.GetSpectrum();
-                }
-                else if (FileExt == "spe")
-                {
-                    spectrum = speParser.GetSpectrum();
-                }
-                else if (FileExt == "n42")
-                {
-                    spectrum = n42Parser.GetSpectrum();
-                }
-                else
-                {
-                    spectrum = hgmParser.GetSpectrum();
-                }
-
-                calibrationZero = spectrum.GetCalibrationZero();
-                calibrationSlope = spectrum.GetCalibrationSlope();
-                CalZeroTextBox.Text = string.Format("{0:F3}", calibrationZero);
-                CalSlopeTextBox.Text = string.Format("{0:F4}", calibrationSlope);
-                DrawSpectrum();
+                Core.ResetCalibration();
+                RefreshDisplay();
             }
         }
 
@@ -712,18 +558,35 @@ namespace Omniscient
 
         private void SpectrumNumberUpDown_ValueChanged(object sender, EventArgs e)
         {
-            if (SpectrumNumberUpDown.Enabled && hgmParser.Spectra.Count > 0)
+            if (SpectrumNumberUpDown.Enabled && Core.FileSpectraCount > 1)
             { 
                 int spectrumNumber = (int)SpectrumNumberUpDown.Value;
 
                 if (spectrumNumber < 1) SpectrumNumberUpDown.Value = 1;
-                else if (spectrumNumber > hgmParser.Spectra.Count) SpectrumNumberUpDown.Value = hgmParser.Spectra.Count;
+                else if (spectrumNumber > Core.FileSpectraCount) SpectrumNumberUpDown.Value = Core.FileSpectraCount;
                 else
                 {
-                    spectrumNumber -= 1;
-                    LoadSpectrum(hgmParser.Spectra[spectrumNumber]);
+                    Core.SwitchFileSpectrum(spectrumNumber);
+                    RefreshDisplay();
                 }
             }
+        }
+
+        private void ZoomToRangeButton_Click(object sender, EventArgs e)
+        {
+            ZoomFullView();
+        }
+
+        private void PreviousSpecButton_Click(object sender, EventArgs e)
+        {
+            Core.LoadPreviousInstrumentSpectrum();
+            RefreshDisplay();
+        }
+
+        private void NextSpecButton_Click(object sender, EventArgs e)
+        {
+            Core.LoadNextInstrumentSpectrum();
+            RefreshDisplay();
         }
     }
 }

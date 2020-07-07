@@ -397,6 +397,8 @@ namespace Omniscient
         public string GetDataFolder() { return dataFolder; }
         public string GetFilePrefix() { return filePrefix; }
         public string GetFileSuffix() { return fileSuffix; }
+        public string[] GetDataFileNames() { return dataFileNames; }
+        public DateTime[] GetDataFileDates() { return dataFileTimes; }
         public int GetNumChannels() { return numChannels; }
         public Channel[] GetStandardChannels()
         {

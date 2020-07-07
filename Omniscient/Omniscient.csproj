@@ -116,6 +116,7 @@
     </Compile>
     <Compile Include="Events\DataPresentEG.cs" />
     <Compile Include="Events\ManualEG.cs" />
+    <Compile Include="InspectrumCore.cs" />
     <Compile Include="Instruments\ATPMInstrument.cs" />
     <Compile Include="Instruments\ImageInstrument.cs" />
     <Compile Include="Instruments\THDInstrument.cs" />

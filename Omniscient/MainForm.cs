@@ -1305,8 +1305,10 @@ namespace Omniscient
                                     if (chan.GetInstrument() is MCAInstrument)
                                     {
                                         MenuItem menuItem = new MenuItem("View " + chan.Name + " in Inspectrum");
-                                        menuItem.Tag = new Tuple<string, DateTime>(inst.GetChannels()[0].GetFiles(ChannelCompartment.View)[meas].FileName,
-                                                                                    timeStamps[meas]);   // refer to main channel - virtual channels have issues with files
+                                        menuItem.Tag = new Tuple<string, DateTime, string[], DateTime[]>(inst.GetChannels()[0].GetFiles(ChannelCompartment.View)[meas].FileName,
+                                                                                    timeStamps[meas],
+                                                                                    inst.GetDataFileNames(),
+                                                                                    inst.GetDataFileDates());   // refer to main channel - virtual channels have issues with files
                                         menuItem.Click += PlotSpectrumMenuItem_Click;
                                         chartMenu.MenuItems.Add(menuItem);
                                     }
@@ -1507,8 +1509,8 @@ namespace Omniscient
         {
             MenuItem menuItem = (MenuItem)sender;
             Inspectrum inspectrum = new Inspectrum();
-            Tuple<string, DateTime> tuple = menuItem.Tag as Tuple<string, DateTime>;
-            inspectrum.LoadSpectrumFile(tuple.Item1, tuple.Item2);
+            Tuple<string, DateTime, string[], DateTime[]> tuple = menuItem.Tag as Tuple<string, DateTime, string[], DateTime[]>;
+            inspectrum.EnterInstrumentMode(tuple.Item1, tuple.Item2, tuple.Item3, tuple.Item4);
             inspectrum.Show();
         }
 
