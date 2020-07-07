@@ -159,15 +159,15 @@ namespace Omniscient
 
         public void SumAndLoadSpectra(List<Spectrum> spectra)
         {
-            double liveTime = 0;
-            double realTime = 0;
+            FileName = "";
+            FileExt = "";
+
             DateTime startTime = DateTime.Now;
+            Spectrum spectrum;
 
             if (spectra.Count == 0)
             {
-                CalibrationZero = 0;
-                CalibrationSlope = 1;
-                Counts = new int[1024];
+                spectrum = new Spectrum(0, 1, new int[1024]);
             }
             else
             {
@@ -186,26 +186,19 @@ namespace Omniscient
                     }
                     if (subspec.GetCounts().Length > nBins) nBins = subspec.GetCounts().Length;
                     if (subspec.GetStartTime() < startTime) startTime = subspec.GetStartTime();
-                    liveTime += subspec.GetLiveTime();
-                    realTime += subspec.GetRealTime();
                 }
 
+                spectrum = new Spectrum(CalibrationZero, CalibrationSlope, new int[nBins],
+                    startTime, 0, 0);
+
                 Counts = new int[nBins];
-                int[] subspecCounts;
                 foreach (Spectrum subspec in spectra)
                 {
-                    subspecCounts = subspec.GetCounts();
-                    for (int i = 0; i < subspecCounts.Length; ++i)
-                    {
-                        Counts[i] += subspecCounts[i];
-                    }
+                    spectrum.Add(subspec);
                 }
             }
 
-            SpectrumStart = startTime;
-            SpectrumRealTime = TimeSpan.FromSeconds(realTime);
-            SpectrumLiveTime = TimeSpan.FromSeconds(liveTime);
-            SpectrumDeadTimePercent = 100 * (realTime - liveTime) / realTime;
+            LoadSpectrum(spectrum);
 
             FileSpectraCount = 1;
             FileSpectrumNumber = 1;
