@@ -85,6 +85,8 @@ namespace Omniscient
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.AllPanelsButton = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.BackwardButton = new System.Windows.Forms.ToolStripButton();
             this.ForwardButton = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
@@ -123,6 +125,7 @@ namespace Omniscient
             this.label11 = new System.Windows.Forms.Label();
             this.LeftPanel = new System.Windows.Forms.Panel();
             this.LeftLeftPanel = new System.Windows.Forms.Panel();
+            this.SitesTreeView = new Omniscient.Controls.ResponsiveTreeView();
             this.TreeImageList = new System.Windows.Forms.ImageList(this.components);
             this.BottomLeftPanel = new System.Windows.Forms.Panel();
             this.GlobalEndTextBox = new System.Windows.Forms.TextBox();
@@ -154,9 +157,8 @@ namespace Omniscient
             this.EventsWarningLabel = new System.Windows.Forms.Label();
             this.ExportEventsButton = new System.Windows.Forms.Button();
             this.GenerateEventsButton = new System.Windows.Forms.Button();
-            this.ButtonImageList = new System.Windows.Forms.ImageList(this.components);
             this.CollapseBottomButton = new System.Windows.Forms.Button();
-            this.SitesTreeView = new Omniscient.Controls.ResponsiveTreeView();
+            this.ButtonImageList = new System.Windows.Forms.ImageList(this.components);
             this.StripChartControlPanel.SuspendLayout();
             this.StripChartsPanel.SuspendLayout();
             this.StripChartsLayoutPanel.SuspendLayout();
@@ -520,6 +522,8 @@ namespace Omniscient
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripButton1,
             this.toolStripSeparator1,
+            this.AllPanelsButton,
+            this.toolStripSeparator3,
             this.BackwardButton,
             this.ForwardButton,
             this.toolStripSeparator2,
@@ -549,6 +553,21 @@ namespace Omniscient
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
             this.toolStripSeparator1.Size = new System.Drawing.Size(6, 27);
+            // 
+            // AllPanelsButton
+            // 
+            this.AllPanelsButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.AllPanelsButton.Image = global::Omniscient.Properties.Resources.DockPanel_16x;
+            this.AllPanelsButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.AllPanelsButton.Name = "AllPanelsButton";
+            this.AllPanelsButton.Size = new System.Drawing.Size(24, 24);
+            this.AllPanelsButton.Text = "Hide/Show All Panels";
+            this.AllPanelsButton.Click += new System.EventHandler(this.AllPanelsButton_Click);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 27);
             // 
             // BackwardButton
             // 
@@ -611,7 +630,7 @@ namespace Omniscient
             // MouseTimeToolStripLabel
             // 
             this.MouseTimeToolStripLabel.AutoSize = false;
-            this.MouseTimeToolStripLabel.Margin = new System.Windows.Forms.Padding(136, 2, 0, 3);
+            this.MouseTimeToolStripLabel.Margin = new System.Windows.Forms.Padding(80, 2, 0, 3);
             this.MouseTimeToolStripLabel.Name = "MouseTimeToolStripLabel";
             this.MouseTimeToolStripLabel.Size = new System.Drawing.Size(250, 22);
             this.MouseTimeToolStripLabel.Text = "Mouse Location:";
@@ -959,6 +978,20 @@ namespace Omniscient
             this.LeftLeftPanel.Size = new System.Drawing.Size(230, 654);
             this.LeftLeftPanel.TabIndex = 15;
             // 
+            // SitesTreeView
+            // 
+            this.SitesTreeView.CheckBoxes = true;
+            this.SitesTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.SitesTreeView.ImageIndex = 0;
+            this.SitesTreeView.ImageList = this.TreeImageList;
+            this.SitesTreeView.Location = new System.Drawing.Point(2, 90);
+            this.SitesTreeView.Name = "SitesTreeView";
+            this.SitesTreeView.SelectedImageIndex = 0;
+            this.SitesTreeView.ShowNodeToolTips = true;
+            this.SitesTreeView.Size = new System.Drawing.Size(226, 496);
+            this.SitesTreeView.TabIndex = 11;
+            this.SitesTreeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.SitesTreeView_AfterCheck);
+            // 
             // TreeImageList
             // 
             this.TreeImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("TreeImageList.ImageStream")));
@@ -1276,15 +1309,6 @@ namespace Omniscient
             this.GenerateEventsButton.UseVisualStyleBackColor = true;
             this.GenerateEventsButton.Click += new System.EventHandler(this.GenerateEventsButton_Click);
             // 
-            // ButtonImageList
-            // 
-            this.ButtonImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("ButtonImageList.ImageStream")));
-            this.ButtonImageList.TransparentColor = System.Drawing.Color.Transparent;
-            this.ButtonImageList.Images.SetKeyName(0, "UpArrow");
-            this.ButtonImageList.Images.SetKeyName(1, "DownArrow");
-            this.ButtonImageList.Images.SetKeyName(2, "Plus");
-            this.ButtonImageList.Images.SetKeyName(3, "Delete");
-            // 
             // CollapseBottomButton
             // 
             this.CollapseBottomButton.Dock = System.Windows.Forms.DockStyle.Top;
@@ -1296,19 +1320,14 @@ namespace Omniscient
             this.CollapseBottomButton.UseVisualStyleBackColor = true;
             this.CollapseBottomButton.Click += new System.EventHandler(this.CollapseBottomButton_Click);
             // 
-            // SitesTreeView
+            // ButtonImageList
             // 
-            this.SitesTreeView.CheckBoxes = true;
-            this.SitesTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SitesTreeView.ImageIndex = 0;
-            this.SitesTreeView.ImageList = this.TreeImageList;
-            this.SitesTreeView.Location = new System.Drawing.Point(2, 90);
-            this.SitesTreeView.Name = "SitesTreeView";
-            this.SitesTreeView.SelectedImageIndex = 0;
-            this.SitesTreeView.ShowNodeToolTips = true;
-            this.SitesTreeView.Size = new System.Drawing.Size(226, 496);
-            this.SitesTreeView.TabIndex = 11;
-            this.SitesTreeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.SitesTreeView_AfterCheck);
+            this.ButtonImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("ButtonImageList.ImageStream")));
+            this.ButtonImageList.TransparentColor = System.Drawing.Color.Transparent;
+            this.ButtonImageList.Images.SetKeyName(0, "UpArrow");
+            this.ButtonImageList.Images.SetKeyName(1, "DownArrow");
+            this.ButtonImageList.Images.SetKeyName(2, "Plus");
+            this.ButtonImageList.Images.SetKeyName(3, "Delete");
             // 
             // MainForm
             // 
@@ -1485,6 +1504,8 @@ namespace Omniscient
         private ToolStripButton ShiftStartButton;
         private ToolStripButton ShiftEndButton;
         private Button CollapseBottomButton;
+        private ToolStripButton AllPanelsButton;
+        private ToolStripSeparator toolStripSeparator3;
     }
 }
 

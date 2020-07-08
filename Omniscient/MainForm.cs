@@ -2343,29 +2343,41 @@ namespace Omniscient
         private void CollapseLeftButton_Click(object sender, EventArgs e)
         {
             if (LeftLeftPanel.Visible)
-            {
-                LeftLeftPanel.Visible = false;
-                CollapseLeftButton.Text = ">";
-            }
+                CollapseLeftPanel();
             else
-            {
-                LeftLeftPanel.Visible = true;
-                CollapseLeftButton.Text = "<";
-            }
+                ExpandLeftPanel();
+        }
+
+        private void CollapseLeftPanel()
+        {
+            LeftLeftPanel.Visible = false;
+            CollapseLeftButton.Text = ">";
+        }
+
+        private void ExpandLeftPanel()
+        {
+            LeftLeftPanel.Visible = true;
+            CollapseLeftButton.Text = "<";
         }
 
         private void CollapseRightButton_Click(object sender, EventArgs e)
         {
             if (RightRightPanel.Visible)
-            {
-                RightRightPanel.Visible = false;
-                CollapseRightButton.Text = "<";
-            }
+                CollapseRightPanel();
             else
-            {
-                RightRightPanel.Visible = true;
-                CollapseRightButton.Text = ">";
-            }
+                ExpandRightPanel();
+        }
+
+        private void CollapseRightPanel()
+        {
+            RightRightPanel.Visible = false;
+            CollapseRightButton.Text = "<";
+        }
+
+        private void ExpandRightPanel()
+        {
+            RightRightPanel.Visible = true;
+            CollapseRightButton.Text = ">";
         }
 
         private void ZoomFullRangeButton_Click(object sender, EventArgs e)
@@ -2429,19 +2441,41 @@ namespace Omniscient
         private void CollapseBottomButton_Click(object sender, EventArgs e)
         {
             if (BottomPanel.Visible)
+                CollapseBottomPanel();
+            else
+                ExpandBottomPanel();
+        }
+
+        private void CollapseBottomPanel()
+        {
+            splitterDistance = CenterSplitContainer.SplitterDistance;
+            BottomPanel.Visible = false;
+            CenterSplitContainer.SplitterDistance = CenterSplitContainer.Height - CollapseBottomButton.Height;
+            CenterSplitContainer.IsSplitterFixed = true;
+            CollapseBottomButton.Text = "^";
+        }
+
+        private void ExpandBottomPanel()
+        {
+            BottomPanel.Visible = true;
+            CenterSplitContainer.SplitterDistance = splitterDistance;
+            CenterSplitContainer.IsSplitterFixed = false;
+            CollapseBottomButton.Text = "v";
+        }
+
+        private void AllPanelsButton_Click(object sender, EventArgs e)
+        {
+            if (RightRightPanel.Visible || LeftLeftPanel.Visible || BottomPanel.Visible )
             {
-                splitterDistance = CenterSplitContainer.SplitterDistance;
-                BottomPanel.Visible = false;
-                CenterSplitContainer.SplitterDistance = CenterSplitContainer.Height - CollapseBottomButton.Height;
-                CenterSplitContainer.IsSplitterFixed = true;
-                CollapseBottomButton.Text = "^";
+                if (RightRightPanel.Visible) CollapseRightPanel();
+                if (LeftLeftPanel.Visible) CollapseLeftPanel();
+                if (BottomPanel.Visible) CollapseBottomPanel();
             }
             else
             {
-                BottomPanel.Visible = true;
-                CenterSplitContainer.SplitterDistance = splitterDistance;
-                CenterSplitContainer.IsSplitterFixed = false;
-                CollapseBottomButton.Text = "v";
+                ExpandRightPanel();
+                ExpandLeftPanel();
+                ExpandBottomPanel();
             }
         }
     }

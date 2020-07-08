@@ -364,6 +364,7 @@
     <None Include="Resources\Open_6529.png" />
     <None Include="Resources\ShiftToLeft_16x.png" />
     <None Include="Resources\ShiftToRight_16x.png" />
+    <None Include="Resources\DockPanel_16x.png" />
     <Content Include="Resources\ZoomToWidth_16x.png" />
     <Content Include="SiteManager.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
