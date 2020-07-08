@@ -172,13 +172,29 @@ namespace Omniscient
             EndTimePicker.Value = Core.ViewEnd.Date;
             chPanels = new List<ChannelPanel>();
             
-            LoadPresets();
             UpdateSitesTree();
             RangeTextBox.Text = "1";
             RangeComboBox.Text = "Days";
             InitializeCharts();
             bootingUp = false;
             UpdateRange();
+            UpdatesCharts();
+
+            LoadPresets();
+            SelectDefaultPreset();
+        }
+
+        private void SelectDefaultPreset()
+        {
+            List<Preset> presets = presetMan.GetPresets();
+            foreach(Preset preset in presets)
+            {
+                if (preset.Name == "default")
+                {
+                    PresetsComboBox.Text = "default";
+                    break;
+                }
+            }
         }
 
         private void Chart_Resize(object sender, EventArgs e)
@@ -1642,7 +1658,8 @@ namespace Omniscient
 
             PresetNameTextBox.Text = preset.Name;
 
-            ChangeView(startView, endView, true);
+            if (startView >= Core.GlobalStart && endView <= Core.GlobalEnd)
+                ChangeView(startView, endView, true);
         }
 
         private void SavePreset(string newName)
@@ -2001,9 +2018,19 @@ namespace Omniscient
             Axis Y = chart.ChartAreas[0].AxisY;
             if (drawingXZoomBox)
             {
-                int xStart = (int)X.ValueToPixelPosition(mouseDownX);
-                int xNow = (int)X.ValueToPixelPosition(mouseTime.ToOADate());
-
+                int xStart;
+                int xNow;
+                try
+                { 
+                    xStart = (int)X.ValueToPixelPosition(mouseDownX);
+                    xNow = (int)X.ValueToPixelPosition(mouseTime.ToOADate());
+                }
+                catch
+                {
+                    // Sometimes MSChart bugs out on ValueToPixelPosition (NullReferenceException)
+                    // This catches that and says "fine, I won't draw my fancy chart pictures this time but please don't crash"
+                    return;         
+                }
                 // Don't go out of range
                 int xMin = Math.Min(xStart, xNow);
                 if (xMin < X.ValueToPixelPosition(X.Minimum)) xMin = (int) X.ValueToPixelPosition(X.Minimum);
