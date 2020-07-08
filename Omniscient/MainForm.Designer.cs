@@ -155,6 +155,7 @@ namespace Omniscient
             this.ExportEventsButton = new System.Windows.Forms.Button();
             this.GenerateEventsButton = new System.Windows.Forms.Button();
             this.ButtonImageList = new System.Windows.Forms.ImageList(this.components);
+            this.CollapseBottomButton = new System.Windows.Forms.Button();
             this.SitesTreeView = new Omniscient.Controls.ResponsiveTreeView();
             this.StripChartControlPanel.SuspendLayout();
             this.StripChartsPanel.SuspendLayout();
@@ -1124,6 +1125,7 @@ namespace Omniscient
             // CenterSplitContainer.Panel2
             // 
             this.CenterSplitContainer.Panel2.Controls.Add(this.BottomPanel);
+            this.CenterSplitContainer.Panel2.Controls.Add(this.CollapseBottomButton);
             this.CenterSplitContainer.Size = new System.Drawing.Size(645, 664);
             this.CenterSplitContainer.SplitterDistance = 435;
             this.CenterSplitContainer.SplitterWidth = 5;
@@ -1134,9 +1136,9 @@ namespace Omniscient
             this.BottomPanel.Controls.Add(this.EventGridView);
             this.BottomPanel.Controls.Add(this.EventControlPanel);
             this.BottomPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.BottomPanel.Location = new System.Drawing.Point(0, 0);
+            this.BottomPanel.Location = new System.Drawing.Point(0, 20);
             this.BottomPanel.Name = "BottomPanel";
-            this.BottomPanel.Size = new System.Drawing.Size(641, 220);
+            this.BottomPanel.Size = new System.Drawing.Size(641, 200);
             this.BottomPanel.TabIndex = 9;
             // 
             // EventGridView
@@ -1154,7 +1156,7 @@ namespace Omniscient
             this.EventGridView.Location = new System.Drawing.Point(0, 34);
             this.EventGridView.Name = "EventGridView";
             this.EventGridView.RowHeadersWidth = 62;
-            this.EventGridView.Size = new System.Drawing.Size(641, 186);
+            this.EventGridView.Size = new System.Drawing.Size(641, 166);
             this.EventGridView.TabIndex = 2;
             this.EventGridView.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.EventGridView_CellDoubleClick);
             this.EventGridView.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.EventGridView_CellMouseClick);
@@ -1282,6 +1284,17 @@ namespace Omniscient
             this.ButtonImageList.Images.SetKeyName(1, "DownArrow");
             this.ButtonImageList.Images.SetKeyName(2, "Plus");
             this.ButtonImageList.Images.SetKeyName(3, "Delete");
+            // 
+            // CollapseBottomButton
+            // 
+            this.CollapseBottomButton.Dock = System.Windows.Forms.DockStyle.Top;
+            this.CollapseBottomButton.Location = new System.Drawing.Point(0, 0);
+            this.CollapseBottomButton.Name = "CollapseBottomButton";
+            this.CollapseBottomButton.Size = new System.Drawing.Size(641, 20);
+            this.CollapseBottomButton.TabIndex = 10;
+            this.CollapseBottomButton.Text = "V";
+            this.CollapseBottomButton.UseVisualStyleBackColor = true;
+            this.CollapseBottomButton.Click += new System.EventHandler(this.CollapseBottomButton_Click);
             // 
             // SitesTreeView
             // 
@@ -1471,6 +1484,7 @@ namespace Omniscient
         private Button PresetDeleteButton;
         private ToolStripButton ShiftStartButton;
         private ToolStripButton ShiftEndButton;
+        private Button CollapseBottomButton;
     }
 }
 

@@ -162,6 +162,7 @@ namespace Omniscient
                 chart.Resize += Chart_Resize;
 
                 chart.SuppressExceptions = true;
+                chart.Update();  // Avoids NullReferenceExceptions from MSChart when resizing the window before viewing a chart
             }
 
             GlobalStartTextBox.Text = Core.GlobalStart.ToString("MMM dd, yyyy");
@@ -199,32 +200,32 @@ namespace Omniscient
 
         private void Chart_Resize(object sender, EventArgs e)
         {
-            if (StripChart0.Width > 100)
+            Chart chart = sender as Chart;
+            if (!chart.Visible) return;
+            if (chart.Width > 100)
             { 
                 float positionX = 0;
                 float positionY = 0;
                 float positionWidth = 99.9F;
                 float positionHeight = 99.9F;
-                float plotX = 100.0F * 60.0F / StripChart0.Width;
+                float plotX = 100.0F * 60.0F / chart.Width;
                 float plotWidth = 99.9F - 1.5F * plotX;
 
-                for (int i = 0; i < N_CHARTS; i++)
-                {
-                    Chart chart = GetChart(i);
-                    if (chart.Height > 52)
-                    { 
-                        float plotY = 100.0F * 20.0F / chart.Height;
-                        float plotHeight = 99.9F - 2.5F * plotY;
-                        chart.ChartAreas[0].Position.X = positionX;
-                        chart.ChartAreas[0].Position.Y = positionY;
-                        chart.ChartAreas[0].Position.Width = positionWidth;
-                        chart.ChartAreas[0].Position.Height = positionHeight;
-                        chart.ChartAreas[0].InnerPlotPosition.X = plotX;
-                        chart.ChartAreas[0].InnerPlotPosition.Y = plotY;
-                        chart.ChartAreas[0].InnerPlotPosition.Width = plotWidth;
-                        chart.ChartAreas[0].InnerPlotPosition.Height = plotHeight;
-                    }
+                chart.SuspendLayout();
+                if (chart.Height > 52)
+                { 
+                    float plotY = 100.0F * 20.0F / chart.Height;
+                    float plotHeight = 99.9F - 2.5F * plotY;
+                    chart.ChartAreas[0].Position.X = positionX;
+                    chart.ChartAreas[0].Position.Y = positionY;
+                    chart.ChartAreas[0].Position.Width = positionWidth;
+                    chart.ChartAreas[0].Position.Height = positionHeight;
+                    chart.ChartAreas[0].InnerPlotPosition.X = plotX;
+                    chart.ChartAreas[0].InnerPlotPosition.Y = plotY;
+                    chart.ChartAreas[0].InnerPlotPosition.Width = plotWidth;
+                    chart.ChartAreas[0].InnerPlotPosition.Height = plotHeight;
                 }
+                chart.ResumeLayout();
             }
         }
 
@@ -760,11 +761,13 @@ namespace Omniscient
                 Chart chart = GetChart(chartNum);
                 if (chart.Series.Count > 0)
                 {
+                    chart.Visible = true;
                     StripChartsLayoutPanel.RowStyles[chartNum].SizeType = SizeType.Percent;
                     StripChartsLayoutPanel.RowStyles[chartNum].Height = (float)100.0 / numVisible;
                 }
                 else
                 {
+                    chart.Visible = false;
                     StripChartsLayoutPanel.RowStyles[chartNum].Height = 0;
                     chart.ChartAreas[0].AxisY.Maximum = 1;
                     chart.ChartAreas[0].AxisY.Minimum = 0;
@@ -2420,6 +2423,26 @@ namespace Omniscient
         private void ShiftEndButton_Click(object sender, EventArgs e)
         {
             ShiftView(Core.GlobalEnd - Core.ViewEnd);
+        }
+
+        int splitterDistance = 400;
+        private void CollapseBottomButton_Click(object sender, EventArgs e)
+        {
+            if (BottomPanel.Visible)
+            {
+                splitterDistance = CenterSplitContainer.SplitterDistance;
+                BottomPanel.Visible = false;
+                CenterSplitContainer.SplitterDistance = CenterSplitContainer.Height - CollapseBottomButton.Height;
+                CenterSplitContainer.IsSplitterFixed = true;
+                CollapseBottomButton.Text = "^";
+            }
+            else
+            {
+                BottomPanel.Visible = true;
+                CenterSplitContainer.SplitterDistance = splitterDistance;
+                CenterSplitContainer.IsSplitterFixed = false;
+                CollapseBottomButton.Text = "v";
+            }
         }
     }
 }
