@@ -1054,6 +1054,8 @@ namespace Omniscient
             StripChartScroll.Maximum = DateTimeToReferenceSeconds(Core.GlobalEnd);
             if (startSeconds < StripChartScroll.Minimum) startSeconds = StripChartScroll.Minimum;
             if (startSeconds > StripChartScroll.Maximum) startSeconds = StripChartScroll.Maximum;
+            if (endSeconds < StripChartScroll.Minimum) endSeconds = StripChartScroll.Minimum;
+            if (endSeconds > StripChartScroll.Maximum) endSeconds = StripChartScroll.Maximum;
             StripChartScroll.Value = startSeconds;
             StripChartScroll.SmallChange = endSeconds - startSeconds;
             StripChartScroll.LargeChange = endSeconds - startSeconds;
@@ -1280,108 +1282,179 @@ namespace Omniscient
                 chartMenu.MenuItems.Add(menuItem);
             }
 
+            List<MenuItem> OpenExplorerMenuItems = new List<MenuItem>();
+
             // Determine which MCAInstruments are being plotted on the chart
             foreach (ChannelPanel chanPan in chPanels)
             {
                 Channel chan = chanPan.GetChannel();
                 Instrument inst = chan.GetInstrument();
 
-                if (inst is MCAInstrument ||
-                    inst is DeclarationInstrument ||
-                    inst is ImageInstrument)
+                bool plotChan = false;
+                switch (chartNum)
                 {
-                    bool plotChan = false;
-                    switch (chartNum)
+                    case 0:
+                        if (chanPan.Chart1CheckBox.Checked)
+                            plotChan = true;
+                        break;
+                    case 1:
+                        if (chanPan.Chart2CheckBox.Checked)
+                            plotChan = true;
+                        break;
+                    case 2:
+                        if (chanPan.Chart3CheckBox.Checked)
+                            plotChan = true;
+                        break;
+                    case 3:
+                        if (chanPan.Chart4CheckBox.Checked)
+                            plotChan = true;
+                        break;
+                }
+                if (plotChan)
+                {
+                    List<DateTime> timeStamps = chan.GetTimeStamps(ChannelCompartment.View);
+                    List<TimeSpan> durations = null;
+
+                    // Gather "Open In Explorer" MenuItems
+                    if (chan.GetChannelType() == Channel.ChannelType.DURATION_VALUE ||
+                        chan.GetChannelType() == Channel.ChannelType.GAMMA_SPECTRUM)
                     {
-                        case 0:
-                            if (chanPan.Chart1CheckBox.Checked)
-                                plotChan = true;
-                            break;
-                        case 1:
-                            if (chanPan.Chart2CheckBox.Checked)
-                                plotChan = true;
-                            break;
-                        case 2:
-                            if (chanPan.Chart3CheckBox.Checked)
-                                plotChan = true;
-                            break;
-                        case 3:
-                            if (chanPan.Chart4CheckBox.Checked)
-                                plotChan = true;
-                            break;
-                    }
-                    if (plotChan)
-                    {
-                        if (inst is MCAInstrument || inst is DeclarationInstrument)
+                        // Duration values are easy to pick off...
+                        durations = chan.GetDurations(ChannelCompartment.View);
+                        for (int meas = 0; meas < timeStamps.Count(); meas++)
                         {
-                            // Determine whether the user clicked within a measurement
-                            List<DateTime> timeStamps = chan.GetTimeStamps(ChannelCompartment.View);
-                            List<TimeSpan> durations = chan.GetDurations(ChannelCompartment.View);
-                            for (int meas = 0; meas < timeStamps.Count(); meas++)
+                            if (timeStamps[meas] <= mouseTime && mouseTime <= timeStamps[meas] + durations[meas])
                             {
-                                if (timeStamps[meas] <= mouseTime && mouseTime <= timeStamps[meas] + durations[meas])
+                                MenuItem menuItem = new MenuItem("Show " + chan.Name + " file in Explorer");
+                                menuItem.Tag = chan.GetFiles(ChannelCompartment.View)[meas].FileName;
+                                menuItem.Click += OpenExplorerMenuItem_Click;
+                                OpenExplorerMenuItems.Add(menuItem);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // Point values require more effort
+                        if (timeStamps.Count == 1)
+                        {
+                            MenuItem menuItem = new MenuItem("Show " + chan.Name + " file in Explorer");
+                            menuItem.Tag = chan.GetFiles(ChannelCompartment.View)[0].FileName;
+                            menuItem.Click += OpenExplorerMenuItem_Click;
+                            OpenExplorerMenuItems.Add(menuItem);
+                        }
+                        else
+                        {
+                            if (mouseTime.Ticks <= (timeStamps[0].Ticks + timeStamps[1].Ticks)/2)
+                            {
+                                MenuItem menuItem = new MenuItem("Show " + chan.Name + " file in Explorer");
+                                menuItem.Tag = chan.GetFiles(ChannelCompartment.View)[0].FileName;
+                                menuItem.Click += OpenExplorerMenuItem_Click;
+                                OpenExplorerMenuItems.Add(menuItem);
+                            }
+                            else if (mouseTime.Ticks > (timeStamps[timeStamps.Count-1].Ticks + timeStamps[timeStamps.Count - 2].Ticks) / 2)
+                            {
+                                MenuItem menuItem = new MenuItem("Show " + chan.Name + " file in Explorer");
+                                menuItem.Tag = chan.GetFiles(ChannelCompartment.View)[timeStamps.Count - 1].FileName;
+                                menuItem.Click += OpenExplorerMenuItem_Click;
+                                OpenExplorerMenuItems.Add(menuItem);
+                            }
+                            else if (timeStamps.Count > 2)
+                            {
+                                long lastTick = timeStamps[0].Ticks;
+                                long thisTick = timeStamps[1].Ticks;
+                                long nextTick = timeStamps[2].Ticks;
+                                for (int meas = 1; meas < timeStamps.Count()-1; meas++)
                                 {
-                                    if (chan.GetInstrument() is MCAInstrument)
+                                    if (mouseTime.Ticks > (thisTick+lastTick)/2 && mouseTime.Ticks <= (thisTick + nextTick)/2)
                                     {
-                                        MenuItem menuItem = new MenuItem("View " + chan.Name + " in Inspectrum");
-                                        menuItem.Tag = new Tuple<string, DateTime, string[], DateTime[]>(inst.GetChannels()[0].GetFiles(ChannelCompartment.View)[meas].FileName,
-                                                                                    timeStamps[meas],
-                                                                                    inst.GetDataFileNames(),
-                                                                                    inst.GetDataFileDates());   // refer to main channel - virtual channels have issues with files
-                                        menuItem.Click += PlotSpectrumMenuItem_Click;
-                                        chartMenu.MenuItems.Add(menuItem);
-                                    }
-                                    else if (chan.GetInstrument() is DeclarationInstrument)
-                                    {
-                                        MenuItem menuItem = new MenuItem("View " + chan.Name + " in Declaration Editor");
+                                        MenuItem menuItem = new MenuItem("Show " + chan.Name + " file in Explorer");
                                         menuItem.Tag = chan.GetFiles(ChannelCompartment.View)[meas].FileName;
-                                        menuItem.Click += DeclarationMenuItem_Click;
-                                        chartMenu.MenuItems.Add(menuItem);
+                                        menuItem.Click += OpenExplorerMenuItem_Click;
+                                        OpenExplorerMenuItems.Add(menuItem);
                                     }
+                                    lastTick = thisTick;
+                                    thisTick = nextTick;
+                                    nextTick = timeStamps[meas + 1].Ticks;
                                 }
-                            }
-
-                            if (manualIOR != null && 
-                                chan.GetInstrument() is MCAInstrument &&
-                                mouseTime >= manualIOR.TimeRange.Start && 
-                                mouseTime <= manualIOR.TimeRange.End)
-                            {
-                                MenuItem menuItem = new MenuItem("View sum of " + chan.Name + " in Inspectrum");
-                                menuItem.Tag = chan;
-                                menuItem.Click += PlotSummedSpectraMenuItem_Click;
-                                chartMenu.MenuItems.Add(menuItem);
-                            }
-                        }
-                        else if (inst is ImageInstrument)
-                        {
-                            List<DateTime> timeStamps = chan.GetTimeStamps(ChannelCompartment.View);
-                            if (timeStamps.Count == 0)
-                            {
-                                continue;
-                            }
-
-                            // Find closest image (within a day)
-                            long distance = TimeSpan.TicksPerDay;
-                            long thisDist = 0;
-                            int index = -1;
-                            for (int meas = 0; meas < timeStamps.Count(); meas++)
-                            {
-                                thisDist = Math.Abs(timeStamps[meas].Ticks - mouseTime.Ticks);
-                                if (thisDist < distance)
-                                {
-                                    index = meas;
-                                    distance = thisDist;
-                                }
-                            }
-                            if (index >= 0)
-                            {
-                                MenuItem menuItem = new MenuItem("View " + chan.Name + " in Inspectacles");
-                                menuItem.Tag = Tuple.Create(chan.GetFiles(ChannelCompartment.View)[index].FileName, timeStamps[index]);
-                                menuItem.Click += ImageMenuItem_Click;
-                                chartMenu.MenuItems.Add(menuItem);
                             }
                         }
                     }
+
+                    if (inst is MCAInstrument || inst is DeclarationInstrument)
+                    {
+                        // Determine whether the user clicked within a measurement
+                        for (int meas = 0; meas < timeStamps.Count(); meas++)
+                        {
+                            if (timeStamps[meas] <= mouseTime && mouseTime <= timeStamps[meas] + durations[meas])
+                            {
+                                if (chan.GetInstrument() is MCAInstrument)
+                                {
+                                    MenuItem menuItem = new MenuItem("View " + chan.Name + " in Inspectrum");
+                                    menuItem.Tag = new Tuple<string, DateTime, string[], DateTime[]>(inst.GetChannels()[0].GetFiles(ChannelCompartment.View)[meas].FileName,
+                                                                                timeStamps[meas],
+                                                                                inst.GetDataFileNames(),
+                                                                                inst.GetDataFileDates());   // refer to main channel - virtual channels have issues with files
+                                    menuItem.Click += PlotSpectrumMenuItem_Click;
+                                    chartMenu.MenuItems.Add(menuItem);
+                                }
+                                else if (chan.GetInstrument() is DeclarationInstrument)
+                                {
+                                    MenuItem menuItem = new MenuItem("View " + chan.Name + " in Declaration Editor");
+                                    menuItem.Tag = chan.GetFiles(ChannelCompartment.View)[meas].FileName;
+                                    menuItem.Click += DeclarationMenuItem_Click;
+                                    chartMenu.MenuItems.Add(menuItem);
+                                }
+                            }
+                        }
+
+                        if (manualIOR != null && 
+                            chan.GetInstrument() is MCAInstrument &&
+                            mouseTime >= manualIOR.TimeRange.Start && 
+                            mouseTime <= manualIOR.TimeRange.End)
+                        {
+                            MenuItem menuItem = new MenuItem("View sum of " + chan.Name + " in Inspectrum");
+                            menuItem.Tag = chan;
+                            menuItem.Click += PlotSummedSpectraMenuItem_Click;
+                            chartMenu.MenuItems.Add(menuItem);
+                        }
+                    }
+                    else if (inst is ImageInstrument)
+                    {
+                        if (timeStamps.Count == 0)
+                        {
+                            continue;
+                        }
+
+                        // Find closest image (within a day)
+                        long distance = TimeSpan.TicksPerDay;
+                        long thisDist = 0;
+                        int index = -1;
+                        for (int meas = 0; meas < timeStamps.Count(); meas++)
+                        {
+                            thisDist = Math.Abs(timeStamps[meas].Ticks - mouseTime.Ticks);
+                            if (thisDist < distance)
+                            {
+                                index = meas;
+                                distance = thisDist;
+                            }
+                        }
+                        if (index >= 0)
+                        {
+                            MenuItem menuItem = new MenuItem("View " + chan.Name + " in Inspectacles");
+                            menuItem.Tag = Tuple.Create(chan.GetFiles(ChannelCompartment.View)[index].FileName, timeStamps[index]);
+                            menuItem.Click += ImageMenuItem_Click;
+                            chartMenu.MenuItems.Add(menuItem);
+                        }
+                    }
+                }
+            }
+
+            if (OpenExplorerMenuItems.Count > 0)
+            {
+                chartMenu.MenuItems.Add("-");
+                foreach (MenuItem menuItem in OpenExplorerMenuItems)
+                {
+                    chartMenu.MenuItems.Add(menuItem);
                 }
             }
 
@@ -1390,6 +1463,7 @@ namespace Omniscient
             {
                 if (mouseTime >= manualIOR.TimeRange.Start && mouseTime <= manualIOR.TimeRange.End)
                 {
+                    chartMenu.MenuItems.Add("-");
                     foreach (EventGenerator eg in Core.ActiveEventGenerators)
                     {
                         if (eg is ManualEG)
@@ -1404,6 +1478,12 @@ namespace Omniscient
                 }
             }
             chartMenu.Show(activeChart, new Point((int)mouseX, (int)mouseY));
+        }
+
+        private void OpenExplorerMenuItem_Click(object sender, EventArgs e)
+        {
+            string fileName = (string)(sender as MenuItem).Tag;
+            System.Diagnostics.Process.Start("explorer.exe", "/select, \"" + fileName + "\"") ;
         }
 
         private void PlotSummedSpectraMenuItem_Click(object sender, EventArgs e)
