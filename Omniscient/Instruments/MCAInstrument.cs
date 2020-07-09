@@ -57,7 +57,7 @@ namespace Omniscient
                     _fileExtension = value;
                 }
                 else
-                    throw new ArgumentException("File extension must be chn, spe, n42, hgm!");
+                    throw new ArgumentException("File extension must be chn, spe, n42, or hgm!");
                 //ScanDataFolder();
             }
         }

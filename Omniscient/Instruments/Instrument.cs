@@ -35,6 +35,7 @@ namespace Omniscient
             new ISRInstrumentHookup(),
             new MCAInstrumentHookup(),
             new NGAMInstrumentHookup(),
+            new SMMSInstrumentHookup(),
             new THDInstrumentHookup()
         };
         public override string Name

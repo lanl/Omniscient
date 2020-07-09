@@ -98,7 +98,8 @@ namespace Omniscient
             {
                 Instrument.ClearData(ChannelCompartment.Cache);
                 int fileIndex = fileNames.Length - 1;
-                Instrument.IngestFile(ChannelCompartment.Cache, fileNames[fileIndex]);
+                ReturnCode returnCode = Instrument.IngestFile(ChannelCompartment.Cache, fileNames[fileIndex]);
+                if (returnCode != ReturnCode.SUCCESS) return;
                 Instrument.LoadVirtualChannels(ChannelCompartment.Cache);
                 Channel[] channels = Instrument.GetChannels();
                 DateTime lastTime = DateTime.MinValue;

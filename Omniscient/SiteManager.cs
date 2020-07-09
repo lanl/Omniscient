@@ -71,8 +71,16 @@ namespace Omniscient
         public ReturnCode LoadFromXML(string fileName)
         {
             if (!File.Exists(fileName)) return ReturnCode.FILE_DOESNT_EXIST;
-            XmlDocument doc = new XmlDocument();
-            doc.Load(fileName);
+            XmlDocument doc;
+            try
+            { 
+                doc = new XmlDocument();
+                doc.Load(fileName);
+            }
+            catch
+            {
+                return ReturnCode.CORRUPTED_FILE;
+            }
             Persister.TakenIDs.Clear();
             sites.Clear();
 
