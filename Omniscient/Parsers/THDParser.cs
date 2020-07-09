@@ -73,6 +73,8 @@ namespace Omniscient
         {
             int nChar = fileString.Length;
             dataStart = -1;
+
+            if (nChar > 222) nChar = 222; // Fail early for autoconfig
             for(int i = 0; i< nChar - 22; i++)
             {
                 if (fileString[i] == '2' && fileString[i+1] == '0') // Initial check
@@ -84,6 +86,8 @@ namespace Omniscient
                     }
                 }
             }
+
+            if (dataStart < -1) throw new Exception();
         }
 
         private void ReadRecords()

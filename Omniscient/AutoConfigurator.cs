@@ -149,10 +149,16 @@ namespace Omniscient
                 }
             }
 
+            List<Parameter> parameters = new List<Parameter>()
+            {
+                new BoolParameter("File Mode", true),
+                new StringParameter("File Mode File", fileName)
+            };
+
             Instrument inst;
             foreach (InstrumentHookup hookup in Instrument.Hookups)
             {
-                inst = hookup.FromParameters(system, instName, new List<Parameter>(), 0);
+                inst = hookup.FromParameters(system, instName, parameters, 0);
                 try
                 {
                     if(inst.AutoIngestFile(ChannelCompartment.View, fileName) == ReturnCode.SUCCESS &&
@@ -160,8 +166,6 @@ namespace Omniscient
                     {
                         inst.FileExtension = info.Extension.Replace(".","").ToLower();
                         inst.SetDataFolder(instDirectory.FullName);
-                        inst.FileMode = true;
-                        inst.FileModeFile = fileName;
 
                         siteManager.Save();
                         ConfiguredInstrument = inst;

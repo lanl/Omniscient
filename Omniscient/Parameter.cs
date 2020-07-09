@@ -159,6 +159,10 @@ namespace Omniscient
     public class StringParameter : Parameter
     {
         public StringParameter(string name) : base(name, ParameterType.String) { }
+        public StringParameter(string name, string initialValue) : base(name, ParameterType.String) 
+        {
+            Value = initialValue;
+        }
         public override bool Validate() { return true; }
     }
 

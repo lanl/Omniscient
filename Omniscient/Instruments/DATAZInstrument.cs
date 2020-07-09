@@ -1,0 +1,170 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Omniscient
+{
+    public class DATAZInstrument : Instrument
+    {
+        private const string FILE_EXTENSION = "dataz";
+
+        DATAZParser parser;
+
+        public DATAZInstrument(DetectionSystem parent, string newName, uint id) : base(parent, newName, id)
+        {
+            InstrumentType = "DATAZ";
+            FileExtension = FILE_EXTENSION;
+            parser = new DATAZParser();
+            SetNumberOfChannels(1);
+        }
+
+        public ReturnCode SetNumberOfChannels(int nChannels)
+        {
+            numChannels = nChannels;
+            if (numChannels < 1) return ReturnCode.BAD_INPUT;
+            channels = new Channel[numChannels];
+            for (int i = 0; i < numChannels; ++i)
+            {
+                channels[i] = new Channel(Name + "-" + (i + 1).ToString(), this, Channel.ChannelType.COUNT_RATE, 0);
+
+            }
+            return ReturnCode.SUCCESS;
+        }
+
+        public override ReturnCode IngestFile(ChannelCompartment compartment, string fileName)
+        {
+            DateTime time = DateTime.MinValue;
+            DataFile dataFile = new DataFile(fileName);
+            ReturnCode returnCode = parser.ParseFile(fileName);
+            if (returnCode != ReturnCode.SUCCESS) return returnCode;
+            if (parser.TimeStamps.Length > 0) dataFile.DataStart = parser.TimeStamps[0];
+            else dataFile.DataStart = DateTime.MinValue;
+
+            if (parser.Data.GetLength(1) != numChannels)
+            {
+                SetNumberOfChannels(parser.Data.GetLength(1));
+                TryNamingChannelsFromHeaders(fileName);
+            }
+
+            int numRecords = parser.TimeStamps.Length;
+            for (int r = 0; r < numRecords; ++r)
+            {
+                time = parser.TimeStamps[r];
+                for (int c = 0; c < parser.Data.GetLength(1); c++)
+                {
+                    channels[c].AddDataPoint(compartment, time, parser.Data[r, c], dataFile);
+                }
+            }
+            dataFile.DataEnd = time;
+            parser = new DATAZParser();
+            return ReturnCode.SUCCESS;
+        }
+
+        public override ReturnCode AutoIngestFile(ChannelCompartment compartment, string fileName)
+        {
+            parser = new DATAZParser();
+            if (parser.ParseFile(fileName) == ReturnCode.SUCCESS)
+            {
+                TryNamingChannelsFromHeaders(fileName);
+                return IngestFile(compartment, fileName);
+            }
+            return ReturnCode.FAIL;
+        }
+
+        public override DateTime GetFileDate(string file)
+        {
+            if (parser.ParseFirstRecord(file) == ReturnCode.SUCCESS)
+            {
+                return parser.TimeStamps[0];
+            }
+            return DateTime.MinValue;
+        }
+
+        public override List<Parameter> GetParameters()
+        {
+            return GetStandardInstrumentParameters();
+        }
+
+        /// <summary>
+        /// Rename channels which have default names usingd file headers
+        /// </summary>
+        private void TryNamingChannelsFromHeaders()
+        {
+            try
+            { 
+                if (FileMode)
+                {
+                    TryNamingChannelsFromHeaders(FileModeFile);
+                    return;
+                }
+                List<string> directories = new List<string>();
+                directories.Add(dataFolder);
+                if (IncludeSubDirectories)
+                {
+                    directories.AddRange(GetSubdirectories(dataFolder));
+                }
+                string fileName = "";
+                string[] filesInDirectory;
+                foreach (string directory in directories)
+                {
+                    filesInDirectory = Directory.GetFiles(directory);
+
+                    foreach (string file in filesInDirectory)
+                    {
+                        string fileAbrev = file.Substring(file.LastIndexOf('\\') + 1);
+                        if (fileAbrev.Length > (fileSuffix.Length + FileExtension.Length)
+                            && fileAbrev.Substring(fileAbrev.Length - (FileExtension.Length + 1)).ToLower() == ("." + FileExtension)
+                            && fileAbrev.ToLower().StartsWith(filePrefix.ToLower())
+                            && fileAbrev.Substring(fileAbrev.Length - (FileExtension.Length + 1 + fileSuffix.Length), fileSuffix.Length).ToLower() == fileSuffix.ToLower())
+                        {
+                            fileName = file;
+                            break;
+                        }
+                    }
+                    if (fileName != "") break;
+                }
+                TryNamingChannelsFromHeaders(fileName);
+            }
+            catch
+            { }
+        }
+
+        private void TryNamingChannelsFromHeaders(string fileName)
+        {
+            ReturnCode returnCode = parser.ParseFirstRecord(fileName);
+            if (returnCode != ReturnCode.SUCCESS) return;
+
+            if (parser.Data.GetLength(1) != numChannels) SetNumberOfChannels(parser.Data.GetLength(1));
+            int firstDataCol = parser.DateTimeColumn + 1;
+            for (int c = 0; c < numChannels; c++)
+            {
+                if (channels[c].Name == Name + "-" + (c + 1).ToString())
+                {
+                    channels[c].Name = parser.Headers[c + firstDataCol];
+                }
+            }
+        }
+
+        public override void ApplyParameters(List<Parameter> parameters)
+        {
+            ApplyStandardInstrumentParameters(this, parameters);
+            TryNamingChannelsFromHeaders();
+        }
+    }
+
+    public class DATAZInstrumentHookup : InstrumentHookup
+    {
+        public override string Type { get { return "DATAZ"; } }
+
+        public override Instrument FromParameters(DetectionSystem parent, string newName, List<Parameter> parameters, uint id)
+        {
+            DATAZInstrument instrument = new DATAZInstrument(parent, newName, id);
+            //Instrument.ApplyStandardInstrumentParameters(instrument, parameters);
+            instrument.ApplyParameters(parameters);
+            return instrument;
+        }
+    }
+}

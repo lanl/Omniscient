@@ -118,6 +118,7 @@
     <Compile Include="Events\ManualEG.cs" />
     <Compile Include="InspectrumCore.cs" />
     <Compile Include="Instruments\ATPMInstrument.cs" />
+    <Compile Include="Instruments\DATAZInstrument.cs" />
     <Compile Include="Instruments\ImageInstrument.cs" />
     <Compile Include="Instruments\SMMSInstrument.cs" />
     <Compile Include="Instruments\THDInstrument.cs" />
@@ -140,6 +141,7 @@
     <Compile Include="Parsers\ASN1Skipper.cs" />
     <Compile Include="Parsers\ATPMParser.cs" />
     <Compile Include="Parsers\CSVSpectrumWriter.cs" />
+    <Compile Include="Parsers\DATAZParser.cs" />
     <Compile Include="Parsers\EventParser.cs" />
     <Compile Include="Parsers\EventWriter.cs" />
     <Compile Include="Parsers\HGMParser.cs" />
