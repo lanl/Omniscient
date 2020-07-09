@@ -31,7 +31,8 @@ namespace Omniscient
         {
             InitializeComponent();
             int count = 0;
-            foreach(InstrumentHookup hookup in Instrument.Hookups)
+            int topCount = Instrument.Hookups.Length / 2 + Instrument.Hookups.Length % 2;
+            foreach (InstrumentHookup hookup in Instrument.Hookups)
             {
                 if (hookup.Type == "Declaration") continue;
                 Button button = new Button();
@@ -39,7 +40,10 @@ namespace Omniscient
                 button.Click += VCButton_Click;
                 button.Width = 120;
                 button.Dock = DockStyle.Left;
-                ButtPanel.Controls.Add(button);
+                if (count < topCount)
+                    TopButtPanel.Controls.Add(button);
+                else
+                    BottomButtPanel.Controls.Add(button);
                 button.BringToFront();
                 button.TabIndex = count;
                 count++;
@@ -47,7 +51,7 @@ namespace Omniscient
 
             CancelButton.TabIndex = count;
 
-            Width = count * (125) + 25;
+            Width = topCount * (125) + 25;
         }
 
         private void VCButton_Click(object sender, EventArgs e)

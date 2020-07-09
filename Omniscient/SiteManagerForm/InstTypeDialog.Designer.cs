@@ -43,22 +43,27 @@ namespace Omniscient
         {
             this.ButtPanel = new System.Windows.Forms.Panel();
             this.CancelButton = new System.Windows.Forms.Button();
+            this.TopButtPanel = new System.Windows.Forms.Panel();
+            this.BottomButtPanel = new System.Windows.Forms.Panel();
+            this.ButtPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // ButtPanel
             // 
+            this.ButtPanel.Controls.Add(this.BottomButtPanel);
+            this.ButtPanel.Controls.Add(this.TopButtPanel);
             this.ButtPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ButtPanel.Location = new System.Drawing.Point(10, 10);
             this.ButtPanel.Margin = new System.Windows.Forms.Padding(0);
             this.ButtPanel.Name = "ButtPanel";
             this.ButtPanel.Padding = new System.Windows.Forms.Padding(5);
-            this.ButtPanel.Size = new System.Drawing.Size(266, 64);
+            this.ButtPanel.Size = new System.Drawing.Size(266, 141);
             this.ButtPanel.TabIndex = 7;
             // 
             // CancelButton
             // 
             this.CancelButton.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.CancelButton.Location = new System.Drawing.Point(10, 74);
+            this.CancelButton.Location = new System.Drawing.Point(10, 151);
             this.CancelButton.Name = "CancelButton";
             this.CancelButton.Size = new System.Drawing.Size(266, 30);
             this.CancelButton.TabIndex = 9;
@@ -66,11 +71,27 @@ namespace Omniscient
             this.CancelButton.UseVisualStyleBackColor = true;
             this.CancelButton.Click += new System.EventHandler(this.CancelButton_Click);
             // 
+            // TopButtPanel
+            // 
+            this.TopButtPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.TopButtPanel.Location = new System.Drawing.Point(5, 5);
+            this.TopButtPanel.Name = "TopButtPanel";
+            this.TopButtPanel.Size = new System.Drawing.Size(256, 64);
+            this.TopButtPanel.TabIndex = 0;
+            // 
+            // BottomButtPanel
+            // 
+            this.BottomButtPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.BottomButtPanel.Location = new System.Drawing.Point(5, 69);
+            this.BottomButtPanel.Name = "BottomButtPanel";
+            this.BottomButtPanel.Size = new System.Drawing.Size(256, 64);
+            this.BottomButtPanel.TabIndex = 1;
+            // 
             // InstTypeDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(286, 114);
+            this.ClientSize = new System.Drawing.Size(286, 191);
             this.ControlBox = false;
             this.Controls.Add(this.ButtPanel);
             this.Controls.Add(this.CancelButton);
@@ -79,6 +100,7 @@ namespace Omniscient
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Instrument Type";
             this.Load += new System.EventHandler(this.EventTypeDialog_Load);
+            this.ButtPanel.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -87,5 +109,7 @@ namespace Omniscient
 
         private System.Windows.Forms.Panel ButtPanel;
         private System.Windows.Forms.Button CancelButton;
+        private System.Windows.Forms.Panel BottomButtPanel;
+        private System.Windows.Forms.Panel TopButtPanel;
     }
 }
