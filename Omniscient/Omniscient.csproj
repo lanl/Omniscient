@@ -121,6 +121,7 @@
     <Compile Include="Instruments\ImageInstrument.cs" />
     <Compile Include="Instruments\SMMSInstrument.cs" />
     <Compile Include="Instruments\THDInstrument.cs" />
+    <Compile Include="Instruments\WUCSInstrument.cs" />
     <Compile Include="IntervalOfReview.cs" />
     <Compile Include="IOUtility.cs" />
     <Compile Include="MainDialogs\ChartOptionsDialog.cs">
@@ -145,6 +146,7 @@
     <Compile Include="Parsers\N42Parser.cs" />
     <Compile Include="Parsers\SMMSParser.cs" />
     <Compile Include="Parsers\THDParser.cs" />
+    <Compile Include="Parsers\WUCSParser.cs" />
     <Compile Include="Persister.cs" />
     <Compile Include="EventManagerForm\DataCompilerPanel.cs">
       <SubType>UserControl</SubType>
