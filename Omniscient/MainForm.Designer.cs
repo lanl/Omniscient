@@ -991,6 +991,7 @@ namespace Omniscient
             this.SitesTreeView.Size = new System.Drawing.Size(226, 496);
             this.SitesTreeView.TabIndex = 11;
             this.SitesTreeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.SitesTreeView_AfterCheck);
+            this.SitesTreeView.MouseClick += new System.Windows.Forms.MouseEventHandler(this.SitesTreeView_MouseClick);
             // 
             // TreeImageList
             // 

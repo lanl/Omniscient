@@ -871,6 +871,7 @@ namespace Omniscient
 
         private void RemoveChannelPanels(Instrument inst)
         {
+            ChannelsPanel.SuspendLayout();
             Core.DeactivateInstrument(inst);
 
             List<ChannelPanel> chToGo = new List<ChannelPanel>();
@@ -887,6 +888,7 @@ namespace Omniscient
                 chPanels.Remove(chanPan);
             }
             chToGo.Clear();
+            ChannelsPanel.ResumeLayout();
             UpdateGlobalStartEnd();
             UpdatesCharts();
         }
@@ -2557,6 +2559,11 @@ namespace Omniscient
                 ExpandLeftPanel();
                 ExpandBottomPanel();
             }
+        }
+
+        private void SitesTreeView_MouseClick(object sender, MouseEventArgs e)
+        {
+
         }
     }
 }
