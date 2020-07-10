@@ -137,6 +137,12 @@
     <Compile Include="MainDialogs\GenerateEventsDialog.Designer.cs">
       <DependentUpon>GenerateEventsDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="MainDialogs\NewInstrumentDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainDialogs\NewInstrumentDialog.Designer.cs">
+      <DependentUpon>NewInstrumentDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="OmniscientCore.cs" />
     <Compile Include="Parsers\ASN1Skipper.cs" />
     <Compile Include="Parsers\ATPMParser.cs" />
@@ -318,6 +324,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MainDialogs\GenerateEventsDialog.resx">
       <DependentUpon>GenerateEventsDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainDialogs\NewInstrumentDialog.resx">
+      <DependentUpon>NewInstrumentDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SiteManagerForm\InstTypeDialog.resx">
       <DependentUpon>InstTypeDialog.cs</DependentUpon>

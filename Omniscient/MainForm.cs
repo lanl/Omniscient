@@ -2563,7 +2563,81 @@ namespace Omniscient
 
         private void SitesTreeView_MouseClick(object sender, MouseEventArgs e)
         {
+            if (e.Button == MouseButtons.Right)
+            {
+                CreateSitesTreeContextMenu(SitesTreeView.GetNodeAt(e.X, e.Y), e);
+            }
+        }
 
+        public void CreateSitesTreeContextMenu(TreeNode node, MouseEventArgs e)
+        {
+            Persister persister = node.Tag as Persister;
+
+            ContextMenu chartMenu = new ContextMenu();
+
+            MenuItem newInstrumentMenuItem = new MenuItem("Create new Instrument");
+            newInstrumentMenuItem.Tag = node;
+            newInstrumentMenuItem.Click += NewInstrumentSitesTreeMenuItem_Click;
+            chartMenu.MenuItems.Add(newInstrumentMenuItem);
+
+            MenuItem removeMenuItem = new MenuItem("Remove " + persister.Species + ": " + persister.Name);
+            removeMenuItem.Tag = node;
+            removeMenuItem.Click += RemoveSitesTreeMenuItem_Click;
+            chartMenu.MenuItems.Add(removeMenuItem);
+
+            chartMenu.Show(SitesTreeView, new Point(e.X, e.Y));
+        }
+
+        private void NewInstrumentSitesTreeMenuItem_Click(object sender, EventArgs e)
+        {
+            MenuItem menuItem = sender as MenuItem;
+            TreeNode node = menuItem.Tag as TreeNode;
+            Persister persister = node.Tag as Persister;
+
+            NewInstrumentDialog dialog;
+            if (persister is Site)
+            {
+                dialog = new NewInstrumentDialog(Core, persister as Site);
+            }
+            else if (persister is Facility)
+            {
+                Facility facility = persister as Facility;
+                dialog = new NewInstrumentDialog(Core, facility.Parent as Site, facility);
+            }
+            else if (persister is DetectionSystem)
+            {
+                DetectionSystem system = persister as DetectionSystem;
+                dialog = new NewInstrumentDialog(Core, system.Parent.Parent as Site,
+                    system.Parent as Facility, system);
+            }
+            else if (persister is Instrument)
+            {
+                DetectionSystem system = (persister as Instrument).Parent as DetectionSystem;
+                dialog = new NewInstrumentDialog(Core, system.Parent.Parent as Site,
+                    system.Parent as Facility, system);
+            }
+            else dialog = new NewInstrumentDialog(Core);
+
+            if (dialog.ShowDialog() != DialogResult.OK) return;
+            SiteManagerForm siteManForm = new SiteManagerForm(this, Core.SiteManager, dialog.SelectedSystem);
+            siteManForm.ShowDialog();
+
+        }
+
+        private void RemoveSitesTreeMenuItem_Click(object sender, EventArgs e)
+        {
+            
+            MenuItem menuItem = sender as MenuItem;
+            TreeNode node = menuItem.Tag as TreeNode;
+            Persister persister = node.Tag as Persister;
+
+            if (MessageBox.Show("Are your sure you want to remove " + persister.Name + "?", "Remove " + persister.Species, MessageBoxButtons.OKCancel)
+               != DialogResult.OK) return;
+
+            node.Checked = false;
+            node.Remove();
+            persister.Delete();
+            Core.SiteManager.Save();
         }
     }
 }

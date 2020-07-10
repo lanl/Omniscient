@@ -39,7 +39,9 @@ namespace Omniscient
 
         bool siteManChanged = false;
 
-        public SiteManagerForm(MainForm master, SiteManager newSiteMan)
+        DetectionSystem startSys;
+
+        public SiteManagerForm(MainForm master, SiteManager newSiteMan, DetectionSystem startSystem = null)
         {
             main = master;
             siteMan = newSiteMan;
@@ -47,6 +49,8 @@ namespace Omniscient
             selectedSystem = null;
             selectedChannel = null;
             selectedVirtualChannel = null;
+
+            startSys = startSystem;
 
             this.StartPosition = FormStartPosition.CenterParent;
             InitializeComponent();
@@ -67,6 +71,8 @@ namespace Omniscient
 
             if (this.Top < 1) this.Top = 1;
             if (this.Height > Screen.PrimaryScreen.WorkingArea.Height) this.Height = Screen.PrimaryScreen.WorkingArea.Height;
+
+            if (startSys != null) SelectSystemAndMakeInstrument(startSys);
         }
 
         /// <summary>
@@ -185,6 +191,12 @@ namespace Omniscient
                 DeclarationDirectoryTextBox.Enabled = false;
                 DeclarationDirectoryTextBox.Text = "";
             }
+        }
+
+        private void SelectSystemAndMakeInstrument(DetectionSystem sys)
+        {
+            SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(sys.ID.ToString(), true)[0];
+            CreateNewInstrument();
         }
 
         private void ResetFields()
@@ -674,7 +686,7 @@ namespace Omniscient
             SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(id, true)[0];
         }
 
-        private void NewInstrumentButton_Click(object sender, EventArgs e)
+        public void CreateNewInstrument()
         {
             // Choose instrument type
             InstTypeDialog dialog = new InstTypeDialog();
@@ -747,6 +759,11 @@ namespace Omniscient
             UpdateSitesTree();
             siteManChanged = true;
             SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(id, true)[0];
+        }
+
+        private void NewInstrumentButton_Click(object sender, EventArgs e)
+        {
+            CreateNewInstrument();
         }
 
         private void AddVirtualChannelButton_Click(object sender, EventArgs e)
