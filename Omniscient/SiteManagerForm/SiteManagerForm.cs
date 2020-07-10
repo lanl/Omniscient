@@ -39,9 +39,10 @@ namespace Omniscient
 
         bool siteManChanged = false;
 
-        DetectionSystem startSys;
+        Persister startPersister;
+        bool startMakingInstrument;
 
-        public SiteManagerForm(MainForm master, SiteManager newSiteMan, DetectionSystem startSystem = null)
+        public SiteManagerForm(MainForm master, SiteManager newSiteMan, Persister starterPersister = null, bool makeInstrument=false)
         {
             main = master;
             siteMan = newSiteMan;
@@ -50,7 +51,8 @@ namespace Omniscient
             selectedChannel = null;
             selectedVirtualChannel = null;
 
-            startSys = startSystem;
+            startPersister = starterPersister;
+            startMakingInstrument = makeInstrument;
 
             this.StartPosition = FormStartPosition.CenterParent;
             InitializeComponent();
@@ -72,7 +74,8 @@ namespace Omniscient
             if (this.Top < 1) this.Top = 1;
             if (this.Height > Screen.PrimaryScreen.WorkingArea.Height) this.Height = Screen.PrimaryScreen.WorkingArea.Height;
 
-            if (startSys != null) SelectSystemAndMakeInstrument(startSys);
+            if (startPersister != null) SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(startPersister.ID.ToString(), true)[0];
+            if (startMakingInstrument) CreateNewInstrument();
         }
 
         /// <summary>
@@ -191,12 +194,6 @@ namespace Omniscient
                 DeclarationDirectoryTextBox.Enabled = false;
                 DeclarationDirectoryTextBox.Text = "";
             }
-        }
-
-        private void SelectSystemAndMakeInstrument(DetectionSystem sys)
-        {
-            SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(sys.ID.ToString(), true)[0];
-            CreateNewInstrument();
         }
 
         private void ResetFields()

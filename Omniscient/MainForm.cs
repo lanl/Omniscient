@@ -2574,19 +2574,36 @@ namespace Omniscient
         {
             Persister persister = node.Tag as Persister;
 
-            ContextMenu chartMenu = new ContextMenu();
+            if (persister is EventGenerator) return;    // Not supported yet
+            else
+            { 
+                ContextMenu chartMenu = new ContextMenu();
 
-            MenuItem newInstrumentMenuItem = new MenuItem("Create new Instrument");
-            newInstrumentMenuItem.Tag = node;
-            newInstrumentMenuItem.Click += NewInstrumentSitesTreeMenuItem_Click;
-            chartMenu.MenuItems.Add(newInstrumentMenuItem);
+                MenuItem showInSiteManagerMenuItem = new MenuItem("Show " + persister.Name + " in the Site Manager");
+                showInSiteManagerMenuItem.Tag = persister;
+                showInSiteManagerMenuItem.Click += ShowInSiteManagerMenuItem_Click;
+                chartMenu.MenuItems.Add(showInSiteManagerMenuItem);
 
-            MenuItem removeMenuItem = new MenuItem("Remove " + persister.Species + ": " + persister.Name);
-            removeMenuItem.Tag = node;
-            removeMenuItem.Click += RemoveSitesTreeMenuItem_Click;
-            chartMenu.MenuItems.Add(removeMenuItem);
+                MenuItem newInstrumentMenuItem = new MenuItem("Create new Instrument");
+                newInstrumentMenuItem.Tag = node;
+                newInstrumentMenuItem.Click += NewInstrumentSitesTreeMenuItem_Click;
+                chartMenu.MenuItems.Add(newInstrumentMenuItem);
 
-            chartMenu.Show(SitesTreeView, new Point(e.X, e.Y));
+                MenuItem removeMenuItem = new MenuItem("Remove " + persister.Species + ": " + persister.Name);
+                removeMenuItem.Tag = node;
+                removeMenuItem.Click += RemoveSitesTreeMenuItem_Click;
+                chartMenu.MenuItems.Add(removeMenuItem);
+
+                chartMenu.Show(SitesTreeView, new Point(e.X, e.Y));
+            }
+        }
+
+        private void ShowInSiteManagerMenuItem_Click(object sender, EventArgs e)
+        {
+            MenuItem menuItem = sender as MenuItem;
+            Persister persister = menuItem.Tag as Persister;
+            SiteManagerForm siteManForm = new SiteManagerForm(this, Core.SiteManager, persister);
+            siteManForm.ShowDialog();
         }
 
         private void NewInstrumentSitesTreeMenuItem_Click(object sender, EventArgs e)
@@ -2620,9 +2637,8 @@ namespace Omniscient
             else dialog = new NewInstrumentDialog(Core);
 
             if (dialog.ShowDialog() != DialogResult.OK) return;
-            SiteManagerForm siteManForm = new SiteManagerForm(this, Core.SiteManager, dialog.SelectedSystem);
+            SiteManagerForm siteManForm = new SiteManagerForm(this, Core.SiteManager, dialog.SelectedSystem, true);
             siteManForm.ShowDialog();
-
         }
 
         private void RemoveSitesTreeMenuItem_Click(object sender, EventArgs e)
