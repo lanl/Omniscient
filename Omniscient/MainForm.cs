@@ -891,6 +891,7 @@ namespace Omniscient
             ChannelsPanel.ResumeLayout();
             UpdateGlobalStartEnd();
             UpdatesCharts();
+            UpdateChartVisibility();
         }
 
         private void UncheckParentNodes(TreeNode node)
