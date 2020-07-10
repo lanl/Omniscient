@@ -73,6 +73,7 @@ namespace Omniscient
         ///////////////////////////////////////////////////////////////////////
 
         string appDataDirectory;
+        UserSettings userSettings;
 
         /// <summary>
         /// MainForm constructor
@@ -183,6 +184,7 @@ namespace Omniscient
 
             LoadPresets();
             SelectDefaultPreset();
+            LoadUserSettings();
         }
 
         private void SelectDefaultPreset()
@@ -314,6 +316,23 @@ namespace Omniscient
             foreach (Preset preset in presetMan.GetPresets())
             {
                 PresetsComboBox.Items.Add(preset.Name);
+            }
+        }
+
+        public void LoadUserSettings()
+        {
+            string settingsPath = Path.Combine(appDataDirectory, "Settings.xml");
+            userSettings = new UserSettings(settingsPath);
+            ReturnCode returnCode = userSettings.Reload();
+            if (returnCode == ReturnCode.FILE_DOESNT_EXIST)
+            {
+                userSettings.WriteNew();
+            }
+            else if (returnCode == ReturnCode.SUCCESS)
+            {
+                if (!userSettings.ShowLeftPanel) CollapseLeftPanel();
+                if (!userSettings.ShowRightPanel) CollapseRightPanel();
+                if (!userSettings.ShowEventsPanel) CollapseBottomPanel();
             }
         }
 
@@ -2435,12 +2454,14 @@ namespace Omniscient
         {
             LeftLeftPanel.Visible = false;
             CollapseLeftButton.Text = ">";
+            userSettings.ShowLeftPanel = false;
         }
 
         private void ExpandLeftPanel()
         {
             LeftLeftPanel.Visible = true;
             CollapseLeftButton.Text = "<";
+            userSettings.ShowLeftPanel = true;
         }
 
         private void CollapseRightButton_Click(object sender, EventArgs e)
@@ -2455,12 +2476,14 @@ namespace Omniscient
         {
             RightRightPanel.Visible = false;
             CollapseRightButton.Text = "<";
+            userSettings.ShowRightPanel = false;
         }
 
         private void ExpandRightPanel()
         {
             RightRightPanel.Visible = true;
             CollapseRightButton.Text = ">";
+            userSettings.ShowRightPanel = true;
         }
 
         private void ZoomFullRangeButton_Click(object sender, EventArgs e)
@@ -2536,6 +2559,7 @@ namespace Omniscient
             CenterSplitContainer.SplitterDistance = CenterSplitContainer.Height - CollapseBottomButton.Height;
             CenterSplitContainer.IsSplitterFixed = true;
             CollapseBottomButton.Text = "^";
+            userSettings.ShowEventsPanel = false;
         }
 
         private void ExpandBottomPanel()
@@ -2544,10 +2568,12 @@ namespace Omniscient
             CenterSplitContainer.SplitterDistance = splitterDistance;
             CenterSplitContainer.IsSplitterFixed = false;
             CollapseBottomButton.Text = "v";
+            userSettings.ShowEventsPanel = true;
         }
 
         private void AllPanelsButton_Click(object sender, EventArgs e)
         {
+            userSettings.SuspendSaving = true;
             if (RightRightPanel.Visible || LeftLeftPanel.Visible || BottomPanel.Visible )
             {
                 if (RightRightPanel.Visible) CollapseRightPanel();
@@ -2560,6 +2586,8 @@ namespace Omniscient
                 ExpandLeftPanel();
                 ExpandBottomPanel();
             }
+            userSettings.SuspendSaving = false;
+            userSettings.Save();
         }
 
         private void SitesTreeView_MouseClick(object sender, MouseEventArgs e)
