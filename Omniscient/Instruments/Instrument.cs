@@ -31,6 +31,7 @@ namespace Omniscient
             new ATPMInstrumentHookup(),
             new CSVInstrumentHookup(),
             new DATAZInstrumentHookup(),
+            new FileInstrumentHookup(),
             new GRANDInstrumentHookup(),
             new ImageInstrumentHookup(),
             new ISRInstrumentHookup(),

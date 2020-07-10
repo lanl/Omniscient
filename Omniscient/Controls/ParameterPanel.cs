@@ -49,6 +49,7 @@ namespace Omniscient
                 case ParameterType.Double:
                     InitializeSimpleTextBox();
                     break;
+                case ParameterType.DateTimeFormat:
                 case ParameterType.Enum:
                 case ParameterType.SystemChannel:
                 case ParameterType.SystemEventGenerator:
@@ -64,6 +65,7 @@ namespace Omniscient
                 case ParameterType.Directory:
                     InitializeDirectory();
                     break;
+
             }
             Visible = param.Visible;
             this.ResumeLayout();
@@ -96,6 +98,7 @@ namespace Omniscient
                 case ParameterType.Double:
                     parameter.Value = ((TextBox)paramControls[0]).Text;
                     break;
+                case ParameterType.DateTimeFormat:
                 case ParameterType.Enum:
                 case ParameterType.SystemChannel:
                 case ParameterType.SystemEventGenerator:

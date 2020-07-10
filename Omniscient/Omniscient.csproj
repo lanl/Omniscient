@@ -119,6 +119,7 @@
     <Compile Include="InspectrumCore.cs" />
     <Compile Include="Instruments\ATPMInstrument.cs" />
     <Compile Include="Instruments\DATAZInstrument.cs" />
+    <Compile Include="Instruments\FileInstrument.cs" />
     <Compile Include="Instruments\ImageInstrument.cs" />
     <Compile Include="Instruments\SMMSInstrument.cs" />
     <Compile Include="Instruments\THDInstrument.cs" />

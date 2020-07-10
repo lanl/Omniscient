@@ -132,7 +132,7 @@ namespace Omniscient
             {
                 Value = FileExtension,
                 ValidValues = ValidExtensions
-            });;
+            });
             return parameters;
         }
 

@@ -291,21 +291,28 @@ namespace Omniscient
     /// </summary>
     public class DateTimeFormatParameter : LimitedValueParameter
     {
-        private static Dictionary<string, string> patterns = new Dictionary<string, string>
+        public static Dictionary<string, string> Patterns = new Dictionary<string, string>
         {
             { "yyyy-MM-dd HH:mm:ss",  @"\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}" },
             { "yyyy-MM-ddTHH:mm:ss",  @"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}" },
-            { "yyyyMMddTHHmmss",      @"\d{8}T\d{6}" }
+            { "yyyy-MM-ddTHH-mm-ss",  @"\d{4}-\d{2}-\d{2}T\d{2}-\d{2}-\d{2}" },
+            { "yyyy_MM_dd_HH_mm_ss",  @"\d{4}_\d{2}_\d{2}_\d{2}_\d{2}_\d{2}" },
+            { "yyyyMMddTHHmmss",      @"\d{8}T\d{6}" },
+            { "yyyy-MM-ddTHH-mm",  @"\d{4}-\d{2}-\d{2}T\d{2}-\d{2}" },
+            { "yyyy_MM_dd_HH_mm",  @"\d{4}_\d{2}_\d{2}_\d{2}_\d{2}" },
+            { "yyyy-MM-dd",  @"\d{4}-\d{2}-\d{2}" },
+            { "yyyy_MM_dd",  @"\d{4}_\d{2}_\d{2}" },
+            { "yyyyMMdd",      @"\d{8}" }
         };
 
         public DateTimeFormatParameter(string name) : base(name, ParameterType.DateTimeFormat)
         {
-            ValidValues = patterns.Keys.ToList();
+            ValidValues = Patterns.Keys.ToList();
         }
 
         public string GetRegexPattern()
         {
-            if (!(Value is null)) return patterns[Value];
+            if (!(Value is null)) return Patterns[Value];
             return null;
         }
     }
