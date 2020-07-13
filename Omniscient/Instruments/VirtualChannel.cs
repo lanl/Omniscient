@@ -165,6 +165,11 @@ namespace Omniscient
             Operation = OperationType.Sum;
         }
 
+        public override List<DataFile> GetFiles(ChannelCompartment compartment)
+        {
+            return _channelA.GetFiles(compartment);
+        }
+
         public override void CalculateValues(ChannelCompartment compartment)
         {
             double[] arrayVals = new double[ChannelA.GetValues(compartment).Count];
@@ -333,6 +338,11 @@ namespace Omniscient
             Operation = OperationType.Sum;
         }
 
+        public override List<DataFile> GetFiles(ChannelCompartment compartment)
+        {
+            return Channel.GetFiles(compartment);
+        }
+
         public override void CalculateValues(ChannelCompartment compartment)
         {
             double[] arrayVals = new double[Channel.GetValues(compartment).Count];
@@ -483,6 +493,11 @@ namespace Omniscient
         }
         public TimeSpan Delay { get; set; }
 
+        public override List<DataFile> GetFiles(ChannelCompartment compartment)
+        {
+            return _channel.GetFiles(compartment);
+        }
+
         public override void CalculateValues(ChannelCompartment compartment)
         {
             values[(int)compartment] = Channel.GetValues(compartment);
@@ -580,6 +595,11 @@ namespace Omniscient
             }
         }
         public string File { get; set; }
+
+        public override List<DataFile> GetFiles(ChannelCompartment compartment)
+        {
+            return _channel.GetFiles(compartment);
+        }
 
         public override void CalculateValues(ChannelCompartment compartment)
         {
@@ -680,6 +700,11 @@ namespace Omniscient
             Channel = null;
             Period = 0;
             Statistic = StatisticType.Max;
+        }
+
+        public override List<DataFile> GetFiles(ChannelCompartment compartment)
+        {
+            return _channel.GetFiles(compartment);
         }
 
         public override void CalculateValues(ChannelCompartment compartment)
@@ -896,6 +921,11 @@ namespace Omniscient
             VCType = "Transcendental";
             Channel = null;
             Operation = OperationType.Sqrt;
+        }
+
+        public override List<DataFile> GetFiles(ChannelCompartment compartment)
+        {
+            return _channel.GetFiles(compartment);
         }
 
         public override void CalculateValues(ChannelCompartment compartment)

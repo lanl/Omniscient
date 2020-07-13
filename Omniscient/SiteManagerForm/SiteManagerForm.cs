@@ -358,7 +358,7 @@ namespace Omniscient
             ResetFields();
         }
 
-        private Channel SaveChannel(Instrument inst, Channel chan)
+        private Channel SaveChannel(Instrument inst, Channel chan, bool nameChanged)
         {
             // Validate input
             if (chan.Name != ChannelNameTextBox.Text && inst.ChildrenContainName(ChannelNameTextBox.Text))
@@ -369,13 +369,13 @@ namespace Omniscient
             if (!ChannelParameterListPanel.ValidateInput()) return null;
 
             // Apply new settings
-            chan.Name = ChannelNameTextBox.Text;
+            if (nameChanged) chan.Name = ChannelNameTextBox.Text;
             chan.ApplyParameters(ChannelParameterListPanel.Parameters);
 
             return chan;
         }
 
-        private VirtualChannel SaveVirtualChannel(Instrument inst, VirtualChannel chan)
+        private VirtualChannel SaveVirtualChannel(Instrument inst, VirtualChannel chan, bool nameChanged)
         {
             if (chan.Name != VirtualChannelNameTextBox.Text && inst.ChildrenContainName(VirtualChannelNameTextBox.Text))
             {
@@ -384,8 +384,9 @@ namespace Omniscient
             }
 
             string name = VirtualChannelNameTextBox.Text;
+            if (!nameChanged) name = chan.Name;
             string type = VirtualChannelTypeTextBox.Text;
-            
+
             if (!VCParameterListPanel.ValidateInput()) return null;
             VirtualChannelHookup hookup = VirtualChannel.GetHookup(type);
             List<VirtualChannel> virtualChannels = inst.GetVirtualChannels();
@@ -468,9 +469,13 @@ namespace Omniscient
                 if (!InstrumentParameterListPanel.ValidateInput()) return;
                 string name = NameTextBox.Text;
                 string type = inst.InstrumentType;
+                bool channelNameChanged = false;
 
-                if(name != inst.Name)
-                    inst.Name = name;
+                if (selectedVirtualChannel != null) channelNameChanged = VirtualChannelNameTextBox.Text != selectedVirtualChannel.Name;
+                else if (selectedChannel != null) channelNameChanged = ChannelNameTextBox.Text != selectedChannel.Name;
+
+                if (name != inst.Name)
+                inst.Name = name;
                 inst.ApplyParameters(InstrumentParameterListPanel.Parameters);
                 // selectedChannel and selectedVirtualChannel might not exist anymore
 
@@ -484,7 +489,7 @@ namespace Omniscient
                             break;
                         }
                     }
-                    chan = SaveVirtualChannel(inst, selectedVirtualChannel);
+                    chan = SaveVirtualChannel(inst, selectedVirtualChannel, channelNameChanged);
                 }
                 else if (selectedChannel != null)
                 {
@@ -496,7 +501,7 @@ namespace Omniscient
                             break;
                         }
                     }
-                    chan = SaveChannel(inst, selectedChannel);
+                    chan = SaveChannel(inst, selectedChannel, channelNameChanged);
                 }
                 nodeName = inst.ID.ToString();
             }

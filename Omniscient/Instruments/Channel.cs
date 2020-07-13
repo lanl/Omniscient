@@ -124,7 +124,7 @@ namespace Omniscient
         public List<DateTime> GetTimeStamps(ChannelCompartment compartment) { return timeStamps[(int)compartment]; }
         public List<TimeSpan> GetDurations(ChannelCompartment compartment) { return durations[(int)compartment]; }
         public List<double> GetValues(ChannelCompartment compartment) { return values[(int)compartment]; }
-        public List<DataFile> GetFiles(ChannelCompartment compartment) { return files[(int)compartment]; }
+        public virtual List<DataFile> GetFiles(ChannelCompartment compartment) { return files[(int)compartment]; }
         public Instrument GetInstrument() { return instrument; }
 
         public double GetAverage(ChannelCompartment compartment, DateTime start, DateTime end)
