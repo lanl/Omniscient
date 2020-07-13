@@ -1,5 +1,16 @@
 Omniscient Change Log
 
+##  0.9.2
+2020-07-13
+
+### New Features
+* An option to view lines with data points on the strip charts was added
+
+### Bug Fixes
+* Fixed an issue where renaming an instrument would not update the name of its first channel
+* Fixed a issue in which right clicking on virtual channel in a chart could cause a crash
+
+
 ##  0.9.1
 2020-07-10
 
