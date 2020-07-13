@@ -1,5 +1,38 @@
 Omniscient Change Log
 
+##  0.9.1
+2020-07-10
+
+### New Features
+* Instruments for SMMS, WUCS, and DATAZ data were added
+* An Instrument was added for generic viewing of files with timestamps in the file name
+* Data files can be shown in Windows Explorer by right clicking in a strip chart
+* There are buttons in the Main Window menu bar to shift the view either to the start or to the end of available data
+* Right clicking on an item in the Main Window Site Tree will bring up a context menu for adding, viewing, and removing items
+* There is a button to collapse/expand the Events Table
+* There is a button in the Main Window menu bar to collapse/expand all panels
+* When starting Omniscient, the panels are automatically collapsed/expanded as they were when it was last viewed
+* A Preset named "default" will automatically load when starting Omniscient
+* ROI Virtual Channels can be based on either spectrum channel number or calibrated energy
+* HGM spectrum files can viewed either from an MCAInstrument or in the spectrum viewer
+* A group of spectra in a Main Window strip chart can be summed and displayed in the spectrum viewer
+* Zooming out with the mouse in a strip chart gives a more intuitive result near the start and end of the data range
+* The layout in the Site Manager was made slightly easier to use
+* Performance improvements when deselecting instruments
+* Many improvements to the spectrum viewer (Inspectrum) including:
+    * New chart style
+    * The mouse can be used to zoom in the same manner to the Main Window strip charts
+    * When zooming, the chart will auto-scale (unless this is disabled by the user)
+    * The horizontal scrollbar can be used to shift the displayed range
+    * When spectra are loaded from a Main Window strip chart, there are buttons to view the previous or next spectrum from the Instrument
+    * Spectra can be exported for external analysis
+
+### Bug Fixes
+* Fixed a bug that would cause a crash when the strip chart scrollbar got out of range
+* Fixed several issues with the strip charts that could result in crashes
+* Fixed an issue where a strip chart could remain visible and empty after an Instrument was deselected
+
+
 ##  0.9.0
 2020-06-15
 
