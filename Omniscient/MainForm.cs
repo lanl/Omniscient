@@ -544,9 +544,14 @@ namespace Omniscient
                     {
                         series.ChartType = SeriesChartType.Point;
                     }
+                    else if (chanPan.Config.Symbol == ChannelDisplayConfig.SymbolType.Line)
+                    {
+                        series.ChartType = SeriesChartType.Line;
+                    }
                     else
                     {
                         series.ChartType = SeriesChartType.Line;
+                        series.MarkerStyle = MarkerStyle.Circle; 
                     }
                     series.Color = chanPan.Config.SeriesColor;
                     

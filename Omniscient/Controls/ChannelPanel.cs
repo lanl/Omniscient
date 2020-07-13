@@ -1,4 +1,4 @@
-// This software is open source software available under the BSD-3 license.
+﻿// This software is open source software available under the BSD-3 license.
 // 
 // Copyright (c) 2020, International Atomic Energy Agency (IAEA), IAEA.org
 // Copyright (c) 2018, Triad National Security, LLC
@@ -29,7 +29,7 @@ namespace Omniscient
     {
         private const int N_CHARTS = 4;
         public bool[] ChartActive { get; set; }
-        public enum SymbolType { Line, Dot }
+        public enum SymbolType { Line, Dot, LineAndDot }
         public SymbolType Symbol { get; set; }
         public Color SeriesColor { get; set; }
 
@@ -81,6 +81,9 @@ namespace Omniscient
                 case SymbolType.Dot:
                     xmlWriter.WriteAttributeString("Symbol", "Dot");
                     break;
+                case SymbolType.LineAndDot:
+                    xmlWriter.WriteAttributeString("Symbol", "LineAndDot");
+                    break;
             }
             for(int chart=0; chart<N_CHARTS; chart++)
             {
@@ -103,6 +106,10 @@ namespace Omniscient
             {
                 config.Symbol = SymbolType.Dot;
             }
+            else if (node.Attributes["Symbol"]?.InnerText == "LineAndDot")
+            {
+                config.Symbol = SymbolType.LineAndDot;
+            }
             for (int chart = 0; chart < N_CHARTS; chart++)
             {
                 config.ChartActive[chart] = node.Attributes["DisplayOnChart" + chart.ToString()]?.InnerText == "True";
@@ -113,14 +120,14 @@ namespace Omniscient
 
     public partial class ChannelPanel : UserControl
     {
-        private const string LINE = "_";
-        private const string DOT = "o";
+        private const string LINE = "━";
+        private const string DOT = "●";
+        private const string LINE_AND_DOT = "!";
 
         public event EventHandler CheckChanged;
         public event EventHandler SymbolChanged;
 
         private Channel channel;
-        internal static object SymbolType;
 
         public ChannelDisplayConfig Config { get; private set; }
 
@@ -150,6 +157,9 @@ namespace Omniscient
                 case ChannelDisplayConfig.SymbolType.Line:
                     SymbolComboBox.SelectedItem = LINE;
                     break;
+                case ChannelDisplayConfig.SymbolType.LineAndDot:
+                    SymbolComboBox.SelectedItem = LINE_AND_DOT;
+                    break;
             }
 
             ColorButton.BackColor = Config.SeriesColor;
@@ -165,6 +175,7 @@ namespace Omniscient
 
             SymbolComboBox.Items.Add(LINE);
             SymbolComboBox.Items.Add(DOT);
+            SymbolComboBox.Items.Add(LINE_AND_DOT);
             SymbolComboBox.SelectedItem = LINE;
 
             ColorButton.BackColor = Config.SeriesColor;
@@ -204,9 +215,13 @@ namespace Omniscient
             {
                 Config.Symbol = ChannelDisplayConfig.SymbolType.Line;
             }
-            else
+            else if ((string)SymbolComboBox.SelectedItem == DOT)
             {
                 Config.Symbol = ChannelDisplayConfig.SymbolType.Dot;
+            }
+            else
+            {
+                Config.Symbol = ChannelDisplayConfig.SymbolType.LineAndDot;
             }
             SymbolChanged?.Invoke(sender, e);
         }
