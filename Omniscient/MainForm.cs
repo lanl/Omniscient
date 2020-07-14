@@ -2548,7 +2548,7 @@ namespace Omniscient
             ShiftView(Core.GlobalEnd - Core.ViewEnd);
         }
 
-        int splitterDistance = 400;
+        double relativeSplitterDistance = 0.75;
         private void CollapseBottomButton_Click(object sender, EventArgs e)
         {
             if (BottomPanel.Visible)
@@ -2559,7 +2559,7 @@ namespace Omniscient
 
         private void CollapseBottomPanel()
         {
-            splitterDistance = CenterSplitContainer.SplitterDistance;
+            relativeSplitterDistance = (double)CenterSplitContainer.SplitterDistance/CenterSplitContainer.Height;
             BottomPanel.Visible = false;
             CenterSplitContainer.SplitterDistance = CenterSplitContainer.Height - CollapseBottomButton.Height;
             CenterSplitContainer.IsSplitterFixed = true;
@@ -2570,7 +2570,9 @@ namespace Omniscient
         private void ExpandBottomPanel()
         {
             BottomPanel.Visible = true;
-            CenterSplitContainer.SplitterDistance = splitterDistance;
+            int newSplitterDistance = (int)(relativeSplitterDistance * CenterSplitContainer.Height);
+            if (newSplitterDistance < 0) newSplitterDistance = 0;
+            CenterSplitContainer.SplitterDistance = newSplitterDistance;
             CenterSplitContainer.IsSplitterFixed = false;
             CollapseBottomButton.Text = "v";
             userSettings.ShowEventsPanel = true;
