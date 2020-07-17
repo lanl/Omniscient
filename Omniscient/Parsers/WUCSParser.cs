@@ -183,21 +183,69 @@ namespace Omniscient
                 }
                 if (tokens[7] == "A")
                 {
-                    if (tokens[8] == "Status:") record.statusA = int.Parse(tokens[9]);
-                    else if (tokens[8] == "Main" && tokens[9] == "Voltage:") record.mainVoltageA = double.Parse(tokens[10]);
-                    else if (tokens[8] == "Battery" && tokens[9] == "Temperature:") record.batteryTempA = double.Parse(tokens[10]);
-                    else if (tokens[8] == "Module" && tokens[9] == "Temperature:") record.moduleTempA = double.Parse(tokens[10]);
-                    else if (tokens[8] == "Battery" && tokens[9] == "Voltage:") record.batteryVoltageA = double.Parse(tokens[10]);
-                    else if (tokens[8] == "Charger" && tokens[9] == "Voltage:") record.chargerVoltageA = double.Parse(tokens[10]);
+                    if (tokens[8] == "Status:")
+                    {
+                        try { record.statusA = int.Parse(tokens[9]); }
+                        catch { record.statusA = -99; }
+                    }
+                    else if (tokens[8] == "Main" && tokens[9] == "Voltage:")
+                    {
+                        try { record.mainVoltageA = double.Parse(tokens[10]); }
+                        catch { record.mainVoltageA = -99; }
+                    }
+                    else if (tokens[8] == "Battery" && tokens[9] == "Temperature:")
+                    {
+                        try { record.batteryTempA = double.Parse(tokens[10]); }
+                        catch { record.batteryTempA = -99; }
+                    }
+                    else if (tokens[8] == "Module" && tokens[9] == "Temperature:")
+                    {
+                        try { record.moduleTempA = double.Parse(tokens[10]); }
+                        catch { record.moduleTempA = -99; }
+                    }
+                    else if (tokens[8] == "Battery" && tokens[9] == "Voltage:")
+                    {
+                        try { record.batteryVoltageA = double.Parse(tokens[10]); }
+                        catch { record.batteryVoltageA = -99; }
+                    }
+                    else if (tokens[8] == "Charger" && tokens[9] == "Voltage:")
+                    {
+                        try { record.chargerVoltageA = double.Parse(tokens[10]); }
+                        catch { record.chargerVoltageA = -99; }
+                    }
                 }
                 else if (tokens[7] == "B")
                 {
-                    if (tokens[8] == "Status:") record.statusA = int.Parse(tokens[9]);
-                    else if (tokens[8] == "Main" && tokens[9] == "Voltage:") record.mainVoltageB = double.Parse(tokens[10]);
-                    else if (tokens[8] == "Battery" && tokens[9] == "Temperature:") record.batteryTempB = double.Parse(tokens[10]);
-                    else if (tokens[8] == "Module" && tokens[9] == "Temperature:") record.moduleTempB = double.Parse(tokens[10]);
-                    else if (tokens[8] == "Battery" && tokens[9] == "Voltage:") record.batteryVoltageB = double.Parse(tokens[10]);
-                    else if (tokens[8] == "Charger" && tokens[9] == "Voltage:") record.chargerVoltageB = double.Parse(tokens[10]);
+                    if (tokens[8] == "Status:")
+                    {
+                        try { record.statusB = int.Parse(tokens[9]); }
+                        catch { record.statusB = -99; }
+                    }
+                    else if (tokens[8] == "Main" && tokens[9] == "Voltage:")
+                    {
+                        try { record.mainVoltageB = double.Parse(tokens[10]); }
+                        catch { record.mainVoltageB = -99; }
+                    }
+                    else if (tokens[8] == "Battery" && tokens[9] == "Temperature:")
+                    {
+                        try { record.batteryTempB = double.Parse(tokens[10]); }
+                        catch { record.batteryTempB = -99; }
+                    }
+                    else if (tokens[8] == "Module" && tokens[9] == "Temperature:")
+                    {
+                        try { record.moduleTempB = double.Parse(tokens[10]); }
+                        catch { record.moduleTempB = -99; }
+                    }
+                    else if (tokens[8] == "Battery" && tokens[9] == "Voltage:")
+                    {
+                        try { record.batteryVoltageB = double.Parse(tokens[10]); }
+                        catch { record.batteryVoltageB = -99; }
+                    }
+                    else if (tokens[8] == "Charger" && tokens[9] == "Voltage:")
+                    {
+                        try { record.chargerVoltageB = double.Parse(tokens[10]); }
+                        catch { record.chargerVoltageB = -99; }
+                    }
                 }
             }
             Records.Add(record);
