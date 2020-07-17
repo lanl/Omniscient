@@ -1,5 +1,15 @@
 Omniscient Change Log
 
+##  0.9.3
+2020-07-17
+
+### New Features
+* More intuitive Events sizing after resizing the Main Window
+
+### Bug Fixes
+* Read WUCS files with non-integer values without crashing
+
+
 ##  0.9.2
 2020-07-13
 
