@@ -45,17 +45,19 @@ namespace Omniscient
     class WUCSInstrument : Instrument
     {
         private const string FILE_EXTENSION = "txt";
-        private const int NUM_CHANNELS = 10;
-        private const int MAIN_VOLTAGE_A = 0;
-        private const int BATTERY_TEMP_A = 1;
-        private const int MODULE_TEMP_A = 2;
-        private const int BATTERY_VOLTAGE_A = 3;
-        private const int CHARGER_VOLTAGE_A = 4;
-        private const int MAIN_VOLTAGE_B = 5;
-        private const int BATTERY_TEMP_B = 6;
-        private const int MODULE_TEMP_B = 7;
-        private const int BATTERY_VOLTAGE_B = 8;
-        private const int CHARGER_VOLTAGE_B = 9;
+        private const int NUM_CHANNELS = 12;
+        private const int STATUS_A = 0;
+        private const int MAIN_VOLTAGE_A = 1;
+        private const int BATTERY_TEMP_A = 2;
+        private const int MODULE_TEMP_A = 3;
+        private const int BATTERY_VOLTAGE_A = 4;
+        private const int CHARGER_VOLTAGE_A = 5;
+        private const int STATUS_B = 6;
+        private const int MAIN_VOLTAGE_B = 7;
+        private const int BATTERY_TEMP_B = 8;
+        private const int MODULE_TEMP_B = 9;
+        private const int BATTERY_VOLTAGE_B = 10;
+        private const int CHARGER_VOLTAGE_B = 11;
 
         WUCSParser parser;
 
@@ -69,11 +71,13 @@ namespace Omniscient
 
             numChannels = NUM_CHANNELS;
             channels = new Channel[numChannels];
+            channels[STATUS_A] = new Channel(Name + "-Status_A", this, Channel.ChannelType.COUNT_RATE, 0);
             channels[MAIN_VOLTAGE_A] = new Channel(Name + "-Main_V_A", this, Channel.ChannelType.COUNT_RATE, 0);
             channels[BATTERY_TEMP_A] = new Channel(Name + "-Battery_Temp_A", this, Channel.ChannelType.COUNT_RATE, 0);
             channels[MODULE_TEMP_A] = new Channel(Name + "-Module_Temp_A", this, Channel.ChannelType.COUNT_RATE, 0);
             channels[BATTERY_VOLTAGE_A] = new Channel(Name + "-Battery_V_A", this, Channel.ChannelType.COUNT_RATE, 0);
             channels[CHARGER_VOLTAGE_A] = new Channel(Name + "-Charger_V_A", this, Channel.ChannelType.COUNT_RATE, 0);
+            channels[STATUS_B] = new Channel(Name + "-Status_B", this, Channel.ChannelType.COUNT_RATE, 0);
             channels[MAIN_VOLTAGE_B] = new Channel(Name + "-Main_V_B", this, Channel.ChannelType.COUNT_RATE, 0);
             channels[BATTERY_TEMP_B] = new Channel(Name + "-Battery_Temp_B", this, Channel.ChannelType.COUNT_RATE, 0);
             channels[MODULE_TEMP_B] = new Channel(Name + "-Module_Temp_B", this, Channel.ChannelType.COUNT_RATE, 0);
@@ -102,11 +106,13 @@ namespace Omniscient
             for (int r = 0; r < numRecords; ++r)
             {
                 time = records[r].time;
+                channels[STATUS_A].AddDataPoint(compartment, time, records[r].statusA, dataFile);
                 channels[MAIN_VOLTAGE_A].AddDataPoint(compartment, time, records[r].mainVoltageA, dataFile);
                 channels[BATTERY_TEMP_A].AddDataPoint(compartment, time, records[r].batteryTempA, dataFile);
                 channels[MODULE_TEMP_A].AddDataPoint(compartment, time, records[r].moduleTempA, dataFile);
                 channels[BATTERY_VOLTAGE_A].AddDataPoint(compartment, time, records[r].batteryVoltageA, dataFile);
                 channels[CHARGER_VOLTAGE_A].AddDataPoint(compartment, time, records[r].chargerVoltageA, dataFile);
+                channels[STATUS_B].AddDataPoint(compartment, time, records[r].statusB, dataFile);
                 channels[MAIN_VOLTAGE_B].AddDataPoint(compartment, time, records[r].mainVoltageB, dataFile);
                 channels[BATTERY_TEMP_B].AddDataPoint(compartment, time, records[r].batteryTempB, dataFile);
                 channels[MODULE_TEMP_B].AddDataPoint(compartment, time, records[r].moduleTempB, dataFile);
