@@ -106,6 +106,12 @@
     <Compile Include="Controls\ResponsiveTreeView.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\XYPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\XYPanel.Designer.cs">
+      <DependentUpon>XYPanel.cs</DependentUpon>
+    </Compile>
     <Compile Include="DataDecimator.cs" />
     <Compile Include="DateTimeRange.cs" />
     <Compile Include="DeclarationEditor.cs">
@@ -293,6 +299,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\ParameterPanel.resx">
       <DependentUpon>ParameterPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\XYPanel.resx">
+      <DependentUpon>XYPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="DeclarationEditor.resx">
       <DependentUpon>DeclarationEditor.cs</DependentUpon>

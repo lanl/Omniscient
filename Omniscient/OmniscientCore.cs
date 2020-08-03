@@ -29,6 +29,8 @@ namespace Omniscient
         public static readonly string VERSION = "0.9.3i";
 
         public event EventHandler ViewChanged;
+        public event EventHandler<InstrumentEventArgs> InstrumentActivated;
+        public event EventHandler<InstrumentEventArgs> InstrumentDeactivated;
 
         CacheManager Cache;
 
@@ -142,6 +144,8 @@ namespace Omniscient
             Cache.AddInstrumentCache(instrument.Cache);
             UpdateGlobalStartEnd();
             instrument.LoadData(ChannelCompartment.View, _viewStart, _viewEnd);
+            // Invoke event handlers (i.e. update UI)
+            InstrumentActivated?.Invoke(this, new InstrumentEventArgs() { Instrument = instrument });
         }
 
         public void DeactivateInstrument(Instrument instrument)
@@ -150,6 +154,7 @@ namespace Omniscient
             instrument.ClearData(ChannelCompartment.View);
             Cache.RemoveInstrumentCache(instrument.Cache);
             UpdateGlobalStartEnd();
+            InstrumentDeactivated?.Invoke(this, new InstrumentEventArgs() { Instrument = instrument });
         }
 
         /// <summary>
@@ -444,5 +449,10 @@ namespace Omniscient
     public class DatesOutOfOrderException : Exception
     {
 
+    }
+
+    public class InstrumentEventArgs : EventArgs
+    {
+        public Instrument Instrument { get; set; }
     }
 }

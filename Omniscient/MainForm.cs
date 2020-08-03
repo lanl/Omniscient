@@ -2551,16 +2551,17 @@ namespace Omniscient
         double relativeSplitterDistance = 0.75;
         private void CollapseBottomButton_Click(object sender, EventArgs e)
         {
-            if (BottomPanel.Visible)
+            if (!bottomPanelCollapsed)
                 CollapseBottomPanel();
             else
                 ExpandBottomPanel();
         }
 
+        bool bottomPanelCollapsed = false;
         private void CollapseBottomPanel()
         {
             relativeSplitterDistance = (double)CenterSplitContainer.SplitterDistance/CenterSplitContainer.Height;
-            BottomPanel.Visible = false;
+            bottomPanelCollapsed = true;
             CenterSplitContainer.SplitterDistance = CenterSplitContainer.Height - CollapseBottomButton.Height;
             CenterSplitContainer.IsSplitterFixed = true;
             CollapseBottomButton.Text = "^";
@@ -2569,7 +2570,7 @@ namespace Omniscient
 
         private void ExpandBottomPanel()
         {
-            BottomPanel.Visible = true;
+            bottomPanelCollapsed = false;
             int newSplitterDistance = (int)(relativeSplitterDistance * CenterSplitContainer.Height);
             if (newSplitterDistance < 0) newSplitterDistance = 0;
             CenterSplitContainer.SplitterDistance = newSplitterDistance;
@@ -2581,11 +2582,11 @@ namespace Omniscient
         private void AllPanelsButton_Click(object sender, EventArgs e)
         {
             userSettings.SuspendSaving = true;
-            if (RightRightPanel.Visible || LeftLeftPanel.Visible || BottomPanel.Visible )
+            if (RightRightPanel.Visible || LeftLeftPanel.Visible || !bottomPanelCollapsed )
             {
                 if (RightRightPanel.Visible) CollapseRightPanel();
                 if (LeftLeftPanel.Visible) CollapseLeftPanel();
-                if (BottomPanel.Visible) CollapseBottomPanel();
+                if (!bottomPanelCollapsed) CollapseBottomPanel();
             }
             else
             {
@@ -2690,6 +2691,59 @@ namespace Omniscient
             node.Remove();
             persister.Delete();
             Core.SiteManager.Save();
+        }
+
+        private void newXYChartToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            XYPanel xyPanel = new XYPanel(Core);
+            xyPanel.SuspendLayout();
+            xyPanel.Dock = DockStyle.Fill;
+
+            TabPage tabPage = new TabPage("XY");
+            tabPage.SuspendLayout();
+            tabPage.Controls.Add(xyPanel);
+            tabPage.Tag = xyPanel;
+
+            BottomTabControl.TabPages.Add(tabPage);
+            tabPage.ResumeLayout();
+            xyPanel.ResumeLayout();
+        }
+
+        private void BottomTabControl_MouseClick(object sender, MouseEventArgs e)
+        {
+            // Right click only
+            if (e.Button != MouseButtons.Right) return;
+
+            TabPage tabPage = null;
+
+            for (int t = 1; t < BottomTabControl.TabCount; t++)
+            {
+                if (BottomTabControl.GetTabRect(t).Contains(e.Location))
+                {
+                    tabPage = BottomTabControl.TabPages[t];
+                    break;
+                }
+            }
+            if (tabPage is null) return;
+
+            ContextMenu menu = new ContextMenu();
+            MenuItem menuItem = new MenuItem("Close XY Chart", CloseXYChartMenuItem_Click)
+            {
+                Tag = tabPage
+            };
+            menu.MenuItems.Add(menuItem);
+
+            menu.Show(BottomTabControl, new Point(e.X, e.Y));
+        }
+
+        private void CloseXYChartMenuItem_Click(object sender, EventArgs e)
+        {
+            TabPage tabPage = (sender as MenuItem).Tag as TabPage;
+            XYPanel xyPanel = tabPage.Tag as XYPanel;
+            xyPanel.Unsubscribe();
+            BottomTabControl.TabPages.Remove(tabPage);
+            tabPage.Dispose();
+            xyPanel.Dispose();
         }
     }
 }
