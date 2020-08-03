@@ -358,6 +358,9 @@
     <EmbeddedResource Include="SiteManagerForm\SiteManagerForm.resx">
       <DependentUpon>SiteManagerForm.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="ChangeLog.md">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
