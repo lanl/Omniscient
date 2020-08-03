@@ -250,10 +250,10 @@ namespace Omniscient
                             cycle.Scaler2 = 0;
                             break;
                         default:
-                            cycle.RPlusA = selectedChannels[1].GetValues(ChannelCompartment.Process)[i];
-                            cycle.A = selectedChannels[2].GetValues(ChannelCompartment.Process)[i];
-                            cycle.Scaler1 = selectedChannels[3].GetValues(ChannelCompartment.Process)[i];
-                            cycle.Scaler2 = selectedChannels[4].GetValues(ChannelCompartment.Process)[i];
+                            cycle.RPlusA = selectedChannels[3].GetValues(ChannelCompartment.Process)[i];
+                            cycle.A = selectedChannels[4].GetValues(ChannelCompartment.Process)[i];
+                            cycle.Scaler1 = selectedChannels[1].GetValues(ChannelCompartment.Process)[i];
+                            cycle.Scaler2 = selectedChannels[2].GetValues(ChannelCompartment.Process)[i];
                             break;
                     }
                     writer.Cycles.Add(cycle);
