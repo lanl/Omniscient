@@ -79,14 +79,14 @@ namespace Omniscient
                 {
                     for (int i = 0; i < TimeStamps.Count; i++)
                     {
-                        channel.AddDataPoint(compartment, TimeStamps[i], Values[i], null);
+                        channel.AddDataPoint(compartment, TimeStamps[i], Values[i], Files[i]);
                     }
                 }
                 else
                 {
                     for (int i = 0; i < TimeStamps.Count; i++)
                     {
-                        channel.AddDataPoint(compartment, TimeStamps[i], Values[i], Durations[i], null);
+                        channel.AddDataPoint(compartment, TimeStamps[i], Values[i], Durations[i], Files[i]);
                     }
                 }
             }
