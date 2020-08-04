@@ -178,10 +178,13 @@ namespace Omniscient
 
             ChartArea chartArea = XYChart.ChartAreas[0];
 
-            chartArea.AxisX.Minimum = chartMinX;
-            chartArea.AxisX.Maximum = chartMaxX;
-            chartArea.AxisY.Minimum = chartMinY;
-            chartArea.AxisY.Maximum = chartMaxY;
+            Tuple<double, double> roundedX = ChartingUtil.AutoRoundRange(chartMinX, chartMaxX, false);
+            Tuple<double, double> roundedY = ChartingUtil.AutoRoundRange(chartMinY, chartMaxY, false);
+
+            chartArea.AxisX.Minimum = roundedX.Item1;
+            chartArea.AxisX.Maximum = roundedX.Item2;
+            chartArea.AxisY.Minimum = roundedY.Item1;
+            chartArea.AxisY.Maximum = roundedY.Item2;
 
             chartArea.AxisX.Title = XChannel.Name;
             chartArea.AxisY.Title = YChannel.Name;

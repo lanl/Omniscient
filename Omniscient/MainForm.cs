@@ -661,37 +661,12 @@ namespace Omniscient
 
         private void AutoScaleYAxes(int chartNum)
         {
-            Tuple<double, double> result = AutoRoundRange(chartMinPointValue[chartNum],
+            Tuple<double, double> result = ChartingUtil.AutoRoundRange(chartMinPointValue[chartNum],
                 chartMaxPointValue[chartNum],
                 logScale[chartNum]);
 
             chartMinY[chartNum] = result.Item1;
             chartMaxY[chartNum] = result.Item2;
-        }
-
-        private Tuple<double,double> AutoRoundRange(double min, double max, bool log)
-        {
-            double maxOrderOfMagnitude = Math.Pow(10, Math.Floor(Math.Log10(max)));
-            double firstDigit = Math.Floor(max / maxOrderOfMagnitude);
-            double maxMinRatio = max / min;
-
-            if (log)
-            {
-                double minOrderOfMagnitude = Math.Pow(10, Math.Floor(Math.Log10(min)));
-                return new Tuple<double, double>(minOrderOfMagnitude, maxOrderOfMagnitude * 10);
-            }
-            else if (maxMinRatio > 2)
-            {
-                return new Tuple<double, double>(0, (firstDigit + 1) * maxOrderOfMagnitude);
-            }
-            else
-            {
-                double minOrderOfMagnitude = Math.Pow(10, Math.Floor(Math.Log10(min)));
-                double maxMinDifference = max - min;
-                double diffOoM = Math.Pow(10, Math.Floor(Math.Log10(maxMinDifference)));
-
-                return new Tuple<double, double>(Math.Floor(min / (diffOoM)) * diffOoM, Math.Ceiling(max / (diffOoM)) * diffOoM);
-            }
         }
 
         private void DrawSections()
@@ -2036,7 +2011,7 @@ namespace Omniscient
                 }
                 if(!controlPressed)
                 { 
-                    Tuple<double, double> rounded = AutoRoundRange(newMin, newMax, logScale[chartNum]);
+                    Tuple<double, double> rounded = ChartingUtil.AutoRoundRange(newMin, newMax, logScale[chartNum]);
                     newMin = rounded.Item1;
                     newMax = rounded.Item2;
                 }
