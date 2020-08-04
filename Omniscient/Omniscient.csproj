@@ -113,6 +113,7 @@
     <Compile Include="Controls\XYPanel.Designer.cs">
       <DependentUpon>XYPanel.cs</DependentUpon>
     </Compile>
+    <Compile Include="CurveFitter.cs" />
     <Compile Include="DataDecimator.cs" />
     <Compile Include="DateTimeRange.cs" />
     <Compile Include="DeclarationEditor.cs">

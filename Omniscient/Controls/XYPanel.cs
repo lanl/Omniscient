@@ -13,6 +13,7 @@ namespace Omniscient
 {
     public partial class XYPanel : UserControl
     {
+        private enum Fit_Type { NONE, LINEAR};
         OmniscientCore Core;
 
         private Instrument _selectedInstrument;
@@ -29,18 +30,29 @@ namespace Omniscient
         double chartMinY;
         double chartMaxY;
 
+        private Fit_Type FitType;
+
         public XYPanel(OmniscientCore core)
         {
             Core = core;
             SelectedInstrument = null;
             XChannel = null;
             YChannel = null;
+            FitType = Fit_Type.NONE;
 
             InitializeComponent();
             UpdateControls();
+            PopulateFitTypeCombo();
             core.ViewChanged += Core_ViewChanged;
             core.InstrumentActivated += Core_InstrumentActivated;
             core.InstrumentDeactivated += Core_InstrumentDeactivated;
+        }
+
+        private void PopulateFitTypeCombo()
+        {
+            string[] types = new string[] { "None", "Linear" };
+            FitTypeComboBox.Items.AddRange(types);
+            FitTypeComboBox.SelectedItem = "None";
         }
 
         private void Core_InstrumentDeactivated(object sender, InstrumentEventArgs e)
@@ -120,6 +132,7 @@ namespace Omniscient
         {
             XYChart.Series.Clear();
             XYChart.Annotations.Clear();
+            RSquaredTextBox.Text = "";
 
             // Check for complete settings
             if (XChannel is null || YChannel is null)
@@ -149,10 +162,12 @@ namespace Omniscient
 
             DateTime start = Core.ViewStart;
             DateTime end = Core.ViewEnd;
-            Series series = new Series();
+            Series series = new Series("Data");
             series.Points.SuspendUpdates();
             series.ChartType = SeriesChartType.Point;
             double x, y;
+            List<double> X = new List<double>();
+            List<double> Y = new List<double>();
             for (int i=0; i<count; ++i)
             {
                 if (dates[i] >= start && dates[i] <=end)
@@ -164,6 +179,8 @@ namespace Omniscient
                     if (x > chartMaxX) chartMaxX = x;
                     if (y < chartMinY) chartMinY = y;
                     if (y > chartMaxY) chartMaxY = y;
+                    X.Add(x);
+                    Y.Add(y);
                 }
             }
             if (series.Points.Count == 0)
@@ -189,10 +206,44 @@ namespace Omniscient
             chartArea.AxisX.Title = XChannel.Name;
             chartArea.AxisY.Title = YChannel.Name;
 
-            XYChart.Legends[0].Enabled = false;
+            FitData(X.ToArray(), Y.ToArray());
+
+            if (XYChart.Series.Count > 1)
+            { 
+                XYChart.Legends[0].Enabled = true;
+            }
+            else
+                XYChart.Legends[0].Enabled = false;
 
             series.Points.ResumeUpdates();
             XYChart.ResumeLayout();
+        }
+
+        private void FitData(double[] x, double[] y)
+        {
+            if (FitType == Fit_Type.NONE) return;
+
+            try // Don't break if fitting fails
+            {
+                CurveFitter curveFitter = new CurveFitter(x, y);
+                if (FitType == Fit_Type.LINEAR && x.Length > 1)
+                {
+                    Tuple<double, double> coefficients = curveFitter.LinearLeastSq();
+                    double m = coefficients.Item1;
+                    double b = coefficients.Item2;
+                    string bSign = (b >= 0) ? " + " : " - ";
+                    Series series = new Series("y = " +
+                        ChartingUtil.FormatDoubleNicely(m) + "x" + bSign +
+                        ChartingUtil.FormatDoubleNicely(Math.Abs(b)));
+                    series.ChartType = SeriesChartType.Line;
+                    series.Points.AddXY(chartMinX, m * chartMinX + b);
+                    series.Points.AddXY(chartMaxX, m * chartMaxX + b);
+                    
+                    XYChart.Series.Add(series);
+                    RSquaredTextBox.Text = ChartingUtil.FormatDoubleNicely(curveFitter.R_Sq);
+                }
+            }
+            catch { }
         }
 
         private void ShowNoData()
@@ -240,6 +291,26 @@ namespace Omniscient
             Core.ViewChanged -= Core_ViewChanged;
             Core.InstrumentActivated -= Core_InstrumentActivated;
             Core.InstrumentDeactivated -= Core_InstrumentDeactivated;
+        }
+
+        private void FitTypeComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Fit_Type selectedType = Fit_Type.NONE;
+            switch (FitTypeComboBox.SelectedItem as string)
+            {
+                case "None":
+                    selectedType = Fit_Type.NONE;
+                    break;
+                case "Linear":
+                    selectedType = Fit_Type.LINEAR;
+                    break;
+            }
+
+            if (FitType != selectedType)
+            {
+                FitType = selectedType;
+                UpdateChart();
+            }
         }
     }
 }

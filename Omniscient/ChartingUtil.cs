@@ -45,6 +45,13 @@ namespace Omniscient
 {
     class ChartingUtil
     {
+        /// <summary>
+        /// Rounds the min and max values to for a pleasant viewing experince
+        /// </summary>
+        /// <param name="min"></param>
+        /// <param name="max"></param>
+        /// <param name="log"></param>
+        /// <returns></returns>
         public static Tuple<double, double> AutoRoundRange(double min, double max, bool log)
         {
             double maxOrderOfMagnitude = Math.Pow(10, Math.Floor(Math.Log10(max)));
@@ -73,6 +80,39 @@ namespace Omniscient
 
                 return new Tuple<double, double>(Math.Floor(min / (diffOoM)) * diffOoM, Math.Ceiling(max / (diffOoM)) * diffOoM);
             }
+        }
+
+        /// <summary>
+        /// Formats a double as a string, nicely
+        /// </summary>
+        /// <param name="d"></param>
+        /// <returns></returns>
+        public static string FormatDoubleNicely(double d, int nChars=7)
+        {
+            if (nChars < 3) throw new ArgumentException("nChars must be at least 3!");
+
+            double smallInt = Math.Pow(10, nChars);
+
+            // Try small integer (within reasonable machine error)
+            if ((d % 1 < double.Epsilon*1e9 && d % 1 > double.Epsilon*-1e9) && 
+                d < smallInt && d > -(smallInt/10))
+            {
+                return ((int)d).ToString();
+            }
+
+            // Try decimal point
+            int iters = nChars - 3;
+            for (int i=1; i<= iters; i++)
+            {
+                if (d < Math.Pow(10, i) && d > Math.Pow(10, i - 1))
+                {
+                    return String.Format("{0:" + new string('0', i) + "." + new string('0', nChars - i - 1) + "}",
+                        d);
+                }
+            }
+
+            // Give up
+            return d.ToString("G" + (nChars-3).ToString());
         }
     }
 }
