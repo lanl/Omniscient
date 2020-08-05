@@ -2670,6 +2670,11 @@ namespace Omniscient
 
         private void newXYChartToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            CreateNewXYChart();
+        }
+
+        private void CreateNewXYChart()
+        {
             XYPanel xyPanel = new XYPanel(Core);
             xyPanel.SuspendLayout();
             xyPanel.Dock = DockStyle.Fill;
@@ -2682,6 +2687,8 @@ namespace Omniscient
             BottomTabControl.TabPages.Add(tabPage);
             tabPage.ResumeLayout();
             xyPanel.ResumeLayout();
+
+            BottomTabControl.SelectedTab = tabPage;
         }
 
         private void BottomTabControl_MouseClick(object sender, MouseEventArgs e)
@@ -2719,6 +2726,23 @@ namespace Omniscient
             BottomTabControl.TabPages.Remove(tabPage);
             tabPage.Dispose();
             xyPanel.Dispose();
+        }
+
+        private void CenterSplitContainer_Panel2_MouseClick(object sender, MouseEventArgs e)
+        {
+            // Right click only
+            if (e.Button != MouseButtons.Right) return;
+
+            ContextMenu menu = new ContextMenu();
+            MenuItem menuItem = new MenuItem("New XY Chart", NewXYChartMenuItem_Click);
+            menu.MenuItems.Add(menuItem);
+
+            menu.Show(CenterSplitContainer.Panel2, new Point(e.X, e.Y));
+        }
+
+        private void NewXYChartMenuItem_Click(object sender, EventArgs e)
+        {
+            CreateNewXYChart();
         }
     }
 }

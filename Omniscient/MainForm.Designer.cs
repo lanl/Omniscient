@@ -44,18 +44,18 @@ namespace Omniscient
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea5 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend5 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea6 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend6 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea7 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend7 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea8 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend8 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series8 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.StripChartControlPanel = new System.Windows.Forms.Panel();
             this.StripChartsPanel = new System.Windows.Forms.Panel();
@@ -74,6 +74,7 @@ namespace Omniscient
             this.launchInspectrumToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.launchInspectaclesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.declarationEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.newXYChartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ChannelsLabelPanel = new System.Windows.Forms.Panel();
@@ -142,6 +143,8 @@ namespace Omniscient
             this.CollapseLeftButton = new System.Windows.Forms.Button();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.CenterSplitContainer = new System.Windows.Forms.SplitContainer();
+            this.BottomTabControl = new System.Windows.Forms.TabControl();
+            this.EventsTabPage = new System.Windows.Forms.TabPage();
             this.BottomPanel = new System.Windows.Forms.Panel();
             this.EventGridView = new System.Windows.Forms.DataGridView();
             this.EventGenerator = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -159,9 +162,6 @@ namespace Omniscient
             this.GenerateEventsButton = new System.Windows.Forms.Button();
             this.CollapseBottomButton = new System.Windows.Forms.Button();
             this.ButtonImageList = new System.Windows.Forms.ImageList(this.components);
-            this.BottomTabControl = new System.Windows.Forms.TabControl();
-            this.EventsTabPage = new System.Windows.Forms.TabPage();
-            this.newXYChartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.StripChartControlPanel.SuspendLayout();
             this.StripChartsPanel.SuspendLayout();
             this.StripChartsLayoutPanel.SuspendLayout();
@@ -193,12 +193,12 @@ namespace Omniscient
             this.CenterSplitContainer.Panel1.SuspendLayout();
             this.CenterSplitContainer.Panel2.SuspendLayout();
             this.CenterSplitContainer.SuspendLayout();
+            this.BottomTabControl.SuspendLayout();
+            this.EventsTabPage.SuspendLayout();
             this.BottomPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.EventGridView)).BeginInit();
             this.EventControlPanel.SuspendLayout();
             this.RightEventControlPanel.SuspendLayout();
-            this.BottomTabControl.SuspendLayout();
-            this.EventsTabPage.SuspendLayout();
             this.SuspendLayout();
             // 
             // StripChartControlPanel
@@ -242,28 +242,28 @@ namespace Omniscient
             // 
             // StripChart0
             // 
-            chartArea5.InnerPlotPosition.Auto = false;
-            chartArea5.InnerPlotPosition.Height = 63.33112F;
-            chartArea5.InnerPlotPosition.Width = 89.25123F;
-            chartArea5.InnerPlotPosition.X = 9.39757F;
-            chartArea5.InnerPlotPosition.Y = 9.49468F;
-            chartArea5.Name = "ChartArea1";
-            chartArea5.Position.Auto = false;
-            chartArea5.Position.Height = 94F;
-            chartArea5.Position.Width = 77.70886F;
-            chartArea5.Position.X = 3F;
-            chartArea5.Position.Y = 3F;
-            this.StripChart0.ChartAreas.Add(chartArea5);
+            chartArea1.InnerPlotPosition.Auto = false;
+            chartArea1.InnerPlotPosition.Height = 63.33112F;
+            chartArea1.InnerPlotPosition.Width = 89.25123F;
+            chartArea1.InnerPlotPosition.X = 9.39757F;
+            chartArea1.InnerPlotPosition.Y = 9.49468F;
+            chartArea1.Name = "ChartArea1";
+            chartArea1.Position.Auto = false;
+            chartArea1.Position.Height = 94F;
+            chartArea1.Position.Width = 77.70886F;
+            chartArea1.Position.X = 3F;
+            chartArea1.Position.Y = 3F;
+            this.StripChart0.ChartAreas.Add(chartArea1);
             this.StripChart0.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend5.Name = "Legend1";
-            this.StripChart0.Legends.Add(legend5);
+            legend1.Name = "Legend1";
+            this.StripChart0.Legends.Add(legend1);
             this.StripChart0.Location = new System.Drawing.Point(5, 5);
             this.StripChart0.Name = "StripChart0";
-            series5.ChartArea = "ChartArea1";
-            series5.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
-            series5.Legend = "Legend1";
-            series5.Name = "Series1";
-            this.StripChart0.Series.Add(series5);
+            series1.ChartArea = "ChartArea1";
+            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            this.StripChart0.Series.Add(series1);
             this.StripChart0.Size = new System.Drawing.Size(631, 95);
             this.StripChart0.TabIndex = 5;
             this.StripChart0.Text = "chart1";
@@ -273,28 +273,28 @@ namespace Omniscient
             // 
             // StripChart3
             // 
-            chartArea6.InnerPlotPosition.Auto = false;
-            chartArea6.InnerPlotPosition.Height = 63.33112F;
-            chartArea6.InnerPlotPosition.Width = 89.25123F;
-            chartArea6.InnerPlotPosition.X = 9.39757F;
-            chartArea6.InnerPlotPosition.Y = 9.49468F;
-            chartArea6.Name = "ChartArea1";
-            chartArea6.Position.Auto = false;
-            chartArea6.Position.Height = 94F;
-            chartArea6.Position.Width = 77.70886F;
-            chartArea6.Position.X = 3F;
-            chartArea6.Position.Y = 3F;
-            this.StripChart3.ChartAreas.Add(chartArea6);
+            chartArea2.InnerPlotPosition.Auto = false;
+            chartArea2.InnerPlotPosition.Height = 63.33112F;
+            chartArea2.InnerPlotPosition.Width = 89.25123F;
+            chartArea2.InnerPlotPosition.X = 9.39757F;
+            chartArea2.InnerPlotPosition.Y = 9.49468F;
+            chartArea2.Name = "ChartArea1";
+            chartArea2.Position.Auto = false;
+            chartArea2.Position.Height = 94F;
+            chartArea2.Position.Width = 77.70886F;
+            chartArea2.Position.X = 3F;
+            chartArea2.Position.Y = 3F;
+            this.StripChart3.ChartAreas.Add(chartArea2);
             this.StripChart3.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend6.Name = "Legend1";
-            this.StripChart3.Legends.Add(legend6);
+            legend2.Name = "Legend1";
+            this.StripChart3.Legends.Add(legend2);
             this.StripChart3.Location = new System.Drawing.Point(5, 314);
             this.StripChart3.Name = "StripChart3";
-            series6.ChartArea = "ChartArea1";
-            series6.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
-            series6.Legend = "Legend1";
-            series6.Name = "Series1";
-            this.StripChart3.Series.Add(series6);
+            series2.ChartArea = "ChartArea1";
+            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series2.Legend = "Legend1";
+            series2.Name = "Series1";
+            this.StripChart3.Series.Add(series2);
             this.StripChart3.Size = new System.Drawing.Size(631, 95);
             this.StripChart3.TabIndex = 6;
             this.StripChart3.Text = "chart1";
@@ -304,28 +304,28 @@ namespace Omniscient
             // 
             // StripChart1
             // 
-            chartArea7.InnerPlotPosition.Auto = false;
-            chartArea7.InnerPlotPosition.Height = 63.33112F;
-            chartArea7.InnerPlotPosition.Width = 89.25123F;
-            chartArea7.InnerPlotPosition.X = 9.39757F;
-            chartArea7.InnerPlotPosition.Y = 9.49468F;
-            chartArea7.Name = "ChartArea1";
-            chartArea7.Position.Auto = false;
-            chartArea7.Position.Height = 94F;
-            chartArea7.Position.Width = 77.70886F;
-            chartArea7.Position.X = 3F;
-            chartArea7.Position.Y = 3F;
-            this.StripChart1.ChartAreas.Add(chartArea7);
+            chartArea3.InnerPlotPosition.Auto = false;
+            chartArea3.InnerPlotPosition.Height = 63.33112F;
+            chartArea3.InnerPlotPosition.Width = 89.25123F;
+            chartArea3.InnerPlotPosition.X = 9.39757F;
+            chartArea3.InnerPlotPosition.Y = 9.49468F;
+            chartArea3.Name = "ChartArea1";
+            chartArea3.Position.Auto = false;
+            chartArea3.Position.Height = 94F;
+            chartArea3.Position.Width = 77.70886F;
+            chartArea3.Position.X = 3F;
+            chartArea3.Position.Y = 3F;
+            this.StripChart1.ChartAreas.Add(chartArea3);
             this.StripChart1.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend7.Name = "Legend1";
-            this.StripChart1.Legends.Add(legend7);
+            legend3.Name = "Legend1";
+            this.StripChart1.Legends.Add(legend3);
             this.StripChart1.Location = new System.Drawing.Point(5, 108);
             this.StripChart1.Name = "StripChart1";
-            series7.ChartArea = "ChartArea1";
-            series7.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
-            series7.Legend = "Legend1";
-            series7.Name = "Series1";
-            this.StripChart1.Series.Add(series7);
+            series3.ChartArea = "ChartArea1";
+            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series3.Legend = "Legend1";
+            series3.Name = "Series1";
+            this.StripChart1.Series.Add(series3);
             this.StripChart1.Size = new System.Drawing.Size(631, 95);
             this.StripChart1.TabIndex = 7;
             this.StripChart1.Text = "chart2";
@@ -335,28 +335,28 @@ namespace Omniscient
             // 
             // StripChart2
             // 
-            chartArea8.InnerPlotPosition.Auto = false;
-            chartArea8.InnerPlotPosition.Height = 63.33112F;
-            chartArea8.InnerPlotPosition.Width = 89.25123F;
-            chartArea8.InnerPlotPosition.X = 9.39757F;
-            chartArea8.InnerPlotPosition.Y = 9.49468F;
-            chartArea8.Name = "ChartArea1";
-            chartArea8.Position.Auto = false;
-            chartArea8.Position.Height = 94F;
-            chartArea8.Position.Width = 77.70886F;
-            chartArea8.Position.X = 3F;
-            chartArea8.Position.Y = 3F;
-            this.StripChart2.ChartAreas.Add(chartArea8);
+            chartArea4.InnerPlotPosition.Auto = false;
+            chartArea4.InnerPlotPosition.Height = 63.33112F;
+            chartArea4.InnerPlotPosition.Width = 89.25123F;
+            chartArea4.InnerPlotPosition.X = 9.39757F;
+            chartArea4.InnerPlotPosition.Y = 9.49468F;
+            chartArea4.Name = "ChartArea1";
+            chartArea4.Position.Auto = false;
+            chartArea4.Position.Height = 94F;
+            chartArea4.Position.Width = 77.70886F;
+            chartArea4.Position.X = 3F;
+            chartArea4.Position.Y = 3F;
+            this.StripChart2.ChartAreas.Add(chartArea4);
             this.StripChart2.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend8.Name = "Legend1";
-            this.StripChart2.Legends.Add(legend8);
+            legend4.Name = "Legend1";
+            this.StripChart2.Legends.Add(legend4);
             this.StripChart2.Location = new System.Drawing.Point(5, 211);
             this.StripChart2.Name = "StripChart2";
-            series8.ChartArea = "ChartArea1";
-            series8.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
-            series8.Legend = "Legend1";
-            series8.Name = "Series1";
-            this.StripChart2.Series.Add(series8);
+            series4.ChartArea = "ChartArea1";
+            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series4.Legend = "Legend1";
+            series4.Name = "Series1";
+            this.StripChart2.Series.Add(series4);
             this.StripChart2.Size = new System.Drawing.Size(631, 95);
             this.StripChart2.TabIndex = 8;
             this.StripChart2.Text = "chart3";
@@ -397,7 +397,7 @@ namespace Omniscient
             // exportToolStripMenuItem
             // 
             this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
-            this.exportToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exportToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
             this.exportToolStripMenuItem.Text = "Export Data";
             this.exportToolStripMenuItem.Click += new System.EventHandler(this.exportToolStripMenuItem_Click);
             // 
@@ -448,6 +448,13 @@ namespace Omniscient
             this.declarationEditorToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.declarationEditorToolStripMenuItem.Text = "Declaration Editor";
             this.declarationEditorToolStripMenuItem.Click += new System.EventHandler(this.declarationEditorToolStripMenuItem_Click);
+            // 
+            // newXYChartToolStripMenuItem
+            // 
+            this.newXYChartToolStripMenuItem.Name = "newXYChartToolStripMenuItem";
+            this.newXYChartToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.newXYChartToolStripMenuItem.Text = "New XY Chart";
+            this.newXYChartToolStripMenuItem.Click += new System.EventHandler(this.newXYChartToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
@@ -1166,10 +1173,33 @@ namespace Omniscient
             // 
             this.CenterSplitContainer.Panel2.Controls.Add(this.BottomTabControl);
             this.CenterSplitContainer.Panel2.Controls.Add(this.CollapseBottomButton);
+            this.CenterSplitContainer.Panel2.MouseClick += new System.Windows.Forms.MouseEventHandler(this.CenterSplitContainer_Panel2_MouseClick);
             this.CenterSplitContainer.Size = new System.Drawing.Size(645, 664);
             this.CenterSplitContainer.SplitterDistance = 435;
             this.CenterSplitContainer.SplitterWidth = 5;
             this.CenterSplitContainer.TabIndex = 9;
+            // 
+            // BottomTabControl
+            // 
+            this.BottomTabControl.Controls.Add(this.EventsTabPage);
+            this.BottomTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.BottomTabControl.Location = new System.Drawing.Point(0, 20);
+            this.BottomTabControl.Name = "BottomTabControl";
+            this.BottomTabControl.SelectedIndex = 0;
+            this.BottomTabControl.Size = new System.Drawing.Size(641, 200);
+            this.BottomTabControl.TabIndex = 11;
+            this.BottomTabControl.MouseClick += new System.Windows.Forms.MouseEventHandler(this.BottomTabControl_MouseClick);
+            // 
+            // EventsTabPage
+            // 
+            this.EventsTabPage.Controls.Add(this.BottomPanel);
+            this.EventsTabPage.Location = new System.Drawing.Point(4, 22);
+            this.EventsTabPage.Name = "EventsTabPage";
+            this.EventsTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.EventsTabPage.Size = new System.Drawing.Size(633, 174);
+            this.EventsTabPage.TabIndex = 0;
+            this.EventsTabPage.Text = "Events";
+            this.EventsTabPage.UseVisualStyleBackColor = true;
             // 
             // BottomPanel
             // 
@@ -1336,35 +1366,6 @@ namespace Omniscient
             this.ButtonImageList.Images.SetKeyName(2, "Plus");
             this.ButtonImageList.Images.SetKeyName(3, "Delete");
             // 
-            // BottomTabControl
-            // 
-            this.BottomTabControl.Controls.Add(this.EventsTabPage);
-            this.BottomTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.BottomTabControl.Location = new System.Drawing.Point(0, 20);
-            this.BottomTabControl.Name = "BottomTabControl";
-            this.BottomTabControl.SelectedIndex = 0;
-            this.BottomTabControl.Size = new System.Drawing.Size(641, 200);
-            this.BottomTabControl.TabIndex = 11;
-            this.BottomTabControl.MouseClick += new System.Windows.Forms.MouseEventHandler(this.BottomTabControl_MouseClick);
-            // 
-            // EventsTabPage
-            // 
-            this.EventsTabPage.Controls.Add(this.BottomPanel);
-            this.EventsTabPage.Location = new System.Drawing.Point(4, 22);
-            this.EventsTabPage.Name = "EventsTabPage";
-            this.EventsTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.EventsTabPage.Size = new System.Drawing.Size(633, 174);
-            this.EventsTabPage.TabIndex = 0;
-            this.EventsTabPage.Text = "Events";
-            this.EventsTabPage.UseVisualStyleBackColor = true;
-            // 
-            // newXYChartToolStripMenuItem
-            // 
-            this.newXYChartToolStripMenuItem.Name = "newXYChartToolStripMenuItem";
-            this.newXYChartToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.newXYChartToolStripMenuItem.Text = "New XY Chart";
-            this.newXYChartToolStripMenuItem.Click += new System.EventHandler(this.newXYChartToolStripMenuItem_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1428,14 +1429,14 @@ namespace Omniscient
             this.CenterSplitContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.CenterSplitContainer)).EndInit();
             this.CenterSplitContainer.ResumeLayout(false);
+            this.BottomTabControl.ResumeLayout(false);
+            this.EventsTabPage.ResumeLayout(false);
             this.BottomPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.EventGridView)).EndInit();
             this.EventControlPanel.ResumeLayout(false);
             this.EventControlPanel.PerformLayout();
             this.RightEventControlPanel.ResumeLayout(false);
             this.RightEventControlPanel.PerformLayout();
-            this.BottomTabControl.ResumeLayout(false);
-            this.EventsTabPage.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
