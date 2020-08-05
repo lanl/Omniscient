@@ -1,4 +1,41 @@
-﻿using System;
+﻿/*
+This source code is Free Open Source Software. It is provided
+with NO WARRANTY expressed or implied to the extent permitted by law.
+
+This source code is distributed under the New BSD license:
+
+================================================================================
+
+   Copyright (c) 2020, International Atomic Energy Agency (IAEA), IAEA.org
+
+   All rights reserved.
+
+   Redistribution and use in source and binary forms, with or without
+   modification, are permitted provided that the following conditions are met:
+
+    * Redistributions of source code must retain the above copyright notice,
+      this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright notice,
+      this list of conditions and the following disclaimer in the documentation
+      and/or other materials provided with the distribution.
+    * Neither the name of IAEA nor the names of its contributors
+      may be used to endorse or promote products derived from this software
+      without specific prior written permission.
+
+   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+   "AS IS"AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+   LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+   A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+   CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+   EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+   PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+   PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+   LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+   NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+   SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
@@ -13,7 +50,7 @@ namespace Omniscient
 {
     public partial class XYPanel : UserControl
     {
-        private enum Fit_Type { NONE, LINEAR};
+        private enum Fit_Type { NONE, PROPORTIONAL, LINEAR, POWER_LAW, EXPONENTIAL, LOG};
         OmniscientCore Core;
 
         private Instrument _selectedInstrument;
@@ -50,7 +87,7 @@ namespace Omniscient
 
         private void PopulateFitTypeCombo()
         {
-            string[] types = new string[] { "None", "Linear" };
+            string[] types = new string[] { "None", "Proportional", "Linear", "Power Law", "Exponential", "Log" };
             FitTypeComboBox.Items.AddRange(types);
             FitTypeComboBox.SelectedItem = "None";
         }
@@ -221,29 +258,138 @@ namespace Omniscient
 
         private void FitData(double[] x, double[] y)
         {
-            if (FitType == Fit_Type.NONE) return;
+            if (FitType == Fit_Type.NONE || x.Length < 2) return;
 
             try // Don't break if fitting fails
             {
-                CurveFitter curveFitter = new CurveFitter(x, y);
-                if (FitType == Fit_Type.LINEAR && x.Length > 1)
+                switch(FitType)
                 {
-                    Tuple<double, double> coefficients = curveFitter.LinearLeastSq();
-                    double m = coefficients.Item1;
-                    double b = coefficients.Item2;
-                    string bSign = (b >= 0) ? " + " : " - ";
-                    Series series = new Series("y = " +
-                        ChartingUtil.FormatDoubleNicely(m) + "x" + bSign +
-                        ChartingUtil.FormatDoubleNicely(Math.Abs(b)));
-                    series.ChartType = SeriesChartType.Line;
-                    series.Points.AddXY(chartMinX, m * chartMinX + b);
-                    series.Points.AddXY(chartMaxX, m * chartMaxX + b);
-                    
-                    XYChart.Series.Add(series);
-                    RSquaredTextBox.Text = ChartingUtil.FormatDoubleNicely(curveFitter.R_Sq);
+                    case Fit_Type.PROPORTIONAL:
+                        ProportionalFit(x, y);
+                        break;
+                    case Fit_Type.LINEAR:
+                        LinearFit(x, y);
+                        break;
+                    case Fit_Type.POWER_LAW:
+                        PowerFit(x, y);
+                        break;
+                    case Fit_Type.EXPONENTIAL:
+                        ExponentialFit(x, y);
+                        break;
+                    case Fit_Type.LOG:
+                        LogFit(x, y);
+                        break;
                 }
             }
             catch { }
+        }
+
+        private void ProportionalFit(double[] x, double[] y)
+        {
+            CurveFitter curveFitter = new CurveFitter(x, y);
+            double c = curveFitter.ProportionalLeastSq();
+            Series series = new Series("y = " +
+                ChartingUtil.FormatDoubleNicely(c) + "x");
+            series.ChartType = SeriesChartType.Line;
+            series.Points.AddXY(chartMinX, c * chartMinX);
+            series.Points.AddXY(chartMaxX, c * chartMaxX);
+
+            XYChart.Series.Add(series);
+            RSquaredTextBox.Text = ChartingUtil.FormatDoubleNicely(curveFitter.R_Sq);
+        }
+
+        private void LinearFit(double[] x, double[] y)
+        {
+            CurveFitter curveFitter = new CurveFitter(x, y);
+            Tuple<double, double> coefficients = curveFitter.LinearLeastSq();
+            double m = coefficients.Item1;
+            double b = coefficients.Item2;
+            string bSign = (b >= 0) ? " + " : " - ";
+            Series series = new Series("y = " +
+                ChartingUtil.FormatDoubleNicely(m) + "x" + bSign +
+                ChartingUtil.FormatDoubleNicely(Math.Abs(b)));
+            series.ChartType = SeriesChartType.Line;
+            series.Points.AddXY(chartMinX, m * chartMinX + b);
+            series.Points.AddXY(chartMaxX, m * chartMaxX + b);
+
+            XYChart.Series.Add(series);
+            RSquaredTextBox.Text = ChartingUtil.FormatDoubleNicely(curveFitter.R_Sq);
+        }
+
+        private void PowerFit(double[] x, double[] y)
+        {
+            const int N_FIT_POINTS = 400;
+
+            CurveFitter curveFitter = new CurveFitter(x, y);
+            Tuple<double, double> coefficients = curveFitter.PowerLawLeastSq();
+            double a = coefficients.Item1;
+            double b = coefficients.Item2;
+            Series series = new Series("y = " +
+                ChartingUtil.FormatDoubleNicely(a) + "x^(" +
+                ChartingUtil.FormatDoubleNicely(b) + ")");
+            series.ChartType = SeriesChartType.Line;
+
+            double delta = (chartMaxX - chartMinX) / N_FIT_POINTS;
+            double fitx = chartMinX;
+            for (int i=0; i< N_FIT_POINTS; i++)
+            {
+                series.Points.AddXY(fitx, a * Math.Pow(fitx, b));
+                fitx += delta;
+            }
+
+            XYChart.Series.Add(series);
+            RSquaredTextBox.Text = ChartingUtil.FormatDoubleNicely(curveFitter.R_Sq);
+        }
+
+        private void ExponentialFit(double[] x, double[] y)
+        {
+            const int N_FIT_POINTS = 400;
+
+            CurveFitter curveFitter = new CurveFitter(x, y);
+            Tuple<double, double> coefficients = curveFitter.ExponentialLeastSq();
+            double a = coefficients.Item1;
+            double b = coefficients.Item2;
+            Series series = new Series("y = " +
+                ChartingUtil.FormatDoubleNicely(a) + "exp(" +
+                ChartingUtil.FormatDoubleNicely(b) + "x)");
+            series.ChartType = SeriesChartType.Line;
+
+            double delta = (chartMaxX - chartMinX) / N_FIT_POINTS;
+            double fitx = chartMinX;
+            for (int i = 0; i < N_FIT_POINTS; i++)
+            {
+                series.Points.AddXY(fitx, a * Math.Exp(b*fitx));
+                fitx += delta;
+            }
+
+            XYChart.Series.Add(series);
+            RSquaredTextBox.Text = ChartingUtil.FormatDoubleNicely(curveFitter.R_Sq);
+        }
+
+        private void LogFit(double[] x, double[] y)
+        {
+            const int N_FIT_POINTS = 400;
+
+            CurveFitter curveFitter = new CurveFitter(x, y);
+            Tuple<double, double> coefficients = curveFitter.LogLeastSq();
+            double a = coefficients.Item1;
+            double b = coefficients.Item2;
+            string bSign = (b >= 0) ? " + " : " - ";
+            Series series = new Series("y = " +
+                ChartingUtil.FormatDoubleNicely(a) + bSign +
+                ChartingUtil.FormatDoubleNicely(Math.Abs(b)) + "ln(x)");
+            series.ChartType = SeriesChartType.Line;
+
+            double delta = (chartMaxX - chartMinX) / N_FIT_POINTS;
+            double fitx = chartMinX;
+            for (int i = 0; i < N_FIT_POINTS; i++)
+            {
+                series.Points.AddXY(fitx, a + b*Math.Log(fitx));
+                fitx += delta;
+            }
+
+            XYChart.Series.Add(series);
+            RSquaredTextBox.Text = ChartingUtil.FormatDoubleNicely(curveFitter.R_Sq);
         }
 
         private void ShowNoData()
@@ -301,8 +447,20 @@ namespace Omniscient
                 case "None":
                     selectedType = Fit_Type.NONE;
                     break;
+                case "Proportional":
+                    selectedType = Fit_Type.PROPORTIONAL;
+                    break;
                 case "Linear":
                     selectedType = Fit_Type.LINEAR;
+                    break;
+                case "Power Law":
+                    selectedType = Fit_Type.POWER_LAW;
+                    break;
+                case "Exponential":
+                    selectedType = Fit_Type.EXPONENTIAL;
+                    break;
+                case "Log":
+                    selectedType = Fit_Type.LOG;
                     break;
             }
 
