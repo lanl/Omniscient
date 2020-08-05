@@ -61,6 +61,17 @@ namespace Omniscient
         public Channel XChannel { get; private set; }
         public Channel YChannel { get; private set; }
 
+        private bool _active;
+        /// <summary>
+        /// While false, chart is not updated
+        /// </summary>
+        public bool Active { 
+            get { return _active; } 
+            set { 
+                _active = value;
+                if (_active) UpdateChart();
+            } 
+        }
 
         double chartMinX;
         double chartMaxX;
@@ -71,6 +82,7 @@ namespace Omniscient
 
         public XYPanel(OmniscientCore core)
         {
+            Active = false;
             Core = core;
             SelectedInstrument = null;
             XChannel = null;
@@ -167,6 +179,8 @@ namespace Omniscient
 
         private void UpdateChart()
         {
+            if (!Active) return;
+
             XYChart.Series.Clear();
             XYChart.Annotations.Clear();
             RSquaredTextBox.Text = "";

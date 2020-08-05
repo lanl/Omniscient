@@ -2744,5 +2744,15 @@ namespace Omniscient
         {
             CreateNewXYChart();
         }
+
+        private void BottomTabControl_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            for (int t = 1; t < BottomTabControl.TabCount; t++)
+            {
+                XYPanel xyPanel = BottomTabControl.TabPages[t].Tag as XYPanel;
+                if (BottomTabControl.TabPages[t] == BottomTabControl.SelectedTab) xyPanel.Active = true;
+                else xyPanel.Active = false;
+            }
+        }
     }
 }
