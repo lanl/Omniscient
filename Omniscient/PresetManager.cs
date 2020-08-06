@@ -79,69 +79,77 @@ namespace Omniscient
                 foreach (XmlNode presetNode in doc.DocumentElement.ChildNodes)
                 {
                     Preset newPreset = new Preset(presetNode.Attributes["name"]?.InnerText);
-                    foreach (XmlNode siteNode in presetNode.ChildNodes)
+                    foreach (XmlNode subPresetNode in presetNode.ChildNodes)
                     {
-                        uint siteID = uint.Parse(siteNode.Attributes["ID"].InnerText, System.Globalization.NumberStyles.HexNumber);
-                        Site site;
-                        try { site = siteMan.GetSites().Single(s => s.ID == siteID); }
-                        catch { continue; }
-                        foreach (XmlNode facilityNode in siteNode.ChildNodes)
+                        if (subPresetNode.Name == "Site")
                         {
-                            uint facID = uint.Parse(facilityNode.Attributes["ID"].InnerText, System.Globalization.NumberStyles.HexNumber);
-                            Facility fac;
-                            try { fac = site.GetFacilities().Single(s => s.ID == facID); }
+                            XmlNode siteNode = subPresetNode;
+                            uint siteID = uint.Parse(siteNode.Attributes["ID"].InnerText, System.Globalization.NumberStyles.HexNumber);
+                            Site site;
+                            try { site = siteMan.GetSites().Single(s => s.ID == siteID); }
                             catch { continue; }
-                            foreach (XmlNode systemNode in facilityNode.ChildNodes)
+                            foreach (XmlNode facilityNode in siteNode.ChildNodes)
                             {
-                                uint sysID = uint.Parse(systemNode.Attributes["ID"].InnerText, System.Globalization.NumberStyles.HexNumber);
-                                DetectionSystem sys;
-                                try { sys = fac.GetSystems().Single(s => s.ID == sysID); }
+                                uint facID = uint.Parse(facilityNode.Attributes["ID"].InnerText, System.Globalization.NumberStyles.HexNumber);
+                                Facility fac;
+                                try { fac = site.GetFacilities().Single(s => s.ID == facID); }
                                 catch { continue; }
-                                foreach (XmlNode instrumentNode in systemNode.ChildNodes)
+                                foreach (XmlNode systemNode in facilityNode.ChildNodes)
                                 {
-                                    if (instrumentNode.Name == "Instrument")
+                                    uint sysID = uint.Parse(systemNode.Attributes["ID"].InnerText, System.Globalization.NumberStyles.HexNumber);
+                                    DetectionSystem sys;
+                                    try { sys = fac.GetSystems().Single(s => s.ID == sysID); }
+                                    catch { continue; }
+                                    foreach (XmlNode instrumentNode in systemNode.ChildNodes)
                                     {
-                                        uint instID = uint.Parse(instrumentNode.Attributes["ID"].InnerText, System.Globalization.NumberStyles.HexNumber);
-                                        Instrument inst;
-                                        try { inst = sys.GetInstruments().Single(i => i.ID == instID); }
-                                        catch { continue; }
-                                        if (instrumentNode.Attributes["checked"] != null)
+                                        if (instrumentNode.Name == "Instrument")
                                         {
-                                            if (instrumentNode.Attributes["checked"].InnerText == "true")
+                                            uint instID = uint.Parse(instrumentNode.Attributes["ID"].InnerText, System.Globalization.NumberStyles.HexNumber);
+                                            Instrument inst;
+                                            try { inst = sys.GetInstruments().Single(i => i.ID == instID); }
+                                            catch { continue; }
+                                            if (instrumentNode.Attributes["checked"] != null)
                                             {
-                                                newPreset.GetActiveInstruments().Add(inst);
-                                                foreach (XmlNode chanNode in instrumentNode.ChildNodes)
+                                                if (instrumentNode.Attributes["checked"].InnerText == "true")
                                                 {
-                                                    uint chanID = uint.Parse(chanNode.Attributes["ID"].InnerText, System.Globalization.NumberStyles.HexNumber);
-                                                    try
-                                                    { 
-                                                        Channel chan = inst.GetChannels().Single(c => c.ID == chanID);
-                                                        ChannelDisplayConfig config = ChannelDisplayConfig.FromXML(chanNode["ChannelDisplayConfig"]);
-                                                        newPreset.AddChannel(chan, config);
+                                                    newPreset.GetActiveInstruments().Add(inst);
+                                                    foreach (XmlNode chanNode in instrumentNode.ChildNodes)
+                                                    {
+                                                        uint chanID = uint.Parse(chanNode.Attributes["ID"].InnerText, System.Globalization.NumberStyles.HexNumber);
+                                                        try
+                                                        {
+                                                            Channel chan = inst.GetChannels().Single(c => c.ID == chanID);
+                                                            ChannelDisplayConfig config = ChannelDisplayConfig.FromXML(chanNode["ChannelDisplayConfig"]);
+                                                            newPreset.AddChannel(chan, config);
+                                                        }
+                                                        catch { }
                                                     }
-                                                    catch { }
                                                 }
                                             }
                                         }
-                                    }
-                                    else if (instrumentNode.Name == "EventGenerator")
-                                    {
-                                        XmlNode eventGenNode = instrumentNode;
-                                        try
+                                        else if (instrumentNode.Name == "EventGenerator")
                                         {
-                                            uint egID = uint.Parse(eventGenNode.Attributes["ID"].InnerText, System.Globalization.NumberStyles.HexNumber);
-                                            EventGenerator eventGenerator = sys.GetEventGenerators().Single(e => e.ID == egID);
-                                            if (eventGenNode.Attributes["checked"].InnerText == "true")
+                                            XmlNode eventGenNode = instrumentNode;
+                                            try
                                             {
-                                                newPreset.GetActiveEventGenerators().Add(eventGenerator);
+                                                uint egID = uint.Parse(eventGenNode.Attributes["ID"].InnerText, System.Globalization.NumberStyles.HexNumber);
+                                                EventGenerator eventGenerator = sys.GetEventGenerators().Single(e => e.ID == egID);
+                                                if (eventGenNode.Attributes["checked"].InnerText == "true")
+                                                {
+                                                    newPreset.GetActiveEventGenerators().Add(eventGenerator);
+                                                }
                                             }
+                                            catch { }
                                         }
-                                        catch { }
+                                        else
+                                            return ReturnCode.CORRUPTED_FILE;
                                     }
-                                    else
-                                        return ReturnCode.CORRUPTED_FILE;
                                 }
                             }
+                        }
+                        else if (subPresetNode.Name == "XYChart")
+                        {
+                            newPreset.XYPanels.Add(XYPanelSettings.FromXML(subPresetNode));
                         }
                     }
                     presets.Add(newPreset);
@@ -223,6 +231,10 @@ namespace Omniscient
                         xmlWriter.WriteEndElement();
                     }
                     xmlWriter.WriteEndElement();
+                }
+                foreach (XYPanelSettings xyPanelSettings in preset.XYPanels)
+                {
+                    xyPanelSettings.ToXML(xmlWriter);
                 }
                 xmlWriter.WriteEndElement();
             }

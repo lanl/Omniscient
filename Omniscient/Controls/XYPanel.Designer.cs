@@ -35,23 +35,27 @@
             this.RightPanel = new System.Windows.Forms.Panel();
             this.CollapseRightButton = new System.Windows.Forms.Button();
             this.RightRightPanel = new System.Windows.Forms.Panel();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.YChannelComboBox = new System.Windows.Forms.ComboBox();
-            this.XChannelComboBox = new System.Windows.Forms.ComboBox();
-            this.InstrumentComboBox = new System.Windows.Forms.ComboBox();
-            this.DataSelectPanel = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label5 = new System.Windows.Forms.Label();
+            this.RSquaredTextBox = new System.Windows.Forms.TextBox();
             this.FitTypeComboBox = new System.Windows.Forms.ComboBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.RSquaredTextBox = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
+            this.DataSelectPanel = new System.Windows.Forms.Panel();
+            this.YChannelComboBox = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.InstrumentComboBox = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.XChannelComboBox = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.ChartTitlePanel = new System.Windows.Forms.Panel();
+            this.label6 = new System.Windows.Forms.Label();
+            this.ChartTitleTextBox = new System.Windows.Forms.TextBox();
             ((System.ComponentModel.ISupportInitialize)(this.XYChart)).BeginInit();
             this.RightPanel.SuspendLayout();
             this.RightRightPanel.SuspendLayout();
-            this.DataSelectPanel.SuspendLayout();
             this.panel1.SuspendLayout();
+            this.DataSelectPanel.SuspendLayout();
+            this.ChartTitlePanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // XYChart
@@ -97,82 +101,12 @@
             // 
             this.RightRightPanel.Controls.Add(this.panel1);
             this.RightRightPanel.Controls.Add(this.DataSelectPanel);
+            this.RightRightPanel.Controls.Add(this.ChartTitlePanel);
             this.RightRightPanel.Dock = System.Windows.Forms.DockStyle.Right;
             this.RightRightPanel.Location = new System.Drawing.Point(18, 0);
             this.RightRightPanel.Name = "RightRightPanel";
             this.RightRightPanel.Size = new System.Drawing.Size(220, 767);
             this.RightRightPanel.TabIndex = 2;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(17, 68);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(43, 13);
-            this.label3.TabIndex = 5;
-            this.label3.Text = "Y Data:";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(17, 38);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(43, 13);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "X Data:";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 15);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(59, 13);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "Instrument:";
-            // 
-            // YChannelComboBox
-            // 
-            this.YChannelComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.YChannelComboBox.FormattingEnabled = true;
-            this.YChannelComboBox.Location = new System.Drawing.Point(66, 65);
-            this.YChannelComboBox.Name = "YChannelComboBox";
-            this.YChannelComboBox.Size = new System.Drawing.Size(149, 21);
-            this.YChannelComboBox.TabIndex = 2;
-            this.YChannelComboBox.SelectedIndexChanged += new System.EventHandler(this.YChannelComboBox_SelectedIndexChanged);
-            // 
-            // XChannelComboBox
-            // 
-            this.XChannelComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.XChannelComboBox.FormattingEnabled = true;
-            this.XChannelComboBox.Location = new System.Drawing.Point(66, 38);
-            this.XChannelComboBox.Name = "XChannelComboBox";
-            this.XChannelComboBox.Size = new System.Drawing.Size(149, 21);
-            this.XChannelComboBox.TabIndex = 1;
-            this.XChannelComboBox.SelectedIndexChanged += new System.EventHandler(this.XChannelComboBox_SelectedIndexChanged);
-            // 
-            // InstrumentComboBox
-            // 
-            this.InstrumentComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.InstrumentComboBox.FormattingEnabled = true;
-            this.InstrumentComboBox.Location = new System.Drawing.Point(66, 11);
-            this.InstrumentComboBox.Name = "InstrumentComboBox";
-            this.InstrumentComboBox.Size = new System.Drawing.Size(149, 21);
-            this.InstrumentComboBox.TabIndex = 0;
-            this.InstrumentComboBox.SelectedIndexChanged += new System.EventHandler(this.InstrumentComboBox_SelectedIndexChanged);
-            // 
-            // DataSelectPanel
-            // 
-            this.DataSelectPanel.Controls.Add(this.YChannelComboBox);
-            this.DataSelectPanel.Controls.Add(this.label3);
-            this.DataSelectPanel.Controls.Add(this.InstrumentComboBox);
-            this.DataSelectPanel.Controls.Add(this.label2);
-            this.DataSelectPanel.Controls.Add(this.XChannelComboBox);
-            this.DataSelectPanel.Controls.Add(this.label1);
-            this.DataSelectPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.DataSelectPanel.Location = new System.Drawing.Point(0, 0);
-            this.DataSelectPanel.Name = "DataSelectPanel";
-            this.DataSelectPanel.Size = new System.Drawing.Size(220, 98);
-            this.DataSelectPanel.TabIndex = 6;
             // 
             // panel1
             // 
@@ -181,10 +115,27 @@
             this.panel1.Controls.Add(this.FitTypeComboBox);
             this.panel1.Controls.Add(this.label4);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 98);
+            this.panel1.Location = new System.Drawing.Point(0, 128);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(220, 189);
             this.panel1.TabIndex = 7;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(30, 36);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(30, 13);
+            this.label5.TabIndex = 7;
+            this.label5.Text = "R^2:";
+            // 
+            // RSquaredTextBox
+            // 
+            this.RSquaredTextBox.Enabled = false;
+            this.RSquaredTextBox.Location = new System.Drawing.Point(66, 33);
+            this.RSquaredTextBox.Name = "RSquaredTextBox";
+            this.RSquaredTextBox.Size = new System.Drawing.Size(149, 20);
+            this.RSquaredTextBox.TabIndex = 6;
             // 
             // FitTypeComboBox
             // 
@@ -205,22 +156,103 @@
             this.label4.TabIndex = 5;
             this.label4.Text = "Fit Type:";
             // 
-            // RSquaredTextBox
+            // DataSelectPanel
             // 
-            this.RSquaredTextBox.Enabled = false;
-            this.RSquaredTextBox.Location = new System.Drawing.Point(66, 33);
-            this.RSquaredTextBox.Name = "RSquaredTextBox";
-            this.RSquaredTextBox.Size = new System.Drawing.Size(149, 20);
-            this.RSquaredTextBox.TabIndex = 6;
+            this.DataSelectPanel.Controls.Add(this.YChannelComboBox);
+            this.DataSelectPanel.Controls.Add(this.label3);
+            this.DataSelectPanel.Controls.Add(this.InstrumentComboBox);
+            this.DataSelectPanel.Controls.Add(this.label2);
+            this.DataSelectPanel.Controls.Add(this.XChannelComboBox);
+            this.DataSelectPanel.Controls.Add(this.label1);
+            this.DataSelectPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.DataSelectPanel.Location = new System.Drawing.Point(0, 30);
+            this.DataSelectPanel.Name = "DataSelectPanel";
+            this.DataSelectPanel.Size = new System.Drawing.Size(220, 98);
+            this.DataSelectPanel.TabIndex = 6;
             // 
-            // label5
+            // YChannelComboBox
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(30, 36);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(30, 13);
-            this.label5.TabIndex = 7;
-            this.label5.Text = "R^2:";
+            this.YChannelComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.YChannelComboBox.FormattingEnabled = true;
+            this.YChannelComboBox.Location = new System.Drawing.Point(66, 65);
+            this.YChannelComboBox.Name = "YChannelComboBox";
+            this.YChannelComboBox.Size = new System.Drawing.Size(149, 21);
+            this.YChannelComboBox.TabIndex = 2;
+            this.YChannelComboBox.SelectedIndexChanged += new System.EventHandler(this.YChannelComboBox_SelectedIndexChanged);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(17, 68);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(43, 13);
+            this.label3.TabIndex = 5;
+            this.label3.Text = "Y Data:";
+            // 
+            // InstrumentComboBox
+            // 
+            this.InstrumentComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.InstrumentComboBox.FormattingEnabled = true;
+            this.InstrumentComboBox.Location = new System.Drawing.Point(66, 11);
+            this.InstrumentComboBox.Name = "InstrumentComboBox";
+            this.InstrumentComboBox.Size = new System.Drawing.Size(149, 21);
+            this.InstrumentComboBox.TabIndex = 0;
+            this.InstrumentComboBox.SelectedIndexChanged += new System.EventHandler(this.InstrumentComboBox_SelectedIndexChanged);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(17, 38);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(43, 13);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "X Data:";
+            // 
+            // XChannelComboBox
+            // 
+            this.XChannelComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.XChannelComboBox.FormattingEnabled = true;
+            this.XChannelComboBox.Location = new System.Drawing.Point(66, 38);
+            this.XChannelComboBox.Name = "XChannelComboBox";
+            this.XChannelComboBox.Size = new System.Drawing.Size(149, 21);
+            this.XChannelComboBox.TabIndex = 1;
+            this.XChannelComboBox.SelectedIndexChanged += new System.EventHandler(this.XChannelComboBox_SelectedIndexChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(3, 15);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(59, 13);
+            this.label1.TabIndex = 3;
+            this.label1.Text = "Instrument:";
+            // 
+            // ChartTitlePanel
+            // 
+            this.ChartTitlePanel.Controls.Add(this.label6);
+            this.ChartTitlePanel.Controls.Add(this.ChartTitleTextBox);
+            this.ChartTitlePanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.ChartTitlePanel.Location = new System.Drawing.Point(0, 0);
+            this.ChartTitlePanel.Name = "ChartTitlePanel";
+            this.ChartTitlePanel.Size = new System.Drawing.Size(220, 30);
+            this.ChartTitlePanel.TabIndex = 8;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(4, 9);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(58, 13);
+            this.label6.TabIndex = 9;
+            this.label6.Text = "Chart Title:";
+            // 
+            // ChartTitleTextBox
+            // 
+            this.ChartTitleTextBox.Location = new System.Drawing.Point(66, 6);
+            this.ChartTitleTextBox.Name = "ChartTitleTextBox";
+            this.ChartTitleTextBox.Size = new System.Drawing.Size(149, 20);
+            this.ChartTitleTextBox.TabIndex = 8;
+            this.ChartTitleTextBox.TextChanged += new System.EventHandler(this.ChartTitleTextBox_TextChanged);
             // 
             // XYPanel
             // 
@@ -233,10 +265,12 @@
             ((System.ComponentModel.ISupportInitialize)(this.XYChart)).EndInit();
             this.RightPanel.ResumeLayout(false);
             this.RightRightPanel.ResumeLayout(false);
-            this.DataSelectPanel.ResumeLayout(false);
-            this.DataSelectPanel.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            this.DataSelectPanel.ResumeLayout(false);
+            this.DataSelectPanel.PerformLayout();
+            this.ChartTitlePanel.ResumeLayout(false);
+            this.ChartTitlePanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -260,5 +294,8 @@
         private System.Windows.Forms.Panel DataSelectPanel;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox RSquaredTextBox;
+        private System.Windows.Forms.Panel ChartTitlePanel;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox ChartTitleTextBox;
     }
 }

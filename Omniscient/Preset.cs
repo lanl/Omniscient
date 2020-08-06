@@ -26,7 +26,7 @@ namespace Omniscient
         List<EventGenerator> activeEventGenerators;
         List<Instrument> activeInstruments;
         public List<Tuple<Channel, ChannelDisplayConfig>> ChannelPresets { get; private set; }
-
+        public List<XYPanelSettings> XYPanels { get; private set; }
         public string Name { get; private set; }
 
         public Preset(string newName)
@@ -35,6 +35,7 @@ namespace Omniscient
             activeEventGenerators = new List<EventGenerator>();
             activeInstruments = new List<Instrument>();
             ChannelPresets = new List<Tuple<Channel, ChannelDisplayConfig>>();
+            XYPanels = new List<XYPanelSettings>();
         }
 
         public void AddChannel(Channel ch, ChannelDisplayConfig config)

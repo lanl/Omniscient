@@ -45,12 +45,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
+using System.Xml;
 
 namespace Omniscient
 {
     public partial class XYPanel : UserControl
     {
-        private enum Fit_Type { NONE, PROPORTIONAL, LINEAR, POWER_LAW, EXPONENTIAL, LOG};
+        public event EventHandler ChartTitleChanged;
+
+        public enum Fit_Type { NONE, PROPORTIONAL, LINEAR, POWER_LAW, EXPONENTIAL, LOG};
         OmniscientCore Core;
 
         private Instrument _selectedInstrument;
@@ -71,6 +74,17 @@ namespace Omniscient
                 _active = value;
                 if (_active) UpdateChart();
             } 
+        }
+
+        private string _chartTitle;
+        public string ChartTitle
+        {
+            get { return _chartTitle; }
+            set { 
+                _chartTitle = value;
+                if (ChartTitleTextBox.Text != value) ChartTitleTextBox.Text = value;
+                ChartTitleChanged?.Invoke(this, EventArgs.Empty);
+            }
         }
 
         double chartMinX;
@@ -99,7 +113,7 @@ namespace Omniscient
 
         private void PopulateFitTypeCombo()
         {
-            string[] types = new string[] { "None", "Proportional", "Linear", "Power Law", "Exponential", "Log" };
+            string[] types = new string[] { "None", "Proportional", "Linear", "Power", "Exponential", "Log" };
             FitTypeComboBox.Items.AddRange(types);
             FitTypeComboBox.SelectedItem = "None";
         }
@@ -215,7 +229,7 @@ namespace Omniscient
             DateTime end = Core.ViewEnd;
             Series series = new Series("Data");
             series.Points.SuspendUpdates();
-            series.ChartType = SeriesChartType.Point;
+            series.ChartType = SeriesChartType.FastPoint;
             double x, y;
             List<double> X = new List<double>();
             List<double> Y = new List<double>();
@@ -455,34 +469,126 @@ namespace Omniscient
 
         private void FitTypeComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Fit_Type selectedType = Fit_Type.NONE;
-            switch (FitTypeComboBox.SelectedItem as string)
-            {
-                case "None":
-                    selectedType = Fit_Type.NONE;
-                    break;
-                case "Proportional":
-                    selectedType = Fit_Type.PROPORTIONAL;
-                    break;
-                case "Linear":
-                    selectedType = Fit_Type.LINEAR;
-                    break;
-                case "Power Law":
-                    selectedType = Fit_Type.POWER_LAW;
-                    break;
-                case "Exponential":
-                    selectedType = Fit_Type.EXPONENTIAL;
-                    break;
-                case "Log":
-                    selectedType = Fit_Type.LOG;
-                    break;
-            }
+            Fit_Type selectedType = StringToFitType(FitTypeComboBox.SelectedItem as string);
 
             if (FitType != selectedType)
             {
                 FitType = selectedType;
                 UpdateChart();
             }
+        }
+
+        private void ChartTitleTextBox_TextChanged(object sender, EventArgs e)
+        {
+            ChartTitle = ChartTitleTextBox.Text;
+        }
+
+        public static string FitTypeToString(Fit_Type type)
+        {
+            switch(type)
+            {
+                case Fit_Type.NONE:
+                    return "None";
+                case Fit_Type.PROPORTIONAL:
+                    return "Proportional";
+                case Fit_Type.LINEAR:
+                    return "Linear";
+                case Fit_Type.POWER_LAW:
+                    return "Power";
+                case Fit_Type.EXPONENTIAL:
+                    return "Exponential";
+                case Fit_Type.LOG:
+                    return "Log";
+            }
+            throw new ArgumentException("Not a valid fit type!");
+        }
+
+        public static Fit_Type StringToFitType(string str)
+        {
+            switch (str)
+            {
+                case "None":
+                    return Fit_Type.NONE;
+                case "Proportional":
+                    return Fit_Type.PROPORTIONAL;
+                case "Linear":
+                    return Fit_Type.LINEAR;
+                case "Power":
+                    return Fit_Type.POWER_LAW;
+                case "Exponential":
+                    return Fit_Type.EXPONENTIAL;
+                case "Log":
+                    return Fit_Type.LOG;
+            }
+            throw new ArgumentException("Not a valid fit type!");
+        }
+
+        public XYPanelSettings GetSettings()
+        {
+            return new XYPanelSettings()
+            {
+                ChartTitle = ChartTitle,
+                SelectedInstrumentID = SelectedInstrument?.ID ?? 0,
+                XChannelID = XChannel?.ID ?? 0,
+                YChannelID = YChannel?.ID ?? 0,
+                FitType = FitType
+            };
+        }
+
+        public void ApplySettings(XYPanelSettings settings)
+        {
+            try { ChartTitle = settings.ChartTitle; }
+            catch { }
+            try
+            {
+                SelectedInstrument = Core.ActiveInstruments.Single(i => i.ID == settings.SelectedInstrumentID);
+                ChangeXChannel(SelectedInstrument.GetChannels().Single(c => c.ID == settings.XChannelID));
+                ChangeYChannel(SelectedInstrument.GetChannels().Single(c => c.ID == settings.YChannelID));
+            }
+            catch { }
+            try 
+            { 
+                FitType = settings.FitType;
+                FitTypeComboBox.SelectedItem = FitTypeToString(FitType);
+            }
+            catch { }
+        }
+    }
+
+    public class XYPanelSettings
+    {
+        public string ChartTitle;
+        public uint SelectedInstrumentID;
+        public uint XChannelID;
+        public uint YChannelID;
+        public XYPanel.Fit_Type FitType;
+
+        public void ToXML(XmlWriter xmlWriter)
+        {
+            xmlWriter.WriteStartElement("XYChart");
+            xmlWriter.WriteAttributeString("Title", ChartTitle);
+            xmlWriter.WriteAttributeString("Instrument", SelectedInstrumentID.ToString("X8"));
+            xmlWriter.WriteAttributeString("XChannel", XChannelID.ToString("X8"));
+            xmlWriter.WriteAttributeString("YChannel", YChannelID.ToString("X8"));
+            xmlWriter.WriteAttributeString("FitType", XYPanel.FitTypeToString(FitType));
+            xmlWriter.WriteEndElement();
+        }
+
+        public static XYPanelSettings FromXML(XmlNode node)
+        {
+            XYPanelSettings settings = new XYPanelSettings();
+            try { settings.ChartTitle = node.Attributes["Title"]?.InnerText; }
+            catch { }
+            try
+            {
+                settings.SelectedInstrumentID = uint.Parse(node.Attributes["Instrument"].InnerText, System.Globalization.NumberStyles.HexNumber);
+                settings.XChannelID = uint.Parse(node.Attributes["XChannel"].InnerText, System.Globalization.NumberStyles.HexNumber);
+                settings.YChannelID = uint.Parse(node.Attributes["YChannel"].InnerText, System.Globalization.NumberStyles.HexNumber);
+            }
+            catch { }
+            try { settings.FitType = XYPanel.StringToFitType(node.Attributes["FitType"]?.InnerText); }
+            catch { }
+            return settings;
         }
     }
 }

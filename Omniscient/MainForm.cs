@@ -1741,6 +1741,17 @@ namespace Omniscient
                 SitesTreeView.Nodes.Find(eventGenerator.ID.ToString(), true)[0].Checked = true;
             }
 
+            // Close all charts first before making new ones
+            for (int i=BottomTabControl.TabCount-1; i>0; i--)
+            {
+                CloseXYChartTab(BottomTabControl.TabPages[i]);
+            }
+            foreach (XYPanelSettings xyPanelSettings in preset.XYPanels)
+            {
+                XYPanel xyPanel = CreateNewXYChart(false);
+                xyPanel.ApplySettings(xyPanelSettings);
+            }
+
             PresetNameTextBox.Text = preset.Name;
 
             if (startView >= Core.GlobalStart && endView <= Core.GlobalEnd)
@@ -1787,6 +1798,10 @@ namespace Omniscient
                     }
                 }
             }
+
+            // Get XYCharts
+            for (int t = 1; t < BottomTabControl.TabCount; t++)
+                preset.XYPanels.Add((BottomTabControl.TabPages[t].Tag as XYPanel).GetSettings());
 
             if (indexToDelete >= 0)
             {
@@ -2673,22 +2688,39 @@ namespace Omniscient
             CreateNewXYChart();
         }
 
-        private void CreateNewXYChart()
+        private XYPanel CreateNewXYChart(bool selectTab=true)
         {
             XYPanel xyPanel = new XYPanel(Core);
             xyPanel.SuspendLayout();
             xyPanel.Dock = DockStyle.Fill;
+            
 
-            TabPage tabPage = new TabPage("XY");
+            TabPage tabPage = new TabPage("Chart");
             tabPage.SuspendLayout();
             tabPage.Controls.Add(xyPanel);
             tabPage.Tag = xyPanel;
+
+            xyPanel.ChartTitle = "Chart";
+            xyPanel.ChartTitleChanged += XYPanel_ChartTitleChanged;
 
             BottomTabControl.TabPages.Add(tabPage);
             tabPage.ResumeLayout();
             xyPanel.ResumeLayout();
 
-            BottomTabControl.SelectedTab = tabPage;
+            if(selectTab) BottomTabControl.SelectedTab = tabPage;
+            return xyPanel;
+        }
+
+        private void XYPanel_ChartTitleChanged(object sender, EventArgs e)
+        {
+            for(int t = 1; t < BottomTabControl.TabCount; t++)
+            {
+                XYPanel xyPanel = BottomTabControl.TabPages[t].Tag as XYPanel;
+                if (sender == xyPanel)
+                {
+                    BottomTabControl.TabPages[t].Text = xyPanel.ChartTitle;
+                }
+            }
         }
 
         private void BottomTabControl_MouseClick(object sender, MouseEventArgs e)
@@ -2718,14 +2750,18 @@ namespace Omniscient
             menu.Show(BottomTabControl, new Point(e.X, e.Y));
         }
 
-        private void CloseXYChartMenuItem_Click(object sender, EventArgs e)
+        private void CloseXYChartTab(TabPage tabPage)
         {
-            TabPage tabPage = (sender as MenuItem).Tag as TabPage;
             XYPanel xyPanel = tabPage.Tag as XYPanel;
             xyPanel.Unsubscribe();
             BottomTabControl.TabPages.Remove(tabPage);
             tabPage.Dispose();
             xyPanel.Dispose();
+        }
+
+        private void CloseXYChartMenuItem_Click(object sender, EventArgs e)
+        {
+            CloseXYChartTab((sender as MenuItem).Tag as TabPage);
         }
 
         private void CenterSplitContainer_Panel2_MouseClick(object sender, MouseEventArgs e)
