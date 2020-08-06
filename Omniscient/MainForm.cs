@@ -1728,17 +1728,29 @@ namespace Omniscient
 
             foreach (Instrument inst in preset.GetActiveInstruments())
             {
-                SitesTreeView.Nodes.Find(inst.ID.ToString(), true)[0].Checked = true;
+                try
+                {
+                    SitesTreeView.Nodes.Find(inst.ID.ToString(), true)[0].Checked = true;
+                }
+                catch { }
             }
 
             foreach(Tuple<Channel, ChannelDisplayConfig> channelPreset in preset.ChannelPresets)
             {
-                chPanels.Single(cp => cp.GetChannel().ID == channelPreset.Item1.ID).ApplyConfiguration(channelPreset.Item2);
+                try
+                {
+                    chPanels.Single(cp => cp.GetChannel().ID == channelPreset.Item1.ID).ApplyConfiguration(channelPreset.Item2);
+                }
+                catch { }
             }
 
             foreach (EventGenerator eventGenerator in preset.GetActiveEventGenerators())
             {
-                SitesTreeView.Nodes.Find(eventGenerator.ID.ToString(), true)[0].Checked = true;
+                try
+                {
+                    SitesTreeView.Nodes.Find(eventGenerator.ID.ToString(), true)[0].Checked = true;
+                }
+                catch { }
             }
 
             // Close all charts first before making new ones
