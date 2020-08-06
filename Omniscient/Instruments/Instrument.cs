@@ -116,8 +116,16 @@ namespace Omniscient
             // File Mode
             if (FileMode)
             {
-                dataFileNames = new string[] { FileModeFile };
-                dataFileTimes = new DateTime[] { GetFileDate(FileModeFile) };
+                if (File.Exists(FileModeFile))
+                { 
+                    dataFileNames = new string[] { FileModeFile };
+                    dataFileTimes = new DateTime[] { GetFileDate(FileModeFile) };
+                }
+                else
+                {
+                    dataFileNames = new string[0];
+                    dataFileTimes = new DateTime[0];
+                }
                 Cache.SetDataFiles(dataFileNames, dataFileTimes);
                 return;
             }
@@ -324,6 +332,15 @@ namespace Omniscient
                 }
             }
             return range;
+        }
+
+        public void RefreshData()
+        {
+            ClearData(ChannelCompartment.View);
+            ClearData(ChannelCompartment.Cache);
+            ClearData(ChannelCompartment.Process);
+            Cache.UnloadAllDays();
+            ScanDataFolder();
         }
 
         public virtual void LoadData(ChannelCompartment compartment, DateTime startDate, DateTime endDate)

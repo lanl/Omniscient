@@ -1185,8 +1185,9 @@ namespace Omniscient
             if (rangeChanged & e.KeyCode == Keys.Enter)
             {
                 UpdateRange();
+                rangeChanged = false;
             }
-            rangeChanged = false;
+            
         }
 
         private void RangeUpdateButton_Click(object sender, EventArgs e)
@@ -1194,8 +1195,8 @@ namespace Omniscient
             if (rangeChanged)
             {
                 UpdateRange();
+                rangeChanged = false;
             }
-            rangeChanged = false;
         }
 
         private void StripChartScroll_Scroll(object sender, ScrollEventArgs e)
@@ -2801,6 +2802,14 @@ namespace Omniscient
                 if (BottomTabControl.TabPages[t] == BottomTabControl.SelectedTab) xyPanel.Active = true;
                 else xyPanel.Active = false;
             }
+        }
+
+        private void RefreshDataButton_Click(object sender, EventArgs e)
+        {
+            System.Windows.Forms.Cursor.Current = Cursors.WaitCursor;
+            Core.RefreshActiveInstruments();
+            UpdatesCharts();
+            System.Windows.Forms.Cursor.Current = Cursors.Default;
         }
     }
 }

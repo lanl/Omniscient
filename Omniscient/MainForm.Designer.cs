@@ -162,6 +162,7 @@ namespace Omniscient
             this.CollapseBottomButton = new System.Windows.Forms.Button();
             this.ButtonImageList = new System.Windows.Forms.ImageList(this.components);
             this.SitesTreeView = new Omniscient.Controls.ResponsiveTreeView();
+            this.RefreshDataButton = new System.Windows.Forms.Button();
             this.StripChartControlPanel.SuspendLayout();
             this.StripChartsPanel.SuspendLayout();
             this.StripChartsLayoutPanel.SuspendLayout();
@@ -738,6 +739,7 @@ namespace Omniscient
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.RefreshDataButton);
             this.groupBox1.Controls.Add(this.tabControl1);
             this.groupBox1.Controls.Add(this.RangeUpdateButton);
             this.groupBox1.Controls.Add(this.RangeComboBox);
@@ -1367,6 +1369,16 @@ namespace Omniscient
             this.SitesTreeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.SitesTreeView_AfterCheck);
             this.SitesTreeView.MouseClick += new System.Windows.Forms.MouseEventHandler(this.SitesTreeView_MouseClick);
             // 
+            // RefreshDataButton
+            // 
+            this.RefreshDataButton.Location = new System.Drawing.Point(250, 100);
+            this.RefreshDataButton.Name = "RefreshDataButton";
+            this.RefreshDataButton.Size = new System.Drawing.Size(59, 49);
+            this.RefreshDataButton.TabIndex = 17;
+            this.RefreshDataButton.Text = "Refresh Data";
+            this.RefreshDataButton.UseVisualStyleBackColor = true;
+            this.RefreshDataButton.Click += new System.EventHandler(this.RefreshDataButton_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1549,6 +1561,7 @@ namespace Omniscient
         private TabControl BottomTabControl;
         private TabPage EventsTabPage;
         private ToolStripMenuItem newXYChartToolStripMenuItem;
+        private Button RefreshDataButton;
     }
 }
 

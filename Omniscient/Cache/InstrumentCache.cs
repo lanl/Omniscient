@@ -233,6 +233,7 @@ namespace Omniscient
                 return;
             }
 
+            if (Days.Count == 0) return; // Somehow this still happens...
             if (newDays[0] < loadedRange.Start)
             {
                 // Take off the end

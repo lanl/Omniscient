@@ -141,7 +141,7 @@ namespace Omniscient
             ActiveInstruments.Add(instrument);
             instrument.ScanDataFolder();
             //instrument.LoadData(ChannelCompartment.View, new DateTime(1900, 1, 1), new DateTime(2100, 1, 1));
-            Cache.AddInstrumentCache(instrument.Cache);
+            //Cache.AddInstrumentCache(instrument.Cache);
             UpdateGlobalStartEnd();
             instrument.LoadData(ChannelCompartment.View, _viewStart, _viewEnd);
             // Invoke event handlers (i.e. update UI)
@@ -155,6 +155,20 @@ namespace Omniscient
             Cache.RemoveInstrumentCache(instrument.Cache);
             UpdateGlobalStartEnd();
             InstrumentDeactivated?.Invoke(this, new InstrumentEventArgs() { Instrument = instrument });
+        }
+
+        public void RefreshInstrument(Instrument instrument)
+        {
+            instrument.RefreshData();
+            UpdateGlobalStartEnd();
+            instrument.LoadData(ChannelCompartment.View, _viewStart, _viewEnd);
+        }
+
+        public void RefreshActiveInstruments()
+        {
+            foreach (Instrument instrument in ActiveInstruments) instrument.RefreshData();
+            UpdateGlobalStartEnd();
+            foreach (Instrument instrument in ActiveInstruments) instrument.LoadData(ChannelCompartment.View, _viewStart, _viewEnd);
         }
 
         /// <summary>
