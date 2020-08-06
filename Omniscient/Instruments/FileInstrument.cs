@@ -37,6 +37,7 @@ This source code is distributed under the New BSD license:
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -57,9 +58,10 @@ namespace Omniscient
             FileExtension = "txt";
             filePrefix = "";
             fileSuffix = "";
-            numChannels = 1;
+            numChannels = 2;
             channels = new Channel[numChannels];
             channels[0] = new Channel(Name + "-File", this, Channel.ChannelType.COUNT_RATE, 0);
+            channels[1] = new Channel(Name + "-Modified", this, Channel.ChannelType.COUNT_RATE, 0);
         }
 
         public override void ApplyParameters(List<Parameter> parameters)
@@ -112,9 +114,11 @@ namespace Omniscient
         public override ReturnCode IngestFile(ChannelCompartment compartment, string fileName)
         {
             DateTime dateTime;
+            DateTime modified;
             try
             { 
                 dateTime = GetFileDate(fileName);
+                modified = File.GetLastWriteTime(fileName);
             }
             catch
             {
@@ -123,6 +127,7 @@ namespace Omniscient
             DataFile dataFile = new DataFile(fileName, dateTime);
 
             channels[0].AddDataPoint(compartment, dateTime, 1, dataFile);
+            channels[1].AddDataPoint(compartment, modified, 1, dataFile);
 
             return ReturnCode.SUCCESS;
         }
