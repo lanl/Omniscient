@@ -245,7 +245,7 @@ namespace Omniscient
             {
                 // Low wing
                 lowWing = newStart - 1;
-                if (lowWing >= 0)
+                if (lowWing >= eventStartIndex)
                 {
                     if (vals[lowWing] < threshold ||
                         vals[lowWing] < (runningAverage - nSigma * sigmas[lowWing]) ||
