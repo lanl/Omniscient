@@ -124,6 +124,7 @@
     </Compile>
     <Compile Include="Events\DataPresentEG.cs" />
     <Compile Include="Events\ManualEG.cs" />
+    <Compile Include="Events\PlateauEG.cs" />
     <Compile Include="InspectrumCore.cs" />
     <Compile Include="Instruments\ATPMInstrument.cs" />
     <Compile Include="Instruments\DATAZInstrument.cs" />

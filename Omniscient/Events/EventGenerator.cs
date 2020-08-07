@@ -34,6 +34,7 @@ namespace Omniscient
         public static readonly EventGeneratorHookup[] Hookups = new EventGeneratorHookup[] 
         {
             new ThresholdEGHookup(),
+            new PlateauEGHookup(),
             new CoincidenceEGHookup(),
             new GapEGHookup(),
             new DataPresentEGHookup(),

@@ -56,11 +56,6 @@ namespace Omniscient
             return events;
         }
 
-        public void SetChannel(Channel newChannel) { channel = newChannel; }
-        public Channel GetChannel() { return channel; }
-        public void SetInterval(TimeSpan newInterval) { interval = newInterval; }
-        public TimeSpan GetInterval() { return interval; }
-
         public override List<Parameter> GetParameters()
         {
             List<Parameter> parameters = new List<Parameter>()

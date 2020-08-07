@@ -153,15 +153,6 @@ namespace Omniscient
             return events;
         }
 
-        public void SetChannel(Channel newChannel) { channel = newChannel; }
-        public void SetThreshold(double newThreshold) { threshold = newThreshold; }
-        public void SetDebounceTime(TimeSpan newBounce) { debounceTime = newBounce; }
-
-        public Channel GetChannel() { return channel; }
-        public double GetThreshold() { return threshold; }
-        public TimeSpan GetDebounceTime() { return debounceTime; }
-        new public List<Event> GetEvents() { return events; }
-
         public override List<Parameter> GetParameters()
         {
             List<Parameter> parameters = new List<Parameter>()

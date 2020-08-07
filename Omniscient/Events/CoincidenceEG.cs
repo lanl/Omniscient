@@ -145,17 +145,8 @@ namespace Omniscient
 
         public void SetEventGeneratorA(EventGenerator newEg) { eventGeneratorA = newEg; }
         public void SetEventGeneratorB(EventGenerator newEg) {eventGeneratorB = newEg; }
-        public void SetCoincidenceType(CoincidenceType newCoincidenceType) { coincidenceType = newCoincidenceType; }
-        public void SetTimingType(TimingType newTimingType) { timingType = newTimingType; }
         public void SetWindow(TimeSpan newWindow) { window = newWindow; }
         public void SetMinDifference(TimeSpan newDifference) { minDifference = newDifference; }
-
-        public EventGenerator GetEventGeneratorA() { return eventGeneratorA; }
-        public EventGenerator GetEventGeneratorB() { return eventGeneratorB; }
-        public CoincidenceType GetCoincidenceType() { return coincidenceType; }
-        public TimingType GetTimingType() { return timingType; }
-        public TimeSpan GetWindow() { return window; }
-        public TimeSpan GetMinDifference() { return minDifference; }
 
         public override List<Parameter> GetParameters()
         {
