@@ -1,5 +1,21 @@
 Omniscient Change Log
 
+##  0.9.4
+2020-08-07
+
+### New Features
+* Added a Refresh Data button to the Main Window
+* Added XY charts for plotting channels against eachother and fitting curves to the data
+* Added plateau event-detection
+* Included the status values in WUCS instruments
+* Added a modified-time channel to file instruments
+* The mean value of data during a threshold or plateau event is now recorded
+
+### Bug Fixes
+* Fixed an issue where exported NCC data would be stored out of order
+* Fixed an issue where out-of-date preset files could result in a crash
+
+
 ##  0.9.3
 2020-07-17
 
