@@ -309,6 +309,7 @@ namespace Omniscient
             eve.EndTime = times[newEnd];
             eve.MaxTime = times[maxIndex];
             eve.MaxValue = maximum;
+            eve.MeanValue = runningAverage;
 
             return newEnd;
         }

@@ -57,6 +57,8 @@ namespace Omniscient
             Event eve = new Event(this);        // Really shouldn't need to make an event here but visual studio freaks out without it
             DateTime maxTime = new DateTime();
             double maxValue = 0;
+            double runningSum = 0;
+            int count = 0;
 
             bool inEvent = false;
             bool onTheDrop = false;
@@ -72,6 +74,8 @@ namespace Omniscient
                         eve.StartTime = times[i];
                         eve.Comment = channel.Name + " is above threshold.";
                         maxValue = vals[i];
+                        runningSum = vals[i];
+                        count = 1;
                         maxTime = times[i];
                         inEvent = true;
                         onTheDrop = false;
@@ -93,6 +97,7 @@ namespace Omniscient
                             eve.EndTime = times[i - 1];
                         eve.MaxValue = maxValue;
                         eve.MaxTime = maxTime;
+                        eve.MeanValue = runningSum / count;
                         events.Add(eve);
                         inEvent = false;
                         onTheDrop = false;
@@ -104,6 +109,8 @@ namespace Omniscient
                             eve.Comment = channel.Name + " is above threshold.";
                             maxValue = vals[i];
                             maxTime = times[i];
+                            runningSum = vals[i];
+                            count = 1;
                             inEvent = true;
                             onTheDrop = false;
                         }
@@ -125,6 +132,7 @@ namespace Omniscient
                             eve.EndTime = lastDrop;
                             eve.MaxValue = maxValue;
                             eve.MaxTime = maxTime;
+                            eve.MeanValue = runningSum / count;
                             events.Add(eve);
                             inEvent = false;
                             onTheDrop = false;
@@ -137,6 +145,8 @@ namespace Omniscient
                         {
                             maxValue = vals[i];
                             maxTime = times[i];
+                            runningSum += vals[i];
+                            count++;
                         }
                         onTheDrop = false;
                     }
@@ -147,6 +157,7 @@ namespace Omniscient
                 eve.EndTime = times[times.Count - 1];
                 eve.MaxValue = maxValue;
                 eve.MaxTime = maxTime;
+                eve.MeanValue = runningSum / count;
                 events.Add(eve);
                 inEvent = false;
             }

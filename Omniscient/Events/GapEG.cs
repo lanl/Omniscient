@@ -49,6 +49,7 @@ namespace Omniscient
                     eve.EndTime = times[i];
                     eve.MaxTime = times[i - 1];
                     eve.MaxValue = 0;
+                    eve.MeanValue = 0;
                     eve.Comment = channel.Name + " has a gap.";
                     events.Add(eve);
                 }

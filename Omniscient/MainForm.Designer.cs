@@ -44,18 +44,18 @@ namespace Omniscient
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea5 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend5 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series5 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea6 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend6 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series6 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea7 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend7 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series7 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea8 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend8 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series8 = new System.Windows.Forms.DataVisualization.Charting.Series();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.StripChartControlPanel = new System.Windows.Forms.Panel();
             this.StripChartsPanel = new System.Windows.Forms.Panel();
@@ -105,6 +105,7 @@ namespace Omniscient
             this.RightRightPanel = new System.Windows.Forms.Panel();
             this.ChannelsPanel = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.RefreshDataButton = new System.Windows.Forms.Button();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.Chart1TabPage = new System.Windows.Forms.TabPage();
             this.C1LogScaleCheckBox = new System.Windows.Forms.CheckBox();
@@ -126,6 +127,7 @@ namespace Omniscient
             this.label11 = new System.Windows.Forms.Label();
             this.LeftPanel = new System.Windows.Forms.Panel();
             this.LeftLeftPanel = new System.Windows.Forms.Panel();
+            this.SitesTreeView = new Omniscient.Controls.ResponsiveTreeView();
             this.TreeImageList = new System.Windows.Forms.ImageList(this.components);
             this.BottomLeftPanel = new System.Windows.Forms.Panel();
             this.GlobalEndTextBox = new System.Windows.Forms.TextBox();
@@ -146,13 +148,6 @@ namespace Omniscient
             this.EventsTabPage = new System.Windows.Forms.TabPage();
             this.BottomPanel = new System.Windows.Forms.Panel();
             this.EventGridView = new System.Windows.Forms.DataGridView();
-            this.EventGenerator = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.EventStart = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.EventEnd = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Duration = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.MaxValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.MaxTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Comment = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.EventControlPanel = new System.Windows.Forms.Panel();
             this.RightEventControlPanel = new System.Windows.Forms.Panel();
             this.HighlightEventsCheckBox = new System.Windows.Forms.CheckBox();
@@ -161,8 +156,14 @@ namespace Omniscient
             this.GenerateEventsButton = new System.Windows.Forms.Button();
             this.CollapseBottomButton = new System.Windows.Forms.Button();
             this.ButtonImageList = new System.Windows.Forms.ImageList(this.components);
-            this.SitesTreeView = new Omniscient.Controls.ResponsiveTreeView();
-            this.RefreshDataButton = new System.Windows.Forms.Button();
+            this.EventGenerator = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.EventStart = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.EventEnd = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Duration = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.MeanValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.MaxValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.MaxTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Comment = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.StripChartControlPanel.SuspendLayout();
             this.StripChartsPanel.SuspendLayout();
             this.StripChartsLayoutPanel.SuspendLayout();
@@ -243,28 +244,28 @@ namespace Omniscient
             // 
             // StripChart0
             // 
-            chartArea1.InnerPlotPosition.Auto = false;
-            chartArea1.InnerPlotPosition.Height = 63.33112F;
-            chartArea1.InnerPlotPosition.Width = 89.25123F;
-            chartArea1.InnerPlotPosition.X = 9.39757F;
-            chartArea1.InnerPlotPosition.Y = 9.49468F;
-            chartArea1.Name = "ChartArea1";
-            chartArea1.Position.Auto = false;
-            chartArea1.Position.Height = 94F;
-            chartArea1.Position.Width = 77.70886F;
-            chartArea1.Position.X = 3F;
-            chartArea1.Position.Y = 3F;
-            this.StripChart0.ChartAreas.Add(chartArea1);
+            chartArea5.InnerPlotPosition.Auto = false;
+            chartArea5.InnerPlotPosition.Height = 63.33112F;
+            chartArea5.InnerPlotPosition.Width = 89.25123F;
+            chartArea5.InnerPlotPosition.X = 9.39757F;
+            chartArea5.InnerPlotPosition.Y = 9.49468F;
+            chartArea5.Name = "ChartArea1";
+            chartArea5.Position.Auto = false;
+            chartArea5.Position.Height = 94F;
+            chartArea5.Position.Width = 77.70886F;
+            chartArea5.Position.X = 3F;
+            chartArea5.Position.Y = 3F;
+            this.StripChart0.ChartAreas.Add(chartArea5);
             this.StripChart0.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend1.Name = "Legend1";
-            this.StripChart0.Legends.Add(legend1);
+            legend5.Name = "Legend1";
+            this.StripChart0.Legends.Add(legend5);
             this.StripChart0.Location = new System.Drawing.Point(5, 5);
             this.StripChart0.Name = "StripChart0";
-            series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
-            series1.Legend = "Legend1";
-            series1.Name = "Series1";
-            this.StripChart0.Series.Add(series1);
+            series5.ChartArea = "ChartArea1";
+            series5.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series5.Legend = "Legend1";
+            series5.Name = "Series1";
+            this.StripChart0.Series.Add(series5);
             this.StripChart0.Size = new System.Drawing.Size(631, 95);
             this.StripChart0.TabIndex = 5;
             this.StripChart0.Text = "chart1";
@@ -274,28 +275,28 @@ namespace Omniscient
             // 
             // StripChart3
             // 
-            chartArea2.InnerPlotPosition.Auto = false;
-            chartArea2.InnerPlotPosition.Height = 63.33112F;
-            chartArea2.InnerPlotPosition.Width = 89.25123F;
-            chartArea2.InnerPlotPosition.X = 9.39757F;
-            chartArea2.InnerPlotPosition.Y = 9.49468F;
-            chartArea2.Name = "ChartArea1";
-            chartArea2.Position.Auto = false;
-            chartArea2.Position.Height = 94F;
-            chartArea2.Position.Width = 77.70886F;
-            chartArea2.Position.X = 3F;
-            chartArea2.Position.Y = 3F;
-            this.StripChart3.ChartAreas.Add(chartArea2);
+            chartArea6.InnerPlotPosition.Auto = false;
+            chartArea6.InnerPlotPosition.Height = 63.33112F;
+            chartArea6.InnerPlotPosition.Width = 89.25123F;
+            chartArea6.InnerPlotPosition.X = 9.39757F;
+            chartArea6.InnerPlotPosition.Y = 9.49468F;
+            chartArea6.Name = "ChartArea1";
+            chartArea6.Position.Auto = false;
+            chartArea6.Position.Height = 94F;
+            chartArea6.Position.Width = 77.70886F;
+            chartArea6.Position.X = 3F;
+            chartArea6.Position.Y = 3F;
+            this.StripChart3.ChartAreas.Add(chartArea6);
             this.StripChart3.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend2.Name = "Legend1";
-            this.StripChart3.Legends.Add(legend2);
+            legend6.Name = "Legend1";
+            this.StripChart3.Legends.Add(legend6);
             this.StripChart3.Location = new System.Drawing.Point(5, 314);
             this.StripChart3.Name = "StripChart3";
-            series2.ChartArea = "ChartArea1";
-            series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
-            series2.Legend = "Legend1";
-            series2.Name = "Series1";
-            this.StripChart3.Series.Add(series2);
+            series6.ChartArea = "ChartArea1";
+            series6.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series6.Legend = "Legend1";
+            series6.Name = "Series1";
+            this.StripChart3.Series.Add(series6);
             this.StripChart3.Size = new System.Drawing.Size(631, 95);
             this.StripChart3.TabIndex = 6;
             this.StripChart3.Text = "chart1";
@@ -305,28 +306,28 @@ namespace Omniscient
             // 
             // StripChart1
             // 
-            chartArea3.InnerPlotPosition.Auto = false;
-            chartArea3.InnerPlotPosition.Height = 63.33112F;
-            chartArea3.InnerPlotPosition.Width = 89.25123F;
-            chartArea3.InnerPlotPosition.X = 9.39757F;
-            chartArea3.InnerPlotPosition.Y = 9.49468F;
-            chartArea3.Name = "ChartArea1";
-            chartArea3.Position.Auto = false;
-            chartArea3.Position.Height = 94F;
-            chartArea3.Position.Width = 77.70886F;
-            chartArea3.Position.X = 3F;
-            chartArea3.Position.Y = 3F;
-            this.StripChart1.ChartAreas.Add(chartArea3);
+            chartArea7.InnerPlotPosition.Auto = false;
+            chartArea7.InnerPlotPosition.Height = 63.33112F;
+            chartArea7.InnerPlotPosition.Width = 89.25123F;
+            chartArea7.InnerPlotPosition.X = 9.39757F;
+            chartArea7.InnerPlotPosition.Y = 9.49468F;
+            chartArea7.Name = "ChartArea1";
+            chartArea7.Position.Auto = false;
+            chartArea7.Position.Height = 94F;
+            chartArea7.Position.Width = 77.70886F;
+            chartArea7.Position.X = 3F;
+            chartArea7.Position.Y = 3F;
+            this.StripChart1.ChartAreas.Add(chartArea7);
             this.StripChart1.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend3.Name = "Legend1";
-            this.StripChart1.Legends.Add(legend3);
+            legend7.Name = "Legend1";
+            this.StripChart1.Legends.Add(legend7);
             this.StripChart1.Location = new System.Drawing.Point(5, 108);
             this.StripChart1.Name = "StripChart1";
-            series3.ChartArea = "ChartArea1";
-            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
-            series3.Legend = "Legend1";
-            series3.Name = "Series1";
-            this.StripChart1.Series.Add(series3);
+            series7.ChartArea = "ChartArea1";
+            series7.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series7.Legend = "Legend1";
+            series7.Name = "Series1";
+            this.StripChart1.Series.Add(series7);
             this.StripChart1.Size = new System.Drawing.Size(631, 95);
             this.StripChart1.TabIndex = 7;
             this.StripChart1.Text = "chart2";
@@ -336,28 +337,28 @@ namespace Omniscient
             // 
             // StripChart2
             // 
-            chartArea4.InnerPlotPosition.Auto = false;
-            chartArea4.InnerPlotPosition.Height = 63.33112F;
-            chartArea4.InnerPlotPosition.Width = 89.25123F;
-            chartArea4.InnerPlotPosition.X = 9.39757F;
-            chartArea4.InnerPlotPosition.Y = 9.49468F;
-            chartArea4.Name = "ChartArea1";
-            chartArea4.Position.Auto = false;
-            chartArea4.Position.Height = 94F;
-            chartArea4.Position.Width = 77.70886F;
-            chartArea4.Position.X = 3F;
-            chartArea4.Position.Y = 3F;
-            this.StripChart2.ChartAreas.Add(chartArea4);
+            chartArea8.InnerPlotPosition.Auto = false;
+            chartArea8.InnerPlotPosition.Height = 63.33112F;
+            chartArea8.InnerPlotPosition.Width = 89.25123F;
+            chartArea8.InnerPlotPosition.X = 9.39757F;
+            chartArea8.InnerPlotPosition.Y = 9.49468F;
+            chartArea8.Name = "ChartArea1";
+            chartArea8.Position.Auto = false;
+            chartArea8.Position.Height = 94F;
+            chartArea8.Position.Width = 77.70886F;
+            chartArea8.Position.X = 3F;
+            chartArea8.Position.Y = 3F;
+            this.StripChart2.ChartAreas.Add(chartArea8);
             this.StripChart2.Dock = System.Windows.Forms.DockStyle.Fill;
-            legend4.Name = "Legend1";
-            this.StripChart2.Legends.Add(legend4);
+            legend8.Name = "Legend1";
+            this.StripChart2.Legends.Add(legend8);
             this.StripChart2.Location = new System.Drawing.Point(5, 211);
             this.StripChart2.Name = "StripChart2";
-            series4.ChartArea = "ChartArea1";
-            series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
-            series4.Legend = "Legend1";
-            series4.Name = "Series1";
-            this.StripChart2.Series.Add(series4);
+            series8.ChartArea = "ChartArea1";
+            series8.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
+            series8.Legend = "Legend1";
+            series8.Name = "Series1";
+            this.StripChart2.Series.Add(series8);
             this.StripChart2.Size = new System.Drawing.Size(631, 95);
             this.StripChart2.TabIndex = 8;
             this.StripChart2.Text = "chart3";
@@ -759,6 +760,16 @@ namespace Omniscient
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "View";
             // 
+            // RefreshDataButton
+            // 
+            this.RefreshDataButton.Location = new System.Drawing.Point(250, 100);
+            this.RefreshDataButton.Name = "RefreshDataButton";
+            this.RefreshDataButton.Size = new System.Drawing.Size(59, 49);
+            this.RefreshDataButton.TabIndex = 17;
+            this.RefreshDataButton.Text = "Refresh Data";
+            this.RefreshDataButton.UseVisualStyleBackColor = true;
+            this.RefreshDataButton.Click += new System.EventHandler(this.RefreshDataButton_Click);
+            // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.Chart1TabPage);
@@ -993,6 +1004,21 @@ namespace Omniscient
             this.LeftLeftPanel.Size = new System.Drawing.Size(230, 654);
             this.LeftLeftPanel.TabIndex = 15;
             // 
+            // SitesTreeView
+            // 
+            this.SitesTreeView.CheckBoxes = true;
+            this.SitesTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.SitesTreeView.ImageIndex = 0;
+            this.SitesTreeView.ImageList = this.TreeImageList;
+            this.SitesTreeView.Location = new System.Drawing.Point(2, 90);
+            this.SitesTreeView.Name = "SitesTreeView";
+            this.SitesTreeView.SelectedImageIndex = 0;
+            this.SitesTreeView.ShowNodeToolTips = true;
+            this.SitesTreeView.Size = new System.Drawing.Size(226, 496);
+            this.SitesTreeView.TabIndex = 11;
+            this.SitesTreeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.SitesTreeView_AfterCheck);
+            this.SitesTreeView.MouseClick += new System.Windows.Forms.MouseEventHandler(this.SitesTreeView_MouseClick);
+            // 
             // TreeImageList
             // 
             this.TreeImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("TreeImageList.ImageStream")));
@@ -1207,6 +1233,7 @@ namespace Omniscient
             this.EventStart,
             this.EventEnd,
             this.Duration,
+            this.MeanValue,
             this.MaxValue,
             this.MaxTime,
             this.Comment});
@@ -1218,55 +1245,6 @@ namespace Omniscient
             this.EventGridView.TabIndex = 2;
             this.EventGridView.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.EventGridView_CellDoubleClick);
             this.EventGridView.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.EventGridView_CellMouseClick);
-            // 
-            // EventGenerator
-            // 
-            this.EventGenerator.HeaderText = "Event Generator";
-            this.EventGenerator.MinimumWidth = 8;
-            this.EventGenerator.Name = "EventGenerator";
-            this.EventGenerator.Width = 150;
-            // 
-            // EventStart
-            // 
-            this.EventStart.HeaderText = "Event Start";
-            this.EventStart.MinimumWidth = 8;
-            this.EventStart.Name = "EventStart";
-            this.EventStart.Width = 150;
-            // 
-            // EventEnd
-            // 
-            this.EventEnd.HeaderText = "Event End";
-            this.EventEnd.MinimumWidth = 8;
-            this.EventEnd.Name = "EventEnd";
-            this.EventEnd.Width = 150;
-            // 
-            // Duration
-            // 
-            this.Duration.HeaderText = "Duration";
-            this.Duration.MinimumWidth = 8;
-            this.Duration.Name = "Duration";
-            this.Duration.Width = 150;
-            // 
-            // MaxValue
-            // 
-            this.MaxValue.HeaderText = "Max Value";
-            this.MaxValue.MinimumWidth = 8;
-            this.MaxValue.Name = "MaxValue";
-            this.MaxValue.Width = 80;
-            // 
-            // MaxTime
-            // 
-            this.MaxTime.HeaderText = "Max Time";
-            this.MaxTime.MinimumWidth = 8;
-            this.MaxTime.Name = "MaxTime";
-            this.MaxTime.Width = 150;
-            // 
-            // Comment
-            // 
-            this.Comment.HeaderText = "Comment";
-            this.Comment.MinimumWidth = 8;
-            this.Comment.Name = "Comment";
-            this.Comment.Width = 300;
             // 
             // EventControlPanel
             // 
@@ -1354,30 +1332,61 @@ namespace Omniscient
             this.ButtonImageList.Images.SetKeyName(2, "Plus");
             this.ButtonImageList.Images.SetKeyName(3, "Delete");
             // 
-            // SitesTreeView
+            // EventGenerator
             // 
-            this.SitesTreeView.CheckBoxes = true;
-            this.SitesTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SitesTreeView.ImageIndex = 0;
-            this.SitesTreeView.ImageList = this.TreeImageList;
-            this.SitesTreeView.Location = new System.Drawing.Point(2, 90);
-            this.SitesTreeView.Name = "SitesTreeView";
-            this.SitesTreeView.SelectedImageIndex = 0;
-            this.SitesTreeView.ShowNodeToolTips = true;
-            this.SitesTreeView.Size = new System.Drawing.Size(226, 496);
-            this.SitesTreeView.TabIndex = 11;
-            this.SitesTreeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.SitesTreeView_AfterCheck);
-            this.SitesTreeView.MouseClick += new System.Windows.Forms.MouseEventHandler(this.SitesTreeView_MouseClick);
+            this.EventGenerator.HeaderText = "Event Generator";
+            this.EventGenerator.MinimumWidth = 8;
+            this.EventGenerator.Name = "EventGenerator";
+            this.EventGenerator.Width = 150;
             // 
-            // RefreshDataButton
+            // EventStart
             // 
-            this.RefreshDataButton.Location = new System.Drawing.Point(250, 100);
-            this.RefreshDataButton.Name = "RefreshDataButton";
-            this.RefreshDataButton.Size = new System.Drawing.Size(59, 49);
-            this.RefreshDataButton.TabIndex = 17;
-            this.RefreshDataButton.Text = "Refresh Data";
-            this.RefreshDataButton.UseVisualStyleBackColor = true;
-            this.RefreshDataButton.Click += new System.EventHandler(this.RefreshDataButton_Click);
+            this.EventStart.HeaderText = "Event Start";
+            this.EventStart.MinimumWidth = 8;
+            this.EventStart.Name = "EventStart";
+            this.EventStart.Width = 150;
+            // 
+            // EventEnd
+            // 
+            this.EventEnd.HeaderText = "Event End";
+            this.EventEnd.MinimumWidth = 8;
+            this.EventEnd.Name = "EventEnd";
+            this.EventEnd.Width = 150;
+            // 
+            // Duration
+            // 
+            this.Duration.HeaderText = "Duration";
+            this.Duration.MinimumWidth = 8;
+            this.Duration.Name = "Duration";
+            this.Duration.Width = 150;
+            // 
+            // MeanValue
+            // 
+            this.MeanValue.HeaderText = "Mean Value";
+            this.MeanValue.MinimumWidth = 8;
+            this.MeanValue.Name = "MeanValue";
+            this.MeanValue.Width = 80;
+            // 
+            // MaxValue
+            // 
+            this.MaxValue.HeaderText = "Max Value";
+            this.MaxValue.MinimumWidth = 8;
+            this.MaxValue.Name = "MaxValue";
+            this.MaxValue.Width = 80;
+            // 
+            // MaxTime
+            // 
+            this.MaxTime.HeaderText = "Max Time";
+            this.MaxTime.MinimumWidth = 8;
+            this.MaxTime.Name = "MaxTime";
+            this.MaxTime.Width = 150;
+            // 
+            // Comment
+            // 
+            this.Comment.HeaderText = "Comment";
+            this.Comment.MinimumWidth = 8;
+            this.Comment.Name = "Comment";
+            this.Comment.Width = 300;
             // 
             // MainForm
             // 
@@ -1524,13 +1533,6 @@ namespace Omniscient
         private Panel RightEventControlPanel;
         private ToolStripMenuItem EventManagerToolStripMenuItem;
         public ImageList ButtonImageList;
-        private DataGridViewTextBoxColumn EventGenerator;
-        private DataGridViewTextBoxColumn EventStart;
-        private DataGridViewTextBoxColumn EventEnd;
-        private DataGridViewTextBoxColumn Duration;
-        private DataGridViewTextBoxColumn MaxValue;
-        private DataGridViewTextBoxColumn MaxTime;
-        private DataGridViewTextBoxColumn Comment;
         private ToolStripMenuItem launchInspectaclesToolStripMenuItem;
         private ToolStripMenuItem declarationEditorToolStripMenuItem;
         private ToolStripMenuItem exportToolStripMenuItem;
@@ -1562,6 +1564,14 @@ namespace Omniscient
         private TabPage EventsTabPage;
         private ToolStripMenuItem newXYChartToolStripMenuItem;
         private Button RefreshDataButton;
+        private DataGridViewTextBoxColumn EventGenerator;
+        private DataGridViewTextBoxColumn EventStart;
+        private DataGridViewTextBoxColumn EventEnd;
+        private DataGridViewTextBoxColumn Duration;
+        private DataGridViewTextBoxColumn MeanValue;
+        private DataGridViewTextBoxColumn MaxValue;
+        private DataGridViewTextBoxColumn MaxTime;
+        private DataGridViewTextBoxColumn Comment;
     }
 }
 

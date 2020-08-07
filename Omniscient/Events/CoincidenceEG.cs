@@ -127,6 +127,9 @@ namespace Omniscient
                         eve.EndTime = eventsA[aIndex].EndTime;
                     }
                     eve.Comment = "Coincidence!";
+                    eve.MaxTime = eve.StartTime;
+                    eve.MaxValue = 0;
+                    eve.MeanValue = 0;
                     events.Add(eve);
                     aIndex++;
                     bIndex++;

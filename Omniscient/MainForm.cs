@@ -1861,6 +1861,7 @@ namespace Omniscient
                     Core.Events[i].StartTime.ToString("MM/dd/yy HH:mm:ss"),
                     Core.Events[i].EndTime.ToString("MM/dd/yy HH:mm:ss"),
                     Core.Events[i].GetDuration().TotalSeconds,
+                    Core.Events[i].MeanValue,
                     Core.Events[i].MaxValue,
                     Core.Events[i].MaxTime.ToString("MM/dd/yy HH:mm:ss"),
                     Core.Events[i].Comment);

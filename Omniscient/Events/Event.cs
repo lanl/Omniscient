@@ -43,6 +43,7 @@ namespace Omniscient
         public DateTime MaxTime { get; set; }
         public double MaxValue { get; set; }
         public string Comment { get; set; }
+        public double MeanValue { get; set; }
 
         public void AddAnalysisResult(AnalysisResult result) { analysisResults.Add(result); }
         public void AddAnalysisResults(List<AnalysisResult> results) { analysisResults.AddRange(results); }

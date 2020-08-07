@@ -52,6 +52,7 @@ namespace Omniscient
                 Events.Add(new Event(this, parser.StartTime[e], parser.EndTime[e])
                 {
                     MaxValue = 1,
+                    MeanValue = 1,
                     MaxTime = parser.StartTime[e],
                     Comment = parser.Comments[e]
                 });
@@ -63,6 +64,7 @@ namespace Omniscient
             Events.Add(new Event(this, start, end)
             {
                 MaxValue = 1,
+                MeanValue = 1,
                 MaxTime = start,
                 Comment = comment
             });
