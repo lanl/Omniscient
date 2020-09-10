@@ -141,12 +141,12 @@ namespace Omniscient
                     else
                     {
                         // In event
+                        runningSum += vals[i];
+                        count++;
                         if (vals[i] > maxValue)
                         {
                             maxValue = vals[i];
                             maxTime = times[i];
-                            runningSum += vals[i];
-                            count++;
                         }
                         onTheDrop = false;
                     }
