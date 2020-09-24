@@ -1,5 +1,11 @@
 Omniscient Change Log
 
+##  0.9.6
+2020-09-24
+
+* Switched to .NET Framework 4.7.2
+
+
 ##  0.9.5
 2020-09-22
 
