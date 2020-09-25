@@ -390,18 +390,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Omniscient.ico" />
-    <Content Include="Presets.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <None Include="Resources\OpenIcon.png" />
     <None Include="Resources\Open_6529.png" />
     <None Include="Resources\ShiftToLeft_16x.png" />
     <None Include="Resources\ShiftToRight_16x.png" />
     <None Include="Resources\DockPanel_16x.png" />
     <Content Include="Resources\ZoomToWidth_16x.png" />
-    <Content Include="SiteManager.xml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <COMReference Include="AxWMPLib">
