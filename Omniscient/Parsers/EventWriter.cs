@@ -33,7 +33,7 @@ namespace Omniscient
 
             // Write header
             writeStream.WriteLine("Event List, Omniscient Version," + OmniscientCore.VERSION);
-            writeStream.WriteLine("Event Start,Event End,Duration,Mean Value,Max Value,Max Time,Comments");
+            writeStream.WriteLine("Event Start,Event End,Duration,Mean Value,Integral (hr),Max Value,Max Time,Comments");
 
             // Write event content
             foreach(Event eve in events)
@@ -42,6 +42,7 @@ namespace Omniscient
                 writeStream.Write(eve.EndTime.ToString(DATE_TIME_FORMAT) + ",");
                 writeStream.Write((eve.EndTime - eve.StartTime).TotalSeconds.ToString() + ",");
                 writeStream.Write(eve.MeanValue.ToString() + ",");
+                writeStream.Write(eve.MeanValue * (eve.EndTime - eve.StartTime).TotalHours + ",");
                 writeStream.Write(eve.MaxValue.ToString() + ",");
                 writeStream.Write(eve.MaxTime.ToString(DATE_TIME_FORMAT) + ",");
                 writeStream.Write(eve.Comment + "\n");

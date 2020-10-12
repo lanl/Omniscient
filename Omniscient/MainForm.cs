@@ -1854,22 +1854,29 @@ namespace Omniscient
         private void DisplayEvents()
         {
             EventGridView.Rows.Clear();
+            double eventIntegral;
+            double totalIntegral = 0.0;
+            Event eve;
             for (int i = 0; i < Core.Events.Count(); i++)
             {
+                eve = Core.Events[i];
+                eventIntegral = eve.MeanValue * (eve.EndTime - eve.StartTime).TotalHours;
+                totalIntegral += eventIntegral;
                 EventGridView.Rows.Add(
-                    Core.Events[i].GetEventGenerator().Name,
-                    Core.Events[i].StartTime.ToString("MM/dd/yy HH:mm:ss"),
-                    Core.Events[i].EndTime.ToString("MM/dd/yy HH:mm:ss"),
-                    Core.Events[i].GetDuration().TotalSeconds,
-                    Core.Events[i].MeanValue,
-                    Core.Events[i].MaxValue,
-                    Core.Events[i].MaxTime.ToString("MM/dd/yy HH:mm:ss"),
-                    Core.Events[i].Comment);
-                EventGridView.Rows[i].Tag = Core.Events[i];
+                    eve.GetEventGenerator().Name,
+                    eve.StartTime.ToString("MM/dd/yy HH:mm:ss"),
+                    eve.EndTime.ToString("MM/dd/yy HH:mm:ss"),
+                    eve.GetDuration().TotalSeconds,
+                    eve.MeanValue,
+                    eventIntegral,
+                    eve.MaxValue,
+                    eve.MaxTime.ToString("MM/dd/yy HH:mm:ss"),
+                    eve.Comment);
+                EventGridView.Rows[i].Tag = eve;
             }
             if (HighlightEventsCheckBox.Checked)
                 DrawSections();
-            ToolStripStatusLabel.Text = Core.Events.Count.ToString() + " Events Generated";
+            ToolStripStatusLabel.Text = String.Format("{0} events generated.     Total integral: {1}", Core.Events.Count.ToString(), ChartingUtil.FormatDoubleNicely(totalIntegral));
         }
 
         private void HighlightEventsCheckBox_CheckedChanged(object sender, EventArgs e)
