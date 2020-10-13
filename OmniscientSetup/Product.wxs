@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+	<Product Id="10ffd0f7-4857-464e-b3df-71f65abefc9f" Name="OmniscientSetup" Language="1033" Version="!(bind.FileVersion.fil83F572D5885CA4382178F46C6D14A7DA)"
+           Manufacturer="IAEA SGTS" UpgradeCode="1c5b2a43-4bb3-4d89-8bcd-b908b1aec5de">
+		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
+
+		<MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+		<MediaTemplate EmbedCab="yes" />
+
+		<Feature Id="ProductFeature" Title="OmniscientSetup" Level="1">
+			<ComponentGroupRef Id="ProductComponents" />
+		</Feature>
+
+    <Property Id="DISABLEADVTSHORTCUTS" Value="1" />
+
+	</Product>
+
+	<Fragment>
+		<Directory Id="TARGETDIR" Name="SourceDir">
+			<Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLFOLDER" Name="Omniscient">
+        </Directory>
+			</Directory>
+      <Directory Id='ProgramMenuFolder' Name='PMenu'>
+        <Directory Id='MyProductShortcutDir' Name='Omniscient' />
+      </Directory>
+      <Directory Id="DesktopFolder" Name="Desktop" />
+		</Directory>
+	</Fragment>
+
+	<Fragment>
+		<ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+      <ComponentGroupRef Id="Omniscient.Binaries"/>
+      <ComponentGroupRef Id="Omniscient.Content"/>
+    </ComponentGroup>
+	</Fragment>
+</Wix>
