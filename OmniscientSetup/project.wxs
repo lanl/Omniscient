@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Fragment>
+        <DirectoryRef Id="INSTALLFOLDER">
+            <Component Id="cmp49D25B12DA43D1977E7FA017C8B9A5DA" Guid="*">
+              <File Id="fil83F572D5885CA4382178F46C6D14A7DA" Source="$(var.Omniscient.TargetDir)\Omniscient.exe">
+                <Shortcut Id="MyProduct.Shortcut" Directory="MyProductShortcutDir" Name="Omniscient" Advertise="yes" />
+                <Shortcut Id="DesktopShortcut"
+                          Directory="DesktopFolder"
+                          Name="Omniscient"
+                          Description="Omniscient"
+                          WorkingDirectory="INSTALLFOLDER"
+                          Icon="Omniscient.exe"
+                          IconIndex="0"
+                          Advertise="yes" >
+                  <Icon Id="Omniscient.exe" SourceFile="$(var.Omniscient.TargetDir)\Omniscient.exe" />
+                </Shortcut>
+              </File>
+            </Component>
+            <Component Id="cmp405B536F5FC7CCC09BA08628CF213171" Guid="*">
+                <File Id="fil40773D171BEB0521D7A39F6540587D42" Source="$(var.Omniscient.TargetDir)\Omniscient.exe.config" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <ComponentGroup Id="Omniscient.Binaries">
+            <ComponentRef Id="cmp49D25B12DA43D1977E7FA017C8B9A5DA" />
+            <ComponentRef Id="cmp405B536F5FC7CCC09BA08628CF213171" />
+        </ComponentGroup>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="INSTALLFOLDER">
+            <Component Id="cmpC35006D9DFDC5D00EC393071385A1952" Guid="*">
+                <File Id="filF10ACFA2D1D8D3CFC7429F4DF9070A6D" Source="$(var.Omniscient.ProjectDir)\Omniscient.ico" />
+            </Component>
+            <Component Id="cmpE509703E4C104BDEB72FD8B6A765FC38" Guid="*">
+                <File Id="filEDA110196EA0CEFDC0E98069A49CB51B" Source="$(var.Omniscient.ProjectDir)\Presets.xml" />
+            </Component>
+            <Component Id="cmp3AFE4392402FA55C0C8D1D3FB4AE153E" Guid="*">
+                <File Id="fil54EDB74708208BCAD09599E68C5C0F40" Source="$(var.Omniscient.ProjectDir)\SiteManager.xml" />
+            </Component>
+            <Directory Id="dirB9E45CFAEBFE6A74269F6DE8C420BE86" Name="Resources" />
+        </DirectoryRef>
+    </Fragment>
+    <Fragment>
+        <ComponentGroup Id="Omniscient.Content">
+            <ComponentRef Id="cmpC35006D9DFDC5D00EC393071385A1952" />
+            <ComponentRef Id="cmpE509703E4C104BDEB72FD8B6A765FC38" />
+            <ComponentRef Id="cmp3AFE4392402FA55C0C8D1D3FB4AE153E" />
+            <ComponentRef Id="cmpA46B03604BBA6CAE99276302AF449363" />
+        </ComponentGroup>
+    </Fragment>
+    <Fragment>
+        <DirectoryRef Id="dirB9E45CFAEBFE6A74269F6DE8C420BE86">
+            <Component Id="cmpA46B03604BBA6CAE99276302AF449363" Guid="*">
+                <File Id="filA9C10626FFDE10B077D1F31BA2186F9C" Source="$(var.Omniscient.ProjectDir)\Resources\ZoomToWidth_16x.png" />
+            </Component>
+        </DirectoryRef>
+    </Fragment>
+</Wix>
