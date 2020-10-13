@@ -60,11 +60,18 @@ namespace Omniscient
             double runningSum = 0;
             int count = 0;
 
+            // Fast forward to start time
+            int startIndex = 0;
+            while (startIndex < times.Count && times[startIndex] <= start) startIndex++;
+            int lastIndex = 0;
+
             bool inEvent = false;
             bool onTheDrop = false;
             DateTime lastDrop = new DateTime();
-            for (int i=0; i<times.Count; i++)
+            for (int i=startIndex; i<times.Count; i++)
             {
+                if (times[i] > end) break; // Exit loop at end time
+                lastIndex = i;
                 if (!inEvent)
                 {
                     // New event
@@ -154,7 +161,7 @@ namespace Omniscient
             }
             if (inEvent)
             {
-                eve.EndTime = times[times.Count - 1];
+                eve.EndTime = times[lastIndex];
                 eve.MaxValue = maxValue;
                 eve.MaxTime = maxTime;
                 eve.MeanValue = runningSum / count;

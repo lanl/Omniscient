@@ -37,9 +37,15 @@ namespace Omniscient
             List<double> vals = channel.GetValues(ChannelCompartment.Process);
             if (durations is null || durations.Count != times.Count) return events;
 
+            // Fast forward to start time
+            int startIndex = 0;
+            while (startIndex < times.Count && times[startIndex] <= start) startIndex++;
+
             Event eve = new Event(this);
-            for (int i = 0; i < times.Count; i++)
+            for (int i = startIndex; i < times.Count; i++)
             {
+                if (times[i] > end) break; // Exit loop at end time
+
                 eve = new Event(this, times[i], times[i] + durations[i]);
                 eve.MaxValue = vals[i];
                 eve.MaxTime = times[i] + TimeSpan.FromTicks(durations[i].Ticks / 2);

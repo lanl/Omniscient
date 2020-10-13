@@ -87,11 +87,16 @@ namespace Omniscient
             double runningAverage = 0;
             double runningSum = 0;
             int nAveragePoints = minPoints;
-            
+
+            // Fast forward to start time
+            int startIndex = 0;
+            while (startIndex < times.Count && times[startIndex] <= start) startIndex++;
+            int lastIndex = 0;
+
             // Boundary case
             bool inEvent = true;        // Assume true unless proven false below
-            int eventStartIndex = 0;
-            int eventEndIndex = 0;
+            int eventStartIndex = startIndex;
+            int eventEndIndex = startIndex;
             for (int j = 0; j < minPoints; j++) runningSum += vals[j];
             runningAverage = runningSum / nAveragePoints;
             for (int j = 0; j < minPoints; j++)
@@ -109,6 +114,9 @@ namespace Omniscient
             int i = minPoints;
             while (i < times.Count)
             {
+                if (times[i] > end) break; // Exit loop at end time
+                lastIndex = i;
+
                 if (!inEvent)
                 {
                     runningSum -= vals[i - minPoints];
@@ -213,7 +221,7 @@ namespace Omniscient
             }
             if (inEvent)
             {
-                eventEndIndex = times.Count - 1;
+                eventEndIndex = lastIndex;
                 eve = new Event(this);
                 int newEnd = FinalizeEvent(eve, eventStartIndex, eventEndIndex, vals, sigmas, times);
                 if (newEnd > 0) events.Add(eve);

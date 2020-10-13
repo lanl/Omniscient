@@ -40,9 +40,15 @@ namespace Omniscient
             events = new List<Event>();
             Event eve = new Event(this);        // Really shouldn't need to make an event here but visual studio freaks out without it
 
-            for (int i = 1; i < times.Count; i++)
+            // Fast forward to start time
+            int startIndex = 1;
+            while (startIndex < times.Count && times[startIndex] <= start) startIndex++;
+
+            for (int i = startIndex; i < times.Count; i++)
             {
-                if(times[i] - times[i-1] > interval)
+                if (times[i] > end) break; // Exit loop at end time
+
+                if (times[i] - times[i-1] > interval)
                 {
                     eve = new Event(this);
                     eve.StartTime = times[i-1];
