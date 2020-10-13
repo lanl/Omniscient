@@ -1891,7 +1891,7 @@ namespace Omniscient
 
         private void EventGridView_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (EventGridView.Rows[e.RowIndex].Tag is Event)
+            if (e.RowIndex >= 0 && EventGridView.Rows[e.RowIndex].Tag is Event)
             {
                 EventViewerForm eventViewerForm = new EventViewerForm((Event)EventGridView.Rows[e.RowIndex].Tag);
                 eventViewerForm.Show();

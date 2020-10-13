@@ -1,5 +1,23 @@
 Omniscient Change Log
 
+##  0.9.6
+2020-09-24
+
+* Switched to .NET Framework 4.7.2
+
+
+##  0.9.5
+2020-09-22
+
+### New Features
+* GRAND Instruments have a "status" channel
+* GRAND Instruments have an option to hide flag values from the gamma channels 
+
+### Bug Fixes
+* Fixed an issue resulting in incorrect threshold event mean values
+* Fixed an issue resulting in a crash if the columns in the event table were double clicked without an event select
+
+
 ##  0.9.4
 2020-08-07
 
