@@ -52,6 +52,7 @@ This source code is distributed under the New BSD license:
                   <Icon Id="Omniscient.exe" SourceFile="$(var.Omniscient.TargetDir)\Omniscient.exe" />
                 </Shortcut>
               </File>
+              <RemoveFolder Id="StartMenuDirRemoved" Directory="MyProductShortcutDir" On="uninstall" />
             </Component>
             <Component Id="cmp405B536F5FC7CCC09BA08628CF213171" Guid="*">
                 <File Id="fil40773D171BEB0521D7A39F6540587D42" Source="$(var.Omniscient.TargetDir)\Omniscient.exe.config" />
