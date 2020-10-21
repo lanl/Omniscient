@@ -127,7 +127,6 @@ namespace Omniscient
             this.label11 = new System.Windows.Forms.Label();
             this.LeftPanel = new System.Windows.Forms.Panel();
             this.LeftLeftPanel = new System.Windows.Forms.Panel();
-            this.SitesTreeView = new Omniscient.Controls.ResponsiveTreeView();
             this.TreeImageList = new System.Windows.Forms.ImageList(this.components);
             this.BottomLeftPanel = new System.Windows.Forms.Panel();
             this.GlobalEndTextBox = new System.Windows.Forms.TextBox();
@@ -148,14 +147,6 @@ namespace Omniscient
             this.EventsTabPage = new System.Windows.Forms.TabPage();
             this.BottomPanel = new System.Windows.Forms.Panel();
             this.EventGridView = new System.Windows.Forms.DataGridView();
-            this.EventControlPanel = new System.Windows.Forms.Panel();
-            this.RightEventControlPanel = new System.Windows.Forms.Panel();
-            this.HighlightEventsCheckBox = new System.Windows.Forms.CheckBox();
-            this.EventsWarningLabel = new System.Windows.Forms.Label();
-            this.ExportEventsButton = new System.Windows.Forms.Button();
-            this.GenerateEventsButton = new System.Windows.Forms.Button();
-            this.CollapseBottomButton = new System.Windows.Forms.Button();
-            this.ButtonImageList = new System.Windows.Forms.ImageList(this.components);
             this.EventGenerator = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.EventStart = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.EventEnd = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -165,6 +156,16 @@ namespace Omniscient
             this.MaxValue = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.MaxTime = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Comment = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.EventControlPanel = new System.Windows.Forms.Panel();
+            this.RightEventControlPanel = new System.Windows.Forms.Panel();
+            this.HighlightEventsCheckBox = new System.Windows.Forms.CheckBox();
+            this.EventsWarningLabel = new System.Windows.Forms.Label();
+            this.ExportEventsButton = new System.Windows.Forms.Button();
+            this.GenerateEventsButton = new System.Windows.Forms.Button();
+            this.CollapseBottomButton = new System.Windows.Forms.Button();
+            this.ButtonImageList = new System.Windows.Forms.ImageList(this.components);
+            this.shortcutsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.SitesTreeView = new Omniscient.Controls.ResponsiveTreeView();
             this.StripChartControlPanel.SuspendLayout();
             this.StripChartsPanel.SuspendLayout();
             this.StripChartsLayoutPanel.SuspendLayout();
@@ -211,7 +212,7 @@ namespace Omniscient
             this.StripChartControlPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.StripChartControlPanel.Location = new System.Drawing.Point(0, 0);
             this.StripChartControlPanel.Name = "StripChartControlPanel";
-            this.StripChartControlPanel.Size = new System.Drawing.Size(641, 431);
+            this.StripChartControlPanel.Size = new System.Drawing.Size(641, 417);
             this.StripChartControlPanel.TabIndex = 1;
             // 
             // StripChartsPanel
@@ -220,7 +221,7 @@ namespace Omniscient
             this.StripChartsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.StripChartsPanel.Location = new System.Drawing.Point(0, 0);
             this.StripChartsPanel.Name = "StripChartsPanel";
-            this.StripChartsPanel.Size = new System.Drawing.Size(641, 414);
+            this.StripChartsPanel.Size = new System.Drawing.Size(641, 400);
             this.StripChartsPanel.TabIndex = 2;
             // 
             // StripChartsLayoutPanel
@@ -240,7 +241,7 @@ namespace Omniscient
             this.StripChartsLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.StripChartsLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.StripChartsLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.StripChartsLayoutPanel.Size = new System.Drawing.Size(641, 414);
+            this.StripChartsLayoutPanel.Size = new System.Drawing.Size(641, 400);
             this.StripChartsLayoutPanel.TabIndex = 1;
             // 
             // StripChart0
@@ -267,7 +268,7 @@ namespace Omniscient
             series1.Legend = "Legend1";
             series1.Name = "Series1";
             this.StripChart0.Series.Add(series1);
-            this.StripChart0.Size = new System.Drawing.Size(631, 95);
+            this.StripChart0.Size = new System.Drawing.Size(631, 91);
             this.StripChart0.TabIndex = 5;
             this.StripChart0.Text = "chart1";
             this.StripChart0.DoubleClick += new System.EventHandler(this.StripChart_DoubleClick);
@@ -291,14 +292,14 @@ namespace Omniscient
             this.StripChart3.Dock = System.Windows.Forms.DockStyle.Fill;
             legend2.Name = "Legend1";
             this.StripChart3.Legends.Add(legend2);
-            this.StripChart3.Location = new System.Drawing.Point(5, 314);
+            this.StripChart3.Location = new System.Drawing.Point(5, 302);
             this.StripChart3.Name = "StripChart3";
             series2.ChartArea = "ChartArea1";
             series2.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
             series2.Legend = "Legend1";
             series2.Name = "Series1";
             this.StripChart3.Series.Add(series2);
-            this.StripChart3.Size = new System.Drawing.Size(631, 95);
+            this.StripChart3.Size = new System.Drawing.Size(631, 93);
             this.StripChart3.TabIndex = 6;
             this.StripChart3.Text = "chart1";
             this.StripChart3.DoubleClick += new System.EventHandler(this.StripChart_DoubleClick);
@@ -322,14 +323,14 @@ namespace Omniscient
             this.StripChart1.Dock = System.Windows.Forms.DockStyle.Fill;
             legend3.Name = "Legend1";
             this.StripChart1.Legends.Add(legend3);
-            this.StripChart1.Location = new System.Drawing.Point(5, 108);
+            this.StripChart1.Location = new System.Drawing.Point(5, 104);
             this.StripChart1.Name = "StripChart1";
             series3.ChartArea = "ChartArea1";
             series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
             series3.Legend = "Legend1";
             series3.Name = "Series1";
             this.StripChart1.Series.Add(series3);
-            this.StripChart1.Size = new System.Drawing.Size(631, 95);
+            this.StripChart1.Size = new System.Drawing.Size(631, 91);
             this.StripChart1.TabIndex = 7;
             this.StripChart1.Text = "chart2";
             this.StripChart1.DoubleClick += new System.EventHandler(this.StripChart_DoubleClick);
@@ -353,14 +354,14 @@ namespace Omniscient
             this.StripChart2.Dock = System.Windows.Forms.DockStyle.Fill;
             legend4.Name = "Legend1";
             this.StripChart2.Legends.Add(legend4);
-            this.StripChart2.Location = new System.Drawing.Point(5, 211);
+            this.StripChart2.Location = new System.Drawing.Point(5, 203);
             this.StripChart2.Name = "StripChart2";
             series4.ChartArea = "ChartArea1";
             series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.FastLine;
             series4.Legend = "Legend1";
             series4.Name = "Series1";
             this.StripChart2.Series.Add(series4);
-            this.StripChart2.Size = new System.Drawing.Size(631, 95);
+            this.StripChart2.Size = new System.Drawing.Size(631, 91);
             this.StripChart2.TabIndex = 8;
             this.StripChart2.Text = "chart3";
             this.StripChart2.DoubleClick += new System.EventHandler(this.StripChart_DoubleClick);
@@ -370,7 +371,7 @@ namespace Omniscient
             // StripChartScroll
             // 
             this.StripChartScroll.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.StripChartScroll.Location = new System.Drawing.Point(0, 414);
+            this.StripChartScroll.Location = new System.Drawing.Point(0, 400);
             this.StripChartScroll.Name = "StripChartScroll";
             this.StripChartScroll.Size = new System.Drawing.Size(641, 17);
             this.StripChartScroll.TabIndex = 1;
@@ -378,6 +379,7 @@ namespace Omniscient
             // 
             // menuStrip1
             // 
+            this.menuStrip1.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
@@ -385,7 +387,7 @@ namespace Omniscient
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1254, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1254, 33);
             this.menuStrip1.TabIndex = 3;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -394,13 +396,13 @@ namespace Omniscient
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.exportToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(54, 29);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // exportToolStripMenuItem
             // 
             this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
-            this.exportToolStripMenuItem.Size = new System.Drawing.Size(135, 22);
+            this.exportToolStripMenuItem.Size = new System.Drawing.Size(207, 34);
             this.exportToolStripMenuItem.Text = "Export Data";
             this.exportToolStripMenuItem.Click += new System.EventHandler(this.exportToolStripMenuItem_Click);
             // 
@@ -414,63 +416,64 @@ namespace Omniscient
             this.declarationEditorToolStripMenuItem,
             this.newXYChartToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
-            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
+            this.toolsToolStripMenuItem.Size = new System.Drawing.Size(69, 29);
             this.toolsToolStripMenuItem.Text = "Tools";
             // 
             // SiteManagerToolStripMenuItem
             // 
             this.SiteManagerToolStripMenuItem.Name = "SiteManagerToolStripMenuItem";
-            this.SiteManagerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.SiteManagerToolStripMenuItem.Size = new System.Drawing.Size(269, 34);
             this.SiteManagerToolStripMenuItem.Text = "Site Manager";
             this.SiteManagerToolStripMenuItem.Click += new System.EventHandler(this.SiteManagerToolStripMenuItem_Click);
             // 
             // EventManagerToolStripMenuItem
             // 
             this.EventManagerToolStripMenuItem.Name = "EventManagerToolStripMenuItem";
-            this.EventManagerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.EventManagerToolStripMenuItem.Size = new System.Drawing.Size(269, 34);
             this.EventManagerToolStripMenuItem.Text = "Event Manager";
             this.EventManagerToolStripMenuItem.Click += new System.EventHandler(this.EventManagerToolStripMenuItem_Click);
             // 
             // launchInspectrumToolStripMenuItem
             // 
             this.launchInspectrumToolStripMenuItem.Name = "launchInspectrumToolStripMenuItem";
-            this.launchInspectrumToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.launchInspectrumToolStripMenuItem.Size = new System.Drawing.Size(269, 34);
             this.launchInspectrumToolStripMenuItem.Text = "Launch Inspectrum";
             this.launchInspectrumToolStripMenuItem.Click += new System.EventHandler(this.launchInspectrumToolStripMenuItem_Click);
             // 
             // launchInspectaclesToolStripMenuItem
             // 
             this.launchInspectaclesToolStripMenuItem.Name = "launchInspectaclesToolStripMenuItem";
-            this.launchInspectaclesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.launchInspectaclesToolStripMenuItem.Size = new System.Drawing.Size(269, 34);
             this.launchInspectaclesToolStripMenuItem.Text = "Launch Inspectacles";
             this.launchInspectaclesToolStripMenuItem.Click += new System.EventHandler(this.launchInspectaclesToolStripMenuItem_Click);
             // 
             // declarationEditorToolStripMenuItem
             // 
             this.declarationEditorToolStripMenuItem.Name = "declarationEditorToolStripMenuItem";
-            this.declarationEditorToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.declarationEditorToolStripMenuItem.Size = new System.Drawing.Size(269, 34);
             this.declarationEditorToolStripMenuItem.Text = "Declaration Editor";
             this.declarationEditorToolStripMenuItem.Click += new System.EventHandler(this.declarationEditorToolStripMenuItem_Click);
             // 
             // newXYChartToolStripMenuItem
             // 
             this.newXYChartToolStripMenuItem.Name = "newXYChartToolStripMenuItem";
-            this.newXYChartToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.newXYChartToolStripMenuItem.Size = new System.Drawing.Size(269, 34);
             this.newXYChartToolStripMenuItem.Text = "New XY Chart";
             this.newXYChartToolStripMenuItem.Click += new System.EventHandler(this.newXYChartToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.shortcutsMenuItem,
             this.aboutToolStripMenuItem});
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(65, 29);
             this.helpToolStripMenuItem.Text = "Help";
             // 
             // aboutToolStripMenuItem
             // 
             this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
             this.aboutToolStripMenuItem.Text = "About";
             this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
             // 
@@ -548,10 +551,9 @@ namespace Omniscient
             this.ShiftEndButton,
             this.MouseTimeToolStripLabel,
             this.MarkerToolStripLabel});
-            this.toolStrip1.Location = new System.Drawing.Point(0, 24);
+            this.toolStrip1.Location = new System.Drawing.Point(0, 33);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Padding = new System.Windows.Forms.Padding(0, 0, 2, 0);
-            this.toolStrip1.Size = new System.Drawing.Size(1254, 27);
+            this.toolStrip1.Size = new System.Drawing.Size(1254, 29);
             this.toolStrip1.TabIndex = 5;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -561,14 +563,14 @@ namespace Omniscient
             this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
             this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(24, 24);
+            this.toolStripButton1.Size = new System.Drawing.Size(34, 24);
             this.toolStripButton1.Text = "Open File";
             this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 27);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 29);
             // 
             // AllPanelsButton
             // 
@@ -576,14 +578,14 @@ namespace Omniscient
             this.AllPanelsButton.Image = global::Omniscient.Properties.Resources.DockPanel_16x;
             this.AllPanelsButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.AllPanelsButton.Name = "AllPanelsButton";
-            this.AllPanelsButton.Size = new System.Drawing.Size(24, 24);
+            this.AllPanelsButton.Size = new System.Drawing.Size(34, 24);
             this.AllPanelsButton.Text = "Hide/Show All Panels";
             this.AllPanelsButton.Click += new System.EventHandler(this.AllPanelsButton_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 27);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 29);
             // 
             // BackwardButton
             // 
@@ -592,7 +594,7 @@ namespace Omniscient
             this.BackwardButton.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.BackwardButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.BackwardButton.Name = "BackwardButton";
-            this.BackwardButton.Size = new System.Drawing.Size(23, 24);
+            this.BackwardButton.Size = new System.Drawing.Size(34, 24);
             this.BackwardButton.Text = "Go Backward";
             this.BackwardButton.Click += new System.EventHandler(this.BackwardButton_Click);
             // 
@@ -603,14 +605,14 @@ namespace Omniscient
             this.ForwardButton.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
             this.ForwardButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ForwardButton.Name = "ForwardButton";
-            this.ForwardButton.Size = new System.Drawing.Size(23, 24);
+            this.ForwardButton.Size = new System.Drawing.Size(34, 24);
             this.ForwardButton.Text = "Go Forward";
             this.ForwardButton.Click += new System.EventHandler(this.ForwardButton_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 27);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 29);
             // 
             // ShiftStartButton
             // 
@@ -618,7 +620,7 @@ namespace Omniscient
             this.ShiftStartButton.Image = global::Omniscient.Properties.Resources.ShiftToLeft_16x;
             this.ShiftStartButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ShiftStartButton.Name = "ShiftStartButton";
-            this.ShiftStartButton.Size = new System.Drawing.Size(24, 24);
+            this.ShiftStartButton.Size = new System.Drawing.Size(34, 24);
             this.ShiftStartButton.Text = "Shift to Start of Range";
             this.ShiftStartButton.ToolTipText = "Shift to Start of Range";
             this.ShiftStartButton.Click += new System.EventHandler(this.ShiftStartButton_Click);
@@ -629,7 +631,7 @@ namespace Omniscient
             this.ZoomFullRangeButton.Image = global::Omniscient.Properties.Resources.ZoomToWidth_16x;
             this.ZoomFullRangeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ZoomFullRangeButton.Name = "ZoomFullRangeButton";
-            this.ZoomFullRangeButton.Size = new System.Drawing.Size(24, 24);
+            this.ZoomFullRangeButton.Size = new System.Drawing.Size(34, 24);
             this.ZoomFullRangeButton.Text = "Zoom Out To Full Range";
             this.ZoomFullRangeButton.Click += new System.EventHandler(this.ZoomFullRangeButton_Click);
             // 
@@ -639,7 +641,7 @@ namespace Omniscient
             this.ShiftEndButton.Image = global::Omniscient.Properties.Resources.ShiftToRight_16x;
             this.ShiftEndButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.ShiftEndButton.Name = "ShiftEndButton";
-            this.ShiftEndButton.Size = new System.Drawing.Size(24, 24);
+            this.ShiftEndButton.Size = new System.Drawing.Size(34, 24);
             this.ShiftEndButton.Text = "Shift to End of Range";
             this.ShiftEndButton.Click += new System.EventHandler(this.ShiftEndButton_Click);
             // 
@@ -666,23 +668,23 @@ namespace Omniscient
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.ToolStripStatusLabel,
             this.ToolStripProgressBar});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 715);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 706);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1254, 23);
+            this.statusStrip1.Size = new System.Drawing.Size(1254, 32);
             this.statusStrip1.TabIndex = 6;
             this.statusStrip1.Text = "statusStrip1";
             // 
             // ToolStripStatusLabel
             // 
             this.ToolStripStatusLabel.Name = "ToolStripStatusLabel";
-            this.ToolStripStatusLabel.Size = new System.Drawing.Size(39, 18);
+            this.ToolStripStatusLabel.Size = new System.Drawing.Size(60, 25);
             this.ToolStripStatusLabel.Text = "Ready";
             // 
             // ToolStripProgressBar
             // 
             this.ToolStripProgressBar.Name = "ToolStripProgressBar";
             this.ToolStripProgressBar.Padding = new System.Windows.Forms.Padding(100, 0, 0, 0);
-            this.ToolStripProgressBar.Size = new System.Drawing.Size(100, 17);
+            this.ToolStripProgressBar.Size = new System.Drawing.Size(100, 24);
             // 
             // RightPanel
             // 
@@ -690,10 +692,10 @@ namespace Omniscient
             this.RightPanel.Controls.Add(this.RightLeftPanel);
             this.RightPanel.Controls.Add(this.RightRightPanel);
             this.RightPanel.Dock = System.Windows.Forms.DockStyle.Right;
-            this.RightPanel.Location = new System.Drawing.Point(907, 51);
+            this.RightPanel.Location = new System.Drawing.Point(907, 62);
             this.RightPanel.MinimumSize = new System.Drawing.Size(10, 0);
             this.RightPanel.Name = "RightPanel";
-            this.RightPanel.Size = new System.Drawing.Size(347, 664);
+            this.RightPanel.Size = new System.Drawing.Size(347, 644);
             this.RightPanel.TabIndex = 7;
             // 
             // RightLeftPanel
@@ -703,7 +705,7 @@ namespace Omniscient
             this.RightLeftPanel.Location = new System.Drawing.Point(0, 0);
             this.RightLeftPanel.Name = "RightLeftPanel";
             this.RightLeftPanel.Padding = new System.Windows.Forms.Padding(2);
-            this.RightLeftPanel.Size = new System.Drawing.Size(22, 664);
+            this.RightLeftPanel.Size = new System.Drawing.Size(22, 644);
             this.RightLeftPanel.TabIndex = 8;
             // 
             // CollapseRightButton
@@ -711,7 +713,7 @@ namespace Omniscient
             this.CollapseRightButton.Dock = System.Windows.Forms.DockStyle.Fill;
             this.CollapseRightButton.Location = new System.Drawing.Point(2, 2);
             this.CollapseRightButton.Name = "CollapseRightButton";
-            this.CollapseRightButton.Size = new System.Drawing.Size(18, 660);
+            this.CollapseRightButton.Size = new System.Drawing.Size(18, 640);
             this.CollapseRightButton.TabIndex = 0;
             this.CollapseRightButton.Text = ">";
             this.CollapseRightButton.UseVisualStyleBackColor = true;
@@ -724,7 +726,7 @@ namespace Omniscient
             this.RightRightPanel.Dock = System.Windows.Forms.DockStyle.Right;
             this.RightRightPanel.Location = new System.Drawing.Point(22, 0);
             this.RightRightPanel.Name = "RightRightPanel";
-            this.RightRightPanel.Size = new System.Drawing.Size(325, 664);
+            this.RightRightPanel.Size = new System.Drawing.Size(325, 644);
             this.RightRightPanel.TabIndex = 7;
             // 
             // ChannelsPanel
@@ -736,7 +738,7 @@ namespace Omniscient
             this.ChannelsPanel.Location = new System.Drawing.Point(0, 0);
             this.ChannelsPanel.Name = "ChannelsPanel";
             this.ChannelsPanel.Padding = new System.Windows.Forms.Padding(5, 0, 0, 0);
-            this.ChannelsPanel.Size = new System.Drawing.Size(325, 428);
+            this.ChannelsPanel.Size = new System.Drawing.Size(325, 408);
             this.ChannelsPanel.TabIndex = 6;
             // 
             // groupBox1
@@ -754,7 +756,7 @@ namespace Omniscient
             this.groupBox1.Controls.Add(this.label10);
             this.groupBox1.Controls.Add(this.label11);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.groupBox1.Location = new System.Drawing.Point(0, 428);
+            this.groupBox1.Location = new System.Drawing.Point(0, 408);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(325, 236);
             this.groupBox1.TabIndex = 5;
@@ -800,7 +802,7 @@ namespace Omniscient
             this.C1LogScaleCheckBox.AutoSize = true;
             this.C1LogScaleCheckBox.Location = new System.Drawing.Point(10, 10);
             this.C1LogScaleCheckBox.Name = "C1LogScaleCheckBox";
-            this.C1LogScaleCheckBox.Size = new System.Drawing.Size(74, 17);
+            this.C1LogScaleCheckBox.Size = new System.Drawing.Size(81, 21);
             this.C1LogScaleCheckBox.TabIndex = 0;
             this.C1LogScaleCheckBox.Text = "Log Scale";
             this.C1LogScaleCheckBox.UseVisualStyleBackColor = true;
@@ -822,7 +824,7 @@ namespace Omniscient
             this.C2LogScaleCheckBox.AutoSize = true;
             this.C2LogScaleCheckBox.Location = new System.Drawing.Point(10, 10);
             this.C2LogScaleCheckBox.Name = "C2LogScaleCheckBox";
-            this.C2LogScaleCheckBox.Size = new System.Drawing.Size(74, 17);
+            this.C2LogScaleCheckBox.Size = new System.Drawing.Size(81, 21);
             this.C2LogScaleCheckBox.TabIndex = 1;
             this.C2LogScaleCheckBox.Text = "Log Scale";
             this.C2LogScaleCheckBox.UseVisualStyleBackColor = true;
@@ -843,7 +845,7 @@ namespace Omniscient
             this.C3LogScaleCheckBox.AutoSize = true;
             this.C3LogScaleCheckBox.Location = new System.Drawing.Point(10, 10);
             this.C3LogScaleCheckBox.Name = "C3LogScaleCheckBox";
-            this.C3LogScaleCheckBox.Size = new System.Drawing.Size(74, 17);
+            this.C3LogScaleCheckBox.Size = new System.Drawing.Size(81, 21);
             this.C3LogScaleCheckBox.TabIndex = 1;
             this.C3LogScaleCheckBox.Text = "Log Scale";
             this.C3LogScaleCheckBox.UseVisualStyleBackColor = true;
@@ -864,7 +866,7 @@ namespace Omniscient
             this.C4LogScaleCheckBox.AutoSize = true;
             this.C4LogScaleCheckBox.Location = new System.Drawing.Point(10, 10);
             this.C4LogScaleCheckBox.Name = "C4LogScaleCheckBox";
-            this.C4LogScaleCheckBox.Size = new System.Drawing.Size(74, 17);
+            this.C4LogScaleCheckBox.Size = new System.Drawing.Size(81, 21);
             this.C4LogScaleCheckBox.TabIndex = 1;
             this.C4LogScaleCheckBox.Text = "Log Scale";
             this.C4LogScaleCheckBox.UseVisualStyleBackColor = true;
@@ -986,11 +988,11 @@ namespace Omniscient
             this.LeftPanel.Controls.Add(this.LeftLeftPanel);
             this.LeftPanel.Controls.Add(this.LeftRightPanel);
             this.LeftPanel.Dock = System.Windows.Forms.DockStyle.Left;
-            this.LeftPanel.Location = new System.Drawing.Point(0, 51);
+            this.LeftPanel.Location = new System.Drawing.Point(0, 62);
             this.LeftPanel.MinimumSize = new System.Drawing.Size(10, 0);
             this.LeftPanel.Name = "LeftPanel";
             this.LeftPanel.Padding = new System.Windows.Forms.Padding(5);
-            this.LeftPanel.Size = new System.Drawing.Size(262, 664);
+            this.LeftPanel.Size = new System.Drawing.Size(262, 644);
             this.LeftPanel.TabIndex = 5;
             // 
             // LeftLeftPanel
@@ -1002,23 +1004,8 @@ namespace Omniscient
             this.LeftLeftPanel.Location = new System.Drawing.Point(5, 5);
             this.LeftLeftPanel.Name = "LeftLeftPanel";
             this.LeftLeftPanel.Padding = new System.Windows.Forms.Padding(2);
-            this.LeftLeftPanel.Size = new System.Drawing.Size(230, 654);
+            this.LeftLeftPanel.Size = new System.Drawing.Size(230, 634);
             this.LeftLeftPanel.TabIndex = 15;
-            // 
-            // SitesTreeView
-            // 
-            this.SitesTreeView.CheckBoxes = true;
-            this.SitesTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SitesTreeView.ImageIndex = 0;
-            this.SitesTreeView.ImageList = this.TreeImageList;
-            this.SitesTreeView.Location = new System.Drawing.Point(2, 90);
-            this.SitesTreeView.Name = "SitesTreeView";
-            this.SitesTreeView.SelectedImageIndex = 0;
-            this.SitesTreeView.ShowNodeToolTips = true;
-            this.SitesTreeView.Size = new System.Drawing.Size(226, 496);
-            this.SitesTreeView.TabIndex = 11;
-            this.SitesTreeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.SitesTreeView_AfterCheck);
-            this.SitesTreeView.MouseClick += new System.Windows.Forms.MouseEventHandler(this.SitesTreeView_MouseClick);
             // 
             // TreeImageList
             // 
@@ -1037,7 +1024,7 @@ namespace Omniscient
             this.BottomLeftPanel.Controls.Add(this.label9);
             this.BottomLeftPanel.Controls.Add(this.label8);
             this.BottomLeftPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.BottomLeftPanel.Location = new System.Drawing.Point(2, 586);
+            this.BottomLeftPanel.Location = new System.Drawing.Point(2, 566);
             this.BottomLeftPanel.Name = "BottomLeftPanel";
             this.BottomLeftPanel.Size = new System.Drawing.Size(226, 66);
             this.BottomLeftPanel.TabIndex = 12;
@@ -1157,7 +1144,7 @@ namespace Omniscient
             this.LeftRightPanel.Location = new System.Drawing.Point(235, 5);
             this.LeftRightPanel.Name = "LeftRightPanel";
             this.LeftRightPanel.Padding = new System.Windows.Forms.Padding(2);
-            this.LeftRightPanel.Size = new System.Drawing.Size(22, 654);
+            this.LeftRightPanel.Size = new System.Drawing.Size(22, 634);
             this.LeftRightPanel.TabIndex = 14;
             // 
             // CollapseLeftButton
@@ -1165,7 +1152,7 @@ namespace Omniscient
             this.CollapseLeftButton.Dock = System.Windows.Forms.DockStyle.Fill;
             this.CollapseLeftButton.Location = new System.Drawing.Point(2, 2);
             this.CollapseLeftButton.Name = "CollapseLeftButton";
-            this.CollapseLeftButton.Size = new System.Drawing.Size(18, 650);
+            this.CollapseLeftButton.Size = new System.Drawing.Size(18, 630);
             this.CollapseLeftButton.TabIndex = 0;
             this.CollapseLeftButton.Text = "<";
             this.CollapseLeftButton.UseVisualStyleBackColor = true;
@@ -1175,7 +1162,7 @@ namespace Omniscient
             // 
             this.CenterSplitContainer.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.CenterSplitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.CenterSplitContainer.Location = new System.Drawing.Point(262, 51);
+            this.CenterSplitContainer.Location = new System.Drawing.Point(262, 62);
             this.CenterSplitContainer.Name = "CenterSplitContainer";
             this.CenterSplitContainer.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -1188,8 +1175,8 @@ namespace Omniscient
             this.CenterSplitContainer.Panel2.Controls.Add(this.BottomTabControl);
             this.CenterSplitContainer.Panel2.Controls.Add(this.CollapseBottomButton);
             this.CenterSplitContainer.Panel2.MouseClick += new System.Windows.Forms.MouseEventHandler(this.CenterSplitContainer_Panel2_MouseClick);
-            this.CenterSplitContainer.Size = new System.Drawing.Size(645, 664);
-            this.CenterSplitContainer.SplitterDistance = 435;
+            this.CenterSplitContainer.Size = new System.Drawing.Size(645, 644);
+            this.CenterSplitContainer.SplitterDistance = 421;
             this.CenterSplitContainer.SplitterWidth = 5;
             this.CenterSplitContainer.TabIndex = 9;
             // 
@@ -1200,7 +1187,7 @@ namespace Omniscient
             this.BottomTabControl.Location = new System.Drawing.Point(0, 20);
             this.BottomTabControl.Name = "BottomTabControl";
             this.BottomTabControl.SelectedIndex = 0;
-            this.BottomTabControl.Size = new System.Drawing.Size(641, 200);
+            this.BottomTabControl.Size = new System.Drawing.Size(641, 194);
             this.BottomTabControl.TabIndex = 11;
             this.BottomTabControl.SelectedIndexChanged += new System.EventHandler(this.BottomTabControl_SelectedIndexChanged);
             this.BottomTabControl.MouseClick += new System.Windows.Forms.MouseEventHandler(this.BottomTabControl_MouseClick);
@@ -1211,7 +1198,7 @@ namespace Omniscient
             this.EventsTabPage.Location = new System.Drawing.Point(4, 22);
             this.EventsTabPage.Name = "EventsTabPage";
             this.EventsTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.EventsTabPage.Size = new System.Drawing.Size(633, 174);
+            this.EventsTabPage.Size = new System.Drawing.Size(633, 168);
             this.EventsTabPage.TabIndex = 0;
             this.EventsTabPage.Text = "Events";
             this.EventsTabPage.UseVisualStyleBackColor = true;
@@ -1223,7 +1210,7 @@ namespace Omniscient
             this.BottomPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.BottomPanel.Location = new System.Drawing.Point(3, 3);
             this.BottomPanel.Name = "BottomPanel";
-            this.BottomPanel.Size = new System.Drawing.Size(627, 168);
+            this.BottomPanel.Size = new System.Drawing.Size(627, 162);
             this.BottomPanel.TabIndex = 9;
             // 
             // EventGridView
@@ -1243,10 +1230,73 @@ namespace Omniscient
             this.EventGridView.Location = new System.Drawing.Point(0, 34);
             this.EventGridView.Name = "EventGridView";
             this.EventGridView.RowHeadersWidth = 62;
-            this.EventGridView.Size = new System.Drawing.Size(627, 134);
+            this.EventGridView.Size = new System.Drawing.Size(627, 128);
             this.EventGridView.TabIndex = 2;
             this.EventGridView.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.EventGridView_CellDoubleClick);
             this.EventGridView.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.EventGridView_CellMouseClick);
+            // 
+            // EventGenerator
+            // 
+            this.EventGenerator.HeaderText = "Event Generator";
+            this.EventGenerator.MinimumWidth = 8;
+            this.EventGenerator.Name = "EventGenerator";
+            this.EventGenerator.Width = 150;
+            // 
+            // EventStart
+            // 
+            this.EventStart.HeaderText = "Event Start";
+            this.EventStart.MinimumWidth = 8;
+            this.EventStart.Name = "EventStart";
+            this.EventStart.Width = 150;
+            // 
+            // EventEnd
+            // 
+            this.EventEnd.HeaderText = "Event End";
+            this.EventEnd.MinimumWidth = 8;
+            this.EventEnd.Name = "EventEnd";
+            this.EventEnd.Width = 150;
+            // 
+            // Duration
+            // 
+            this.Duration.HeaderText = "Duration";
+            this.Duration.MinimumWidth = 8;
+            this.Duration.Name = "Duration";
+            this.Duration.Width = 150;
+            // 
+            // MeanValue
+            // 
+            this.MeanValue.HeaderText = "Mean Value";
+            this.MeanValue.MinimumWidth = 8;
+            this.MeanValue.Name = "MeanValue";
+            this.MeanValue.Width = 80;
+            // 
+            // Integral
+            // 
+            this.Integral.HeaderText = "Integral (hr)";
+            this.Integral.MinimumWidth = 8;
+            this.Integral.Name = "Integral";
+            this.Integral.Width = 150;
+            // 
+            // MaxValue
+            // 
+            this.MaxValue.HeaderText = "Max Value";
+            this.MaxValue.MinimumWidth = 8;
+            this.MaxValue.Name = "MaxValue";
+            this.MaxValue.Width = 80;
+            // 
+            // MaxTime
+            // 
+            this.MaxTime.HeaderText = "Max Time";
+            this.MaxTime.MinimumWidth = 8;
+            this.MaxTime.Name = "MaxTime";
+            this.MaxTime.Width = 150;
+            // 
+            // Comment
+            // 
+            this.Comment.HeaderText = "Comment";
+            this.Comment.MinimumWidth = 8;
+            this.Comment.Name = "Comment";
+            this.Comment.Width = 300;
             // 
             // EventControlPanel
             // 
@@ -1275,7 +1325,7 @@ namespace Omniscient
             this.HighlightEventsCheckBox.AutoSize = true;
             this.HighlightEventsCheckBox.Location = new System.Drawing.Point(81, 8);
             this.HighlightEventsCheckBox.Name = "HighlightEventsCheckBox";
-            this.HighlightEventsCheckBox.Size = new System.Drawing.Size(103, 17);
+            this.HighlightEventsCheckBox.Size = new System.Drawing.Size(110, 21);
             this.HighlightEventsCheckBox.TabIndex = 1;
             this.HighlightEventsCheckBox.Text = "Highlight Events";
             this.HighlightEventsCheckBox.UseVisualStyleBackColor = true;
@@ -1334,66 +1384,27 @@ namespace Omniscient
             this.ButtonImageList.Images.SetKeyName(2, "Plus");
             this.ButtonImageList.Images.SetKeyName(3, "Delete");
             // 
-            // EventGenerator
+            // shortcutsMenuItem
             // 
-            this.EventGenerator.HeaderText = "Event Generator";
-            this.EventGenerator.MinimumWidth = 8;
-            this.EventGenerator.Name = "EventGenerator";
-            this.EventGenerator.Width = 150;
+            this.shortcutsMenuItem.Name = "shortcutsMenuItem";
+            this.shortcutsMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.shortcutsMenuItem.Text = "Keyboard Shortcuts";
+            this.shortcutsMenuItem.Click += new System.EventHandler(this.shortcutsMenuItem_Click);
             // 
-            // EventStart
+            // SitesTreeView
             // 
-            this.EventStart.HeaderText = "Event Start";
-            this.EventStart.MinimumWidth = 8;
-            this.EventStart.Name = "EventStart";
-            this.EventStart.Width = 150;
-            // 
-            // EventEnd
-            // 
-            this.EventEnd.HeaderText = "Event End";
-            this.EventEnd.MinimumWidth = 8;
-            this.EventEnd.Name = "EventEnd";
-            this.EventEnd.Width = 150;
-            // 
-            // Duration
-            // 
-            this.Duration.HeaderText = "Duration";
-            this.Duration.MinimumWidth = 8;
-            this.Duration.Name = "Duration";
-            this.Duration.Width = 150;
-            // 
-            // MeanValue
-            // 
-            this.MeanValue.HeaderText = "Mean Value";
-            this.MeanValue.MinimumWidth = 8;
-            this.MeanValue.Name = "MeanValue";
-            this.MeanValue.Width = 80;
-            // 
-            // Integral
-            // 
-            this.Integral.HeaderText = "Integral (hr)";
-            this.Integral.Name = "Integral";
-            // 
-            // MaxValue
-            // 
-            this.MaxValue.HeaderText = "Max Value";
-            this.MaxValue.MinimumWidth = 8;
-            this.MaxValue.Name = "MaxValue";
-            this.MaxValue.Width = 80;
-            // 
-            // MaxTime
-            // 
-            this.MaxTime.HeaderText = "Max Time";
-            this.MaxTime.MinimumWidth = 8;
-            this.MaxTime.Name = "MaxTime";
-            this.MaxTime.Width = 150;
-            // 
-            // Comment
-            // 
-            this.Comment.HeaderText = "Comment";
-            this.Comment.MinimumWidth = 8;
-            this.Comment.Name = "Comment";
-            this.Comment.Width = 300;
+            this.SitesTreeView.CheckBoxes = true;
+            this.SitesTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.SitesTreeView.ImageIndex = 0;
+            this.SitesTreeView.ImageList = this.TreeImageList;
+            this.SitesTreeView.Location = new System.Drawing.Point(2, 90);
+            this.SitesTreeView.Name = "SitesTreeView";
+            this.SitesTreeView.SelectedImageIndex = 0;
+            this.SitesTreeView.ShowNodeToolTips = true;
+            this.SitesTreeView.Size = new System.Drawing.Size(226, 476);
+            this.SitesTreeView.TabIndex = 11;
+            this.SitesTreeView.AfterCheck += new System.Windows.Forms.TreeViewEventHandler(this.SitesTreeView_AfterCheck);
+            this.SitesTreeView.MouseClick += new System.Windows.Forms.MouseEventHandler(this.SitesTreeView_MouseClick);
             // 
             // MainForm
             // 
@@ -1580,6 +1591,7 @@ namespace Omniscient
         private DataGridViewTextBoxColumn MaxValue;
         private DataGridViewTextBoxColumn MaxTime;
         private DataGridViewTextBoxColumn Comment;
+        private ToolStripMenuItem shortcutsMenuItem;
     }
 }
 

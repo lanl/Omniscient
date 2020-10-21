@@ -2207,14 +2207,6 @@ namespace Omniscient
             {
                 controlPressed = false;
             }
-            if (e.KeyCode == Keys.Left && controlPressed)
-            {
-                GoBack();
-            }
-            if (e.KeyCode == Keys.Right && controlPressed)
-            {
-                GoForward();
-            }
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -2818,6 +2810,71 @@ namespace Omniscient
             Core.RefreshActiveInstruments();
             UpdatesCharts();
             System.Windows.Forms.Cursor.Current = Cursors.Default;
+        }
+
+        private void shortcutsMenuItem_Click(object sender, EventArgs e)
+        {
+            ShortcutsDialog dialog = new ShortcutsDialog();
+            dialog.ShowDialog();
+        }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == (Keys.Alt | Keys.Left))
+            {
+                GoBack();
+                return true;
+            }
+            else if (keyData == (Keys.Alt | Keys.Right))
+            {
+                GoForward();
+                return true;
+            }
+            else if (keyData == (Keys.Control | Keys.Shift | Keys.Left))
+            {
+                TimeSpan delta = Core.ViewEnd - Core.ViewStart;
+                ShiftView(TimeSpan.FromTicks(-delta.Ticks/10));
+                return true;
+            }
+            else if (keyData == (Keys.Control | Keys.Shift | Keys.Right))
+            {
+                TimeSpan delta = Core.ViewEnd - Core.ViewStart;
+                ShiftView(TimeSpan.FromTicks(delta.Ticks / 10));
+                return true;
+            }
+            else if (keyData == (Keys.Control | Keys.Left))
+            {
+                ShiftView(Core.ViewStart - Core.ViewEnd);
+                return true;
+            }
+            else if (keyData == (Keys.Control | Keys.Right))
+            {
+                ShiftView(Core.ViewEnd - Core.ViewStart);
+                return true;
+            }
+            else if (keyData == (Keys.Control | Keys.Home))
+            {
+                ShiftView(Core.GlobalStart - Core.ViewStart);
+                return true;
+            }
+            else if (keyData == (Keys.Control | Keys.End))
+            {
+                ShiftView(Core.GlobalEnd - Core.ViewEnd);
+                return true;
+            }
+            else if (keyData == (Keys.Control | Keys.Up))
+            {
+                TimeSpan delta = Core.ViewEnd - Core.ViewStart;
+                ChangeView(Core.ViewStart.AddTicks(delta.Ticks/4), Core.ViewEnd.AddTicks(-delta.Ticks/4));
+                return true;
+            }
+            else if (keyData == (Keys.Control | Keys.Down))
+            {
+                TimeSpan delta = Core.ViewEnd - Core.ViewStart;
+                ChangeView(Core.ViewStart.AddTicks(-delta.Ticks / 2), Core.ViewEnd.AddTicks(delta.Ticks / 2));
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
         }
     }
 }

@@ -154,6 +154,12 @@
     <Compile Include="MainDialogs\NewInstrumentDialog.Designer.cs">
       <DependentUpon>NewInstrumentDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="MainDialogs\ShortcutsDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainDialogs\ShortcutsDialog.Designer.cs">
+      <DependentUpon>ShortcutsDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="OmniscientCore.cs" />
     <Compile Include="Parsers\ASN1Skipper.cs" />
     <Compile Include="Parsers\ATPMParser.cs" />
@@ -342,6 +348,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MainDialogs\NewInstrumentDialog.resx">
       <DependentUpon>NewInstrumentDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainDialogs\ShortcutsDialog.resx">
+      <DependentUpon>ShortcutsDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SiteManagerForm\InstTypeDialog.resx">
       <DependentUpon>InstTypeDialog.cs</DependentUpon>
