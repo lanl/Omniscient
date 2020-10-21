@@ -113,6 +113,7 @@ namespace Omniscient
 
         private void Core_OnViewChanged(object sender, EventArgs e)
         {
+            ViewStartToolStripLabel.Text = "View Start: " + Core.ViewStart.ToString("yyyy-MM-dd HH:mm:ss");
             StartDatePicker.Value = Core.ViewStart.Date;
             StartTimePicker.Value = Core.ViewStart;
             EndDatePicker.Value = Core.ViewEnd.Date;
