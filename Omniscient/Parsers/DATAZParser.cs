@@ -82,6 +82,14 @@ namespace Omniscient
                     break;
                 }
             }
+            for (int c = 0; c < Headers.Length; c++)
+            {
+                if (Headers[c].ToLower().StartsWith("mult"))
+                {
+                    Headers = Headers.Take(c).ToArray();
+                    break;
+                }
+            }
             if (DateTimeColumn < 0 || DateTimeColumn == Headers.Length - 1) return ReturnCode.CORRUPTED_FILE;
             return ReturnCode.SUCCESS;
         }
