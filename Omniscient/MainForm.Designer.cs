@@ -658,7 +658,7 @@ namespace Omniscient
             this.MouseTimeToolStripLabel.AutoSize = false;
             this.MouseTimeToolStripLabel.Margin = new System.Windows.Forms.Padding(0, 2, 0, 3);
             this.MouseTimeToolStripLabel.Name = "MouseTimeToolStripLabel";
-            this.MouseTimeToolStripLabel.Size = new System.Drawing.Size(250, 22);
+            this.MouseTimeToolStripLabel.Size = new System.Drawing.Size(240, 22);
             this.MouseTimeToolStripLabel.Text = "Mouse Location:";
             this.MouseTimeToolStripLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -666,7 +666,7 @@ namespace Omniscient
             // 
             this.MarkerToolStripLabel.AutoSize = false;
             this.MarkerToolStripLabel.Name = "MarkerToolStripLabel";
-            this.MarkerToolStripLabel.Size = new System.Drawing.Size(250, 22);
+            this.MarkerToolStripLabel.Size = new System.Drawing.Size(240, 22);
             this.MarkerToolStripLabel.Text = "Marker Location: ";
             this.MarkerToolStripLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
@@ -1397,7 +1397,7 @@ namespace Omniscient
             this.ViewStartToolStripLabel.AutoSize = false;
             this.ViewStartToolStripLabel.Margin = new System.Windows.Forms.Padding(70, 2, 0, 3);
             this.ViewStartToolStripLabel.Name = "ViewStartToolStripLabel";
-            this.ViewStartToolStripLabel.Size = new System.Drawing.Size(250, 22);
+            this.ViewStartToolStripLabel.Size = new System.Drawing.Size(200, 22);
             this.ViewStartToolStripLabel.Text = "View Start:";
             this.ViewStartToolStripLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 

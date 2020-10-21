@@ -227,6 +227,8 @@ namespace Omniscient
         {
             if (!changingView)
             {
+                TimeSpan rangeTimeSpan = ViewEnd - ViewStart;
+
                 // Do not allow zero-range
                 if ((end - start).TotalSeconds < 1) { return; }
                 changingView = true;
@@ -247,7 +249,6 @@ namespace Omniscient
                         start = GlobalEnd;
                     }
                     newStart = start != ViewStart;
-                    _viewStart = start;
                 }
 
                 // Keep end in global range
@@ -262,12 +263,25 @@ namespace Omniscient
                         end = GlobalEnd;
                     }
                     newEnd = end != ViewEnd;
-                    _viewEnd = end;
                 }
+
+                // Do not let start=end
+                if (start == end)
+                {
+                    changingView = false;
+                    return;
+                }
+                if (newStart) _viewStart = start;
+                if (newEnd) _viewEnd = end;
 
                 if (newStart || newEnd)
                 {
-                    if (!holdRange)
+                    if (holdRange)
+                    {
+                        if (_viewStart == GlobalStart) _viewEnd = _viewStart + rangeTimeSpan;
+                        if (_viewEnd == GlobalEnd) _viewStart = _viewEnd - rangeTimeSpan;
+                    }
+                    else if (_viewStart != GlobalStart || _viewEnd !=GlobalEnd)
                     {
                         // Try to align the view to be sensible
                         bool reRanged = false;
