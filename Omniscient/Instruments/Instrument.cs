@@ -134,43 +134,28 @@ namespace Omniscient
             List<string> dataFileList = new List<string>();
             List<DateTime> dataFileDateList = new List<DateTime>();
             DateTime fileDate;
-
-            List<string> directories = new List<string>();
-            directories.Add(dataFolder);
-            if(IncludeSubDirectories)
-            {
-                directories.AddRange(GetSubdirectories(dataFolder));
-            }
+            string[] patternFiles;
+            string pattern = filePrefix + "*" + fileSuffix + "." + FileExtension;
+            if (IncludeSubDirectories) patternFiles = Directory.GetFiles(dataFolder, pattern, SearchOption.AllDirectories);
+            else patternFiles = Directory.GetFiles(dataFolder, pattern, SearchOption.TopDirectoryOnly);
 
             // Try using the file names to get dates
-            if (NameConvensionScan(directories)) return;
+            if (NameConvensionScan(patternFiles)) return;
 
-            string[] filesInDirectory;
-            foreach (string directory in directories)
+            foreach (string file in patternFiles)
             {
-                filesInDirectory = Directory.GetFiles(directory);
-
-                foreach (string file in filesInDirectory)
+                fileDate = GetFileDate(file);
+                if (fileDate > DateTime.MinValue)
                 {
-                    string fileAbrev = file.Substring(file.LastIndexOf('\\') + 1);
-                    if (fileAbrev.Length > (fileSuffix.Length + FileExtension.Length)
-                        && fileAbrev.Substring(fileAbrev.Length - (FileExtension.Length + 1)).ToLower() == ("." + FileExtension) 
-                        && fileAbrev.ToLower().StartsWith(filePrefix.ToLower())
-                        && fileAbrev.Substring(fileAbrev.Length - (FileExtension.Length + 1 + fileSuffix.Length), fileSuffix.Length).ToLower() == fileSuffix.ToLower())
-                    {
-                        fileDate = GetFileDate(file);
-                        if (fileDate > DateTime.MinValue)
-                        {
-                            dataFileList.Add(file);
-                            dataFileDateList.Add(fileDate);
-                        }
-                        else
-                        {
-                            // Something should really go here...
-                        }
-                    }
+                    dataFileList.Add(file);
+                    dataFileDateList.Add(fileDate);
+                }
+                else
+                {
+                    // Something should really go here...
                 }
             }
+            
             dataFileNames = dataFileList.ToArray();
             dataFileTimes = dataFileDateList.ToArray();
 
@@ -178,35 +163,17 @@ namespace Omniscient
             Cache.SetDataFiles(dataFileNames, dataFileTimes);
         }
 
-        private bool NameConvensionScan(List<string> directories)
+        private bool NameConvensionScan(string[] patternFiles)
         {
             const int MIN_FILE_NAME_LENGTH = 6 + 4; 
 
-            List<string> dataFileList = new List<string>();
             List<DateTime> dataFileDateList = new List<DateTime>();
-            string[] filesInDirectory;
             string fileAbrev;
 
             int nameDateOffset = 0;
             bool usesDateSpacers = true;
-
-            foreach (string directory in directories)
-            {
-                // Only one directory - just check file naming
-                filesInDirectory = Directory.GetFiles(directory);
-                foreach (string file in filesInDirectory)
-                {
-                    fileAbrev = file.Substring(file.LastIndexOf('\\') + 1);
-                    if (fileAbrev.Length > (fileSuffix.Length + FileExtension.Length)
-                        && fileAbrev.Substring(fileAbrev.Length - (FileExtension.Length + 1)).ToLower() == ("." + FileExtension)
-                        && fileAbrev.ToLower().StartsWith(filePrefix.ToLower())
-                        && fileAbrev.Substring(fileAbrev.Length - (FileExtension.Length + 1 + fileSuffix.Length), fileSuffix.Length).ToLower() == fileSuffix.ToLower())
-                    {
-                        dataFileList.Add(file);
-                    }
-                }
-            }
-            foreach (string file in dataFileList)
+            
+            foreach (string file in patternFiles)
             {
                 fileAbrev = file.Substring(file.LastIndexOf('\\') + 1);
                 if (fileAbrev.Length < MIN_FILE_NAME_LENGTH) return false;
@@ -228,7 +195,7 @@ namespace Omniscient
                 }
             }
 
-            dataFileNames = dataFileList.ToArray();
+            dataFileNames = patternFiles;
             dataFileTimes = dataFileDateList.ToArray();
 
             Array.Sort(dataFileTimes, dataFileNames);
