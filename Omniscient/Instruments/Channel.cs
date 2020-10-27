@@ -70,6 +70,13 @@ namespace Omniscient
             files[(int)compartment].Add(file);
         }
 
+        public void AddDataPoints(ChannelCompartment compartment, DateTime[] timeArray, double[] valueArray, DataFile[] fileArray)
+        {
+            timeStamps[(int)compartment].AddRange(timeArray);
+            values[(int)compartment].AddRange(valueArray);
+            files[(int)compartment].AddRange(fileArray);
+        }
+
         public void AddDataPoint(ChannelCompartment compartment, DateTime time, double value, TimeSpan duration, DataFile file)
         {
             timeStamps[(int)compartment].Add(time);

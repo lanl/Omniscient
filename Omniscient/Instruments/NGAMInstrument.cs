@@ -91,18 +91,40 @@ namespace Omniscient
             DataFile dataFile = new DataFile(fileName, vbfParser.GetDate());
             DateTime time = DateTime.MinValue;
             int numRecords = vbfParser.GetNumRecords();
+            DateTime[] times = new DateTime[numRecords];
+            double[] d0 = new double[numRecords];
+            double[] d1 = new double[numRecords];
+            double[] d2 = new double[numRecords];
+            double[] d3 = new double[numRecords];
+            double[] d4 = new double[numRecords];
+            double[] d5 = new double[numRecords];
+            double[] d6 = new double[numRecords];
+            double[] d7 = new double[numRecords];
+            DataFile[] dataFiles = new DataFile[numRecords];
+            VBFRecord record;
             for (int r = 0; r < numRecords; ++r)
             {
-                time = vbfParser.VBFTimeToDateTime(vbfParser.GetRecord(r).time);
-                channels[data0].AddDataPoint(compartment, time, vbfParser.GetRecord(r).data[0], dataFile);
-                channels[data1].AddDataPoint(compartment, time, vbfParser.GetRecord(r).data[1], dataFile);
-                channels[data2].AddDataPoint(compartment, time, vbfParser.GetRecord(r).data[2], dataFile);
-                channels[data3].AddDataPoint(compartment, time, vbfParser.GetRecord(r).data[3], dataFile);
-                channels[data4].AddDataPoint(compartment, time, vbfParser.GetRecord(r).data[4], dataFile);
-                channels[data5].AddDataPoint(compartment, time, vbfParser.GetRecord(r).data[5], dataFile);
-                channels[data6].AddDataPoint(compartment, time, vbfParser.GetRecord(r).data[6], dataFile);
-                channels[data7].AddDataPoint(compartment, time, vbfParser.GetRecord(r).data[7], dataFile);
+                record = vbfParser.GetRecord(r);
+                times[r] = vbfParser.VBFTimeToDateTime(record.time);
+                d0[r] = record.data[0];
+                d1[r] = record.data[1];
+                d2[r] = record.data[2];
+                d3[r] = record.data[3];
+                d4[r] = record.data[4];
+                d5[r] = record.data[5];
+                d6[r] = record.data[6];
+                d7[r] = record.data[7];
+                dataFiles[r] = dataFile;
             }
+            channels[data0].AddDataPoints(compartment, times, d0, dataFiles);
+            channels[data1].AddDataPoints(compartment, times, d1, dataFiles);
+            channels[data2].AddDataPoints(compartment, times, d2, dataFiles);
+            channels[data3].AddDataPoints(compartment, times, d3, dataFiles);
+            channels[data4].AddDataPoints(compartment, times, d4, dataFiles);
+            channels[data5].AddDataPoints(compartment, times, d5, dataFiles);
+            channels[data6].AddDataPoints(compartment, times, d6, dataFiles);
+            channels[data7].AddDataPoints(compartment, times, d7, dataFiles);
+
             dataFile.DataEnd = time;
             vbfParser = new VBFParser();
             return ReturnCode.SUCCESS;
