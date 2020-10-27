@@ -26,7 +26,7 @@ namespace Omniscient
     {
         public double time;
         //public UInt16 status;
-        public float[] data;            // 8 element array
+        public UInt32[] data;            // 8 element array
         //public UInt16 elapsedTime;
     }
 
@@ -79,6 +79,7 @@ namespace Omniscient
             long numBytes = readBinary.BaseStream.Length;
             byte[] buffer8 = new byte[8];
             byte[] buffer4 = new byte[4];
+            byte[] bufferRecord = new byte[RECORD_SIZE];
             byte[] chunk;
             // Read data records
             numRecords = (int)((numBytes - HEADER_SIZE) / RECORD_SIZE);
@@ -98,16 +99,13 @@ namespace Omniscient
                 for (int i = 0; i < chunkSize; ++i)
                 {
                     records[r] = new VBFRecord();
-                    Array.Copy(chunk, i * RECORD_SIZE, buffer8, 0, 8);
-                    Array.Reverse(buffer8);  // Convert endianness
-                    records[r].time = BitConverter.ToDouble(buffer8, 0);
-                    records[r].data = new float[8];
-                    for (int j = 0; j < 8; j++)
-                    {
-                        Array.Copy(chunk, i * RECORD_SIZE + 4 * j + 8, buffer4, 0, 4);
-                        Array.Reverse(buffer4);  // Convert endianness
-                        records[r].data[j] = BitConverter.ToUInt32(buffer4, 0);
-                    }
+                    Array.Copy(chunk, i * RECORD_SIZE, bufferRecord, 0, RECORD_SIZE);
+                    Array.Reverse(bufferRecord);  // Convert endianness
+                    records[r].time = BitConverter.ToDouble(bufferRecord, 32);
+                    
+                    records[r].data = new UInt32[8];
+                    Buffer.BlockCopy(bufferRecord, 0, records[r].data, 0, 32);
+                    Array.Reverse(records[r].data);
                     r++;
                 }
                 remainingRecords -= chunkSize;
