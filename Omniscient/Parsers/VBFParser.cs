@@ -77,9 +77,7 @@ namespace Omniscient
         private void ReadDataRecords(BinaryReader readBinary)
         {
             long numBytes = readBinary.BaseStream.Length;
-            byte[] buffer8 = new byte[8];
-            byte[] buffer4 = new byte[4];
-            byte[] bufferRecord = new byte[RECORD_SIZE];
+
             byte[] chunk;
             // Read data records
             numRecords = (int)((numBytes - HEADER_SIZE) / RECORD_SIZE);
@@ -89,6 +87,7 @@ namespace Omniscient
             int remainingRecords = numRecords;
             int r = 0;
             int chunkSize;
+            int recordStart;
             while(r < numRecords)
             {
                 if (remainingRecords > RECORD_CHUNK_SIZE)
@@ -99,12 +98,13 @@ namespace Omniscient
                 for (int i = 0; i < chunkSize; ++i)
                 {
                     records[r] = new VBFRecord();
-                    Array.Copy(chunk, i * RECORD_SIZE, bufferRecord, 0, RECORD_SIZE);
-                    Array.Reverse(bufferRecord);  // Convert endianness
-                    records[r].time = BitConverter.ToDouble(bufferRecord, 32);
+                    recordStart = i * RECORD_SIZE;
+
+                    Array.Reverse(chunk, recordStart, RECORD_SIZE);  // Convert endianness
+                    records[r].time = BitConverter.ToDouble(chunk, recordStart+32);
                     
                     records[r].data = new UInt32[8];
-                    Buffer.BlockCopy(bufferRecord, 0, records[r].data, 0, 32);
+                    Buffer.BlockCopy(chunk, recordStart, records[r].data, 0, 32);
                     Array.Reverse(records[r].data);
                     r++;
                 }

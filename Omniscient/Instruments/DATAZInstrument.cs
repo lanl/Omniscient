@@ -147,33 +147,12 @@ namespace Omniscient
                     TryNamingChannelsFromHeaders(FileModeFile);
                     return;
                 }
-                List<string> directories = new List<string>();
-                directories.Add(dataFolder);
-                if (IncludeSubDirectories)
-                {
-                    directories.AddRange(GetSubdirectories(dataFolder));
-                }
-                string fileName = "";
-                string[] filesInDirectory;
-                foreach (string directory in directories)
-                {
-                    filesInDirectory = Directory.GetFiles(directory);
-
-                    foreach (string file in filesInDirectory)
-                    {
-                        string fileAbrev = file.Substring(file.LastIndexOf('\\') + 1);
-                        if (fileAbrev.Length > (fileSuffix.Length + FileExtension.Length)
-                            && fileAbrev.Substring(fileAbrev.Length - (FileExtension.Length + 1)).ToLower() == ("." + FileExtension)
-                            && fileAbrev.ToLower().StartsWith(filePrefix.ToLower())
-                            && fileAbrev.Substring(fileAbrev.Length - (FileExtension.Length + 1 + fileSuffix.Length), fileSuffix.Length).ToLower() == fileSuffix.ToLower())
-                        {
-                            fileName = file;
-                            break;
-                        }
-                    }
-                    if (fileName != "") break;
-                }
-                TryNamingChannelsFromHeaders(fileName);
+                IEnumerable<string> patternFiles;
+                string pattern = filePrefix + "*" + fileSuffix + "." + FileExtension;
+                if (IncludeSubDirectories) patternFiles = Directory.EnumerateFiles(dataFolder, pattern, SearchOption.AllDirectories);
+                else patternFiles = Directory.EnumerateFiles(dataFolder, pattern, SearchOption.TopDirectoryOnly);
+                
+                TryNamingChannelsFromHeaders(patternFiles.First());
             }
             catch
             { }
