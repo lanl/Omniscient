@@ -340,10 +340,7 @@ namespace Omniscient
                 returnCode = IngestFile(compartment, dataFileNames[i]);
                 
             }
-            for (int c = 0; c < numChannels; c++)
-            {
-                channels[c].Sort(compartment);
-            }
+
             LoadVirtualChannels(compartment);
         }
         public abstract ReturnCode IngestFile(ChannelCompartment compartment, string fileName);

@@ -101,28 +101,55 @@ namespace Omniscient
             int numRecords = records.Count;
             if (returnCode != ReturnCode.SUCCESS || numRecords < 1) return returnCode;
             DataFile dataFile = new DataFile(fileName, records[0].time);
-
+            DataFile[] dataFiles = new DataFile[numRecords];
+            for (int r = 0; r < numRecords; ++r) dataFiles[r] = dataFile;
+            DateTime[] times = new DateTime[numRecords];
+            double[] statA = new double[numRecords];
+            double[] MVA = new double[numRecords];
+            double[] BTA = new double[numRecords];
+            double[] MTA = new double[numRecords];
+            double[] BVA = new double[numRecords];
+            double[] CVA = new double[numRecords];
+            double[] statB = new double[numRecords];
+            double[] MVB = new double[numRecords];
+            double[] BTB = new double[numRecords];
+            double[] MTB = new double[numRecords];
+            double[] BVB = new double[numRecords];
+            double[] CVB = new double[numRecords];
             DateTime time = DateTime.MinValue;
+            WUCSRecord record;
             for (int r = 0; r < numRecords; ++r)
             {
-                time = records[r].time;
-                channels[STATUS_A].AddDataPoint(compartment, time, records[r].statusA, dataFile);
-                channels[MAIN_VOLTAGE_A].AddDataPoint(compartment, time, records[r].mainVoltageA, dataFile);
-                channels[BATTERY_TEMP_A].AddDataPoint(compartment, time, records[r].batteryTempA, dataFile);
-                channels[MODULE_TEMP_A].AddDataPoint(compartment, time, records[r].moduleTempA, dataFile);
-                channels[BATTERY_VOLTAGE_A].AddDataPoint(compartment, time, records[r].batteryVoltageA, dataFile);
-                channels[CHARGER_VOLTAGE_A].AddDataPoint(compartment, time, records[r].chargerVoltageA, dataFile);
-                channels[STATUS_B].AddDataPoint(compartment, time, records[r].statusB, dataFile);
-                channels[MAIN_VOLTAGE_B].AddDataPoint(compartment, time, records[r].mainVoltageB, dataFile);
-                channels[BATTERY_TEMP_B].AddDataPoint(compartment, time, records[r].batteryTempB, dataFile);
-                channels[MODULE_TEMP_B].AddDataPoint(compartment, time, records[r].moduleTempB, dataFile);
-                channels[BATTERY_VOLTAGE_B].AddDataPoint(compartment, time, records[r].batteryVoltageB, dataFile);
-                channels[CHARGER_VOLTAGE_B].AddDataPoint(compartment, time, records[r].chargerVoltageB, dataFile);
+                record = records[r];
+                time = times[r] = record.time;
+                statA[r] = record.statusA;
+                MVA[r] = record.mainVoltageA;
+                BTA[r] = record.batteryTempA;
+                MTA[r] = record.moduleTempA;
+                BVA[r] = record.batteryVoltageA;
+                CVA[r] = record.chargerVoltageA;
+                statB[r] = record.statusB;
+                MVB[r] = record.mainVoltageB;
+                BTB[r] = record.batteryTempB;
+                MTB[r] = record.moduleTempB;
+                BVB[r] = record.batteryVoltageB;
+                CVB[r] = record.chargerVoltageB;
             }
+            channels[STATUS_A].AddDataPoints(compartment, times, statA, dataFiles);
+            channels[MAIN_VOLTAGE_A].AddDataPoints(compartment, times, MVA, dataFiles);
+            channels[BATTERY_TEMP_A].AddDataPoints(compartment, times, BTA, dataFiles);
+            channels[MODULE_TEMP_A].AddDataPoints(compartment, times, MTA, dataFiles);
+            channels[BATTERY_VOLTAGE_A].AddDataPoints(compartment, times, BVA, dataFiles);
+            channels[CHARGER_VOLTAGE_A].AddDataPoints(compartment, times, CVA, dataFiles);
+            channels[STATUS_B].AddDataPoints(compartment, times, statB, dataFiles);
+            channels[MAIN_VOLTAGE_B].AddDataPoints(compartment, times, MVB, dataFiles);
+            channels[BATTERY_TEMP_B].AddDataPoints(compartment, times, BTB, dataFiles);
+            channels[MODULE_TEMP_B].AddDataPoints(compartment, times, MTB, dataFiles);
+            channels[BATTERY_VOLTAGE_B].AddDataPoints(compartment, times, BVB, dataFiles);
+            channels[CHARGER_VOLTAGE_B].AddDataPoints(compartment, times, CVB, dataFiles);
+            
             dataFile.DataEnd = time;
-
             parser = new WUCSParser();
-
             return ReturnCode.SUCCESS;
         }
 

@@ -184,7 +184,7 @@ namespace Omniscient
             {
                 if (dayCache.Date >= dayRange.Start && dayCache.Date <= dayRange.End)
                 {
-                    for (int ch = 0; ch < Instrument.GetChannels().Length; ch++)
+                    for (int ch = 0; ch < channels.Length; ch++)
                     {
                         dayCache.BaseData[ch].ExportToChannel(channels[ch], compartment);
                     }
@@ -301,10 +301,6 @@ namespace Omniscient
                 }
             }
             Channel[] channels = Instrument.GetChannels();
-            foreach (Channel channel in channels)
-            {
-                channel.Sort(ChannelCompartment.Cache);
-            }
             Instrument.LoadVirtualChannels(ChannelCompartment.Cache);
 
             dayCache.BaseData = new ChannelCacheLevelData[channels.Length];

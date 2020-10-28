@@ -68,13 +68,71 @@ namespace Omniscient
             timeStamps[(int)compartment].Add(time);
             values[(int)compartment].Add(value);
             files[(int)compartment].Add(file);
+
+            List<DateTime> times = timeStamps[(int)compartment];
+            if (times.Count() == 0 || times[0] < time) // Add to end
+            {
+                timeStamps[(int)compartment].Add(time);
+                values[(int)compartment].Add(value);
+                files[(int)compartment].Add(file);
+            }
+            else if (times[0] > time) // Add to start
+            {
+                times.Insert(0, time);
+                values[(int)compartment].Insert(0, value);
+                files[(int)compartment].Insert(0, file);
+            }
+            else // Add to middle
+            {
+                int min = 1;
+                int max = times.Count() - 2;
+                int mid;
+                while (min < max)
+                {
+                    mid = (min + max) / 2;
+                    if (times[mid] < time) min = mid;
+                    else max = mid;
+                    if (max == min + 1) break;
+                }
+                times.Insert(max, time);
+                values[(int)compartment].Insert(max, value);
+                files[(int)compartment].Insert(max, file);
+            }
         }
 
-        public void AddDataPoints(ChannelCompartment compartment, DateTime[] timeArray, double[] valueArray, DataFile[] fileArray)
+        public void AddDataPoints(ChannelCompartment compartment, IEnumerable<DateTime> timeE, IEnumerable<double> valueE, IEnumerable<DataFile> fileE)
         {
-            timeStamps[(int)compartment].AddRange(timeArray);
-            values[(int)compartment].AddRange(valueArray);
-            files[(int)compartment].AddRange(fileArray);
+            if (timeE.Count() == 0) return;
+            List<DateTime> times = timeStamps[(int)compartment];
+            DateTime firstT = timeE.First();
+            if (times.Count() == 0 || times[0] < firstT) // Add to end
+            {
+                times.AddRange(timeE);
+                values[(int)compartment].AddRange(valueE);
+                files[(int)compartment].AddRange(fileE);
+            }
+            else if (times[0] > firstT) // Add to start
+            {
+                times.InsertRange(0, timeE);
+                values[(int)compartment].InsertRange(0, valueE);
+                files[(int)compartment].InsertRange(0, fileE);
+            }
+            else // Add to middle
+            {
+                int min = 1;
+                int max = times.Count() - 2;
+                int mid;
+                while (min < max)
+                {
+                    mid = (min + max) / 2;
+                    if (times[mid] < firstT) min = mid;
+                    else max = mid;
+                    if (max == min + 1) break;
+                }
+                times.InsertRange(max, timeE);
+                values[(int)compartment].InsertRange(max, valueE);
+                files[(int)compartment].InsertRange(max, fileE);
+            }
         }
 
         public void AddDataPoint(ChannelCompartment compartment, DateTime time, double value, TimeSpan duration, DataFile file)
@@ -83,6 +141,77 @@ namespace Omniscient
             values[(int)compartment].Add(value);
             durations[(int)compartment].Add(duration);
             files[(int)compartment].Add(file);
+
+            List<DateTime> times = timeStamps[(int)compartment];
+            if (times.Count() == 0 || times[0] < time) // Add to end
+            {
+                timeStamps[(int)compartment].Add(time);
+                values[(int)compartment].Add(value);
+                durations[(int)compartment].Add(duration);
+                files[(int)compartment].Add(file);
+            }
+            else if (times[0] > time) // Add to start
+            {
+                times.Insert(0, time);
+                values[(int)compartment].Insert(0, value);
+                durations[(int)compartment].Insert(0, duration);
+                files[(int)compartment].Insert(0, file);
+            }
+            else // Add to middle
+            {
+                int min = 1;
+                int max = times.Count() - 2;
+                int mid;
+                while (min < max)
+                {
+                    mid = (min + max) / 2;
+                    if (times[mid] < time) min = mid;
+                    else max = mid;
+                    if (max == min + 1) break;
+                }
+                times.Insert(max, time);
+                values[(int)compartment].Insert(max, value);
+                durations[(int)compartment].Insert(max, duration);
+                files[(int)compartment].Insert(max, file);
+            }
+        }
+
+        public void AddDataPoints(ChannelCompartment compartment, IEnumerable<DateTime> timeE, IEnumerable<double> valueE, IEnumerable<TimeSpan> durationsE, IEnumerable<DataFile> fileE)
+        {
+            if (timeE.Count() == 0) return;
+            List<DateTime> times = timeStamps[(int)compartment];
+            DateTime firstT = timeE.First();
+            if (times.Count() == 0 || times[0] < firstT) // Add to end
+            {
+                times.AddRange(timeE);
+                values[(int)compartment].AddRange(valueE);
+                durations[(int)compartment].AddRange(durationsE);
+                files[(int)compartment].AddRange(fileE);
+            }
+            else if (times[0] > firstT) // Add to start
+            {
+                times.InsertRange(0, timeE);
+                values[(int)compartment].InsertRange(0, valueE);
+                durations[(int)compartment].InsertRange(0, durationsE);
+                files[(int)compartment].InsertRange(0, fileE);
+            }
+            else // Add to middle
+            {
+                int min = 1;
+                int max = times.Count() - 2;
+                int mid;
+                while (min < max)
+                {
+                    mid = (min + max) / 2;
+                    if (times[mid] < firstT) min = mid;
+                    else max = mid;
+                    if (max == min + 1) break;
+                }
+                times.InsertRange(max, timeE);
+                values[(int)compartment].InsertRange(max, valueE);
+                durations[(int)compartment].InsertRange(max, durationsE);
+                files[(int)compartment].InsertRange(max, fileE);
+            }
         }
 
         public void ClearData(ChannelCompartment compartment)

@@ -65,15 +65,30 @@ namespace Omniscient
             DataFile dataFile = new DataFile(fileName, isrParser.GetDate());
             int numRecords = isrParser.GetNumRecords();
             DateTime time = DateTime.MinValue;
+            DateTime[] times = new DateTime[numRecords];
+            double[] T1 = new double[numRecords];
+            double[] T2 = new double[numRecords];
+            double[] T3 = new double[numRecords];
+            double[] RA = new double[numRecords];
+            double[] A = new double[numRecords];
+            DataFile[] dataFiles = new DataFile[numRecords];
+            for (int r = 0; r < numRecords; ++r) dataFiles[r] = dataFile;
+            ISRRecord record;
             for (int r = 0; r < numRecords; ++r)
             {
-                time = isrParser.ISRTimeToDateTime(isrParser.GetRecord(r).time);
-                channels[TOTALS1].AddDataPoint(compartment, time, isrParser.GetRecord(r).totals1, dataFile);
-                channels[TOTALS2].AddDataPoint(compartment, time, isrParser.GetRecord(r).totals2, dataFile);
-                channels[TOTALS3].AddDataPoint(compartment, time, isrParser.GetRecord(r).totals3, dataFile);
-                channels[REALS_PLUS_ACC].AddDataPoint(compartment, time, isrParser.GetRecord(r).realsPlusAccidentals, dataFile);
-                channels[ACC].AddDataPoint(compartment, time, isrParser.GetRecord(r).accidentals, dataFile);
+                record = isrParser.GetRecord(r);
+                time = times[r] = isrParser.ISRTimeToDateTime(record.time);
+                T1[r] = record.totals1;
+                T2[r] = record.totals2;
+                T3[r] = record.totals3;
+                RA[r] = record.realsPlusAccidentals;
+                A[r] = record.accidentals;
             }
+            channels[TOTALS1].AddDataPoints(compartment, times, T1, dataFiles);
+            channels[TOTALS2].AddDataPoints(compartment, times, T2, dataFiles);
+            channels[TOTALS3].AddDataPoints(compartment, times, T3, dataFiles);
+            channels[REALS_PLUS_ACC].AddDataPoints(compartment, times, RA, dataFiles);
+            channels[ACC].AddDataPoints(compartment, times, A, dataFiles);
             dataFile.DataEnd = time;
 
             isrParser = new ISRParser();

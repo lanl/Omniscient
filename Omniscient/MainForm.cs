@@ -113,6 +113,11 @@ namespace Omniscient
 
         private void Core_OnViewChanged(object sender, EventArgs e)
         {
+            this.BeginInvoke(new MethodInvoker(ViewChangedTask));
+        }
+
+        private void ViewChangedTask()
+        {
             ViewStartToolStripLabel.Text = "View Start: " + Core.ViewStart.ToString("MMM dd, yyyy  HH: mm:ss");
             StartDatePicker.Value = Core.ViewStart.Date;
             StartTimePicker.Value = Core.ViewStart;
@@ -837,11 +842,10 @@ namespace Omniscient
         {
             addingChannelPanels = true;
             System.Windows.Forms.Cursor.Current = Cursors.WaitCursor;
-            Core.ActivateInstrument(inst);
-            System.Windows.Forms.Cursor.Current = Cursors.Default;
-
+            Task activateTask = Task.Run(() => Core.ActivateInstrument(inst));
+            
+            
             ChannelsPanel.SuspendLayout();
-
             foreach (Channel ch in inst.GetChannels())
             {
                 if (!ch.Hidden)
@@ -857,9 +861,12 @@ namespace Omniscient
 
             for (int i = chPanels.Count - 1; i >= 0; i--)
                 chPanels[i].SendToBack();
-
             ChannelsLabelPanel.SendToBack();
             ChannelsPanel.ResumeLayout();
+            
+            activateTask.Wait();
+            
+            System.Windows.Forms.Cursor.Current = Cursors.Default;
             UpdateGlobalStartEnd();
             addingChannelPanels = false;
         }
@@ -1734,7 +1741,10 @@ namespace Omniscient
                 {
                     SitesTreeView.Nodes.Find(inst.ID.ToString(), true)[0].Checked = true;
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    
+                }
             }
 
             foreach(Tuple<Channel, ChannelDisplayConfig> channelPreset in preset.ChannelPresets)

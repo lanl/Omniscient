@@ -89,13 +89,23 @@ namespace Omniscient
             else dataFile.DataStart = DateTime.MinValue;
 
             int numRecords = parser.TimeStamps.Length;
+            DataFile[] dataFiles = new DataFile[numRecords];
+            for (int r = 0; r < numRecords; ++r) dataFiles[r] = dataFile;
+            DateTime[] times = parser.TimeStamps;
+            double[][] data = new double[numChannels][];
+            for (int c = 0; c < numChannels; c++) data[c] = new double[numRecords];
+
             for (int r = 0; r < numRecords; ++r)
             {
-                time = parser.TimeStamps[r];
+                time = times[r];
                 for (int c = 0; c < numChannels; c++)
                 {
-                    channels[c].AddDataPoint(compartment, time, parser.Data[r, c], dataFile);
+                    data[c][r] = parser.Data[r, c];
                 }
+            }
+            for (int c = 0; c < numChannels; c++)
+            {
+                channels[c].AddDataPoints(compartment, times, data[c], dataFiles);
             }
             dataFile.DataEnd = time;
             MakeNewParser();

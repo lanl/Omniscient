@@ -73,39 +73,14 @@ namespace Omniscient
                 // No need to view hidden data
                 return;
             }
-            if (channel is VirtualChannel)
+
+            if (Durations.Count == 0)
             {
-                if (Durations.Count == 0)
-                {
-                    for (int i = 0; i < TimeStamps.Count; i++)
-                    {
-                        channel.AddDataPoint(compartment, TimeStamps[i], Values[i], Files[i]);
-                    }
-                }
-                else
-                {
-                    for (int i = 0; i < TimeStamps.Count; i++)
-                    {
-                        channel.AddDataPoint(compartment, TimeStamps[i], Values[i], Durations[i], Files[i]);
-                    }
-                }
+                channel.AddDataPoints(compartment, TimeStamps, Values, Files);
             }
             else
             {
-                if (Durations.Count == 0)
-                {
-                    for (int i = 0; i < TimeStamps.Count; i++)
-                    {
-                        channel.AddDataPoint(compartment, TimeStamps[i], Values[i], Files[i]);
-                    }
-                }
-                else
-                {
-                    for (int i = 0; i < TimeStamps.Count; i++)
-                    {
-                        channel.AddDataPoint(compartment, TimeStamps[i], Values[i], Durations[i], Files[i]);
-                    }
-                }
+                channel.AddDataPoints(compartment, TimeStamps, Values, Durations, Files);
             }
         }
     }

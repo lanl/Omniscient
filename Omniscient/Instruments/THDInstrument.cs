@@ -85,19 +85,28 @@ namespace Omniscient
 
             DataFile dataFile = new DataFile(fileName, thdParser.Date);
             int numRecords = thdParser.Records.Count;
+            DateTime[] times = new DateTime[numRecords];
+            double[] d0 = new double[numRecords];
+            double[] d1 = new double[numRecords];
+            double[] d2 = new double[numRecords];
+            DataFile[] dataFiles = new DataFile[numRecords];
+            for (int r = 0; r < numRecords; ++r) dataFiles[r] = dataFile;
+            THDRecord record;
             DateTime time = DateTime.MinValue;
             for (int r = 0; r < numRecords; ++r)
             {
-                time = thdParser.Records[r].time;
-                channels[TEMP].AddDataPoint(compartment, time, thdParser.Records[r].data0, dataFile);
-                channels[HUMIDITY].AddDataPoint(compartment, time, thdParser.Records[r].data1, dataFile);
-                channels[DEW].AddDataPoint(compartment, time, thdParser.Records[r].data2, dataFile);
+                record = thdParser.Records[r];
+                time = times[r] = record.time;
+                d0[r] = record.data0;
+                d1[r] = record.data1;
+                d2[r] = record.data2;
             }
+            channels[TEMP].AddDataPoints(compartment, times, d0, dataFiles);
+            channels[HUMIDITY].AddDataPoints(compartment, times, d1, dataFiles);
+            channels[DEW].AddDataPoints(compartment, times, d2, dataFiles);
 
             dataFile.DataEnd = time;
-
             thdParser = new THDParser();
-
             return ReturnCode.SUCCESS;
         }
 

@@ -88,20 +88,32 @@ namespace Omniscient
 
             DataFile dataFile = new DataFile(fileName, atpmParser.Date);
             int numRecords = atpmParser.Records.Length;
+            DateTime[] times = new DateTime[numRecords];
+            double[] d0 = new double[numRecords];
+            double[] d1 = new double[numRecords];
+            double[] d2 = new double[numRecords];
+            double[] d3 = new double[numRecords];
+            DataFile[] dataFiles = new DataFile[numRecords];
             DateTime time = DateTime.MinValue;
+            ATPMRecord record;
+            for (int r = 0; r < numRecords; ++r) dataFiles[r] = dataFile;
             for (int r = 0; r < numRecords; ++r)
             {
-                time = atpmParser.ATPMTimeToDateTime(atpmParser.Records[r].time);
-                channels[chVolumFlow].AddDataPoint(compartment, time, atpmParser.Records[r].volumFlow, dataFile);
-                channels[chTempSupply].AddDataPoint(compartment, time, atpmParser.Records[r].tempSupply, dataFile);
-                channels[chTempReturn].AddDataPoint(compartment, time, atpmParser.Records[r].tempReturn, dataFile);
-                channels[chActualPow].AddDataPoint(compartment, time, atpmParser.Records[r].actualPow, dataFile);
+                record = atpmParser.Records[r];
+                time = times[r] = atpmParser.ATPMTimeToDateTime(record.time);
+                d0[r] = record.volumFlow;
+                d1[r] = record.tempSupply;
+                d2[r] = record.tempReturn;
+                d3[r] = record.actualPow;
             }
 
+            channels[chVolumFlow].AddDataPoints(compartment, times, d0, dataFiles);
+            channels[chTempSupply].AddDataPoints(compartment, times, d1, dataFiles);
+            channels[chTempReturn].AddDataPoints(compartment, times, d2, dataFiles);
+            channels[chActualPow].AddDataPoints(compartment, times, d3, dataFiles);
+
             dataFile.DataEnd = time;
-
             atpmParser = new ATPMParser();
-
             return ReturnCode.SUCCESS;
         }
 

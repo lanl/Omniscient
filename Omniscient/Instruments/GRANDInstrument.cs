@@ -79,8 +79,19 @@ namespace Omniscient
             DataFile dataFile = new DataFile(fileName, bidParser.GetDate());
             int numRecords = bidParser.GetNumRecords();
             DateTime time = DateTime.MinValue;
-            BIDRecord record;
+            DateTime[] times = new DateTime[numRecords];
+            double[] A = new double[numRecords];
+            double[] B = new double[numRecords];
+            double[] C = new double[numRecords];
+            double[] G1 = new double[numRecords];
+            double[] G1s = new double[numRecords];
+            double[] G2 = new double[numRecords];
+            double[] G2s = new double[numRecords];
+            double[] stat = new double[numRecords];
 
+            BIDRecord record;
+            DataFile[] dataFiles = new DataFile[numRecords];
+            for (int r = 0; r < numRecords; ++r) dataFiles[r] = dataFile;
             if (HideFlags)
             { 
                 float lastGam1 = 994000;
@@ -90,37 +101,36 @@ namespace Omniscient
                 for (int r = 0; r < numRecords; ++r)
                 {
                     record = bidParser.GetRecord(r);
-                    time = bidParser.BIDTimeToDateTime(record.time);
-                    channels[chACountRate].AddDataPoint(compartment, time, record.chACountRate, dataFile);
-                    channels[chBCountRate].AddDataPoint(compartment, time, record.chBCountRate, dataFile);
-                    channels[chCCountRate].AddDataPoint(compartment, time, record.chCCountRate, dataFile);
+                    time = times[r] = bidParser.BIDTimeToDateTime(record.time);
+                    A[r] = record.chACountRate;
+                    B[r] = record.chACountRate;
+                    C[r] = record.chACountRate;
                     
                     if (record.gamInGamCh1 > 990000 && record.gamCh1Sigma > 9900)
                     {
-                        channels[gamInGamCh1].AddDataPoint(compartment, time, lastGam1, dataFile);
-                        channels[gamCh1Sigma].AddDataPoint(compartment, time, lastGam1Sigma, dataFile);
+                        G1[r] = lastGam1;
+                        G1s[r] = lastGam1Sigma;
                     }
                     else
                     {
-                        channels[gamInGamCh1].AddDataPoint(compartment, time, record.gamInGamCh1, dataFile);
-                        channels[gamCh1Sigma].AddDataPoint(compartment, time, record.gamCh1Sigma, dataFile);
+                        G1[r] = record.gamInGamCh1;
+                        G1s[r] = record.gamCh1Sigma;
                         lastGam1 = record.gamInGamCh1;
                         lastGam1Sigma = record.gamCh1Sigma;
                     }
                     if (record.gamInGamCh2 > 990000 && record.gamCh2Sigma > 9900)
                     {
-                        channels[gamInGamCh2].AddDataPoint(compartment, time, lastGam2, dataFile);
-                        channels[gamCh2Sigma].AddDataPoint(compartment, time, lastGam2Sigma, dataFile);
+                        G2[r] = lastGam2;
+                        G2s[r] = lastGam2Sigma;
                     }
                     else
                     {
-                        channels[gamInGamCh2].AddDataPoint(compartment, time, record.gamInGamCh2, dataFile);
-                        channels[gamCh2Sigma].AddDataPoint(compartment, time, record.gamCh2Sigma, dataFile);
+                        G2[r] = record.gamInGamCh2;
+                        G2s[r] = record.gamCh2Sigma;
                         lastGam2 = record.gamInGamCh2;
                         lastGam2Sigma = record.gamCh2Sigma;
                     }
-                    channels[statCh].AddDataPoint(compartment, time, record.status, dataFile);
-                    
+                    stat[r] = record.status;
                 }
             }
             else
@@ -128,22 +138,28 @@ namespace Omniscient
                 for (int r = 0; r < numRecords; ++r)
                 {
                     record = bidParser.GetRecord(r);
-                    time = bidParser.BIDTimeToDateTime(record.time);
-                    channels[chACountRate].AddDataPoint(compartment, time, record.chACountRate, dataFile);
-                    channels[chBCountRate].AddDataPoint(compartment, time, record.chBCountRate, dataFile);
-                    channels[chCCountRate].AddDataPoint(compartment, time, record.chCCountRate, dataFile);
-                    channels[gamInGamCh1].AddDataPoint(compartment, time, record.gamInGamCh1, dataFile);
-                    channels[gamCh1Sigma].AddDataPoint(compartment, time, record.gamCh1Sigma, dataFile);
-                    channels[gamInGamCh2].AddDataPoint(compartment, time, record.gamInGamCh2, dataFile);
-                    channels[gamCh2Sigma].AddDataPoint(compartment, time, record.gamCh2Sigma, dataFile);
-                    channels[statCh].AddDataPoint(compartment, time, record.status, dataFile);
+                    time = times[r] = bidParser.BIDTimeToDateTime(record.time);
+                    A[r] = record.chACountRate;
+                    B[r] = record.chACountRate;
+                    C[r] = record.chACountRate;
+                    G1[r] = record.gamInGamCh1;
+                    G1s[r] = record.gamCh1Sigma;
+                    G2[r] = record.gamInGamCh2;
+                    G2s[r] = record.gamCh2Sigma;
+                    stat[r] = record.status;
                 }
             }
+            channels[chACountRate].AddDataPoints(compartment, times, A, dataFiles);
+            channels[chBCountRate].AddDataPoints(compartment, times, B, dataFiles);
+            channels[chCCountRate].AddDataPoints(compartment, times, C, dataFiles);
+            channels[gamInGamCh1].AddDataPoints(compartment, times, G1, dataFiles);
+            channels[gamCh1Sigma].AddDataPoints(compartment, times, G1s, dataFiles);
+            channels[gamInGamCh2].AddDataPoints(compartment, times, G2, dataFiles);
+            channels[gamCh2Sigma].AddDataPoints(compartment, times, G2s, dataFiles);
+            channels[statCh].AddDataPoints(compartment, times, stat, dataFiles);
 
             dataFile.DataEnd = time;
-
             bidParser = new BIDParser();
-
             return ReturnCode.SUCCESS;
         }
 

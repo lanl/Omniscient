@@ -101,11 +101,12 @@ namespace Omniscient
             double[] d6 = new double[numRecords];
             double[] d7 = new double[numRecords];
             DataFile[] dataFiles = new DataFile[numRecords];
+            for (int r = 0; r < numRecords; ++r) dataFiles[r] = dataFile;
             VBFRecord record;
             for (int r = 0; r < numRecords; ++r)
             {
                 record = vbfParser.GetRecord(r);
-                times[r] = vbfParser.VBFTimeToDateTime(record.time);
+                time = times[r] = vbfParser.VBFTimeToDateTime(record.time);
                 d0[r] = record.data[0];
                 d1[r] = record.data[1];
                 d2[r] = record.data[2];
@@ -114,7 +115,6 @@ namespace Omniscient
                 d5[r] = record.data[5];
                 d6[r] = record.data[6];
                 d7[r] = record.data[7];
-                dataFiles[r] = dataFile;
             }
             channels[data0].AddDataPoints(compartment, times, d0, dataFiles);
             channels[data1].AddDataPoints(compartment, times, d1, dataFiles);

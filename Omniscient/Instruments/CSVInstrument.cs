@@ -184,26 +184,42 @@ namespace Omniscient
             ReturnCode returnCode = csvParser.ParseFile(fileName);
 
             int numRecords = csvParser.GetNumRecords();
+            DataFile[] dataFiles = new DataFile[numRecords];
+            for (int r = 0; r < numRecords; ++r) dataFiles[r] = dataFile;
+            DateTime[] times = csvParser.TimeStamps;
+            double[][] data = new double[numChannels][];
+            for (int c = 0; c < numChannels; c++) data[c] = new double[numRecords];
+
             if (HasEndTimes)
             {
+                TimeSpan[] durations = new TimeSpan[numRecords];
                 for (int r = 0; r < numRecords; ++r)
                 {
                     time = csvParser.EndTimes[r];
+                    durations[r] = time - times[r];
                     for (int c = 0; c < numChannels; c++)
                     {
-                        channels[c].AddDataPoint(compartment, csvParser.TimeStamps[r], csvParser.Data[r, c], time - csvParser.TimeStamps[r], dataFile);
+                        data[c][r] = csvParser.Data[r, c];
                     }
+                }
+                for (int c = 0; c < numChannels; c++)
+                {
+                    channels[c].AddDataPoints(compartment, times, data[c], durations, dataFiles);
                 }
             }
             else
             {
                 for (int r = 0; r < numRecords; ++r)
                 {
-                    time = csvParser.TimeStamps[r];
+                    time = times[r];
                     for (int c = 0; c < numChannels; c++)
                     {
-                        channels[c].AddDataPoint(compartment, time, csvParser.Data[r, c], dataFile);
+                        data[c][r] = csvParser.Data[r, c];
                     }
+                }
+                for (int c = 0; c < numChannels; c++)
+                {
+                    channels[c].AddDataPoints(compartment, times, data[c], dataFiles);
                 }
             }
 
