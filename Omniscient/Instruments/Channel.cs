@@ -76,7 +76,7 @@ namespace Omniscient
                 values[(int)compartment].Add(value);
                 files[(int)compartment].Add(file);
             }
-            else if (times[0] > time) // Add to start
+            else if (times[0] >= time) // Add to start
             {
                 times.Insert(0, time);
                 values[(int)compartment].Insert(0, value);

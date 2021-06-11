@@ -842,7 +842,17 @@ namespace Omniscient
         {
             addingChannelPanels = true;
             System.Windows.Forms.Cursor.Current = Cursors.WaitCursor;
-            Task activateTask = Task.Run(() => Core.ActivateInstrument(inst));
+            Task activateTask = Task.Run(() =>
+                { 
+                    try
+                    {
+                        Core.ActivateInstrument(inst);
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show("Failed to activate instrument data for " + inst.Name + ".\n" + ex.Message);
+                    }
+                });
             
             
             ChannelsPanel.SuspendLayout();
