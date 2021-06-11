@@ -46,10 +46,11 @@ namespace Omniscient
     class DATAZParser
     {
         private System.Globalization.CultureInfo CULTURE_INFO = new CultureInfo("en-US");
-        const string TIMESTAMP_FORMAT = "yyyy-MM-dd HH:mm:ss";
+        string TIMESTAMP_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
         int dataStartIndex;
         public int DateTimeColumn { get; private set; }
+        public int NDataColumns { get; private set; }
 
         public string[] Headers { get; private set; }
         public double[,] Data { get; private set; }
@@ -82,6 +83,7 @@ namespace Omniscient
                     break;
                 }
             }
+            // Stop before multiplicity or CRC32 columns
             for (int c = 0; c < Headers.Length; c++)
             {
                 if (Headers[c].ToLower().StartsWith("mult"))
@@ -89,8 +91,47 @@ namespace Omniscient
                     Headers = Headers.Take(c).ToArray();
                     break;
                 }
+                else if (Headers[c].ToLower().StartsWith("crc32"))
+                {
+                    Headers = Headers.Take(c).ToArray();
+                    break;
+                }
             }
             if (DateTimeColumn < 0 || DateTimeColumn == Headers.Length - 1) return ReturnCode.CORRUPTED_FILE;
+            NDataColumns = Headers.Length - DateTimeColumn - 1;
+
+            // Determine timestamp format from first data record
+            if (dataStartIndex + 1 == lines.Length) return ReturnCode.CORRUPTED_FILE;  // Actual data is required
+            string timestamp = lines[dataStartIndex + 1].Split(',')[DateTimeColumn];
+            DateTime dateTime;
+            TIMESTAMP_FORMAT = "yyyy-MM-dd HH:mm:ss";
+            try { DateTime.ParseExact(timestamp, TIMESTAMP_FORMAT, CULTURE_INFO); }
+            catch {
+                try {
+                    TIMESTAMP_FORMAT = "yyyy-MM-dd HH:mm:ss.f";
+                    DateTime.ParseExact(timestamp, TIMESTAMP_FORMAT, CULTURE_INFO);
+                }
+                catch {
+                    try
+                    {
+                        TIMESTAMP_FORMAT = "yyyy-MM-dd HH:mm:ss.ff";
+                        DateTime.ParseExact(timestamp, TIMESTAMP_FORMAT, CULTURE_INFO);
+                    }
+                    catch
+                    {
+                        try
+                        {
+                            TIMESTAMP_FORMAT = "yyyy-MM-dd HH:mm:ss.fff";
+                            DateTime.ParseExact(timestamp, TIMESTAMP_FORMAT, CULTURE_INFO);
+                        }
+                        catch
+                        {
+                            return ReturnCode.CORRUPTED_FILE;
+                        }
+                    }
+                }
+            }
+
             return ReturnCode.SUCCESS;
         }
 
@@ -112,16 +153,15 @@ namespace Omniscient
             if (returnCode != ReturnCode.SUCCESS) return returnCode;
 
             // Read data
-            int nDataColumns = Headers.Length - DateTimeColumn - 1;
             int firstDataColumn = DateTimeColumn + 1;
             TimeStamps = new DateTime[1];
-            Data = new double[1, nDataColumns];
+            Data = new double[1, NDataColumns];
             int lIndex = dataStartIndex + 1;
             string line = lines[lIndex];
             string[] tokens;
             tokens = line.Split(',');
             TimeStamps[0] = DateTime.ParseExact(tokens[DateTimeColumn], TIMESTAMP_FORMAT, CULTURE_INFO);
-            for (int c = 0; c < nDataColumns; c++)
+            for (int c = 0; c < NDataColumns; c++)
             {
                 Data[0, c] = double.Parse(tokens[c + firstDataColumn]);
             }
@@ -156,10 +196,9 @@ namespace Omniscient
             int nDataLines = lIndex - dataStartIndex - 1;
 
             // Read data
-            int nDataColumns = Headers.Length - DateTimeColumn - 1;
             int firstDataColumn = DateTimeColumn + 1;
             TimeStamps = new DateTime[nDataLines];
-            Data = new double[nDataLines, nDataColumns];
+            Data = new double[nDataLines, NDataColumns];
             lIndex = dataStartIndex + 1;
             line = lines[lIndex];
             string[] tokens;
@@ -167,7 +206,7 @@ namespace Omniscient
             {
                 tokens = line.Split(',');
                 TimeStamps[d] = DateTime.ParseExact(tokens[DateTimeColumn], TIMESTAMP_FORMAT, CULTURE_INFO);
-                for (int c=0; c<nDataColumns; c++)
+                for (int c=0; c< NDataColumns; c++)
                 {
                     Data[d, c] = double.Parse(tokens[c + firstDataColumn]);
                 }
