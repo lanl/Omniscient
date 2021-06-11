@@ -419,8 +419,8 @@ namespace Omniscient
                 }
                 */
                 DateTimeRange range = inst.Cache.GetDataFilesTimeRange();
-                if (earliest > DateTime.MinValue && range.Start < earliest) earliest = range.Start;
-                if (latest < DateTime.MaxValue && range.End > latest) latest = range.End;
+                if (range.Start > DateTime.MinValue && range.Start < earliest) earliest = range.Start;
+                if (range.End < DateTime.MaxValue && range.End > latest) latest = range.End;
             }
 
             if (earliest > latest) return;

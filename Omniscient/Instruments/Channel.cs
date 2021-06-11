@@ -70,7 +70,7 @@ namespace Omniscient
             files[(int)compartment].Add(file);
 
             List<DateTime> times = timeStamps[(int)compartment];
-            if (times.Count() == 0 || times[0] < time) // Add to end
+            if (times.Count() == 0 || times[0] <= time) // Add to end
             {
                 timeStamps[(int)compartment].Add(time);
                 values[(int)compartment].Add(value);
@@ -105,7 +105,7 @@ namespace Omniscient
             if (timeE.Count() == 0) return;
             List<DateTime> times = timeStamps[(int)compartment];
             DateTime firstT = timeE.First();
-            if (times.Count() == 0 || times[0] < firstT) // Add to end
+            if (times.Count() == 0 || times[0] <= firstT) // Add to end
             {
                 times.AddRange(timeE);
                 values[(int)compartment].AddRange(valueE);
@@ -143,7 +143,7 @@ namespace Omniscient
             files[(int)compartment].Add(file);
 
             List<DateTime> times = timeStamps[(int)compartment];
-            if (times.Count() == 0 || times[0] < time) // Add to end
+            if (times.Count() == 0 || times[0] <= time) // Add to end
             {
                 timeStamps[(int)compartment].Add(time);
                 values[(int)compartment].Add(value);
@@ -181,7 +181,7 @@ namespace Omniscient
             if (timeE.Count() == 0) return;
             List<DateTime> times = timeStamps[(int)compartment];
             DateTime firstT = timeE.First();
-            if (times.Count() == 0 || times[0] < firstT) // Add to end
+            if (times.Count() == 0 || times[0] <= firstT) // Add to end
             {
                 times.AddRange(timeE);
                 values[(int)compartment].AddRange(valueE);

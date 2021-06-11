@@ -2530,7 +2530,7 @@ namespace Omniscient
         private void ZoomToFullRange()
         {
             System.Windows.Forms.Cursor.Current = Cursors.WaitCursor;
-            ChangeView(Core.GlobalStart, Core.GlobalEnd, true);
+            ChangeView(Core.GlobalStart, Core.GlobalEnd, false);
             System.Windows.Forms.Cursor.Current = Cursors.Default;
         }
 
