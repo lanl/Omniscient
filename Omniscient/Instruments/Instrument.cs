@@ -199,7 +199,7 @@ namespace Omniscient
             dataFileTimes = dataFileDateList.ToArray();
 
             Array.Sort(dataFileTimes, dataFileNames);
-            dataFileTimes[0] = GetFileDate(dataFileNames[0]); // Get the overall start time of data
+            if (dataFileTimes.Length > 0) dataFileTimes[0] = GetFileDate(dataFileNames[0]); // Get the overall start time of data
             Cache.SetDataFiles(dataFileNames, dataFileTimes);
             return true;
         }

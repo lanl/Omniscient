@@ -188,7 +188,8 @@ namespace Omniscient
             // Count data lines
             int lIndex = dataStartIndex + 1;
             string line = lines[lIndex];
-            while (line[0] != '$')
+            int endIndex = lines.Length - 1;
+            while (line[0] != '$' && lIndex < endIndex)
             {
                 lIndex++;
                 line = lines[lIndex];
