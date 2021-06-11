@@ -36,7 +36,7 @@ This source code is distributed under the New BSD license:
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 -->
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-	<Product Id="10ffd0f7-4857-464e-b3df-71f65abefc9f" Name="Omniscient" Language="1033" Version="!(bind.FileVersion.fil83F572D5885CA4382178F46C6D14A7DA)"
+	<Product Id="*" Name="Omniscient" Language="1033" Version="!(bind.FileVersion.fil83F572D5885CA4382178F46C6D14A7DA)"
            Manufacturer="IAEA SGTS" UpgradeCode="1c5b2a43-4bb3-4d89-8bcd-b908b1aec5de">
 		<Package InstallerVersion="200" Compressed="yes" InstallScope="perMachine" />
 
