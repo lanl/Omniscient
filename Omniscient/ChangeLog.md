@@ -1,5 +1,22 @@
 Omniscient Change Log
 
+##  0.9.8
+2021-06-11
+
+* Performance improvements for loading data
+* Added some flexibility for sub-second-precision DataZ timestamps
+* Fixed bugs related overall time span of data
+
+##  0.9.7
+2020-10-21
+
+* Added keyboard shortcuts
+* The start of the view time is displayed above the strip charts
+* The events table includes channel integrals over the event duration
+* Event generation is more efficient 
+* More intuitive behaviour when shifting the view near the edges of data
+
+
 ##  0.9.6
 2020-09-24
 
