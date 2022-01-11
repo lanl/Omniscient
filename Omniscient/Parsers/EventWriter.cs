@@ -27,9 +27,13 @@ namespace Omniscient
         public ReturnCode WriteEventFile(string fileName, List<Event> events)
         {
             // Open file for writing
-            StreamWriter writeStream;
+            StreamWriter writeStream = null;
             try { writeStream = new StreamWriter(fileName); }
-            catch { return ReturnCode.COULD_NOT_OPEN_FILE; }
+            catch
+            {
+                writeStream?.Close();
+                return ReturnCode.COULD_NOT_OPEN_FILE;
+            }
 
             // Write header
             writeStream.WriteLine("Event List, Omniscient Version," + OmniscientCore.VERSION);

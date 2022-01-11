@@ -310,7 +310,10 @@ namespace Omniscient
 
         public ReturnCode ParseDeclarationFile(string fileName)
         {
+            XmlReaderSettings xmlReaderSettings = new XmlReaderSettings();
+
             XmlDocument doc = new XmlDocument();
+            doc.XmlResolver = null;
             doc.Load(fileName);
 
             XmlNode declarationNode = doc["Declaration"];

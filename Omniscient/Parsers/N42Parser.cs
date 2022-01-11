@@ -145,6 +145,7 @@ namespace Omniscient
         public override ReturnCode ParseSpectrumFile(string newFileName)
         {
             XmlDocument doc = new XmlDocument();
+            doc.XmlResolver = null;
             doc.Load(newFileName);
 
             XmlNode N42Node = doc["N42InstrumentData"];

@@ -85,6 +85,7 @@ namespace Omniscient
             try
             {
                 XmlDocument doc = new XmlDocument();
+                doc.XmlResolver = null;
                 doc.Load(fileName);
                 XmlNode node = doc.DocumentElement;
                 showLeftPanel = node["ShowLeftPanel"].InnerText == "True";

@@ -117,11 +117,19 @@ namespace Omniscient
 
                 // Read header
                 ReturnCode returnCode = ParseHeader(readBinary);
-                if (returnCode != ReturnCode.SUCCESS) return returnCode;
+                if (returnCode != ReturnCode.SUCCESS)
+                {
+                    readStream.Close();
+                    return returnCode;
+                }
 
                 // Read cycles
                 returnCode = ParseCycles(readBinary);
-                if (returnCode != ReturnCode.SUCCESS) return returnCode;
+                if (returnCode != ReturnCode.SUCCESS)
+                {
+                    readStream.Close();
+                    return returnCode;
+                }
 
                 readStream.Close();
             }

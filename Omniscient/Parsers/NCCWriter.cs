@@ -58,9 +58,13 @@ namespace Omniscient
             if (Cycles.Count < 1) return ReturnCode.FAIL;
 
             // Open file
-            FileStream writeStream;
+            FileStream writeStream = null;
             try { writeStream = new FileStream(fileName, FileMode.Create); }
-            catch { return ReturnCode.COULD_NOT_OPEN_FILE; }
+            catch 
+            {
+                writeStream?.Close();
+                return ReturnCode.COULD_NOT_OPEN_FILE; 
+            }
             BinaryWriter binaryWriter = new BinaryWriter(writeStream);
 
             // Write Header

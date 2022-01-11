@@ -75,6 +75,7 @@ namespace Omniscient
             try
             { 
                 doc = new XmlDocument();
+                doc.XmlResolver = null;
                 doc.Load(fileName);
             }
             catch

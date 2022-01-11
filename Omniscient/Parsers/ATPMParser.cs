@@ -167,7 +167,11 @@ namespace Omniscient
                 readStream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                 BinaryReader readBinary = new BinaryReader(readStream);
                 ReadHeader(readBinary);
-                if (HeaderSize < 1) return ReturnCode.CORRUPTED_FILE;
+                if (HeaderSize < 1)
+                {
+                    readStream.Close();
+                    return ReturnCode.CORRUPTED_FILE;
+                }
                 ReadDataRecords(readBinary);
                 readStream.Close();
             }

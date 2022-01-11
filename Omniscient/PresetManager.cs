@@ -67,6 +67,7 @@ namespace Omniscient
             try
             {
                 XmlDocument doc = new XmlDocument();
+                doc.XmlResolver = null;
                 doc.Load(fileName);
                 presets.Clear();
 

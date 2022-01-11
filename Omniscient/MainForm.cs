@@ -1973,6 +1973,7 @@ namespace Omniscient
                 chart.SaveImage(ms, ChartImageFormat.Bmp);
                 Bitmap bm = new Bitmap(ms);
                 Clipboard.SetImage(bm);
+                bm.Dispose();
             }
         }
 
