@@ -129,6 +129,7 @@ namespace Omniscient
                 if (otherAction.Name == ActionsComboBox.Text)
                     action = otherAction;
             }
+            if (action is null) return; // Make fortify happy
             selectedAction = action;
             ActionNameTextBox.Text = action.Name;
             if(action is AnalysisAction)
@@ -470,7 +471,7 @@ namespace Omniscient
                 EventGeneratorHookup hookup = EventGenerator.GetHookup(eg.GetEventGeneratorType());
 
                 int index = 0;
-                List<EventGenerator> egs = (eg.Parent as DetectionSystem).GetEventGenerators();
+                List<EventGenerator> egs = eg.EventWatcher.GetEventGenerators();
                 for (int i=0; i<egs.Count; i++)
                 {
                     if (eg.ID == egs[i].ID)
@@ -539,6 +540,7 @@ namespace Omniscient
                 if (otherAction.Name == ActionsComboBox.Text)
                     action = otherAction;
             }
+            if (action is null) return; // Make fortify happy
             action.Delete();
             siteMan.Save();
             UpdateSitesTree();
@@ -607,6 +609,7 @@ namespace Omniscient
                 if (otherAction.Name == ActionsComboBox.Text)
                     action = otherAction;
             }
+            if (action is null) return; // Make fortify happy
             selectedAction = action;
             switch (ActionTypeComboBox.Text)
             {
