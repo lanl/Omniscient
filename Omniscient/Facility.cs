@@ -24,13 +24,15 @@ namespace Omniscient
     public class Facility : Persister
     {
         public override string Species { get { return "Facility"; } }
+        public Site ParentSite { get; }
 
         List<DetectionSystem> systems;
-
+        
         public Facility(Site parent, string name, uint id) : base(parent, name, id)
         {
             parent.GetFacilities().Add(this);
             systems = new List<DetectionSystem>();
+            ParentSite = parent;
         }
 
         public List<DetectionSystem> GetSystems()
@@ -41,15 +43,15 @@ namespace Omniscient
         public override bool SetIndex(int index)
         {
             base.SetIndex(index);
-            (Parent as Site).GetFacilities().Remove(this);
-            (Parent as Site).GetFacilities().Insert(index, this);
+            ParentSite.GetFacilities().Remove(this);
+            ParentSite.GetFacilities().Insert(index, this);
             return true;
         }
 
         public override void Delete()
         {
             base.Delete();
-            (Parent as Site).GetFacilities().Remove(this);
+            ParentSite.GetFacilities().Remove(this);
         }
 
         public override void ToXML(XmlWriter xmlWriter)

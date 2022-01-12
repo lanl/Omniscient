@@ -2676,23 +2676,23 @@ namespace Omniscient
             NewInstrumentDialog dialog;
             if (persister is Site)
             {
-                dialog = new NewInstrumentDialog(Core, persister as Site);
+                dialog = new NewInstrumentDialog(Core, (Site)persister);
             }
             else if (persister is Facility)
             {
                 Facility facility = (Facility)persister;
-                dialog = new NewInstrumentDialog(Core, facility.Parent as Site, facility);
+                dialog = new NewInstrumentDialog(Core, facility.ParentSite, facility);
             }
             else if (persister is DetectionSystem)
             {
                 DetectionSystem system = persister as DetectionSystem;
-                dialog = new NewInstrumentDialog(Core, system.Parent.Parent as Site,
+                dialog = new NewInstrumentDialog(Core, system.ParentFacility.ParentSite,
                     system.ParentFacility, system);
             }
             else if (persister is Instrument)
             {
                 DetectionSystem system = (persister as Instrument).Parent as DetectionSystem;
-                dialog = new NewInstrumentDialog(Core, system.Parent.Parent as Site,
+                dialog = new NewInstrumentDialog(Core, system.ParentFacility.ParentSite,
                     system.ParentFacility, system);
             }
             else dialog = new NewInstrumentDialog(Core);
