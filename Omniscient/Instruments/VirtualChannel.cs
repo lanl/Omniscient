@@ -299,6 +299,7 @@ namespace Omniscient
                         break;
                 }
             }
+            if (channelA is null || channelB is null) throw new Exception("Channel must be defined!");
             return new TwoChannelVC(newName, parent, channelA.GetChannelType(), id)
             {
                 Operation = operation,
@@ -459,6 +460,7 @@ namespace Omniscient
                         break;
                 }
             }
+            if (channel is null) throw new Exception("Channel must be defined!");
             return new ScalarOperationVC(newName, parent, channel.GetChannelType(), id)
             {
                 Operation = operation,
@@ -563,6 +565,7 @@ namespace Omniscient
                         break;
                 }
             }
+            if (channel is null) throw new Exception("Channel must be defined!");
             return new DelayVC(newName, parent, channel.GetChannelType(), id)
             {
                 Channel = channel,
@@ -665,6 +668,7 @@ namespace Omniscient
                         break;
                 }
             }
+            if (channel is null) throw new Exception("Channel must be defined!");
             return new ConvolveVC(newName, parent, channel.GetChannelType(), id)
             {
                 Channel = channel,
@@ -886,6 +890,7 @@ namespace Omniscient
                         break;
                 }
             }
+            if (channel is null) throw new Exception("Channel must be defined!");
             return new LocalStatisticVC(newName, parent, channel.GetChannelType(), id)
             {
                 Statistic = statistic,
@@ -1190,6 +1195,7 @@ namespace Omniscient
                         break;
                 }
             }
+            if (channel is null) throw new Exception("Channel must be defined!");
             return new TranscendentalVC(newName, parent, channel.GetChannelType(), id)
             {
                 Operation = operation,
