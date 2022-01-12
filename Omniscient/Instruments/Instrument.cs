@@ -85,6 +85,7 @@ namespace Omniscient
         }
 
         public bool IncludeSubDirectories { get; set; }
+        public DetectionSystem ParentDetectionSystem { get; }
         public Instrument(DetectionSystem parent, string name, uint id) : base(parent, name, id)
         {
             parent.GetInstruments().Add(this);
@@ -92,6 +93,7 @@ namespace Omniscient
             dataFileNames = new string[0];
             dataFileTimes = new DateTime[0];
             Cache = new InstrumentCache(this, AppDataDirectory);
+            ParentDetectionSystem = parent;
         }
 
         public void LoadVirtualChannels(ChannelCompartment compartment)
@@ -458,14 +460,14 @@ namespace Omniscient
         public override bool SetIndex(int index)
         {
             base.SetIndex(index);
-            (Parent as DetectionSystem).GetInstruments().Remove(this);
-            (Parent as DetectionSystem).GetInstruments().Insert(index, this);
+            ParentDetectionSystem.GetInstruments().Remove(this);
+            ParentDetectionSystem.GetInstruments().Insert(index, this);
             return true;
         }
         public override void Delete()
         {
             base.Delete();
-            (Parent as DetectionSystem).GetInstruments().Remove(this);
+            ParentDetectionSystem.GetInstruments().Remove(this);
         }
 
         public static InstrumentHookup GetHookup(string type)

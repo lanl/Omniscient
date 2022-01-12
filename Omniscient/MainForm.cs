@@ -2685,13 +2685,13 @@ namespace Omniscient
             }
             else if (persister is DetectionSystem)
             {
-                DetectionSystem system = persister as DetectionSystem;
+                DetectionSystem system = (DetectionSystem)persister;
                 dialog = new NewInstrumentDialog(Core, system.ParentFacility.ParentSite,
                     system.ParentFacility, system);
             }
             else if (persister is Instrument)
             {
-                DetectionSystem system = (persister as Instrument).Parent as DetectionSystem;
+                DetectionSystem system = ((Instrument)persister).ParentDetectionSystem;
                 dialog = new NewInstrumentDialog(Core, system.ParentFacility.ParentSite,
                     system.ParentFacility, system);
             }
