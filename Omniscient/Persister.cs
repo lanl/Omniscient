@@ -65,7 +65,7 @@ namespace Omniscient
         }
 
         public abstract string Species { get; }
-        public virtual Persister Parent { get; set; }
+        public virtual Persister Parent { get; }
         public virtual List<Persister> Children { get; set; }
         /// <summary>
         /// Constructor

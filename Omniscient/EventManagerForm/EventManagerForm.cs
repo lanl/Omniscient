@@ -554,7 +554,7 @@ namespace Omniscient
 
         private void PopulateDataSourceTab(AnalysisAction action, int compiler)
         {
-            DetectionSystem sys = (DetectionSystem)action.GetEventGenerator().GetEventWatcher();
+            DetectionSystem sys = action.GetEventGenerator().EventWatcher;
             DataSourceTabControl.TabPages.Add("Data Source " + (compiler + 1).ToString());
             DataCompilerPanel compilerPanel = new DataCompilerPanel();
             compilerPanel.Dock = DockStyle.Fill;
@@ -685,7 +685,7 @@ namespace Omniscient
         private void AnalysisChannelComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             bool breakout = false;
-            foreach(Instrument inst in ((DetectionSystem) selectedAction.GetEventGenerator().GetEventWatcher()).GetInstruments())
+            foreach(Instrument inst in (selectedAction.GetEventGenerator().EventWatcher).GetInstruments())
             {
                 foreach(Channel chan in inst.GetChannels())
                 {

@@ -41,7 +41,7 @@ namespace Omniscient
             new ManualEGHookup()
         };
 
-        protected DetectionSystem eventWatcher;
+        public DetectionSystem EventWatcher { get; }
         protected string eventGeneratorType;
         protected List<Event> events;
         protected List<Action> actions;
@@ -50,7 +50,7 @@ namespace Omniscient
         {
             parent.GetEventGenerators().Add(this);
 
-            eventWatcher = parent;
+            EventWatcher = parent;
             events = new List<Event>();
             actions = new List<Action>();
         }
@@ -67,8 +67,6 @@ namespace Omniscient
                 foreach (Action action in actions)
                     action.Execute(eve);
         }
-
-        public DetectionSystem GetEventWatcher() { return eventWatcher; }
 
         public abstract List<Parameter> GetParameters();
 
@@ -113,17 +111,17 @@ namespace Omniscient
 
         public override bool SetIndex(int index)
         {
-            eventWatcher.GetEventGenerators().Remove(this);
-            eventWatcher.GetEventGenerators().Insert(index, this);
-            eventWatcher.Children.Remove(this);
-            eventWatcher.Children.Insert(index + eventWatcher.GetInstruments().Count, this);
+            EventWatcher.GetEventGenerators().Remove(this);
+            EventWatcher.GetEventGenerators().Insert(index, this);
+            EventWatcher.Children.Remove(this);
+            EventWatcher.Children.Insert(index + EventWatcher.GetInstruments().Count, this);
             return true;
         }
 
         public override void Delete()
         {
             base.Delete();
-            eventWatcher.GetEventGenerators().Remove(this);
+            EventWatcher.GetEventGenerators().Remove(this);
         }
     }
 

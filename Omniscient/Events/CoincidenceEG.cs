@@ -195,8 +195,8 @@ namespace Omniscient
                 {
                     "Start to Start", "Start to End", "End to Start", "End to End", "Max to Max"
                 } },
-                new SystemEventGeneratorParameter("Event Generator A", (DetectionSystem)eventWatcher){ Value = eventGeneratorA.Name },
-                new SystemEventGeneratorParameter("Event Generator B", (DetectionSystem)eventWatcher){ Value = eventGeneratorB.Name },
+                new SystemEventGeneratorParameter("Event Generator A", EventWatcher){ Value = eventGeneratorA.Name },
+                new SystemEventGeneratorParameter("Event Generator B", EventWatcher){ Value = eventGeneratorB.Name },
                 new TimeSpanParameter("Window") { Value = window.TotalSeconds.ToString() },
                 new TimeSpanParameter("Min Difference") { Value = minDifference.TotalSeconds.ToString() }
             };

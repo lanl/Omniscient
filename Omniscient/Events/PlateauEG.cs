@@ -366,8 +366,8 @@ namespace Omniscient
 
             List<Parameter> parameters = new List<Parameter>()
             {
-                new SystemChannelParameter("Signal Channel", (DetectionSystem)eventWatcher){ Value = signalChannel.Name },
-                new SystemChannelParameter("Sigma Channel", (DetectionSystem)eventWatcher){ Value = sigmaChannel.Name },
+                new SystemChannelParameter("Signal Channel", EventWatcher){ Value = signalChannel.Name },
+                new SystemChannelParameter("Sigma Channel", EventWatcher){ Value = sigmaChannel.Name },
                 new IntParameter("Min Points"){ Value = minPoints.ToString() },
                 new IntParameter("Edge Points"){ Value = edgePoints.ToString() },
                 new DoubleParameter("N Sigma") { Value = nSigma.ToString() },

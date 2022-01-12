@@ -175,7 +175,7 @@ namespace Omniscient
         {
             List<Parameter> parameters = new List<Parameter>()
             {
-                new SystemChannelParameter("Channel", (DetectionSystem)eventWatcher){ Value = channel.Name },
+                new SystemChannelParameter("Channel", EventWatcher){ Value = channel.Name },
                 new DoubleParameter("Threshold") { Value = threshold.ToString() },
                 new TimeSpanParameter("Debounce Time") { Value = debounceTime.TotalSeconds.ToString() }
             };

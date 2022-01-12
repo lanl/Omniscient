@@ -26,7 +26,7 @@ namespace Omniscient
 
         protected string actionType;
         protected EventGenerator eventGenerator;
-
+        
         public Action(EventGenerator parent, string name, uint id) : base(parent, name, id)
         {
             eventGenerator = parent;
@@ -90,7 +90,7 @@ namespace Omniscient
                 case "Analysis":
                     AnalysisAction analysisAction = new AnalysisAction(eg, name, id);
                     analysisAction.GetAnalysis().SetCommand(actionNode.Attributes["command"]?.InnerText);
-                    foreach (Instrument inst in (eg.Parent as DetectionSystem).GetInstruments())
+                    foreach (Instrument inst in eg.EventWatcher.GetInstruments())
                     {
                         foreach (Channel ch in inst.GetChannels())
                         {

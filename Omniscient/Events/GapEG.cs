@@ -67,7 +67,7 @@ namespace Omniscient
         {
             List<Parameter> parameters = new List<Parameter>()
             {
-                new SystemChannelParameter("Channel", (DetectionSystem)eventWatcher){ Value = channel.Name },
+                new SystemChannelParameter("Channel", EventWatcher){ Value = channel.Name },
                 new TimeSpanParameter("Interval") { Value = interval.TotalSeconds.ToString() }
             };
             return parameters;
