@@ -1401,7 +1401,7 @@ namespace Omniscient
                         }
                     }
 
-                    if (inst is MCAInstrument || inst is DeclarationInstrument && !(durations is null))
+                    if ((inst is MCAInstrument || inst is DeclarationInstrument) && !(durations is null))
                     {
                         // Determine whether the user clicked within a measurement
                         for (int meas = 0; meas < timeStamps.Count(); meas++)

@@ -110,6 +110,8 @@ namespace Omniscient
                     case ParameterType.InstrumentChannel:
                         param = new InstrumentChannelParameter(pTemplate.Name, instrument) { Value = node.Attributes[paramNameStr]?.InnerText };
                         break;
+                    default:
+                        throw new Exception("Invalid paraemter type!");
                 }
                 param.Visible = pTemplate.Visible; 
                 parameters.Add(param);

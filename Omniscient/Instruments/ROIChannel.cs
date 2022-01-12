@@ -28,10 +28,10 @@ namespace Omniscient
         /// If true, values are given in keV. 
         /// If false, values are given as channel number.
         /// </summary>
-        public bool InputKeV 
-        { 
+        public bool InputKeV
+        {
             get { return roi.InputKeV; }
-            set { roi.InputKeV = value; } 
+            set { roi.InputKeV = value; }
         }
 
         public double Start
@@ -69,16 +69,18 @@ namespace Omniscient
             get { return roi.BGType; }
             set { roi.BGType = value; }
         }
+        public MCAInstrument ParentMCAInstrument { get; }
 
         public ROIChannel(string newName, MCAInstrument parent, ChannelType newType, uint id) : base(newName, parent, newType, id)
         {
             VCType = "ROI";
             roi = new ROI();
+            ParentMCAInstrument = parent;
         }
 
         public override void CalculateValues(ChannelCompartment compartment)
         {
-            MCAInstrument mca = Parent as MCAInstrument;
+            MCAInstrument mca = ParentMCAInstrument;
             List<DataFile> chanFiles = mca.GetChannels()[0].GetFiles(compartment);
             SpectrumParser parser = mca.SpectrumParser;
 
@@ -183,7 +185,7 @@ namespace Omniscient
 
         public override VirtualChannel FromParameters(Instrument parent, string newName, List<Parameter> parameters, uint id)
         {
-            ROIChannel roiChannel = new ROIChannel(newName, parent as MCAInstrument, Channel.ChannelType.DURATION_VALUE, id);
+            ROIChannel roiChannel = new ROIChannel(newName, (MCAInstrument)parent, Channel.ChannelType.DURATION_VALUE, id);
             roiChannel.InputKeV = true;
 
             foreach (Parameter param in parameters)
