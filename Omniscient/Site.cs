@@ -27,10 +27,13 @@ namespace Omniscient
 
         private List<Facility> facilities;
 
+        public SiteManager ParentSiteManager { get; }
+
         public Site(SiteManager parent, string name, uint id) : base(parent, name, id)
         {
             parent.GetSites().Add(this);
             facilities = new List<Facility>();
+            ParentSiteManager = parent;
         }
 
         public List<Facility> GetFacilities()
@@ -60,15 +63,15 @@ namespace Omniscient
         public override bool SetIndex(int index)
         {
             base.SetIndex(index);
-            (Parent as SiteManager).GetSites().Remove(this);
-            (Parent as SiteManager).GetSites().Insert(index, this);
+            ParentSiteManager.GetSites().Remove(this);
+            ParentSiteManager.GetSites().Insert(index, this);
             return true;
         }
 
         public override void Delete()
         {
             base.Delete();
-            (Parent as SiteManager).GetSites().Remove(this);
+            ParentSiteManager.GetSites().Remove(this);
         }
     }
 }
