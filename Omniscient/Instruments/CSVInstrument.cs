@@ -318,7 +318,7 @@ namespace Omniscient
                         TimeStampFormat = ((StringParameter)param).Value;
                         break;
                     case "Has End Times":
-                        HasEndTimes = (param as BoolParameter).ToBool();
+                        HasEndTimes = ((BoolParameter)param).ToBool();
                         break;
                 }
             }
@@ -380,7 +380,7 @@ namespace Omniscient
                         tStampFormat = ((StringParameter)param).Value;
                         break;
                     case "Has End Times":
-                        hasEndTimes = (param as BoolParameter).ToBool();
+                        hasEndTimes = ((BoolParameter)param).ToBool();
                         break;
                 }
             }

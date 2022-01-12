@@ -48,7 +48,7 @@ namespace Omniscient
                 {
                     case "Date Pattern":
                         DatePattern = param.Value;
-                        DateRegexPattern = (param as DateTimeFormatParameter).GetRegexPattern();
+                        DateRegexPattern = ((DateTimeFormatParameter)param).GetRegexPattern();
                         break;
                 }
             }
@@ -105,7 +105,7 @@ namespace Omniscient
                 {
                     case "Date Pattern":
                         instrument.DatePattern = param.Value;
-                        instrument.DateRegexPattern = (param as DateTimeFormatParameter).GetRegexPattern();
+                        instrument.DateRegexPattern = ((DateTimeFormatParameter)param).GetRegexPattern();
                         break;
                 }
             }

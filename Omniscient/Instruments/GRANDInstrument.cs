@@ -186,7 +186,7 @@ namespace Omniscient
                 switch (param.Name)
                 {
                     case "Hide Flags":
-                        HideFlags = (param as BoolParameter).ToBool();
+                        HideFlags = ((BoolParameter)param).ToBool();
                         break;
                 }
             }
@@ -211,7 +211,7 @@ namespace Omniscient
                 switch (param.Name)
                 {
                     case "Hide Flags":
-                        instrument.HideFlags = (param as BoolParameter).ToBool();
+                        instrument.HideFlags = ((BoolParameter)param).ToBool();
                         break;
                 }
             }
