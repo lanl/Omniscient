@@ -208,7 +208,7 @@ namespace Omniscient
 
         private void Chart_Resize(object sender, EventArgs e)
         {
-            Chart chart = sender as Chart;
+            Chart chart = (Chart)sender;
             if (!chart.Visible) return;
             if (chart.Width > 100)
             { 
@@ -1401,7 +1401,7 @@ namespace Omniscient
                         }
                     }
 
-                    if (inst is MCAInstrument || inst is DeclarationInstrument)
+                    if (inst is MCAInstrument || inst is DeclarationInstrument && !(durations is null))
                     {
                         // Determine whether the user clicked within a measurement
                         for (int meas = 0; meas < timeStamps.Count(); meas++)
@@ -1503,15 +1503,15 @@ namespace Omniscient
 
         private void OpenExplorerMenuItem_Click(object sender, EventArgs e)
         {
-            string fileName = (string)(sender as MenuItem).Tag;
+            string fileName = (string)((MenuItem)sender).Tag;
             System.Diagnostics.Process.Start("explorer.exe", "/select, \"" + fileName + "\"") ;
         }
 
         private void PlotSummedSpectraMenuItem_Click(object sender, EventArgs e)
         {
             // Get a list of files in the range
-            Channel chan = ((MenuItem)sender).Tag as Channel;
-            MCAInstrument inst = chan.GetInstrument() as MCAInstrument;
+            Channel chan = (Channel)((MenuItem)sender).Tag;
+            MCAInstrument inst = (MCAInstrument)chan.GetInstrument();
             List<DateTime> timeStamps = chan.GetTimeStamps(ChannelCompartment.View);
             List<TimeSpan> durations = chan.GetDurations(ChannelCompartment.View);
             List<DataFile> dataFiles = chan.GetFiles(ChannelCompartment.View);
@@ -1559,7 +1559,7 @@ namespace Omniscient
         private void ManualEGMenuItem_Click(object sender, EventArgs e)
         {
             MenuItem menuItem = (MenuItem)sender;
-            ManualEG manualEG = menuItem.Tag as ManualEG;
+            ManualEG manualEG = (ManualEG)menuItem.Tag;
             manualEG.AddEvent(manualIOR.TimeRange.Start, manualIOR.TimeRange.End, "Manual Event");
         }
 
@@ -1629,7 +1629,7 @@ namespace Omniscient
         {
             MenuItem menuItem = (MenuItem)sender;
             Inspectrum inspectrum = new Inspectrum();
-            Tuple<string, DateTime, string[], DateTime[]> tuple = menuItem.Tag as Tuple<string, DateTime, string[], DateTime[]>;
+            Tuple<string, DateTime, string[], DateTime[]> tuple = (Tuple<string, DateTime, string[], DateTime[]>)menuItem.Tag;
             inspectrum.EnterInstrumentMode(tuple.Item1, tuple.Item2, tuple.Item3, tuple.Item4);
             inspectrum.Show();
         }
@@ -1835,7 +1835,7 @@ namespace Omniscient
 
             // Get XYCharts
             for (int t = 1; t < BottomTabControl.TabCount; t++)
-                preset.XYPanels.Add((BottomTabControl.TabPages[t].Tag as XYPanel).GetSettings());
+                preset.XYPanels.Add(((XYPanel)BottomTabControl.TabPages[t].Tag).GetSettings());
 
             if (indexToDelete >= 0)
             {
@@ -2272,7 +2272,7 @@ namespace Omniscient
 
         private void ViewEvent_Click(object sender, EventArgs e)
         {
-            Event eve = (sender as MenuItem).Tag as Event;
+            Event eve = (Event)((MenuItem)sender).Tag;
             DateTime start = eve.StartTime;
             DateTime end = eve.EndTime;
             DateTime eventMid = eve.StartTime.AddTicks((end - start).Ticks / 2);
@@ -2291,7 +2291,7 @@ namespace Omniscient
 
         private void ExportDataMenuItem_Click(object sender, EventArgs e)
         {
-            Event eve = (sender as MenuItem).Tag as Event;
+            Event eve = (Event)((MenuItem)sender).Tag;
 
             if (Core.ActiveInstruments.Count == 0)
             {
@@ -2308,8 +2308,8 @@ namespace Omniscient
 
         private void RemoveEventMenuItem_Click(object sender, EventArgs e)
         {
-            Event eve = (sender as MenuItem).Tag as Event;
-            ManualEG eg = eve.GetEventGenerator() as ManualEG;
+            Event eve = (Event)((MenuItem)sender).Tag;
+            ManualEG eg = (ManualEG)eve.GetEventGenerator();
             eg.RemoveEvent(eve);
 
             Core.Events.Remove(eve);
@@ -2633,7 +2633,7 @@ namespace Omniscient
 
         public void CreateSitesTreeContextMenu(TreeNode node, MouseEventArgs e)
         {
-            Persister persister = node.Tag as Persister;
+            Persister persister = (Persister)node.Tag;
 
             if (persister is EventGenerator) return;    // Not supported yet
             else
@@ -2661,17 +2661,17 @@ namespace Omniscient
 
         private void ShowInSiteManagerMenuItem_Click(object sender, EventArgs e)
         {
-            MenuItem menuItem = sender as MenuItem;
-            Persister persister = menuItem.Tag as Persister;
+            MenuItem menuItem = (MenuItem)sender;
+            Persister persister = (Persister)menuItem.Tag;
             SiteManagerForm siteManForm = new SiteManagerForm(this, Core.SiteManager, persister);
             siteManForm.ShowDialog();
         }
 
         private void NewInstrumentSitesTreeMenuItem_Click(object sender, EventArgs e)
         {
-            MenuItem menuItem = sender as MenuItem;
-            TreeNode node = menuItem.Tag as TreeNode;
-            Persister persister = node.Tag as Persister;
+            MenuItem menuItem = (MenuItem)sender;
+            TreeNode node = (TreeNode)menuItem.Tag;
+            Persister persister = (Persister)node.Tag;
 
             NewInstrumentDialog dialog;
             if (persister is Site)
@@ -2704,10 +2704,10 @@ namespace Omniscient
 
         private void RemoveSitesTreeMenuItem_Click(object sender, EventArgs e)
         {
-            
-            MenuItem menuItem = sender as MenuItem;
-            TreeNode node = menuItem.Tag as TreeNode;
-            Persister persister = node.Tag as Persister;
+
+            MenuItem menuItem = (MenuItem)sender;
+            TreeNode node = (TreeNode)menuItem.Tag;
+            Persister persister = (Persister)node.Tag;
 
             if (MessageBox.Show("Are your sure you want to remove " + persister.Name + "?", "Remove " + persister.Species, MessageBoxButtons.OKCancel)
                != DialogResult.OK) return;
@@ -2750,7 +2750,7 @@ namespace Omniscient
         {
             for(int t = 1; t < BottomTabControl.TabCount; t++)
             {
-                XYPanel xyPanel = BottomTabControl.TabPages[t].Tag as XYPanel;
+                XYPanel xyPanel = (XYPanel)BottomTabControl.TabPages[t].Tag;
                 if (sender == xyPanel)
                 {
                     BottomTabControl.TabPages[t].Text = xyPanel.ChartTitle;
@@ -2787,7 +2787,7 @@ namespace Omniscient
 
         private void CloseXYChartTab(TabPage tabPage)
         {
-            XYPanel xyPanel = tabPage.Tag as XYPanel;
+            XYPanel xyPanel = (XYPanel)tabPage.Tag;
             xyPanel.Unsubscribe();
             BottomTabControl.TabPages.Remove(tabPage);
             tabPage.Dispose();
@@ -2796,7 +2796,7 @@ namespace Omniscient
 
         private void CloseXYChartMenuItem_Click(object sender, EventArgs e)
         {
-            CloseXYChartTab((sender as MenuItem).Tag as TabPage);
+            CloseXYChartTab((TabPage)((MenuItem)sender).Tag);
         }
 
         private void CenterSplitContainer_Panel2_MouseClick(object sender, MouseEventArgs e)
@@ -2820,7 +2820,7 @@ namespace Omniscient
         {
             for (int t = 1; t < BottomTabControl.TabCount; t++)
             {
-                XYPanel xyPanel = BottomTabControl.TabPages[t].Tag as XYPanel;
+                XYPanel xyPanel = (XYPanel)BottomTabControl.TabPages[t].Tag;
                 if (BottomTabControl.TabPages[t] == BottomTabControl.SelectedTab) xyPanel.Active = true;
                 else xyPanel.Active = false;
             }
