@@ -26,6 +26,7 @@ namespace Omniscient
 
         List<Instrument> instruments;
         private DeclarationInstrument declarationInstrument;
+        public Facility ParentFacility { get; }
 
         public DetectionSystem(Facility parent, string name, uint id) : base(parent, name, id)
         {
@@ -36,6 +37,7 @@ namespace Omniscient
 
             eventGenerators = new List<EventGenerator>();
             events = new List<Event>();
+            ParentFacility = parent;
         }
 
         public void AddInstrument(Instrument newInstrument)
@@ -116,14 +118,14 @@ namespace Omniscient
         public override bool SetIndex(int index)
         {
             base.SetIndex(index);
-            (Parent as Facility).GetSystems().Remove(this);
-            (Parent as Facility).GetSystems().Insert(index, this);
+            ParentFacility.GetSystems().Remove(this);
+            ParentFacility.GetSystems().Insert(index, this);
             return true;
         }
         public override void Delete()
         {
             base.Delete();
-            (Parent as Facility).GetSystems().Remove(this);
+            ParentFacility.GetSystems().Remove(this);
         }
     }
 }
