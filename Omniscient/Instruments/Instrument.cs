@@ -136,10 +136,10 @@ namespace Omniscient
             List<string> dataFileList = new List<string>();
             List<DateTime> dataFileDateList = new List<DateTime>();
             DateTime fileDate;
-            string[] patternFiles;
+            IEnumerable<string> patternFiles;
             string pattern = filePrefix + "*" + fileSuffix + "." + FileExtension;
-            if (IncludeSubDirectories) patternFiles = Directory.GetFiles(dataFolder, pattern, SearchOption.AllDirectories);
-            else patternFiles = Directory.GetFiles(dataFolder, pattern, SearchOption.TopDirectoryOnly);
+            if (IncludeSubDirectories) patternFiles = Directory.EnumerateFiles(dataFolder, pattern, SearchOption.AllDirectories);
+            else patternFiles = Directory.EnumerateFiles(dataFolder, pattern, SearchOption.TopDirectoryOnly);
 
             // Try using the file names to get dates
             if (NameConvensionScan(patternFiles)) return;
@@ -165,7 +165,7 @@ namespace Omniscient
             Cache.SetDataFiles(dataFileNames, dataFileTimes);
         }
 
-        private bool NameConvensionScan(string[] patternFiles)
+        private bool NameConvensionScan(IEnumerable<string> patternFiles)
         {
             const int MIN_FILE_NAME_LENGTH = 6 + 4; 
 
@@ -197,7 +197,7 @@ namespace Omniscient
                 }
             }
 
-            dataFileNames = patternFiles;
+            dataFileNames = patternFiles.ToArray();
             dataFileTimes = dataFileDateList.ToArray();
 
             Array.Sort(dataFileTimes, dataFileNames);

@@ -133,7 +133,7 @@ namespace Omniscient
             ActiveEventGenerators = new List<EventGenerator>();
             Events = new List<Event>();
 
-            GlobalStart = DateTime.Today.AddDays(-1);
+            GlobalStart = DateTime.Now.AddHours(-1);
             GlobalEnd = DateTime.Now;
             ChangeView(GlobalStart, GlobalEnd, true);
         }
