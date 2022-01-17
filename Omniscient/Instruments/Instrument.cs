@@ -260,8 +260,11 @@ namespace Omniscient
                     {
                         if (int.TryParse(fileAbrev.Substring(off + 8, 2), out day) && day > 0 && day < 32)
                         {
-                            offset = off;
-                            return true;
+                            if (!char.IsDigit(fileAbrev[4]) && !Char.IsDigit(fileAbrev[7]))
+                            { 
+                                offset = off;
+                                return true;
+                            }
                         }
                     }
                 }
