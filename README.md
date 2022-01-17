@@ -20,4 +20,4 @@ THIS SOFTWARE IS PROVIDED BY TRIAD NATIONAL SECURITY, LLC AND CONTRIBUTORS "AS I
 
 ## Minimum Requirements
 OS Windows 7 or above
-.NET Framework 4.7.2 or higher
+.NET Framework 4.8

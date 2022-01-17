@@ -6,8 +6,8 @@ Omniscient is a program for performing data review and analysis for nuclear safe
 
 
 ## System Requirements ##
-+ Windows 7, 8, or 10
-+ .NET Framework 4.6.1 or newer
++ Windows 7 or newer
++ .NET Framework 4.8
 + Screen resolution of at least 1280×720
 
 

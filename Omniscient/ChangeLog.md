@@ -1,5 +1,11 @@
 Omniscient Change Log
 
+##  0.9.9
+2022-01-17
+
+* Target .NET Framework 4.8
+* Some code cleaning with no impact on users
+
 ##  0.9.8
 2021-06-11
 
