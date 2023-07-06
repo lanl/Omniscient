@@ -62,6 +62,7 @@ namespace Omniscient
 
             xmlWriter.WriteStartDocument();
             xmlWriter.WriteStartElement("SiteManager");
+            xmlWriter.WriteAttributeString("Omniscient_Version", omniscient_version);
             xmlWriter.WriteEndElement();
             xmlWriter.WriteEndDocument();
             xmlWriter.Close();
@@ -90,65 +91,73 @@ namespace Omniscient
                 MessageBox.Show("Warning: SiteManager.xml was made by an older version of Omniscient.");
             }
 
-            foreach (XmlNode siteNode in doc.DocumentElement.ChildNodes)
+            try
             {
-                if (siteNode.Name != "Site") return ReturnCode.CORRUPTED_FILE;
-                Site newSite = Site.FromXML(siteNode, this);
-                foreach (XmlNode facilityNode in siteNode.ChildNodes)
+                foreach (XmlNode siteNode in doc.DocumentElement.ChildNodes)
                 {
-                    if (facilityNode.Name != "Facility") return ReturnCode.CORRUPTED_FILE;
-                    Facility newFacility = Facility.FromXML(facilityNode, newSite);
-                    foreach (XmlNode systemNode in facilityNode.ChildNodes)
+                    if (siteNode.Name != "Site") return ReturnCode.CORRUPTED_FILE;
+                    Site newSite = Site.FromXML(siteNode, this);
+                    foreach (XmlNode facilityNode in siteNode.ChildNodes)
                     {
-                        if (systemNode.Name != "System") return ReturnCode.CORRUPTED_FILE;
-                        DetectionSystem newSystem = DetectionSystem.FromXML(systemNode, newFacility);
-                        foreach (XmlNode instrumentNode in systemNode.ChildNodes)
+                        if (facilityNode.Name != "Facility") return ReturnCode.CORRUPTED_FILE;
+                        Facility newFacility = Facility.FromXML(facilityNode, newSite);
+                        foreach (XmlNode systemNode in facilityNode.ChildNodes)
                         {
-                            if (instrumentNode.Name == "Instrument")
+                            if (systemNode.Name != "System") return ReturnCode.CORRUPTED_FILE;
+                            DetectionSystem newSystem = DetectionSystem.FromXML(systemNode, newFacility);
+                            foreach (XmlNode instrumentNode in systemNode.ChildNodes)
                             {
-                                Instrument newInstrument = Instrument.FromXML(instrumentNode, newSystem);
-                                if (!newInstrument.Equals(null))
+                                if (instrumentNode.Name == "Instrument")
                                 {
-                                    int channelCount = 0;
-                                    Channel[] channels = newInstrument.GetStandardChannels();
-                                    foreach (XmlNode chanNode in instrumentNode.ChildNodes)
+                                    Instrument newInstrument = Instrument.FromXML(instrumentNode, newSystem);
+                                    if (!newInstrument.Equals(null))
                                     {
-                                        if (chanNode.Name == "Channel")
+                                        int channelCount = 0;
+                                        Channel[] channels = newInstrument.GetStandardChannels();
+                                        foreach (XmlNode chanNode in instrumentNode.ChildNodes)
                                         {
-                                            if (channelCount >= channels.Length) return ReturnCode.CORRUPTED_FILE;
-                                            channels[channelCount].ApplyXML(chanNode);
-                                            channelCount++;
-                                        }
-                                        else if (chanNode.Name == "VirtualChannel")
-                                        {
-                                            try
+                                            if (chanNode.Name == "Channel")
                                             {
-                                                VirtualChannel chan = VirtualChannel.FromXML(chanNode, newInstrument);
+                                                if (channelCount >= channels.Length) return ReturnCode.CORRUPTED_FILE;
+                                                channels[channelCount].ApplyXML(chanNode);
+                                                channelCount++;
                                             }
-                                            catch { return ReturnCode.CORRUPTED_FILE; }
+                                            else if (chanNode.Name == "VirtualChannel")
+                                            {
+                                                try
+                                                {
+                                                    VirtualChannel chan = VirtualChannel.FromXML(chanNode, newInstrument);
+                                                }
+                                                catch { return ReturnCode.CORRUPTED_FILE; }
+                                            }
+                                            else return ReturnCode.CORRUPTED_FILE;
                                         }
-                                        else return ReturnCode.CORRUPTED_FILE;
                                     }
                                 }
-                            }
-                            else if (instrumentNode.Name == "EventGenerator")
-                            {
-                                XmlNode eventNode = instrumentNode;     // Correct some shoddy nomenclature...
-                                EventGenerator eg = EventGenerator.FromXML(eventNode, newSystem);
-                                if (eg == null) return ReturnCode.CORRUPTED_FILE;
-                                foreach (XmlNode actionNode in eventNode.ChildNodes)
+                                else if (instrumentNode.Name == "EventGenerator")
                                 {
-                                    if (actionNode.Name != "Action") return ReturnCode.CORRUPTED_FILE;
-                                    Action action = Action.FromXML(actionNode, eg);
+                                    XmlNode eventNode = instrumentNode;     // Correct some shoddy nomenclature...
+                                    EventGenerator eg = EventGenerator.FromXML(eventNode, newSystem);
+                                    if (eg == null) return ReturnCode.CORRUPTED_FILE;
+                                    foreach (XmlNode actionNode in eventNode.ChildNodes)
+                                    {
+                                        if (actionNode.Name != "Action") return ReturnCode.CORRUPTED_FILE;
+                                        Action action = Action.FromXML(actionNode, eg);
+                                    }
                                 }
-                            }
-                            else
-                            {
-                                return ReturnCode.CORRUPTED_FILE;
+                                else
+                                {
+                                    return ReturnCode.CORRUPTED_FILE;
+                                }
                             }
                         }
                     }
                 }
+            }
+            catch (Exception ex) 
+            {
+                MessageBox.Show("Exception while loading SiteManager.xml:\n" + ex.Message);
+                return ReturnCode.CORRUPTED_FILE;
             }
             return ReturnCode.SUCCESS;
         }
