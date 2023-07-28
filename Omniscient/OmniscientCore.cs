@@ -28,7 +28,7 @@ namespace Omniscient
         /// </summary>
         public static readonly string VERSION = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Major.ToString() + "." +
             System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Minor.ToString() + "." +
-            System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Build.ToString() + "i";
+            System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.Build.ToString() + "b23-07-06";
 
         public event EventHandler ViewChanged;
         public event EventHandler<InstrumentEventArgs> InstrumentActivated;
