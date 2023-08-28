@@ -61,10 +61,11 @@ namespace Omniscient
             string[] tokens;
             tokens = lines[0].Split(',');
             if (tokens[0].ToLower() != "event list") return ReturnCode.CORRUPTED_FILE;
-            if (tokens[1].ToLower() != "version") return ReturnCode.CORRUPTED_FILE;
+            if (!tokens[1].ToLower().Contains("version")) return ReturnCode.CORRUPTED_FILE;
             int version;
-            if (!int.TryParse(tokens[2], out version)) return ReturnCode.CORRUPTED_FILE;
-            Version = version;
+            // TODO: track file version
+            // if (!int.TryParse(tokens[2], out version)) return ReturnCode.CORRUPTED_FILE;
+            // Version = version;
 
             // Read the column headers
             int eventStartCol = 0;

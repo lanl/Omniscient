@@ -24,19 +24,21 @@ namespace Omniscient
     {
         string dataFile;
         string dataFolder;
+        string rootDataDirectory;
         List<Event> Events;
         public ManualEG(DetectionSystem parent, string newName, uint id) : base(parent, newName, id)
         {
             eventGeneratorType = "Manual";
-            dataFolder = "Data\\" + id.ToString("X8");
-            dataFile = dataFolder + "\\Events.csv";
+            rootDataDirectory = Path.Combine(Persister.AppDataDirectory, "Data");
+            dataFolder = Path.Combine(rootDataDirectory, id.ToString("X8"));
+            dataFile = Path.Combine(dataFolder, "Events.csv");
             CheckFoldersExist();
             LoadEvents();
         }
 
         private void CheckFoldersExist()
         {
-            if (!Directory.Exists("Data")) Directory.CreateDirectory("Data");
+            if (!Directory.Exists(rootDataDirectory)) Directory.CreateDirectory(rootDataDirectory);
             if (!Directory.Exists(dataFolder)) Directory.CreateDirectory(dataFolder);
         }
 
