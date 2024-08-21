@@ -106,6 +106,21 @@ namespace Omniscient
                             return ReturnCode.CORRUPTED_FILE;
                         }
                         break;
+                    case "Calibration":
+                        foreach (XmlNode grandChildNode in childNode.ChildNodes)
+                        {
+                            if (grandChildNode.Name == "Coefficients")
+                            {
+                                string channelStr = childNode.InnerText;
+                                string[] countStr = channelStr.Trim().Split(new char[] { ' ' });
+                                if (countStr.Length > 1)
+                                {
+                                    zero = float.Parse(countStr[0]);
+                                    keVPerChannel = float.Parse(countStr[1]);
+                                }
+                            }
+                        }
+                        break;
                     case "ChannelData":
                         try
                         {
