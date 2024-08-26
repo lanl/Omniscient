@@ -111,6 +111,7 @@ namespace Omniscient
                 readBinary.ReadInt16();                     // Reserved
                 zero = readBinary.ReadSingle();
                 keVPerChannel = readBinary.ReadSingle();
+                if (keVPerChannel == 0) keVPerChannel = 1;
                 readBinary.ReadSingle();                    // Reserved
                 peakZero = readBinary.ReadSingle();
                 peakSlope = readBinary.ReadSingle();
