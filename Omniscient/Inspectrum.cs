@@ -206,6 +206,12 @@ namespace Omniscient
             HScroll.Maximum = H_SCROLL_MAX;
 
             if (Core.FileLoaded) DrawSpectrum();
+
+            Font titleFont = new Font("Microsoft Sans Serif", 11F, FontStyle.Bold, GraphicsUnit.Point, ((byte)(0)));
+            SpecChart.ChartAreas[0].AxisX.Title = "Energy (keV)";
+            SpecChart.ChartAreas[0].AxisX.TitleFont = titleFont;
+            SpecChart.ChartAreas[0].AxisY.Title = "Counts";
+            SpecChart.ChartAreas[0].AxisY.TitleFont = titleFont;
         }
 
         private void SpecChart_GetToolTipText(object sender, ToolTipEventArgs e)
@@ -248,12 +254,12 @@ namespace Omniscient
                 float positionY = 0;
                 float positionWidth = 99.9F;
                 float positionHeight = 99.9F;
-                float plotX = 100.0F * 60.0F / SpecChart.Width;
+                float plotX = 100.0F * 60.0F / SpecChart.Width + 3.0F;
                 float plotWidth = 99.9F - 1.5F * plotX;
 
                 if (SpecChart.Height > 52)
                 {
-                    float plotY = 100.0F * 20.0F / SpecChart.Height;
+                    float plotY = 100.0F * 20.0F / SpecChart.Height + 3.0F;
                     float plotHeight = 99.9F - 2.5F * plotY;
                     SpecChart.ChartAreas[0].Position.X = positionX;
                     SpecChart.ChartAreas[0].Position.Y = positionY;
