@@ -28,6 +28,8 @@ using System.Windows.Media;
 using System.Configuration;
 
 using Omniscient.MainDialogs;
+using static System.Net.Mime.MediaTypeNames;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace Omniscient
 {
@@ -1240,6 +1242,29 @@ namespace Omniscient
             System.Windows.Forms.Cursor.Current = Cursors.Default;
         }
 
+        // Helper for CreateChartContextMenu()
+        private void AddExplorerItem(List<MenuItem> OpenExplorerMenuItems, Channel chan, string file)
+        {
+            string text = "Show " + chan.GetInstrument().Name + " file in Explorer";
+            string tag = file;
+            bool alreadyExists = false;
+            foreach (MenuItem existingItem in OpenExplorerMenuItems)
+            {
+                if (existingItem.Text == text && (string)existingItem.Tag == tag)
+                {
+                    alreadyExists = true;
+                    break;
+                }
+            }
+            if (!alreadyExists)
+            {
+                MenuItem menuItem = new MenuItem(text);
+                menuItem.Tag = tag;
+                menuItem.Click += OpenExplorerMenuItem_Click;
+                OpenExplorerMenuItems.Add(menuItem);
+            }
+        }
+
         private void CreateChartContextMenu()
         {
             ContextMenu chartMenu = new ContextMenu();
@@ -1310,6 +1335,8 @@ namespace Omniscient
             {
                 Channel chan = chanPan.GetChannel();
                 Instrument inst = chan.GetInstrument();
+                string text;
+                bool alreadyExists = false;
 
                 bool plotChan = false;
                 switch (chartNum)
@@ -1346,10 +1373,7 @@ namespace Omniscient
                         {
                             if (timeStamps[meas] <= mouseTime && mouseTime <= timeStamps[meas] + durations[meas])
                             {
-                                MenuItem menuItem = new MenuItem("Show " + chan.Name + " file in Explorer");
-                                menuItem.Tag = chan.GetFiles(ChannelCompartment.View)[meas].FileName;
-                                menuItem.Click += OpenExplorerMenuItem_Click;
-                                OpenExplorerMenuItems.Add(menuItem);
+                                AddExplorerItem(OpenExplorerMenuItems, chan, chan.GetFiles(ChannelCompartment.View)[meas].FileName);
                             }
                         }
                     }
@@ -1358,26 +1382,17 @@ namespace Omniscient
                         // Point values require more effort
                         if (timeStamps.Count == 1)
                         {
-                            MenuItem menuItem = new MenuItem("Show " + chan.Name + " file in Explorer");
-                            menuItem.Tag = chan.GetFiles(ChannelCompartment.View)[0].FileName;
-                            menuItem.Click += OpenExplorerMenuItem_Click;
-                            OpenExplorerMenuItems.Add(menuItem);
+                            AddExplorerItem(OpenExplorerMenuItems, chan, chan.GetFiles(ChannelCompartment.View)[0].FileName);
                         }
                         else
                         {
                             if (mouseTime.Ticks <= (timeStamps[0].Ticks + timeStamps[1].Ticks)/2)
                             {
-                                MenuItem menuItem = new MenuItem("Show " + chan.Name + " file in Explorer");
-                                menuItem.Tag = chan.GetFiles(ChannelCompartment.View)[0].FileName;
-                                menuItem.Click += OpenExplorerMenuItem_Click;
-                                OpenExplorerMenuItems.Add(menuItem);
+                                AddExplorerItem(OpenExplorerMenuItems, chan, chan.GetFiles(ChannelCompartment.View)[0].FileName);
                             }
                             else if (mouseTime.Ticks > (timeStamps[timeStamps.Count-1].Ticks + timeStamps[timeStamps.Count - 2].Ticks) / 2)
                             {
-                                MenuItem menuItem = new MenuItem("Show " + chan.Name + " file in Explorer");
-                                menuItem.Tag = chan.GetFiles(ChannelCompartment.View)[timeStamps.Count - 1].FileName;
-                                menuItem.Click += OpenExplorerMenuItem_Click;
-                                OpenExplorerMenuItems.Add(menuItem);
+                                AddExplorerItem(OpenExplorerMenuItems, chan, chan.GetFiles(ChannelCompartment.View)[timeStamps.Count - 1].FileName);
                             }
                             else if (timeStamps.Count > 2)
                             {
@@ -1388,10 +1403,7 @@ namespace Omniscient
                                 {
                                     if (mouseTime.Ticks > (thisTick+lastTick)/2 && mouseTime.Ticks <= (thisTick + nextTick)/2)
                                     {
-                                        MenuItem menuItem = new MenuItem("Show " + chan.Name + " file in Explorer");
-                                        menuItem.Tag = chan.GetFiles(ChannelCompartment.View)[meas].FileName;
-                                        menuItem.Click += OpenExplorerMenuItem_Click;
-                                        OpenExplorerMenuItems.Add(menuItem);
+                                        AddExplorerItem(OpenExplorerMenuItems, chan, chan.GetFiles(ChannelCompartment.View)[meas].FileName);
                                     }
                                     lastTick = thisTick;
                                     thisTick = nextTick;
@@ -1410,13 +1422,26 @@ namespace Omniscient
                             {
                                 if (chan.GetInstrument() is MCAInstrument)
                                 {
-                                    MenuItem menuItem = new MenuItem("View " + chan.Name + " in Inspectrum");
-                                    menuItem.Tag = new Tuple<string, DateTime, string[], DateTime[]>(inst.GetChannels()[0].GetFiles(ChannelCompartment.View)[meas].FileName,
-                                                                                timeStamps[meas],
-                                                                                inst.GetDataFileNames(),
-                                                                                inst.GetDataFileDates());   // refer to main channel - virtual channels have issues with files
-                                    menuItem.Click += PlotSpectrumMenuItem_Click;
-                                    chartMenu.MenuItems.Add(menuItem);
+                                    text = "View " + chan.Name + " in Inspectrum";
+                                    alreadyExists = false;
+                                    foreach (MenuItem existingItem in chartMenu.MenuItems)
+                                    {
+                                        if (existingItem.Text == text)
+                                        {
+                                            alreadyExists = true;
+                                            break;
+                                        }
+                                    }
+                                    if (!alreadyExists)
+                                    {
+                                        MenuItem menuItem = new MenuItem(text);
+                                        menuItem.Tag = new Tuple<string, DateTime, string[], DateTime[]>(inst.GetChannels()[0].GetFiles(ChannelCompartment.View)[meas].FileName,
+                                                                                    timeStamps[meas],
+                                                                                    inst.GetDataFileNames(),
+                                                                                    inst.GetDataFileDates());   // refer to main channel - virtual channels have issues with files
+                                        menuItem.Click += PlotSpectrumMenuItem_Click;
+                                        chartMenu.MenuItems.Add(menuItem);
+                                    }
                                 }
                                 else if (chan.GetInstrument() is DeclarationInstrument)
                                 {
