@@ -83,6 +83,7 @@
     <Compile Include="Analysis\AnalysisResult.cs" />
     <Compile Include="Analysis\Analyzer.cs" />
     <Compile Include="Analysis\AnalyzerParameter.cs" />
+    <Compile Include="Analysis\AnalyzerStep.cs" />
     <Compile Include="Analysis\DataCompiler.cs" />
     <Compile Include="Analysis\FileListCompiler.cs" />
     <Compile Include="Analysis\FRAMPlutoniumResultParser.cs" />
