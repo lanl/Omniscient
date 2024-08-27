@@ -39,11 +39,11 @@ namespace Omniscient
             return analyzer;
         }
 
-        public ReturnCode Run()
+        public ReturnCode Run(Event eve)
         {
             foreach (AnalyzerStep step in steps) 
             {
-                step.Run(analyzerParameters);
+                step.Run(eve, analyzerParameters);
             }
             return ReturnCode.SUCCESS;
         }

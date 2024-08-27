@@ -30,7 +30,7 @@ namespace Omniscient
             StepType = stepType;
         }
 
-        public abstract ReturnCode Run(Dictionary<string, AnalyzerParameter> analysisParams);
+        public abstract ReturnCode Run(Event eve, Dictionary<string, AnalyzerParameter> analysisParams);
 
         public abstract List<Parameter> GetParameters();
         public abstract void ApplyParameters(List<Parameter> parameters);
@@ -163,7 +163,7 @@ namespace Omniscient
             }
         }
 
-        public override ReturnCode Run(Dictionary<string, AnalyzerParameter> analysisParams)
+        public override ReturnCode Run(Event eve, Dictionary<string, AnalyzerParameter> analysisParams)
         {
             Parameter param1, param2, outputParam;
             try

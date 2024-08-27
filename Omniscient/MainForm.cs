@@ -2288,6 +2288,14 @@ namespace Omniscient
                 menuItem.Click += ViewEvent_Click;
                 menu.MenuItems.Add(menuItem);
 
+                foreach (Analyzer analyzer in eve.GetEventGenerator().EventWatcher.GetAnalyzers())
+                {
+                    menuItem = new MenuItem("Run " + analyzer.Name + " analyzer");
+                    menuItem.Tag = new Tuple<Analyzer, Event>(analyzer, eve);
+                    menuItem.Click += RunAnalyzerMenuItem_Click;
+                    menu.MenuItems.Add(menuItem);
+                }
+
                 Point location = EventGridView.GetCellDisplayRectangle(e.ColumnIndex, e.RowIndex, false).Location;
                 location.X += e.X;
                 location.Y += e.Y;
@@ -2339,6 +2347,12 @@ namespace Omniscient
 
             Core.Events.Remove(eve);
             DisplayEvents();
+        }
+
+        private void RunAnalyzerMenuItem_Click(object sender, EventArgs e)
+        {
+            Tuple<Analyzer, Event> analyzerEvent = (Tuple<Analyzer, Event>)((MenuItem)sender).Tag;
+            analyzerEvent.Item1.Run(analyzerEvent.Item2);
         }
 
         private void toolStripButton1_Click(object sender, EventArgs e)
