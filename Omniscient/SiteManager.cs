@@ -145,6 +145,11 @@ namespace Omniscient
                                         Action action = Action.FromXML(actionNode, eg);
                                     }
                                 }
+                                else if (instrumentNode.Name == "Analyzer")
+                                {
+                                    XmlNode analyzerNode = instrumentNode;     // Correct some shoddy nomenclature...
+                                    Analyzer analyzer = Analyzer.FromXML(analyzerNode, newSystem);
+                                }
                                 else
                                 {
                                     return ReturnCode.CORRUPTED_FILE;

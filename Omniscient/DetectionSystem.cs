@@ -25,6 +25,8 @@ namespace Omniscient
         public override string Species { get { return "System"; } }
 
         List<Instrument> instruments;
+        List<Analyzer> analyzers;
+
         private DeclarationInstrument declarationInstrument;
         public Facility ParentFacility { get; }
 
@@ -37,6 +39,7 @@ namespace Omniscient
 
             eventGenerators = new List<EventGenerator>();
             events = new List<Event>();
+            analyzers = new List<Analyzer>();
             ParentFacility = parent;
         }
 
@@ -48,10 +51,9 @@ namespace Omniscient
                 instruments.Add(newInstrument);
         }
 
-        public List<Instrument> GetInstruments()
-        {
-            return instruments;
-        }
+        public List<Instrument> GetInstruments() => instruments;
+        public List<Analyzer> GetAnalyzers() => analyzers;
+        
 
         public void SetDeclarationInstrument(DeclarationInstrument inst)
         {
