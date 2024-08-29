@@ -17,10 +17,11 @@ namespace Omniscient
         public override string Species { get { return "AnalyzerStep"; } }
         public static readonly AnalyzerStepHookup[] Hookups = new AnalyzerStepHookup[]
         {
+            new SetEqualAnalyzerStepHookup(),
             new TwoParameterAnalyzerStepHookup(),
             new ChannelRangeStatisticAnalyzerStepHookup()
         };
-        public enum AnalyzerStepType { TWO_PARAMETER, CHANNEL_RANGES_TATISTIC }
+        public enum AnalyzerStepType { SET_EQUAL, TWO_PARAMETER, CHANNEL_RANGE_STATISTIC }
         public AnalyzerStepType StepType { get; private set; }
         public Analyzer ParentAnalyzer { get; }
 
@@ -85,6 +86,90 @@ namespace Omniscient
         public List<ParameterTemplate> TemplateParameters { get; set; }
     }
 
+    /// <summary>
+    /// Sets one parameter to the value of another.
+    /// </summary>
+    public class SetEqualAnalyzerStep : AnalyzerStep
+    {
+        string inputParamName;
+        string outputParamName;
+
+        public SetEqualAnalyzerStep(Analyzer analyzer, string name, uint id) : base(analyzer, name, id, AnalyzerStepType.SET_EQUAL)
+        {
+            inputParamName = "";
+            outputParamName = "";
+        }
+
+        public override List<Parameter> GetParameters()
+        {
+            List<Parameter> parameters = new List<Parameter>();
+            parameters.Add(new StringParameter("Input Parameter", inputParamName));
+            parameters.Add(new StringParameter("Output Parameter", outputParamName));
+            return parameters;
+        }
+
+        public override void ApplyParameters(List<Parameter> parameters)
+        {
+            foreach (Parameter param in parameters)
+            {
+                switch (param.Name)
+                {
+                    case "Input Parameter":
+                        inputParamName = param.Value;
+                        break;
+                    case "Output Parameter":
+                        outputParamName = param.Value;
+                        break;
+                }
+            }
+        }
+
+        public override ReturnCode Run(Event eve, Dictionary<string, AnalyzerParameter> analysisParams)
+        {
+            // Validate parameters
+            Parameter inputParam, outputParam;
+            try
+            {
+                inputParam = analysisParams[inputParamName].Parameter;
+                outputParam = analysisParams[outputParamName].Parameter;
+            }
+            catch (Exception ex) { return ReturnCode.BAD_INPUT; }
+            if ((outputParam.Type == ParameterType.Int || outputParam.Type == ParameterType.Double) &&
+                !(outputParam.Type == ParameterType.Int || outputParam.Type == ParameterType.Double)) return ReturnCode.BAD_INPUT;
+            else if (outputParam.Type == ParameterType.String) { } // Anything can be set to a string
+            else if (outputParam.Type != inputParam.Type) return ReturnCode.BAD_INPUT; // Everything else should be like-to-like
+
+            if (outputParam.Type == ParameterType.Int && inputParam.Type == ParameterType.Double)
+            {
+                double inputD = (inputParam as DoubleParameter).ToDouble();
+                outputParam.Value = ((int)inputD).ToString();
+            }
+            else
+            {
+                outputParam.Value = inputParam.Value;
+            }
+            return ReturnCode.SUCCESS;
+        }
+    }
+    public class SetEqualAnalyzerStepHookup : AnalyzerStepHookup
+    {
+        public SetEqualAnalyzerStepHookup()
+        {
+            TemplateParameters = new List<ParameterTemplate>()
+            {
+                new ParameterTemplate("Input Parameter", ParameterType.String),
+                new ParameterTemplate("Output Parameter", ParameterType.String)
+            };
+        }
+
+        public override string Type { get { return "Set Equal"; } }
+        public override AnalyzerStep FromParameters(Analyzer parent, string newName, List<Parameter> parameters, uint id)
+        {
+            SetEqualAnalyzerStep step = new SetEqualAnalyzerStep(parent, newName, id);
+            step.ApplyParameters(parameters);
+            return step;
+        }
+    }
 
     /// <summary>
     /// Combines two AnalyzerParameters through addition, subtration, multiplication, or division
@@ -266,7 +351,7 @@ namespace Omniscient
         string channelParamName;
         string outputParamName;
 
-        public ChannelRangeStatisticAnalyzerStep(Analyzer analyzer, string name, uint id) : base(analyzer, name, id, AnalyzerStepType.CHANNEL_RANGES_TATISTIC)
+        public ChannelRangeStatisticAnalyzerStep(Analyzer analyzer, string name, uint id) : base(analyzer, name, id, AnalyzerStepType.CHANNEL_RANGE_STATISTIC)
         {
             channelParamName = "";
             outputParamName = "";
