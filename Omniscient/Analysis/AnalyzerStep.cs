@@ -572,6 +572,7 @@ namespace Omniscient
 
     /// <summary>
     /// Appends a string to a string parameter's value
+    /// Values of other parameters can be inserted in the appended string by placing the other parameter names in {} in the string
     /// </summary>
     public class AppendStringAnalyzerStep : AnalyzerStep
     {
@@ -611,7 +612,7 @@ namespace Omniscient
         public override ReturnCode Run(Event eve, Dictionary<string, AnalyzerParameter> analysisParams)
         {
             // Validate parameters
-            Parameter inputParam, outputParam;
+            Parameter inputParam;
             try
             {
                 inputParam = analysisParams[inputParamName].Parameter;
@@ -619,7 +620,32 @@ namespace Omniscient
             catch (Exception ex) { return ReturnCode.BAD_INPUT; }
             if (inputParam.Type != ParameterType.String) return ReturnCode.BAD_INPUT;
 
-            inputParam.Value += stringParam;
+            string result = stringParam;
+
+            int startIndex = result.IndexOf('{');
+            int endIndex;
+            string paramName;
+            Parameter subParam;
+            string subParamVal;
+            while (startIndex > 0 )
+            {
+                endIndex = result.IndexOf('}');
+                if (endIndex == -1) break;
+                paramName = result.Substring(startIndex+1, endIndex - startIndex - 1);
+                try
+                {
+                    subParam = analysisParams[paramName].Parameter;
+                    subParamVal = subParam.Value;
+                }
+                catch 
+                { 
+                    subParamVal = "INVALID"; 
+                }
+                result = result.Replace("{" + paramName + "}", subParamVal);
+                startIndex = result.IndexOf('{');
+            }
+
+            inputParam.Value += result;
 
             return ReturnCode.SUCCESS;
         }
