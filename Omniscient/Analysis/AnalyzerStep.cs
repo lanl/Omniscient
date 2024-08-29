@@ -19,9 +19,10 @@ namespace Omniscient
         {
             new SetEqualAnalyzerStepHookup(),
             new TwoParameterAnalyzerStepHookup(),
-            new ChannelRangeStatisticAnalyzerStepHookup()
+            new ChannelRangeStatisticAnalyzerStepHookup(),
+            new AppendStringAnalyzerStepHookup()
         };
-        public enum AnalyzerStepType { SET_EQUAL, TWO_PARAMETER, CHANNEL_RANGE_STATISTIC }
+        public enum AnalyzerStepType { SET_EQUAL, TWO_PARAMETER, CHANNEL_RANGE_STATISTIC, APPEND_STRING }
         public AnalyzerStepType StepType { get; private set; }
         public Analyzer ParentAnalyzer { get; }
 
@@ -564,6 +565,81 @@ namespace Omniscient
         public override AnalyzerStep FromParameters(Analyzer parent, string newName, List<Parameter> parameters, uint id)
         {
             ChannelRangeStatisticAnalyzerStep step = new ChannelRangeStatisticAnalyzerStep(parent, newName, id);
+            step.ApplyParameters(parameters);
+            return step;
+        }
+    }
+
+    /// <summary>
+    /// Appends a string to a string parameter's value
+    /// </summary>
+    public class AppendStringAnalyzerStep : AnalyzerStep
+    {
+        string inputParamName;
+        string stringParam;
+
+        public AppendStringAnalyzerStep(Analyzer analyzer, string name, uint id) : base(analyzer, name, id, AnalyzerStepType.APPEND_STRING)
+        {
+            inputParamName = "";
+            stringParam = "";
+        }
+
+        public override List<Parameter> GetParameters()
+        {
+            List<Parameter> parameters = new List<Parameter>();
+            parameters.Add(new StringParameter("Input Parameter", inputParamName));
+            parameters.Add(new StringParameter("String", stringParam));
+            return parameters;
+        }
+
+        public override void ApplyParameters(List<Parameter> parameters)
+        {
+            foreach (Parameter param in parameters)
+            {
+                switch (param.Name)
+                {
+                    case "Input Parameter":
+                        inputParamName = param.Value;
+                        break;
+                    case "String":
+                        stringParam = param.Value;
+                        break;
+                }
+            }
+        }
+
+        public override ReturnCode Run(Event eve, Dictionary<string, AnalyzerParameter> analysisParams)
+        {
+            // Validate parameters
+            Parameter inputParam, outputParam;
+            try
+            {
+                inputParam = analysisParams[inputParamName].Parameter;
+            }
+            catch (Exception ex) { return ReturnCode.BAD_INPUT; }
+            if (inputParam.Type != ParameterType.String) return ReturnCode.BAD_INPUT;
+
+            inputParam.Value += stringParam;
+
+            return ReturnCode.SUCCESS;
+        }
+    }
+
+    public class AppendStringAnalyzerStepHookup : AnalyzerStepHookup
+    {
+        public AppendStringAnalyzerStepHookup()
+        {
+            TemplateParameters = new List<ParameterTemplate>()
+            {
+                new ParameterTemplate("Input Parameter", ParameterType.String),
+                new ParameterTemplate("String", ParameterType.String)
+            };
+        }
+
+        public override string Type { get { return "Append String"; } }
+        public override AnalyzerStep FromParameters(Analyzer parent, string newName, List<Parameter> parameters, uint id)
+        {
+            AppendStringAnalyzerStep step = new AppendStringAnalyzerStep(parent, newName, id);
             step.ApplyParameters(parameters);
             return step;
         }
