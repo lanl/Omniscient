@@ -258,6 +258,10 @@ namespace Omniscient
     public class DoubleParameter : Parameter
     {
         public DoubleParameter(string name) : base(name, ParameterType.Double) { }
+        public DoubleParameter(string name, double val) : base(name, ParameterType.Double)
+        {
+            Value = val.ToString();
+        }
         public override bool Validate() { return double.TryParse(Value, out double result); }
         public double ToDouble() { return double.Parse(Value); }
     }

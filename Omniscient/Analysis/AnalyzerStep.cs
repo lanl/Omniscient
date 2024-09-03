@@ -22,10 +22,11 @@ namespace Omniscient
             new TwoParameterAnalyzerStepHookup(),
             new ChannelRangeStatisticAnalyzerStepHookup(),
             new SumSpectraAnalyzerStepHookup(),
-            new ExportSpectrumStepHookup(),
+            new ExportSpectrumAnalyzerStepHookup(),
+            new GetROIMaximumAnalyzerStepHookup(),
             new AppendStringAnalyzerStepHookup()
         };
-        public enum AnalyzerStepType { CREATE_VARIABLE, SET_EQUAL, TWO_PARAMETER, CHANNEL_RANGE_STATISTIC, SUM_SPECTRA, EXPORT_SPECTRUM, APPEND_STRING }
+        public enum AnalyzerStepType { CREATE_VARIABLE, SET_EQUAL, TWO_PARAMETER, CHANNEL_RANGE_STATISTIC, SUM_SPECTRA, EXPORT_SPECTRUM, GET_ROI_MAXIMUM, APPEND_STRING }
         public AnalyzerStepType StepType { get; private set; }
         public Analyzer ParentAnalyzer { get; }
 
@@ -816,9 +817,9 @@ namespace Omniscient
         }
     }
 
-    public class ExportSpectrumStepHookup : AnalyzerStepHookup
+    public class ExportSpectrumAnalyzerStepHookup : AnalyzerStepHookup
     {
-        public ExportSpectrumStepHookup()
+        public ExportSpectrumAnalyzerStepHookup()
         {
             TemplateParameters = new List<ParameterTemplate>()
             {
@@ -832,6 +833,108 @@ namespace Omniscient
         public override AnalyzerStep FromParameters(Analyzer parent, string newName, List<Parameter> parameters, uint id)
         {
             ExportSpectrumAnalyzerStep step = new ExportSpectrumAnalyzerStep(parent, newName, id);
+            step.ApplyParameters(parameters);
+            return step;
+        }
+    }
+
+    /// <summary>
+    /// Exports a spectrum to a file
+    /// </summary>
+    public class GetROIMaximumAnalyzerStep : AnalyzerStep
+    {
+        string specParamName;
+        double keVStart, keVEnd;
+        string outputParamName;
+
+        public GetROIMaximumAnalyzerStep(Analyzer analyzer, string name, uint id) : base(analyzer, name, id, AnalyzerStepType.GET_ROI_MAXIMUM)
+        {
+            specParamName = "";
+            keVStart = 0;
+            keVEnd = double.MaxValue;
+            outputParamName = "";
+        }
+
+        public override List<Parameter> GetParameters()
+        {
+            List<Parameter> parameters = new List<Parameter>();
+            parameters.Add(new StringParameter("Spectrum Parameter", specParamName));
+            parameters.Add(new DoubleParameter("keV Start", keVStart));
+            parameters.Add(new DoubleParameter("keV End", keVEnd));
+            parameters.Add(new StringParameter("Output Parameter", outputParamName));
+            return parameters;
+        }
+
+        public override void ApplyParameters(List<Parameter> parameters)
+        {
+            foreach (Parameter param in parameters)
+            {
+                switch (param.Name)
+                {
+                    case "Spectrum Parameter":
+                        specParamName = param.Value;
+                        break;
+                    case "keV Start":
+                        keVStart = (param as DoubleParameter).ToDouble();
+                        break;
+                    case "keV End":
+                        keVEnd = (param as DoubleParameter).ToDouble();
+                        break;
+                    case "Output Parameter":
+                        outputParamName = param.Value;
+                        break;
+                }
+            }
+        }
+
+        public override ReturnCode Run(Event eve, Dictionary<string, AnalyzerParameter> analysisParams)
+        {
+            // Validate parameters
+            SpectrumParameter specParam;
+            Parameter outParam;
+            try
+            {
+                specParam = analysisParams[specParamName].Parameter as SpectrumParameter;
+                outParam = analysisParams[outputParamName].Parameter;
+            }
+            catch (Exception ex) { return ReturnCode.BAD_INPUT; }
+            if (outParam.Type != ParameterType.Int &&  outParam.Type != ParameterType.Double) return ReturnCode.BAD_INPUT;
+            if (keVStart < 0) return ReturnCode.BAD_INPUT;
+            if (keVEnd <= keVStart) return ReturnCode.BAD_INPUT;
+
+            Spectrum spec = specParam.Spectrum;
+            int[] counts = spec.GetCounts();
+            int maxVal = int.MinValue;
+            double m = spec.GetCalibrationSlope();
+            double b = spec.GetCalibrationZero();
+            double keV;
+            for (int i = 0; i< counts.Length; ++i)
+            {
+                keV = m * i + b;
+                if (keV >= keVStart && keV <= keVEnd && counts[i] > maxVal) maxVal = counts[i];
+            }
+            outParam.Value = maxVal.ToString();
+            return ReturnCode.SUCCESS;
+        }
+    }
+
+    public class GetROIMaximumAnalyzerStepHookup : AnalyzerStepHookup
+    {
+        public GetROIMaximumAnalyzerStepHookup()
+        {
+            TemplateParameters = new List<ParameterTemplate>()
+            {
+                new ParameterTemplate("Spectrum Parameter", ParameterType.String),
+                new ParameterTemplate("keV Start", ParameterType.Double),
+                new ParameterTemplate("keV End", ParameterType.Double),
+                new ParameterTemplate("Output Parameter", ParameterType.String)
+            };
+        }
+
+        public override string Type { get { return "Get ROI Maximum"; } }
+        public override AnalyzerStep FromParameters(Analyzer parent, string newName, List<Parameter> parameters, uint id)
+        {
+            GetROIMaximumAnalyzerStep step = new GetROIMaximumAnalyzerStep(parent, newName, id);
             step.ApplyParameters(parameters);
             return step;
         }
