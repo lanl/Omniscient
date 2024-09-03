@@ -22,9 +22,10 @@ namespace Omniscient
             new TwoParameterAnalyzerStepHookup(),
             new ChannelRangeStatisticAnalyzerStepHookup(),
             new SumSpectraAnalyzerStepHookup(),
+            new ExportSpectrumStepHookup(),
             new AppendStringAnalyzerStepHookup()
         };
-        public enum AnalyzerStepType { CREATE_VARIABLE, SET_EQUAL, TWO_PARAMETER, CHANNEL_RANGE_STATISTIC, SUM_SPECTRA, APPEND_STRING }
+        public enum AnalyzerStepType { CREATE_VARIABLE, SET_EQUAL, TWO_PARAMETER, CHANNEL_RANGE_STATISTIC, SUM_SPECTRA, EXPORT_SPECTRUM, APPEND_STRING }
         public AnalyzerStepType StepType { get; private set; }
         public Analyzer ParentAnalyzer { get; }
 
@@ -647,7 +648,7 @@ namespace Omniscient
         string channelParamName;
         string outputParamName;
 
-        public SumSpectraAnalyzerStep(Analyzer analyzer, string name, uint id) : base(analyzer, name, id, AnalyzerStepType.CHANNEL_RANGE_STATISTIC)
+        public SumSpectraAnalyzerStep(Analyzer analyzer, string name, uint id) : base(analyzer, name, id, AnalyzerStepType.SUM_SPECTRA)
         {
             channelParamName = "";
             outputParamName = "";
@@ -736,6 +737,101 @@ namespace Omniscient
         public override AnalyzerStep FromParameters(Analyzer parent, string newName, List<Parameter> parameters, uint id)
         {
             SumSpectraAnalyzerStep step = new SumSpectraAnalyzerStep(parent, newName, id);
+            step.ApplyParameters(parameters);
+            return step;
+        }
+    }
+
+    /// <summary>
+    /// Exports a spectrum to a file
+    /// </summary>
+    public class ExportSpectrumAnalyzerStep : AnalyzerStep
+    {
+        string specParamName;
+        string outputType;
+        string fileParamName;
+
+        public ExportSpectrumAnalyzerStep(Analyzer analyzer, string name, uint id) : base(analyzer, name, id, AnalyzerStepType.EXPORT_SPECTRUM)
+        {
+            specParamName = "";
+            outputType = "";
+            fileParamName = "";
+        }
+        public override List<Parameter> GetParameters()
+        {
+            List<Parameter> parameters = new List<Parameter>();
+            parameters.Add(new StringParameter("Spectrum Parameter", specParamName));
+            parameters.Add(new StringParameter("Output Type", outputType));
+            parameters.Add(new StringParameter("File Parameter", fileParamName));
+            return parameters;
+        }
+        public override void ApplyParameters(List<Parameter> parameters)
+        {
+            foreach (Parameter param in parameters)
+            {
+                switch (param.Name)
+                {
+                    case "Spectrum Parameter":
+                        specParamName = param.Value;
+                        break;
+                    case "Output Type":
+                        outputType = param.Value;
+                        break;
+                    case "File Parameter":
+                        fileParamName = param.Value;
+                        break;
+                }
+            }
+        }
+
+        public override ReturnCode Run(Event eve, Dictionary<string, AnalyzerParameter> analysisParams)
+        {
+            // Validate parameters
+            SpectrumParameter specParam;
+            StringParameter typeParam;
+            FileNameParameter fileParam;
+            try
+            {
+                specParam = analysisParams[specParamName].Parameter as SpectrumParameter;
+                typeParam = analysisParams[outputType].Parameter as StringParameter;
+                fileParam = analysisParams[fileParamName].Parameter as FileNameParameter;
+            }
+            catch (Exception ex) { return ReturnCode.BAD_INPUT; }
+            SpectrumWriter spectrumWriter;
+            switch (typeParam.Value.ToLower())
+            {
+                case "csv":
+                    spectrumWriter = new CSVSpectrumWriter();
+                    break;
+                case "chn":
+                    spectrumWriter = new CHNWriter();
+                    break;
+                default:
+                    return ReturnCode.BAD_INPUT;
+            }
+
+            spectrumWriter.SetSpectrum(specParam.Spectrum);
+            spectrumWriter.WriteSpectrumFile(fileParam.Value);
+            return ReturnCode.SUCCESS;
+        }
+    }
+
+    public class ExportSpectrumStepHookup : AnalyzerStepHookup
+    {
+        public ExportSpectrumStepHookup()
+        {
+            TemplateParameters = new List<ParameterTemplate>()
+            {
+                new ParameterTemplate("Spectrum Parameter", ParameterType.String),
+                new ParameterTemplate("Output Type", ParameterType.String),
+                new ParameterTemplate("File Parameter", ParameterType.String)
+            };
+        }
+
+        public override string Type { get { return "Export Spectrum"; } }
+        public override AnalyzerStep FromParameters(Analyzer parent, string newName, List<Parameter> parameters, uint id)
+        {
+            ExportSpectrumAnalyzerStep step = new ExportSpectrumAnalyzerStep(parent, newName, id);
             step.ApplyParameters(parameters);
             return step;
         }

@@ -59,6 +59,10 @@ namespace Omniscient
                     template = new ParameterTemplate(name, ParameterType.TimeSpan);
                     param = new TimeSpanParameter(name) { Value = value };
                     break;
+                case "FileName":
+                    template = new ParameterTemplate(name, ParameterType.FileName);
+                    param = new FileNameParameter(name) { Value = value };
+                    break;
                 case "Directory":
                     template = new ParameterTemplate(name, ParameterType.Directory);
                     param = new DirectoryParameter(name) { Value = value };
