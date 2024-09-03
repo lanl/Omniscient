@@ -162,42 +162,8 @@ namespace Omniscient
             FileName = "";
             FileExt = "";
 
-            DateTime startTime = DateTime.Now;
-            Spectrum spectrum;
-
-            if (spectra.Count == 0)
-            {
-                spectrum = new Spectrum(0, 1, new int[1024]);
-            }
-            else
-            {
-                CalibrationZero = spectra[0].GetCalibrationZero();
-                CalibrationSlope = spectra[0].GetCalibrationSlope();
-                int nBins = spectra[0].GetCounts().Length;
-                startTime = spectra[0].GetStartTime();
-
-                foreach (Spectrum subspec in spectra)
-                {
-                    if (subspec.GetCalibrationSlope() != CalibrationSlope &&
-                        subspec.GetCalibrationZero() != CalibrationZero)
-                    {
-                        CalibrationSlope = 1.0;
-                        CalibrationZero = 0.0;
-                    }
-                    if (subspec.GetCounts().Length > nBins) nBins = subspec.GetCounts().Length;
-                    if (subspec.GetStartTime() < startTime) startTime = subspec.GetStartTime();
-                }
-
-                spectrum = new Spectrum(CalibrationZero, CalibrationSlope, new int[nBins],
-                    startTime, 0, 0);
-
-                Counts = new int[nBins];
-                foreach (Spectrum subspec in spectra)
-                {
-                    spectrum.Add(subspec);
-                }
-            }
-
+            Spectrum spectrum = Spectrum.Sum(spectra);
+            
             LoadSpectrum(spectrum);
 
             FileSpectraCount = 1;

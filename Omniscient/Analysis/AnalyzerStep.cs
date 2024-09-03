@@ -17,12 +17,14 @@ namespace Omniscient
         public override string Species { get { return "AnalyzerStep"; } }
         public static readonly AnalyzerStepHookup[] Hookups = new AnalyzerStepHookup[]
         {
+            new CreateVariableAnalyzerStepHookup(),
             new SetEqualAnalyzerStepHookup(),
             new TwoParameterAnalyzerStepHookup(),
             new ChannelRangeStatisticAnalyzerStepHookup(),
+            new SumSpectraAnalyzerStepHookup(),
             new AppendStringAnalyzerStepHookup()
         };
-        public enum AnalyzerStepType { SET_EQUAL, TWO_PARAMETER, CHANNEL_RANGE_STATISTIC, APPEND_STRING }
+        public enum AnalyzerStepType { CREATE_VARIABLE, SET_EQUAL, TWO_PARAMETER, CHANNEL_RANGE_STATISTIC, SUM_SPECTRA, APPEND_STRING }
         public AnalyzerStepType StepType { get; private set; }
         public Analyzer ParentAnalyzer { get; }
 
@@ -85,6 +87,73 @@ namespace Omniscient
         public abstract AnalyzerStep FromParameters(Analyzer parent, string newName, List<Parameter> parameters, uint id);
         public abstract string Type { get; }
         public List<ParameterTemplate> TemplateParameters { get; set; }
+    }
+
+    /// <summary>
+    /// Creates a temporary variable that is deleted after an analyzer finishes running.
+    /// </summary>
+    public class CreateVariableAnalyzerStep : AnalyzerStep
+    {
+        string variableName;
+        ParameterType variableType;
+
+        public CreateVariableAnalyzerStep(Analyzer analyzer, string name, uint id) : base(analyzer, name, id, AnalyzerStepType.CREATE_VARIABLE)
+        {
+            variableName = "";
+            variableType = ParameterType.Double;
+        }
+
+        public override List<Parameter> GetParameters()
+        {
+            List<Parameter> parameters = new List<Parameter>();
+            parameters.Add(new StringParameter("Variable Name", variableName));
+            parameters.Add(new StringParameter("Variable Type", variableType.ToString()));
+            return parameters;
+        }
+
+        public override void ApplyParameters(List<Parameter> parameters)
+        {
+            foreach (Parameter param in parameters)
+            {
+                switch (param.Name)
+                {
+                    case "Variable Name":
+                        variableName = param.Value;
+                        break;
+                    case "Variable Type":
+                        variableType = Parameter.TypeFromString(param.Value);
+                        break;
+                }
+            }
+        }
+        public override ReturnCode Run(Event eve, Dictionary<string, AnalyzerParameter> analysisParams)
+        {
+            ParameterTemplate template = new ParameterTemplate(variableName, variableType);
+            Parameter param = Parameter.Make(ParentAnalyzer.ParentDetectionSystem, template);
+            AnalyzerParameter newVariable = new AnalyzerParameter(ParentAnalyzer, variableName, 0, template, param, true);
+
+            return ReturnCode.SUCCESS;
+        }
+    }
+
+    public class CreateVariableAnalyzerStepHookup : AnalyzerStepHookup
+    {
+        public CreateVariableAnalyzerStepHookup()
+        {
+            TemplateParameters = new List<ParameterTemplate>()
+            {
+                new ParameterTemplate("Variable Name", ParameterType.String),
+                new ParameterTemplate("Variable Type", ParameterType.String)
+            };
+        }
+
+        public override string Type { get { return "Create Variable"; } }
+        public override AnalyzerStep FromParameters(Analyzer parent, string newName, List<Parameter> parameters, uint id)
+        {
+            CreateVariableAnalyzerStep step = new CreateVariableAnalyzerStep(parent, newName, id);
+            step.ApplyParameters(parameters);
+            return step;
+        }
     }
 
     /// <summary>
@@ -565,6 +634,108 @@ namespace Omniscient
         public override AnalyzerStep FromParameters(Analyzer parent, string newName, List<Parameter> parameters, uint id)
         {
             ChannelRangeStatisticAnalyzerStep step = new ChannelRangeStatisticAnalyzerStep(parent, newName, id);
+            step.ApplyParameters(parameters);
+            return step;
+        }
+    }
+
+    /// <summary>
+    /// Sums all of the spectra within the event and stores it in a spectrum variable
+    /// </summary>
+    public class SumSpectraAnalyzerStep : AnalyzerStep
+    {
+        string channelParamName;
+        string outputParamName;
+
+        public SumSpectraAnalyzerStep(Analyzer analyzer, string name, uint id) : base(analyzer, name, id, AnalyzerStepType.CHANNEL_RANGE_STATISTIC)
+        {
+            channelParamName = "";
+            outputParamName = "";
+        }
+
+        public override List<Parameter> GetParameters()
+        {
+            List<Parameter> parameters = new List<Parameter>();
+            parameters.Add(new StringParameter("Channel Parameter", channelParamName));
+            parameters.Add(new StringParameter("Output Parameter", outputParamName));
+            return parameters;
+        }
+
+        public override void ApplyParameters(List<Parameter> parameters)
+        {
+            foreach (Parameter param in parameters)
+            {
+                switch (param.Name)
+                {
+                    case "Channel Parameter":
+                        channelParamName = param.Value;
+                        break;
+                    case "Output Parameter":
+                        outputParamName = param.Value;
+                        break;
+                }
+            }
+        }
+
+        public override ReturnCode Run(Event eve, Dictionary<string, AnalyzerParameter> analysisParams)
+        {
+            // Validate parameters
+            SystemChannelParameter channelParam;
+            SpectrumParameter specParam;
+            try
+            {
+                channelParam = analysisParams[channelParamName].Parameter as SystemChannelParameter;
+                specParam = analysisParams[outputParamName].Parameter as SpectrumParameter;
+            }
+            catch (Exception ex) { return ReturnCode.BAD_INPUT; }
+            Channel chan = channelParam.ToChannel();
+            if (chan.GetInstrument().GetInstrumentType() != "MCA") return ReturnCode.BAD_INPUT;
+
+            // Collect spectra in the channel during the event
+            MCAInstrument inst = chan.GetInstrument() as MCAInstrument;
+            inst.ClearData(ChannelCompartment.Process);
+            inst.LoadData(ChannelCompartment.Process, eve.StartTime, eve.EndTime);
+            List<Spectrum> spectra = new List<Spectrum>();
+            List<DateTime> timeStamps = chan.GetTimeStamps(ChannelCompartment.Process);
+            List<TimeSpan> durations = chan.GetDurations(ChannelCompartment.Process);
+            List<DataFile> dataFiles = chan.GetFiles(ChannelCompartment.Process);
+            List<string> files = new List<string>();
+            inst.ClearData(ChannelCompartment.Process);
+            for (int meas = 0; meas < timeStamps.Count(); meas++)
+            {
+                if (timeStamps[meas] >= eve.StartTime &&
+                    timeStamps[meas] + durations[meas] <= eve.EndTime)
+                {
+                    if (!files.Contains(dataFiles[meas].FileName))
+                    {
+                        files.Add(dataFiles[meas].FileName);
+                        inst.IngestFile(ChannelCompartment.Process, dataFiles[meas].FileName);
+                        spectra.Add(inst.SpectrumParser.GetSpectrum());
+                    }
+                }
+            }
+
+            // Sum spectra and store in output
+            specParam.Spectrum = Spectrum.Sum(spectra);
+            return ReturnCode.SUCCESS;
+        }
+    }
+
+    public class SumSpectraAnalyzerStepHookup : AnalyzerStepHookup
+    {
+        public SumSpectraAnalyzerStepHookup()
+        {
+            TemplateParameters = new List<ParameterTemplate>()
+            {
+                new ParameterTemplate("Channel Parameter", ParameterType.String),
+                new ParameterTemplate("Output Parameter", ParameterType.String)
+            };
+        }
+
+        public override string Type { get { return "Sum Spectra"; } }
+        public override AnalyzerStep FromParameters(Analyzer parent, string newName, List<Parameter> parameters, uint id)
+        {
+            SumSpectraAnalyzerStep step = new SumSpectraAnalyzerStep(parent, newName, id);
             step.ApplyParameters(parameters);
             return step;
         }

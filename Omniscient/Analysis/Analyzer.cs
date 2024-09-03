@@ -45,6 +45,19 @@ namespace Omniscient
             {
                 step.Run(eve, analyzerParameters);
             }
+
+            // Delete temporary variables
+            string key;
+            for (int i = analyzerParameters.Count - 1; i >= 0; i--)
+            {
+                if (analyzerParameters.ElementAt(i).Value.IsVariable)
+                {
+                    key = analyzerParameters.ElementAt(i).Value.Name;
+                    analyzerParameters.ElementAt(i).Value.Delete();
+                    analyzerParameters.Remove(key);
+                }
+            }
+
             return ReturnCode.SUCCESS;
         }
 
