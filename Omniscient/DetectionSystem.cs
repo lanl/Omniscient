@@ -129,6 +129,9 @@ namespace Omniscient
                     case "Analyzer":
                         Analyzer.FromXML(childNode, system);
                         break;
+                    case "DeclarationTemplate":
+                        DeclarationTemplate.FromXML(childNode, system);
+                        break;
                 }
             }
             return system;
