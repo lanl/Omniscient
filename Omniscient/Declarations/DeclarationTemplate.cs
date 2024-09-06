@@ -22,8 +22,13 @@ namespace Omniscient
             uint id;
             Persister.StartFromXML(node, out name, out id);
             DeclarationTemplate dTemplate = new DeclarationTemplate(system, name, id);
+            foreach (XmlNode childNode in node.ChildNodes)
+            {
+                if (childNode.Name == "CustomParameter") CustomParameter.FromXML(childNode, dTemplate);
+            }
             return dTemplate;
         }
+
         public override void ToXML(XmlWriter xmlWriter)
         {
             throw new NotImplementedException();

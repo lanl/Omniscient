@@ -493,7 +493,31 @@ namespace Omniscient
             Persister.StartFromXML(node, out name, out id);
             InstrumentHookup hookup = GetHookup(node.Attributes["Type"]?.InnerText);
             List<Parameter> parameters = Parameter.FromXML(node, hookup.TemplateParameters, system);
-            return hookup?.FromParameters(system, name, parameters, id);
+            Instrument instrument = hookup?.FromParameters(system, name, parameters, id);
+            if (!instrument.Equals(null))
+            {
+                int channelCount = 0;
+                Channel[] channels = instrument.GetStandardChannels();
+                foreach (XmlNode chanNode in node.ChildNodes)
+                {
+                    if (chanNode.Name == "Channel")
+                    {
+                        if (channelCount >= channels.Length) return null;
+                        channels[channelCount].ApplyXML(chanNode);
+                        channelCount++;
+                    }
+                    else if (chanNode.Name == "VirtualChannel")
+                    {
+                        try
+                        {
+                            VirtualChannel chan = VirtualChannel.FromXML(chanNode, instrument);
+                        }
+                        catch { return null; }
+                    }
+                    else return null;
+                }
+            }
+            return instrument;
         }
 
         public override void ToXML(XmlWriter xmlWriter)

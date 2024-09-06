@@ -105,56 +105,7 @@ namespace Omniscient
                         {
                             if (systemNode.Name != "System") return ReturnCode.CORRUPTED_FILE;
                             DetectionSystem newSystem = DetectionSystem.FromXML(systemNode, newFacility);
-                            foreach (XmlNode instrumentNode in systemNode.ChildNodes)
-                            {
-                                if (instrumentNode.Name == "Instrument")
-                                {
-                                    Instrument newInstrument = Instrument.FromXML(instrumentNode, newSystem);
-                                    if (!newInstrument.Equals(null))
-                                    {
-                                        int channelCount = 0;
-                                        Channel[] channels = newInstrument.GetStandardChannels();
-                                        foreach (XmlNode chanNode in instrumentNode.ChildNodes)
-                                        {
-                                            if (chanNode.Name == "Channel")
-                                            {
-                                                if (channelCount >= channels.Length) return ReturnCode.CORRUPTED_FILE;
-                                                channels[channelCount].ApplyXML(chanNode);
-                                                channelCount++;
-                                            }
-                                            else if (chanNode.Name == "VirtualChannel")
-                                            {
-                                                try
-                                                {
-                                                    VirtualChannel chan = VirtualChannel.FromXML(chanNode, newInstrument);
-                                                }
-                                                catch { return ReturnCode.CORRUPTED_FILE; }
-                                            }
-                                            else return ReturnCode.CORRUPTED_FILE;
-                                        }
-                                    }
-                                }
-                                else if (instrumentNode.Name == "EventGenerator")
-                                {
-                                    XmlNode eventNode = instrumentNode;     // Correct some shoddy nomenclature...
-                                    EventGenerator eg = EventGenerator.FromXML(eventNode, newSystem);
-                                    if (eg == null) return ReturnCode.CORRUPTED_FILE;
-                                    foreach (XmlNode actionNode in eventNode.ChildNodes)
-                                    {
-                                        if (actionNode.Name != "Action") return ReturnCode.CORRUPTED_FILE;
-                                        Action action = Action.FromXML(actionNode, eg);
-                                    }
-                                }
-                                else if (instrumentNode.Name == "Analyzer")
-                                {
-                                    XmlNode analyzerNode = instrumentNode;     // Correct some shoddy nomenclature...
-                                    Analyzer analyzer = Analyzer.FromXML(analyzerNode, newSystem);
-                                }
-                                else
-                                {
-                                    return ReturnCode.CORRUPTED_FILE;
-                                }
-                            }
+                            if (newSystem is null) MessageBox.Show("Warning: Corrupted system configuration in SiteManager.xml");
                         }
                     }
                 }

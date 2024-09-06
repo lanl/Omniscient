@@ -115,6 +115,22 @@ namespace Omniscient
             uint id;
             Persister.StartFromXML(node, out name, out id);
             DetectionSystem system = new DetectionSystem(parent, name, id);
+            if (system is null) return null;
+            foreach (XmlNode childNode in node.ChildNodes)
+            {
+                switch (childNode.Name)
+                {
+                    case "Instrument":
+                        Instrument.FromXML(childNode, system);
+                        break;
+                    case "EventGenerator":
+                        EventGenerator.FromXML(childNode, system);
+                        break;
+                    case "Analyzer":
+                        Analyzer.FromXML(childNode, system);
+                        break;
+                }
+            }
             return system;
         }
 

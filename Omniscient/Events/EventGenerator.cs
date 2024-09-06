@@ -89,7 +89,16 @@ namespace Omniscient
             Persister.StartFromXML(eventNode, out name, out id);
             EventGeneratorHookup hookup = GetHookup(eventNode.Attributes["Type"]?.InnerText);
             List<Parameter> parameters = Parameter.FromXML(eventNode, hookup.TemplateParameters, system);
-            return hookup?.FromParameters(system, name, parameters, id);
+            EventGenerator eg = hookup?.FromParameters(system, name, parameters, id);
+            if (eg is null) return null;
+            foreach (XmlNode actionNode in eventNode.ChildNodes)
+            {
+                if (actionNode.Name == "Action")
+                {
+                    Action action = Action.FromXML(actionNode, eg);
+                }
+            }
+            return eg;
         }
 
         public override void ToXML(XmlWriter xmlWriter)
