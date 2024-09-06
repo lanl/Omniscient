@@ -7,23 +7,32 @@ using System.Xml;
 
 namespace Omniscient
 {
-    public class AnalyzerParameter : Persister
+    public abstract class PersisterWithCustomParameters : Persister
     {
-        public override string Species { get { return "AnalyzerParameter"; } }
-        public Analyzer ParentAnalyzer { get; }
+        public Dictionary<string, CustomParameter> CustomParameters { get; set; }
+        public DetectionSystem DetectionSystem { get; set; }
+        protected PersisterWithCustomParameters(Persister parent, string name, uint id) : base(parent, name, id)
+        {
+            CustomParameters = new Dictionary<string, CustomParameter>();
+        }
+    }
+    public class CustomParameter : Persister
+    {
+        public override string Species { get { return "CustomParameter"; } }
+        public PersisterWithCustomParameters ParentWithCustomParameters { get; }
         public ParameterTemplate Template { get; private set; }
         public Parameter Parameter { get; private set; }
-        public bool IsVariable { get; private set; }
-        public AnalyzerParameter(Analyzer parent, string name, uint id, ParameterTemplate template, Parameter parameter, bool isVariable) : base(parent, name, id)
+        public bool IsTemporary { get; private set; }
+        public CustomParameter(PersisterWithCustomParameters parent, string name, uint id, ParameterTemplate template, Parameter parameter, bool isVariable) : base(parent, name, id)
         {
-            parent.GetAnalyzerParameters().Add(name, this);
-            ParentAnalyzer = parent;
+            ParentWithCustomParameters = parent;
+            ParentWithCustomParameters.CustomParameters.Add(name, this);
             Template = template;
             Parameter = parameter;
-            IsVariable = isVariable;
+            IsTemporary = isVariable;
         }
 
-        public static AnalyzerParameter FromXML(XmlNode node, Analyzer analyzer)
+        public static CustomParameter FromXML(XmlNode node, PersisterWithCustomParameters parent)
         {
             string name;
             uint id;
@@ -53,7 +62,7 @@ namespace Omniscient
                     break;
                 case "SystemChannel":
                     template = new ParameterTemplate(name, ParameterType.SystemChannel);
-                    param = new SystemChannelParameter(name, analyzer.ParentDetectionSystem) { Value = value };
+                    param = new SystemChannelParameter(name, parent.DetectionSystem) { Value = value };
                     break;
                 case "TimeSpan":
                     template = new ParameterTemplate(name, ParameterType.TimeSpan);
@@ -70,7 +79,7 @@ namespace Omniscient
                 default:
                     throw new ArgumentException("Invalid AnalyzerParameter type!");
             }
-            return new AnalyzerParameter(analyzer, name, id, template, param, isVariable);
+            return new CustomParameter(parent, name, id, template, param, isVariable);
         }
         public override void ToXML(XmlWriter xmlWriter)
         {
@@ -80,7 +89,7 @@ namespace Omniscient
         public override void Delete()
         {
             base.Delete();
-            ParentAnalyzer.GetAnalyzerParameters().Remove(this.Name);
+            ParentWithCustomParameters.CustomParameters.Remove(this.Name);
         }
     }
 }

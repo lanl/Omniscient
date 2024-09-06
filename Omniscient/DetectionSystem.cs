@@ -29,6 +29,7 @@ namespace Omniscient
 
         private DeclarationInstrument declarationInstrument;
         public Facility ParentFacility { get; }
+        public DeclarationTemplate DeclarationTemplate { get; set; }
 
         public DetectionSystem(Facility parent, string name, uint id) : base(parent, name, id)
         {

@@ -37,7 +37,7 @@ namespace Omniscient
             StepType = stepType;
         }
 
-        public abstract ReturnCode Run(Event eve, Dictionary<string, AnalyzerParameter> analysisParams);
+        public abstract ReturnCode Run(Event eve, Dictionary<string, CustomParameter> analysisParams);
 
         public abstract List<Parameter> GetParameters();
         public abstract void ApplyParameters(List<Parameter> parameters);
@@ -59,7 +59,7 @@ namespace Omniscient
             uint id;
             Persister.StartFromXML(node, out name, out id);
             AnalyzerStepHookup hookup = GetHookup(node.Attributes["Type"]?.InnerText);
-            List<Parameter> parameters = Parameter.FromXML(node, hookup.TemplateParameters, analyzer.ParentDetectionSystem);
+            List<Parameter> parameters = Parameter.FromXML(node, hookup.TemplateParameters, analyzer.DetectionSystem);
             return hookup?.FromParameters(analyzer, name, parameters, id);
         }
         public override void ToXML(XmlWriter xmlWriter)
@@ -128,11 +128,11 @@ namespace Omniscient
                 }
             }
         }
-        public override ReturnCode Run(Event eve, Dictionary<string, AnalyzerParameter> analysisParams)
+        public override ReturnCode Run(Event eve, Dictionary<string, CustomParameter> analysisParams)
         {
             ParameterTemplate template = new ParameterTemplate(variableName, variableType);
-            Parameter param = Parameter.Make(ParentAnalyzer.ParentDetectionSystem, template);
-            AnalyzerParameter newVariable = new AnalyzerParameter(ParentAnalyzer, variableName, 0, template, param, true);
+            Parameter param = Parameter.Make(ParentAnalyzer.DetectionSystem, template);
+            CustomParameter newVariable = new CustomParameter(ParentAnalyzer, variableName, 0, template, param, true);
 
             return ReturnCode.SUCCESS;
         }
@@ -196,7 +196,7 @@ namespace Omniscient
             }
         }
 
-        public override ReturnCode Run(Event eve, Dictionary<string, AnalyzerParameter> analysisParams)
+        public override ReturnCode Run(Event eve, Dictionary<string, CustomParameter> analysisParams)
         {
             // Validate parameters
             Parameter inputParam, outputParam;
@@ -321,7 +321,7 @@ namespace Omniscient
             }
         }
 
-        public override ReturnCode Run(Event eve, Dictionary<string, AnalyzerParameter> analysisParams)
+        public override ReturnCode Run(Event eve, Dictionary<string, CustomParameter> analysisParams)
         {
             Parameter param1, param2, outputParam;
             try
@@ -554,7 +554,7 @@ namespace Omniscient
             return Math.Sqrt(sumSq/count);
         }
 
-        public override ReturnCode Run(Event eve, Dictionary<string, AnalyzerParameter> analysisParams)
+        public override ReturnCode Run(Event eve, Dictionary<string, CustomParameter> analysisParams)
         {
             // Validate parameters
             SystemChannelParameter channelParam;
@@ -679,7 +679,7 @@ namespace Omniscient
             }
         }
 
-        public override ReturnCode Run(Event eve, Dictionary<string, AnalyzerParameter> analysisParams)
+        public override ReturnCode Run(Event eve, Dictionary<string, CustomParameter> analysisParams)
         {
             // Validate parameters
             SystemChannelParameter channelParam;
@@ -785,7 +785,7 @@ namespace Omniscient
             }
         }
 
-        public override ReturnCode Run(Event eve, Dictionary<string, AnalyzerParameter> analysisParams)
+        public override ReturnCode Run(Event eve, Dictionary<string, CustomParameter> analysisParams)
         {
             // Validate parameters
             SpectrumParameter specParam;
@@ -887,7 +887,7 @@ namespace Omniscient
             }
         }
 
-        public override ReturnCode Run(Event eve, Dictionary<string, AnalyzerParameter> analysisParams)
+        public override ReturnCode Run(Event eve, Dictionary<string, CustomParameter> analysisParams)
         {
             // Validate parameters
             SpectrumParameter specParam;
@@ -979,7 +979,7 @@ namespace Omniscient
             }
         }
 
-        public override ReturnCode Run(Event eve, Dictionary<string, AnalyzerParameter> analysisParams)
+        public override ReturnCode Run(Event eve, Dictionary<string, CustomParameter> analysisParams)
         {
             // Validate parameters
             Parameter inputParam;

@@ -7,22 +7,18 @@ using System.Xml;
 
 namespace Omniscient
 {
-    public class Analyzer : Persister
+    public class Analyzer : PersisterWithCustomParameters
     {
         public override string Species { get { return "Analyzer"; } }
-        public DetectionSystem ParentDetectionSystem { get; }
-        Dictionary<string, AnalyzerParameter> analyzerParameters;
+
         List<AnalyzerStep> steps;
 
         public Analyzer(DetectionSystem parent, string name, uint id) : base(parent, name, id)
         {
             parent.GetAnalyzers().Add(this);
-            ParentDetectionSystem = parent;
-            analyzerParameters = new Dictionary<string, AnalyzerParameter>();
+            DetectionSystem = parent;
             steps = new List<AnalyzerStep>();
         }
-
-        public Dictionary<string, AnalyzerParameter> GetAnalyzerParameters() => analyzerParameters;
         public List<AnalyzerStep> GetSteps() => steps;
 
         public static Analyzer FromXML(XmlNode node, DetectionSystem system)
@@ -33,7 +29,7 @@ namespace Omniscient
             Analyzer analyzer = new Analyzer(system, name, id);
             foreach (XmlNode childNode in node.ChildNodes)
             {
-                if (childNode.Name == "AnalyzerParameter") AnalyzerParameter.FromXML(childNode, analyzer);
+                if (childNode.Name == "CustomParameter") CustomParameter.FromXML(childNode, analyzer);
                 else if (childNode.Name == "AnalyzerStep") AnalyzerStep.FromXML(childNode, analyzer);
             }
             return analyzer;
@@ -43,18 +39,18 @@ namespace Omniscient
         {
             foreach (AnalyzerStep step in steps) 
             {
-                step.Run(eve, analyzerParameters);
+                step.Run(eve, CustomParameters);
             }
 
             // Delete temporary variables
             string key;
-            for (int i = analyzerParameters.Count - 1; i >= 0; i--)
+            for (int i = CustomParameters.Count - 1; i >= 0; i--)
             {
-                if (analyzerParameters.ElementAt(i).Value.IsVariable)
+                if (CustomParameters.ElementAt(i).Value.IsTemporary)
                 {
-                    key = analyzerParameters.ElementAt(i).Value.Name;
-                    analyzerParameters.ElementAt(i).Value.Delete();
-                    analyzerParameters.Remove(key);
+                    key = CustomParameters.ElementAt(i).Value.Name;
+                    CustomParameters.ElementAt(i).Value.Delete();
+                    CustomParameters.Remove(key);
                 }
             }
 
@@ -69,14 +65,14 @@ namespace Omniscient
         public override bool SetIndex(int index)
         {
             base.SetIndex(index);
-            ParentDetectionSystem.GetAnalyzers().Remove(this);
-            ParentDetectionSystem.GetAnalyzers().Insert(index, this);
+            this.DetectionSystem.GetAnalyzers().Remove(this);
+            this.DetectionSystem.GetAnalyzers().Insert(index, this);
             return true;
         }
         public override void Delete()
         {
             base.Delete();
-            ParentDetectionSystem.GetAnalyzers().Remove(this);
+            this.DetectionSystem.GetAnalyzers().Remove(this);
         }
     }
 }
