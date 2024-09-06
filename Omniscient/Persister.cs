@@ -14,6 +14,7 @@
 // THIS SOFTWARE IS PROVIDED BY TRIAD NATIONAL SECURITY, LLC AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL TRIAD NATIONAL SECURITY, LLC OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,6 +28,9 @@ namespace Omniscient
     /// </summary>
     public abstract class Persister
     {
+        protected string DataDirectory { get; private set; }
+        private string rootDataDirectory;
+
         public static string AppDataDirectory = "";
         private static Random random = new Random();
         /// <summary>
@@ -88,6 +92,19 @@ namespace Omniscient
             Name = name;
 
             Children = new List<Persister>();
+
+            rootDataDirectory = Path.Combine(Persister.AppDataDirectory, "Data");
+            DataDirectory = Path.Combine(rootDataDirectory, id.ToString("X8"));
+        }
+
+
+        /// <summary>
+        /// Ensures data directories exist
+        /// </summary>
+        protected void EnsureDirectoriesExist()
+        {
+            if (!Directory.Exists(rootDataDirectory)) Directory.CreateDirectory(rootDataDirectory);
+            if (!Directory.Exists(DataDirectory)) Directory.CreateDirectory(DataDirectory);
         }
 
         /// <summary>

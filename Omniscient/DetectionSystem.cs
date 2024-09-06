@@ -30,6 +30,7 @@ namespace Omniscient
         private DeclarationInstrument declarationInstrument;
         public Facility ParentFacility { get; }
         public DeclarationTemplate DeclarationTemplate { get; set; }
+        public Dictionary<string, Declaration> Declarations { get; set; }
 
         public DetectionSystem(Facility parent, string name, uint id) : base(parent, name, id)
         {
@@ -42,6 +43,14 @@ namespace Omniscient
             events = new List<Event>();
             analyzers = new List<Analyzer>();
             ParentFacility = parent;
+            Declarations = new Dictionary<string, Declaration>();
+        }
+
+        public ReturnCode LoadDeclarations()
+        {
+            EnsureDirectoriesExist();
+            Declarations = Declaration.FromDirectory(DataDirectory, this);
+            return ReturnCode.SUCCESS;
         }
 
         public void AddInstrument(Instrument newInstrument)
@@ -134,6 +143,7 @@ namespace Omniscient
                         break;
                 }
             }
+            system.LoadDeclarations();
             return system;
         }
 

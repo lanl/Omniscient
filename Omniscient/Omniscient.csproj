@@ -130,6 +130,7 @@
     <Compile Include="DeclarationEditor.Designer.cs">
       <DependentUpon>DeclarationEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="Declarations\Declaration.cs" />
     <Compile Include="Declarations\DeclarationTemplate.cs" />
     <Compile Include="Events\DataPresentEG.cs" />
     <Compile Include="Events\ManualEG.cs" />
