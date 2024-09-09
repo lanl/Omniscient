@@ -17,6 +17,7 @@ namespace Omniscient
         public override string Species { get { return "AnalyzerStep"; } }
         public static readonly AnalyzerStepHookup[] Hookups = new AnalyzerStepHookup[]
         {
+            new GetDeclarationAnalyzerStepHookup(),
             new CreateVariableAnalyzerStepHookup(),
             new SetEqualAnalyzerStepHookup(),
             new TwoParameterAnalyzerStepHookup(),
@@ -26,7 +27,7 @@ namespace Omniscient
             new GetROIMaximumAnalyzerStepHookup(),
             new AppendStringAnalyzerStepHookup()
         };
-        public enum AnalyzerStepType { CREATE_VARIABLE, SET_EQUAL, TWO_PARAMETER, CHANNEL_RANGE_STATISTIC, SUM_SPECTRA, EXPORT_SPECTRUM, GET_ROI_MAXIMUM, APPEND_STRING }
+        public enum AnalyzerStepType { GET_DECLARATION, CREATE_VARIABLE, SET_EQUAL, TWO_PARAMETER, CHANNEL_RANGE_STATISTIC, SUM_SPECTRA, EXPORT_SPECTRUM, GET_ROI_MAXIMUM, APPEND_STRING }
         public AnalyzerStepType StepType { get; private set; }
         public Analyzer ParentAnalyzer { get; }
 
@@ -37,7 +38,7 @@ namespace Omniscient
             StepType = stepType;
         }
 
-        public abstract ReturnCode Run(Event eve, Dictionary<string, CustomParameter> analysisParams);
+        public abstract ReturnCode Run(AnalyzerRunData data);
 
         public abstract List<Parameter> GetParameters();
         public abstract void ApplyParameters(List<Parameter> parameters);
@@ -128,7 +129,7 @@ namespace Omniscient
                 }
             }
         }
-        public override ReturnCode Run(Event eve, Dictionary<string, CustomParameter> analysisParams)
+        public override ReturnCode Run(AnalyzerRunData data)
         {
             ParameterTemplate template = new ParameterTemplate(variableName, variableType);
             Parameter param = Parameter.Make(ParentAnalyzer.DetectionSystem, template);
@@ -196,14 +197,14 @@ namespace Omniscient
             }
         }
 
-        public override ReturnCode Run(Event eve, Dictionary<string, CustomParameter> analysisParams)
+        public override ReturnCode Run(AnalyzerRunData data)
         {
             // Validate parameters
             Parameter inputParam, outputParam;
             try
             {
-                inputParam = analysisParams[inputParamName].Parameter;
-                outputParam = analysisParams[outputParamName].Parameter;
+                inputParam = data.CustomParameters[inputParamName].Parameter;
+                outputParam = data.CustomParameters[outputParamName].Parameter;
             }
             catch (Exception ex) { return ReturnCode.BAD_INPUT; }
             if ((outputParam.Type == ParameterType.Int || outputParam.Type == ParameterType.Double) &&
@@ -321,14 +322,14 @@ namespace Omniscient
             }
         }
 
-        public override ReturnCode Run(Event eve, Dictionary<string, CustomParameter> analysisParams)
+        public override ReturnCode Run(AnalyzerRunData data)
         {
             Parameter param1, param2, outputParam;
             try
             {
-                param1 = analysisParams[param1Name].Parameter;
-                param2 = analysisParams[param2Name].Parameter;
-                outputParam = analysisParams[outputParamName].Parameter;
+                param1 = data.CustomParameters[param1Name].Parameter;
+                param2 = data.CustomParameters[param2Name].Parameter;
+                outputParam = data.CustomParameters[outputParamName].Parameter;
             }
             catch (Exception ex) { return ReturnCode.BAD_INPUT; }
             if (param1.Type != ParameterType.Int && param1.Type != ParameterType.Double) return ReturnCode.BAD_INPUT;
@@ -554,22 +555,22 @@ namespace Omniscient
             return Math.Sqrt(sumSq/count);
         }
 
-        public override ReturnCode Run(Event eve, Dictionary<string, CustomParameter> analysisParams)
+        public override ReturnCode Run(AnalyzerRunData data)
         {
             // Validate parameters
             SystemChannelParameter channelParam;
             Parameter outputParam;
             try
             {
-                channelParam = analysisParams[channelParamName].Parameter as SystemChannelParameter;
-                outputParam = analysisParams[outputParamName].Parameter;
+                channelParam = data.CustomParameters[channelParamName].Parameter as SystemChannelParameter;
+                outputParam = data.CustomParameters[outputParamName].Parameter;
             }
             catch (Exception ex) { return ReturnCode.BAD_INPUT; }
             if (outputParam.Type != ParameterType.Int && outputParam.Type != ParameterType.Double) return ReturnCode.BAD_INPUT;
 
             // Load channel and get the times/vals/durations
             Channel channel = channelParam.ToChannel();
-            channel.GetInstrument().LoadData(ChannelCompartment.Process, eve.StartTime, eve.EndTime);
+            channel.GetInstrument().LoadData(ChannelCompartment.Process, data.Event.StartTime, data.Event.EndTime);
             List<DateTime> times = channel.GetTimeStamps(ChannelCompartment.Process);
             List<double> vals = channel.GetValues(ChannelCompartment.Process);
             List<TimeSpan> durations = null;
@@ -578,40 +579,40 @@ namespace Omniscient
 
             // Fast forward to start time
             int startIndex = 0;
-            while (startIndex < times.Count && times[startIndex] <= eve.StartTime) startIndex++;
+            while (startIndex < times.Count && times[startIndex] <= data.Event.StartTime) startIndex++;
 
             int count;
             double sum, stat;
             switch (Operation)
             {
                 case OperationType.Count:
-                    count = Count(eve, times, startIndex);
+                    count = Count(data.Event, times, startIndex);
                     outputParam.Value = count.ToString();
                     break;
                 case OperationType.Sum:
-                    sum = Sum(eve, times, vals, startIndex);
+                    sum = Sum(data.Event, times, vals, startIndex);
                     if (outputParam.Type == ParameterType.Int) outputParam.Value = ((int)sum).ToString();
                     else outputParam.Value = sum.ToString();
                     break;
                 case OperationType.Average:
-                    count = Count(eve, times, startIndex);
-                    sum = Sum(eve, times, vals, startIndex);
+                    count = Count(data.Event, times, startIndex);
+                    sum = Sum(data.Event, times, vals, startIndex);
                     double average = sum / count;
                     if (outputParam.Type == ParameterType.Int) outputParam.Value = ((int)average).ToString();
                     else outputParam.Value = average.ToString();
                     break;
                 case OperationType.Max:
-                    stat = Max(eve, times, vals, startIndex);
+                    stat = Max(data.Event, times, vals, startIndex);
                     if (outputParam.Type == ParameterType.Int) outputParam.Value = ((int)stat).ToString();
                     else outputParam.Value = stat.ToString();
                     break;
                 case OperationType.Min:
-                    stat = Min(eve, times, vals, startIndex);
+                    stat = Min(data.Event, times, vals, startIndex);
                     if (outputParam.Type == ParameterType.Int) outputParam.Value = ((int)stat).ToString();
                     else outputParam.Value = stat.ToString();
                     break;
                 case OperationType.StandardDeviation:
-                    stat = StandardDeviation(eve, times, vals, startIndex);
+                    stat = StandardDeviation(data.Event, times, vals, startIndex);
                     if (outputParam.Type == ParameterType.Int) outputParam.Value = ((int)stat).ToString();
                     else outputParam.Value = stat.ToString();
                     break;
@@ -679,15 +680,15 @@ namespace Omniscient
             }
         }
 
-        public override ReturnCode Run(Event eve, Dictionary<string, CustomParameter> analysisParams)
+        public override ReturnCode Run(AnalyzerRunData data)
         {
             // Validate parameters
             SystemChannelParameter channelParam;
             SpectrumParameter specParam;
             try
             {
-                channelParam = analysisParams[channelParamName].Parameter as SystemChannelParameter;
-                specParam = analysisParams[outputParamName].Parameter as SpectrumParameter;
+                channelParam = data.CustomParameters[channelParamName].Parameter as SystemChannelParameter;
+                specParam = data.CustomParameters[outputParamName].Parameter as SpectrumParameter;
             }
             catch (Exception ex) { return ReturnCode.BAD_INPUT; }
             Channel chan = channelParam.ToChannel();
@@ -696,7 +697,7 @@ namespace Omniscient
             // Collect spectra in the channel during the event
             MCAInstrument inst = chan.GetInstrument() as MCAInstrument;
             inst.ClearData(ChannelCompartment.Process);
-            inst.LoadData(ChannelCompartment.Process, eve.StartTime, eve.EndTime);
+            inst.LoadData(ChannelCompartment.Process, data.Event.StartTime, data.Event.EndTime);
             List<Spectrum> spectra = new List<Spectrum>();
             List<DateTime> timeStamps = chan.GetTimeStamps(ChannelCompartment.Process);
             List<TimeSpan> durations = chan.GetDurations(ChannelCompartment.Process);
@@ -705,8 +706,8 @@ namespace Omniscient
             inst.ClearData(ChannelCompartment.Process);
             for (int meas = 0; meas < timeStamps.Count(); meas++)
             {
-                if (timeStamps[meas] >= eve.StartTime &&
-                    timeStamps[meas] + durations[meas] <= eve.EndTime)
+                if (timeStamps[meas] >= data.Event.StartTime &&
+                    timeStamps[meas] + durations[meas] <= data.Event.EndTime)
                 {
                     if (!files.Contains(dataFiles[meas].FileName))
                     {
@@ -785,7 +786,7 @@ namespace Omniscient
             }
         }
 
-        public override ReturnCode Run(Event eve, Dictionary<string, CustomParameter> analysisParams)
+        public override ReturnCode Run(AnalyzerRunData data)
         {
             // Validate parameters
             SpectrumParameter specParam;
@@ -793,9 +794,9 @@ namespace Omniscient
             FileNameParameter fileParam;
             try
             {
-                specParam = analysisParams[specParamName].Parameter as SpectrumParameter;
-                typeParam = analysisParams[outputType].Parameter as StringParameter;
-                fileParam = analysisParams[fileParamName].Parameter as FileNameParameter;
+                specParam = data.CustomParameters[specParamName].Parameter as SpectrumParameter;
+                typeParam = data.CustomParameters[outputType].Parameter as StringParameter;
+                fileParam = data.CustomParameters[fileParamName].Parameter as FileNameParameter;
             }
             catch (Exception ex) { return ReturnCode.BAD_INPUT; }
             SpectrumWriter spectrumWriter;
@@ -887,15 +888,15 @@ namespace Omniscient
             }
         }
 
-        public override ReturnCode Run(Event eve, Dictionary<string, CustomParameter> analysisParams)
+        public override ReturnCode Run(AnalyzerRunData data)
         {
             // Validate parameters
             SpectrumParameter specParam;
             Parameter outParam;
             try
             {
-                specParam = analysisParams[specParamName].Parameter as SpectrumParameter;
-                outParam = analysisParams[outputParamName].Parameter;
+                specParam = data.CustomParameters[specParamName].Parameter as SpectrumParameter;
+                outParam = data.CustomParameters[outputParamName].Parameter;
             }
             catch (Exception ex) { return ReturnCode.BAD_INPUT; }
             if (outParam.Type != ParameterType.Int &&  outParam.Type != ParameterType.Double) return ReturnCode.BAD_INPUT;
@@ -979,13 +980,13 @@ namespace Omniscient
             }
         }
 
-        public override ReturnCode Run(Event eve, Dictionary<string, CustomParameter> analysisParams)
+        public override ReturnCode Run(AnalyzerRunData data)
         {
             // Validate parameters
             Parameter inputParam;
             try
             {
-                inputParam = analysisParams[inputParamName].Parameter;
+                inputParam = data.CustomParameters[inputParamName].Parameter;
             }
             catch (Exception ex) { return ReturnCode.BAD_INPUT; }
             if (inputParam.Type != ParameterType.String) return ReturnCode.BAD_INPUT;
@@ -1004,7 +1005,7 @@ namespace Omniscient
                 paramName = result.Substring(startIndex+1, endIndex - startIndex - 1);
                 try
                 {
-                    subParam = analysisParams[paramName].Parameter;
+                    subParam = data.CustomParameters[paramName].Parameter;
                     subParamVal = subParam.Value;
                 }
                 catch 

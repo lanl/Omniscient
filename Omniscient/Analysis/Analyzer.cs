@@ -37,9 +37,15 @@ namespace Omniscient
 
         public ReturnCode Run(Event eve)
         {
+            ReturnCode code = ReturnCode.SUCCESS;
+            AnalyzerRunData data = new AnalyzerRunData(eve, CustomParameters);
             foreach (AnalyzerStep step in steps) 
             {
-                step.Run(eve, CustomParameters);
+                code = step.Run(data);
+                if ( code != ReturnCode.SUCCESS)
+                {
+                    break;
+                }
             }
 
             // Delete temporary variables
@@ -54,7 +60,7 @@ namespace Omniscient
                 }
             }
 
-            return ReturnCode.SUCCESS;
+            return code;
         }
 
         public override void ToXML(XmlWriter xmlWriter)

@@ -86,11 +86,13 @@
     <Compile Include="Analysis\AnalysisAction.cs" />
     <Compile Include="Analysis\AnalysisResult.cs" />
     <Compile Include="Analysis\Analyzer.cs" />
+    <Compile Include="Analysis\AnalyzerRunData.cs" />
     <Compile Include="Analysis\AnalyzerStep.cs" />
     <Compile Include="Analysis\DataCompiler.cs" />
     <Compile Include="Analysis\FileListCompiler.cs" />
     <Compile Include="Analysis\FRAMPlutoniumResultParser.cs" />
     <Compile Include="Analysis\FRAMUraniumResultParser.cs" />
+    <Compile Include="Analysis\GetDeclarationAnalyzerStep.cs" />
     <Compile Include="Analysis\ResultParser.cs" />
     <Compile Include="Analysis\SpectrumCompiler.cs" />
     <Compile Include="AutoConfigurator.cs" />
