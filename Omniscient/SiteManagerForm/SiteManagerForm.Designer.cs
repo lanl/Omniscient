@@ -79,12 +79,6 @@ namespace Omniscient
             this.RightPanel = new System.Windows.Forms.Panel();
             this.InnerRightPanel = new System.Windows.Forms.Panel();
             this.SystemPanel = new System.Windows.Forms.Panel();
-            this.DeclarationCheckBox = new System.Windows.Forms.CheckBox();
-            this.DeclarationsDirectoryButton = new System.Windows.Forms.Button();
-            this.DeclarationDirectoryTextBox = new System.Windows.Forms.TextBox();
-            this.label23 = new System.Windows.Forms.Label();
-            this.DeclarationPrefixTextBox = new System.Windows.Forms.TextBox();
-            this.label22 = new System.Windows.Forms.Label();
             this.NamePanel = new System.Windows.Forms.Panel();
             this.LeftRightPanel = new System.Windows.Forms.Panel();
             this.RemoveButton = new System.Windows.Forms.Button();
@@ -475,71 +469,11 @@ namespace Omniscient
             // 
             // SystemPanel
             // 
-            this.SystemPanel.Controls.Add(this.DeclarationCheckBox);
-            this.SystemPanel.Controls.Add(this.DeclarationsDirectoryButton);
-            this.SystemPanel.Controls.Add(this.DeclarationDirectoryTextBox);
-            this.SystemPanel.Controls.Add(this.label23);
-            this.SystemPanel.Controls.Add(this.DeclarationPrefixTextBox);
-            this.SystemPanel.Controls.Add(this.label22);
             this.SystemPanel.Dock = System.Windows.Forms.DockStyle.Top;
             this.SystemPanel.Location = new System.Drawing.Point(0, 643);
             this.SystemPanel.Name = "SystemPanel";
             this.SystemPanel.Size = new System.Drawing.Size(362, 100);
             this.SystemPanel.TabIndex = 12;
-            // 
-            // DeclarationCheckBox
-            // 
-            this.DeclarationCheckBox.AutoSize = true;
-            this.DeclarationCheckBox.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.DeclarationCheckBox.Location = new System.Drawing.Point(9, 9);
-            this.DeclarationCheckBox.Name = "DeclarationCheckBox";
-            this.DeclarationCheckBox.Size = new System.Drawing.Size(107, 17);
-            this.DeclarationCheckBox.TabIndex = 20;
-            this.DeclarationCheckBox.Text = "Has Declarations";
-            this.DeclarationCheckBox.UseVisualStyleBackColor = true;
-            this.DeclarationCheckBox.CheckedChanged += new System.EventHandler(this.DeclarationCheckBox_CheckedChanged);
-            // 
-            // DeclarationsDirectoryButton
-            // 
-            this.DeclarationsDirectoryButton.Image = ((System.Drawing.Image)(resources.GetObject("DeclarationsDirectoryButton.Image")));
-            this.DeclarationsDirectoryButton.Location = new System.Drawing.Point(267, 59);
-            this.DeclarationsDirectoryButton.Name = "DeclarationsDirectoryButton";
-            this.DeclarationsDirectoryButton.Size = new System.Drawing.Size(28, 28);
-            this.DeclarationsDirectoryButton.TabIndex = 19;
-            this.DeclarationsDirectoryButton.UseVisualStyleBackColor = true;
-            this.DeclarationsDirectoryButton.Click += new System.EventHandler(this.DeclarationsDirectoryButton_Click);
-            // 
-            // DeclarationDirectoryTextBox
-            // 
-            this.DeclarationDirectoryTextBox.Location = new System.Drawing.Point(102, 63);
-            this.DeclarationDirectoryTextBox.Name = "DeclarationDirectoryTextBox";
-            this.DeclarationDirectoryTextBox.Size = new System.Drawing.Size(160, 20);
-            this.DeclarationDirectoryTextBox.TabIndex = 18;
-            // 
-            // label23
-            // 
-            this.label23.AutoSize = true;
-            this.label23.Location = new System.Drawing.Point(21, 67);
-            this.label23.Name = "label23";
-            this.label23.Size = new System.Drawing.Size(75, 13);
-            this.label23.TabIndex = 17;
-            this.label23.Text = "Data Directory";
-            // 
-            // DeclarationPrefixTextBox
-            // 
-            this.DeclarationPrefixTextBox.Location = new System.Drawing.Point(102, 35);
-            this.DeclarationPrefixTextBox.Name = "DeclarationPrefixTextBox";
-            this.DeclarationPrefixTextBox.Size = new System.Drawing.Size(160, 20);
-            this.DeclarationPrefixTextBox.TabIndex = 14;
-            // 
-            // label22
-            // 
-            this.label22.AutoSize = true;
-            this.label22.Location = new System.Drawing.Point(44, 34);
-            this.label22.Name = "label22";
-            this.label22.Size = new System.Drawing.Size(52, 13);
-            this.label22.TabIndex = 13;
-            this.label22.Text = "File Prefix";
             // 
             // NamePanel
             // 
@@ -733,12 +667,6 @@ namespace Omniscient
         private System.Windows.Forms.Button VCDownButton;
         private System.Windows.Forms.Button VCUpButton;
         private System.Windows.Forms.Panel SystemPanel;
-        private System.Windows.Forms.CheckBox DeclarationCheckBox;
-        private System.Windows.Forms.Button DeclarationsDirectoryButton;
-        private System.Windows.Forms.TextBox DeclarationDirectoryTextBox;
-        private System.Windows.Forms.Label label23;
-        private System.Windows.Forms.TextBox DeclarationPrefixTextBox;
-        private System.Windows.Forms.Label label22;
         private Controls.ParameterListPanel VCParameterListPanel;
         private System.Windows.Forms.TextBox VirtualChannelTypeTextBox;
         private Controls.ParameterListPanel InstrumentParameterListPanel;

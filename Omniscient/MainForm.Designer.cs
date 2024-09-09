@@ -73,7 +73,6 @@ namespace Omniscient
             this.EventManagerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.launchInspectrumToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.launchInspectaclesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.declarationEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newXYChartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.shortcutsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -413,7 +412,6 @@ namespace Omniscient
             this.EventManagerToolStripMenuItem,
             this.launchInspectrumToolStripMenuItem,
             this.launchInspectaclesToolStripMenuItem,
-            this.declarationEditorToolStripMenuItem,
             this.newXYChartToolStripMenuItem});
             this.toolsToolStripMenuItem.Name = "toolsToolStripMenuItem";
             this.toolsToolStripMenuItem.Size = new System.Drawing.Size(46, 20);
@@ -446,13 +444,6 @@ namespace Omniscient
             this.launchInspectaclesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.launchInspectaclesToolStripMenuItem.Text = "Launch Inspectacles";
             this.launchInspectaclesToolStripMenuItem.Click += new System.EventHandler(this.launchInspectaclesToolStripMenuItem_Click);
-            // 
-            // declarationEditorToolStripMenuItem
-            // 
-            this.declarationEditorToolStripMenuItem.Name = "declarationEditorToolStripMenuItem";
-            this.declarationEditorToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.declarationEditorToolStripMenuItem.Text = "Declaration Editor";
-            this.declarationEditorToolStripMenuItem.Click += new System.EventHandler(this.declarationEditorToolStripMenuItem_Click);
             // 
             // newXYChartToolStripMenuItem
             // 
@@ -1562,7 +1553,6 @@ namespace Omniscient
         private ToolStripMenuItem EventManagerToolStripMenuItem;
         public ImageList ButtonImageList;
         private ToolStripMenuItem launchInspectaclesToolStripMenuItem;
-        private ToolStripMenuItem declarationEditorToolStripMenuItem;
         private ToolStripMenuItem exportToolStripMenuItem;
         private ToolStripMenuItem aboutToolStripMenuItem;
         private TableLayoutPanel StripChartsLayoutPanel;

@@ -109,16 +109,13 @@ namespace Omniscient
                         sysNode.ToolTipText = sysNode.Text;
                         foreach (Instrument inst in sys.GetInstruments())
                         {
-                            if (!(inst is DeclarationInstrument))
-                            {
-                                TreeNode instNode = new TreeNode(inst.Name);
-                                instNode.Name = inst.ID.ToString();
-                                instNode.Tag = inst;
-                                instNode.ImageIndex = 3;
-                                instNode.SelectedImageIndex = 3;
-                                instNode.ToolTipText = instNode.Text;
-                                sysNode.Nodes.Add(instNode);
-                            }
+                            TreeNode instNode = new TreeNode(inst.Name);
+                            instNode.Name = inst.ID.ToString();
+                            instNode.Tag = inst;
+                            instNode.ImageIndex = 3;
+                            instNode.SelectedImageIndex = 3;
+                            instNode.ToolTipText = instNode.Text;
+                            sysNode.Nodes.Add(instNode);
                         }
                         foreach (EventGenerator eg in sys.GetEventGenerators())
                         {
@@ -178,22 +175,7 @@ namespace Omniscient
 
         private void SetupSystemPanel()
         {
-            if (selectedSystem.HasDeclarationInstrument())
-            {
-                DeclarationCheckBox.Checked = true;
-                DeclarationPrefixTextBox.Enabled = true;
-                DeclarationPrefixTextBox.Text = selectedSystem.GetDeclarationInstrument().GetFilePrefix();
-                DeclarationDirectoryTextBox.Enabled = true;
-                DeclarationDirectoryTextBox.Text = selectedSystem.GetDeclarationInstrument().GetDataFolder();
-            }
-            else
-            {
-                DeclarationCheckBox.Checked = false;
-                DeclarationPrefixTextBox.Enabled = false;
-                DeclarationPrefixTextBox.Text = "";
-                DeclarationDirectoryTextBox.Enabled = false;
-                DeclarationDirectoryTextBox.Text = "";
-            }
+
         }
 
         private void ResetFields()
@@ -311,23 +293,6 @@ namespace Omniscient
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
 
-            // Check if declaration exists
-            // Need to check EVERY system!
-            if (DeclarationCheckBox.Checked)
-            {
-                try
-                {
-                    selectedSystem.GetDeclarationInstrument().SetFilePrefix(DeclarationPrefixTextBox.Text);
-                    selectedSystem.GetDeclarationInstrument().SetDataFolder(DeclarationDirectoryTextBox.Text);
-                }
-
-                catch
-                {
-                    MessageBox.Show("Enter a declaration or uncheck the declaration box.");
-                    return;
-                }
-
-            }
             saveFileDialog.Filter = "xml files (*.xml)|*.xml";
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
@@ -451,12 +416,6 @@ namespace Omniscient
                 }
                 sys.Name = NameTextBox.Text;
                 nodeName = sys.ID.ToString();
-                if(DeclarationCheckBox.Checked)
-                {
-                    selectedSystem.GetDeclarationInstrument().SetFilePrefix(DeclarationPrefixTextBox.Text);
-                    selectedSystem.GetDeclarationInstrument().SetDataFolder(DeclarationDirectoryTextBox.Text);
-                    selectedSystem.GetDeclarationInstrument().ScanDataFolder();
-                }
             }
             else if (node.Tag is Instrument)
             {
@@ -1056,30 +1015,6 @@ namespace Omniscient
                 siteManChanged = true;
                 SitesTreeView.SelectedNode = SitesTreeView.Nodes.Find(inst.ID.ToString(), true)[0];
                 ChannelsComboBox.SelectedItem = chan.Name;
-            }
-        }
-
-        private void DeclarationCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (DeclarationCheckBox.Checked)
-            {
-                selectedSystem.SetDeclarationInstrument(new DeclarationInstrument(selectedSystem, selectedSystem.Name + "_Declarations", 0));
-                SetupSystemPanel();
-            }
-            else
-            {
-                selectedSystem.RemoveDeclarationInstrument();
-                SetupSystemPanel();
-            }
-        }
-
-        private void DeclarationsDirectoryButton_Click(object sender, EventArgs e)
-        {
-            FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
-            DialogResult result = folderBrowserDialog.ShowDialog();
-            if (result == DialogResult.OK)
-            {
-                DeclarationDirectoryTextBox.Text = folderBrowserDialog.SelectedPath;
             }
         }
 

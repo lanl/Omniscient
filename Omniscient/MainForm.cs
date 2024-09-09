@@ -1413,7 +1413,7 @@ namespace Omniscient
                         }
                     }
 
-                    if ((inst is MCAInstrument || inst is DeclarationInstrument) && !(durations is null))
+                    if ((inst is MCAInstrument) && !(durations is null))
                     {
                         // Determine whether the user clicked within a measurement
                         for (int meas = 0; meas < timeStamps.Count(); meas++)
@@ -1442,13 +1442,6 @@ namespace Omniscient
                                         menuItem.Click += PlotSpectrumMenuItem_Click;
                                         chartMenu.MenuItems.Add(menuItem);
                                     }
-                                }
-                                else if (chan.GetInstrument() is DeclarationInstrument)
-                                {
-                                    MenuItem menuItem = new MenuItem("View " + chan.Name + " in Declaration Editor");
-                                    menuItem.Tag = chan.GetFiles(ChannelCompartment.View)[meas].FileName;
-                                    menuItem.Click += DeclarationMenuItem_Click;
-                                    chartMenu.MenuItems.Add(menuItem);
                                 }
                             }
                         }
@@ -1640,14 +1633,6 @@ namespace Omniscient
                     break;
             }
             UpdateChart(chartNum);
-        }
-
-        private void DeclarationMenuItem_Click(object sender, EventArgs e)
-        {
-            //MenuItem menuItem = (MenuItem)sender;
-            //DeclarationEditor declarationEditor = new DeclarationEditor();
-            //declarationEditor.LoadDECFile(menuItem.Tag.ToString());
-            //declarationEditor.Show();
         }
 
         private void PlotSpectrumMenuItem_Click(object sender, EventArgs e)
@@ -1949,12 +1934,6 @@ namespace Omniscient
                 EventViewerForm eventViewerForm = new EventViewerForm((Event)EventGridView.Rows[e.RowIndex].Tag);
                 eventViewerForm.Show();
             }
-        }
-
-        private void declarationEditorToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            //DeclarationEditor declarationEditor = new DeclarationEditor();
-            //declarationEditor.Show();
         }
 
         private void exportToolStripMenuItem_Click(object sender, EventArgs e)
@@ -2694,7 +2673,7 @@ namespace Omniscient
                 removeMenuItem.Click += RemoveSitesTreeMenuItem_Click;
                 chartMenu.MenuItems.Add(removeMenuItem);
 
-                if (persister is DetectionSystem)
+                if (persister is DetectionSystem && (persister as DetectionSystem).DeclarationTemplate!=null)
                 {
                     MenuItem declarationsMenuItem = new MenuItem("Edit declarations for " + persister.Name);
                     declarationsMenuItem.Tag = persister;
