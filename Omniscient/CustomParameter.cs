@@ -83,7 +83,10 @@ namespace Omniscient
         }
         public override void ToXML(XmlWriter xmlWriter)
         {
-            throw new NotImplementedException();
+            StartToXML(xmlWriter);
+            xmlWriter.WriteAttributeString("Type", Parameter.StringFromType(Template.Type));
+            xmlWriter.WriteAttributeString("Value", Parameter.Value);
+            xmlWriter.WriteEndElement();
         }
 
         public override void Delete()

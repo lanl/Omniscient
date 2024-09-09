@@ -5,15 +5,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace Omniscient
 {
     public class Declaration
     {
-        public string FileName { get; private set; }
+        public string FileName { get; set; }
         public DeclarationTemplate Template { get; set; }
-        public string ItemID { get; protected set; }
-        public Dictionary<string, Parameter> Parameters { get; protected set; }
+        public string ItemID { get; set; }
+        public Dictionary<string, Parameter> Parameters { get; set; }
         string templateName;
         public Declaration(DetectionSystem system, string tempName="")
         {
@@ -28,6 +29,41 @@ namespace Omniscient
                 Parameters.Add(custParam.Name, Parameter.Make(system, custParam.Template));
             }
         }
+
+        public ReturnCode ToXML(XmlWriter xmlWriter)
+        {
+            xmlWriter.WriteStartElement("Declaration");
+            xmlWriter.WriteAttributeString("Template", Template.Name);
+
+            xmlWriter.WriteStartElement("Item_ID");
+            xmlWriter.WriteString(ItemID);
+            xmlWriter.WriteEndElement();
+
+            foreach (Parameter parameter in Parameters.Values)
+            {
+                xmlWriter.WriteStartElement("Parameter");
+                xmlWriter.WriteAttributeString("Name", parameter.Name);
+                xmlWriter.WriteString(parameter.Value);
+                xmlWriter.WriteEndElement();
+            }
+
+            return ReturnCode.SUCCESS;
+        }
+
+        public ReturnCode ToFile(string fileName)
+        {
+            XmlWriter xmlWriter = XmlWriter.Create(fileName, new XmlWriterSettings()
+            {
+                Indent = true,
+            });
+
+            xmlWriter.WriteStartDocument();
+            ToXML(xmlWriter);
+            xmlWriter.WriteEndDocument();
+            xmlWriter.Close();
+            return ReturnCode.SUCCESS;
+        }
+
         public static Declaration FromXML(XmlNode node, DetectionSystem system)
         {
             string templateName = node.Attributes["Template"]?.InnerText;
@@ -52,6 +88,7 @@ namespace Omniscient
             }
             return declaration;
         }
+
         public static Declaration FromFile(string fileName, DetectionSystem system)
         {
             if (!File.Exists(fileName)) throw new FileNotFoundException();

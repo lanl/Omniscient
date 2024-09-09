@@ -83,6 +83,37 @@ namespace Omniscient
             checkBox.BringToFront();
         }
 
+        /// <summary>
+        /// Sets the tab order of the control and returns the next value
+        /// </summary>
+        /// <param name="tab"></param>
+        /// <returns></returns>
+        public int SetTab(int tab)
+        {
+            this.TabIndex = tab;
+            switch (parameter.Type)
+            {
+                case ParameterType.Bool:
+                case ParameterType.FileName:
+                case ParameterType.Directory:
+                case ParameterType.String:
+                case ParameterType.Int:
+                case ParameterType.Double:
+                case ParameterType.DateTimeFormat:
+                case ParameterType.Enum:
+                case ParameterType.SystemChannel:
+                case ParameterType.SystemEventGenerator:
+                case ParameterType.InstrumentChannel:
+                    paramControls[0].TabIndex = tab;
+                    return tab + 1;
+                case ParameterType.TimeSpan:
+                    paramControls[0].TabIndex = tab;
+                    paramControls[1].TabIndex = tab + 1;
+                    return tab + 2;
+            }
+            return tab;
+        }
+
         public bool Scrape()
         {
             switch (parameter.Type)

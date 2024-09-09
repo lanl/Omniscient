@@ -124,13 +124,13 @@
     <Compile Include="CustomParameter.cs" />
     <Compile Include="DataDecimator.cs" />
     <Compile Include="DateTimeRange.cs" />
-    <Compile Include="DeclarationEditor.cs">
+    <Compile Include="Declarations\Declaration.cs" />
+    <Compile Include="Declarations\DeclarationEditor.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="DeclarationEditor.Designer.cs">
+    <Compile Include="Declarations\DeclarationEditor.Designer.cs">
       <DependentUpon>DeclarationEditor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Declarations\Declaration.cs" />
     <Compile Include="Declarations\DeclarationTemplate.cs" />
     <Compile Include="Events\DataPresentEG.cs" />
     <Compile Include="Events\ManualEG.cs" />
@@ -324,7 +324,7 @@
     <EmbeddedResource Include="Controls\XYPanel.resx">
       <DependentUpon>XYPanel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="DeclarationEditor.resx">
+    <EmbeddedResource Include="Declarations\DeclarationEditor.resx">
       <DependentUpon>DeclarationEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="EventManagerForm\DataCompilerPanel.resx">

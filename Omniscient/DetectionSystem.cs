@@ -38,6 +38,7 @@ namespace Omniscient
 
             instruments = new List<Instrument>();
             declarationInstrument = null;
+            this.DeclarationTemplate = null;
 
             eventGenerators = new List<EventGenerator>();
             events = new List<Event>();
@@ -52,6 +53,8 @@ namespace Omniscient
             Declarations = Declaration.FromDirectory(DataDirectory, this);
             return ReturnCode.SUCCESS;
         }
+
+        public string GetDataDirectory() { return DataDirectory; }
 
         public void AddInstrument(Instrument newInstrument)
         {
@@ -107,6 +110,10 @@ namespace Omniscient
         public override void ToXML(XmlWriter xmlWriter)
         {
             StartToXML(xmlWriter);
+            if (DeclarationTemplate != null)
+            {
+                DeclarationTemplate.ToXML(xmlWriter);
+            }
             foreach (Instrument inst in GetInstruments())
             {
                 inst.ToXML(xmlWriter);

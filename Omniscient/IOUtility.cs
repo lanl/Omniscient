@@ -182,5 +182,18 @@ namespace Omniscient
 
             return output;
         }
+
+        /// <summary>
+        /// Returns True if the string is an acceptable file name
+        /// </summary>
+        /// <param name="filename"></param>
+        /// <returns></returns>
+        public static bool ValidFileName(string fileName) 
+        {
+            if (fileName.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0) return false;
+            if (fileName.Length == 0) return false;
+            if (fileName.Length > 255) return false;
+            return true;
+        }
     }
 }

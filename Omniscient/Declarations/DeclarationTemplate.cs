@@ -31,7 +31,12 @@ namespace Omniscient
 
         public override void ToXML(XmlWriter xmlWriter)
         {
-            throw new NotImplementedException();
+            StartToXML(xmlWriter);
+            foreach(CustomParameter param in CustomParameters.Values)
+            {
+                param.ToXML(xmlWriter);
+            }
+            xmlWriter.WriteEndElement();
         }
         public override void Delete()
         {

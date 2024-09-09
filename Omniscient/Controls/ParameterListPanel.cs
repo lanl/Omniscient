@@ -49,8 +49,24 @@ namespace Omniscient.Controls
                 panel.Dock = DockStyle.Top;
                 Controls.Add(panel);
                 paramPanels.Add(panel);
+               
             }
             ResumeLayout();
+        }
+
+        /// <summary>
+        /// Sets the tab order of the panels and returns the next value
+        /// </summary>
+        /// <param name="tab"></param>
+        /// <returns></returns>
+        public int SetTabs(int tabStart)
+        {
+            int nextTab = tabStart;
+            for (int i = paramPanels.Count-1; i >=0 ; --i)
+            {
+                nextTab = paramPanels[i].SetTab(nextTab);
+            }
+            return nextTab;
         }
 
         public bool ValidateInput()

@@ -72,11 +72,32 @@ namespace Omniscient
                 case "TimeSpan": return ParameterType.TimeSpan;
                 case "DateTimeFormat": return ParameterType.DateTimeFormat;
                 case "SystemChannel": return ParameterType.SystemChannel;
-                case "SystemEventGenerator": return ParameterType.SystemChannel;
+                case "SystemEventGenerator": return ParameterType.SystemEventGenerator;
                 case "FileName": return ParameterType.FileName;
                 case "Directory": return ParameterType.Directory;
                 case "InstrumentChannel": return ParameterType.InstrumentChannel;
                 case "Spectrum": return ParameterType.Spectrum;
+            }
+            throw new Exception("Invalid ParameterType string");
+        }
+
+        public static string StringFromType(ParameterType type)
+        {
+            switch (type)
+            {
+                case ParameterType.String: return "String";
+                case ParameterType.Int: return "Int";
+                case ParameterType.Double: return  "Double";
+                case ParameterType.Bool: return "Bool";
+                case ParameterType.Enum: return "Enum";
+                case ParameterType.TimeSpan: return "TimeSpan";
+                case ParameterType.DateTimeFormat: return "DateTimeFormat";
+                case ParameterType.SystemChannel: return "SystemChannel";
+                case ParameterType.SystemEventGenerator: return "SystemEventGenerator";
+                case ParameterType.FileName: return "FileName";
+                case ParameterType.Directory: return "Directory";
+                case ParameterType.InstrumentChannel: return "InstrumentChannel";
+                case ParameterType.Spectrum: return "Spectrum";
             }
             throw new Exception("Invalid ParameterType string");
         }

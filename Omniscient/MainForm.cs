@@ -1644,10 +1644,10 @@ namespace Omniscient
 
         private void DeclarationMenuItem_Click(object sender, EventArgs e)
         {
-            MenuItem menuItem = (MenuItem)sender;
-            DeclarationEditor declarationEditor = new DeclarationEditor();
-            declarationEditor.LoadDECFile(menuItem.Tag.ToString());
-            declarationEditor.Show();
+            //MenuItem menuItem = (MenuItem)sender;
+            //DeclarationEditor declarationEditor = new DeclarationEditor();
+            //declarationEditor.LoadDECFile(menuItem.Tag.ToString());
+            //declarationEditor.Show();
         }
 
         private void PlotSpectrumMenuItem_Click(object sender, EventArgs e)
@@ -1953,8 +1953,8 @@ namespace Omniscient
 
         private void declarationEditorToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            DeclarationEditor declarationEditor = new DeclarationEditor();
-            declarationEditor.Show();
+            //DeclarationEditor declarationEditor = new DeclarationEditor();
+            //declarationEditor.Show();
         }
 
         private void exportToolStripMenuItem_Click(object sender, EventArgs e)
@@ -2694,8 +2694,24 @@ namespace Omniscient
                 removeMenuItem.Click += RemoveSitesTreeMenuItem_Click;
                 chartMenu.MenuItems.Add(removeMenuItem);
 
+                if (persister is DetectionSystem)
+                {
+                    MenuItem declarationsMenuItem = new MenuItem("Edit declarations for " + persister.Name);
+                    declarationsMenuItem.Tag = persister;
+                    declarationsMenuItem.Click += DeclarationsMenuItem_Click;
+                    chartMenu.MenuItems.Add(declarationsMenuItem);
+                }
+
                 chartMenu.Show(SitesTreeView, new Point(e.X, e.Y));
             }
+        }
+
+        private void DeclarationsMenuItem_Click(object sender, EventArgs e)
+        {
+            MenuItem menuItem = (MenuItem)sender;
+            DetectionSystem system = (DetectionSystem)menuItem.Tag;
+            DeclarationEditor declarationEditor = new DeclarationEditor(system);
+            declarationEditor.ShowDialog();
         }
 
         private void ShowInSiteManagerMenuItem_Click(object sender, EventArgs e)
