@@ -22,7 +22,7 @@ using System.Xml;
 
 namespace Omniscient
 {
-    public enum ParameterType { String, Int, Double, Bool, Enum, TimeSpan, DateTimeFormat, SystemChannel, SystemEventGenerator, FileName, Directory, InstrumentChannel, Spectrum }
+    public enum ParameterType { String, Int, Double, DoubleArray, Bool, Enum, TimeSpan, DateTimeFormat, SystemChannel, SystemEventGenerator, FileName, Directory, InstrumentChannel, Spectrum }
 
     /// <summary>
     /// A description of a Parameter. Used in Hookups
@@ -67,6 +67,7 @@ namespace Omniscient
                 case "String": return ParameterType.String;
                 case "Int": return ParameterType.Int;
                 case "Double": return ParameterType.Double;
+                case "DoubleArray": return ParameterType.DoubleArray;
                 case "Bool": return ParameterType.Bool;
                 case "Enum": return ParameterType.Enum;
                 case "TimeSpan": return ParameterType.TimeSpan;
@@ -88,6 +89,7 @@ namespace Omniscient
                 case ParameterType.String: return "String";
                 case ParameterType.Int: return "Int";
                 case ParameterType.Double: return  "Double";
+                case ParameterType.DoubleArray: return  "DoubleArray";
                 case ParameterType.Bool: return "Bool";
                 case ParameterType.Enum: return "Enum";
                 case ParameterType.TimeSpan: return "TimeSpan";
@@ -120,6 +122,9 @@ namespace Omniscient
                         break;
                     case ParameterType.Double:
                         param = new DoubleParameter(pTemplate.Name) { Value = node.Attributes[paramNameStr]?.InnerText };
+                        break;
+                    case ParameterType.DoubleArray:
+                        param = new DoubleArrayParameter(pTemplate.Name) { Value = node.Attributes[paramNameStr]?.InnerText };
                         break;
                     case ParameterType.Bool:
                         param = new BoolParameter(pTemplate.Name) { Value = node.Attributes[paramNameStr]?.InnerText };
@@ -174,6 +179,9 @@ namespace Omniscient
                     break;
                 case ParameterType.Double:
                     param = new DoubleParameter(pTemplate.Name) { Value = "0.0" };
+                    break;
+                case ParameterType.DoubleArray:
+                    param = new DoubleParameter(pTemplate.Name) { Value = "[0.0]" };
                     break;
                 case ParameterType.Bool:
                     param = new BoolParameter(pTemplate.Name) { Value = "False" };
@@ -285,6 +293,40 @@ namespace Omniscient
         }
         public override bool Validate() { return double.TryParse(Value, out double result); }
         public double ToDouble() { return double.Parse(Value); }
+    }
+
+    /// <summary>
+    /// A Parameter for an array of doubles
+    /// </summary>
+    public class DoubleArrayParameter : Parameter
+    {
+        public DoubleArrayParameter(string name) : base(name, ParameterType.DoubleArray) { }
+        public DoubleArrayParameter(string name, double[] val) : base(name, ParameterType.DoubleArray)
+        {
+            string str = "[";
+            for (int i = 0; i < val.Length - 1; i++) 
+            { 
+                str += val[i].ToString() + ",";
+            }
+            if (val.Length > 0) 
+            { 
+                str += val[val.Length - 1].ToString(); 
+            }
+            str += "]";
+            Value = str;
+        }
+        public override bool Validate()
+        {
+            try  { double[] array = ToDoubleArray(); }
+            catch (Exception ex) 
+            { return false; }
+            return true; 
+        }
+        public double[] ToDoubleArray() 
+        {
+            string substring = Value.Substring(1, Value.Length - 2);
+            return Array.ConvertAll(substring.Split(','), Double.Parse);
+        }
     }
 
     /// <summary>

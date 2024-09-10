@@ -95,6 +95,23 @@ namespace Omniscient
             liveTime = newLiveTime;
         }
 
+        public Spectrum(Spectrum spectrum, bool copyVals=false)
+        {
+            calibrationZero = spectrum.GetCalibrationZero();
+            calibrationSlope = spectrum.GetCalibrationSlope();
+            counts = new int[spectrum.counts.Length];
+            startTime = spectrum.startTime;
+            realTime = spectrum.realTime;
+            liveTime = spectrum.liveTime;
+            if(copyVals)
+            {
+                for (int i = 0; i < spectrum.counts.Length; ++i)
+                {
+                    counts[i] = spectrum.counts[i];
+                }
+            }
+        }
+
         public double[] GetBins()
         {
             double[] bins = new double[counts.Length];
