@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using static Omniscient.AnalyzerStep;
+using static Omniscient.InitializeReportAnalyzerStep;
 
 namespace Omniscient
 {
@@ -26,9 +27,10 @@ namespace Omniscient
             new ConvoluteSpectrumAnalyzerStepHookup(),
             new ExportSpectrumAnalyzerStepHookup(),
             new GetROIMaximumAnalyzerStepHookup(),
-            new AppendStringAnalyzerStepHookup()
+            new AppendStringAnalyzerStepHookup(),
+            new InitializeReportAnalyzerStepHookup()
         };
-        public enum AnalyzerStepType { GET_DECLARATION, CREATE_VARIABLE, SET_EQUAL, TWO_PARAMETER, CHANNEL_RANGE_STATISTIC, SUM_SPECTRA, CONVOLUTE_SPECTRUM, EXPORT_SPECTRUM, GET_ROI_MAXIMUM, APPEND_STRING }
+        public enum AnalyzerStepType { GET_DECLARATION, CREATE_VARIABLE, SET_EQUAL, TWO_PARAMETER, CHANNEL_RANGE_STATISTIC, SUM_SPECTRA, CONVOLUTE_SPECTRUM, EXPORT_SPECTRUM, GET_ROI_MAXIMUM, APPEND_STRING, INITIALIZE_REPORT }
         public AnalyzerStepType StepType { get; private set; }
         public Analyzer ParentAnalyzer { get; }
 
