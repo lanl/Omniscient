@@ -87,6 +87,7 @@
     <Compile Include="Analysis\AnalysisResult.cs" />
     <Compile Include="Analysis\Analyzer.cs" />
     <Compile Include="Analysis\AnalyzerReport.cs" />
+    <Compile Include="Analysis\DisplayReportAnalyzerStep.cs" />
     <Compile Include="Analysis\InitializeReportAnalyzerStep.cs" />
     <Compile Include="Analysis\ReportSection.cs" />
     <Compile Include="Analysis\AnalyzerRunData.cs" />
@@ -116,6 +117,12 @@
     </Compile>
     <Compile Include="Controls\ParameterPanel.Designer.cs">
       <DependentUpon>ParameterPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\ReportViewer.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\ReportViewer.Designer.cs">
+      <DependentUpon>ReportViewer.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\ResponsiveTreeView.cs">
       <SubType>Component</SubType>
@@ -326,6 +333,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\ParameterPanel.resx">
       <DependentUpon>ParameterPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\ReportViewer.resx">
+      <DependentUpon>ReportViewer.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\XYPanel.resx">
       <DependentUpon>XYPanel.cs</DependentUpon>

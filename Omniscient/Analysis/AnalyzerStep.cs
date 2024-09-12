@@ -28,9 +28,10 @@ namespace Omniscient
             new ExportSpectrumAnalyzerStepHookup(),
             new GetROIMaximumAnalyzerStepHookup(),
             new AppendStringAnalyzerStepHookup(),
-            new InitializeReportAnalyzerStepHookup()
+            new InitializeReportAnalyzerStepHookup(),
+            new DisplayReportAnalyzerStepHookup()
         };
-        public enum AnalyzerStepType { GET_DECLARATION, CREATE_VARIABLE, SET_EQUAL, TWO_PARAMETER, CHANNEL_RANGE_STATISTIC, SUM_SPECTRA, CONVOLUTE_SPECTRUM, EXPORT_SPECTRUM, GET_ROI_MAXIMUM, APPEND_STRING, INITIALIZE_REPORT }
+        public enum AnalyzerStepType { GET_DECLARATION, CREATE_VARIABLE, SET_EQUAL, TWO_PARAMETER, CHANNEL_RANGE_STATISTIC, SUM_SPECTRA, CONVOLUTE_SPECTRUM, EXPORT_SPECTRUM, GET_ROI_MAXIMUM, APPEND_STRING, INITIALIZE_REPORT, DISPLAY_REPORT }
         public AnalyzerStepType StepType { get; private set; }
         public Analyzer ParentAnalyzer { get; }
 
