@@ -44,6 +44,7 @@ namespace Omniscient
                 string path = ParentAnalyzer.DetectionSystem.GetDataDirectory();
                 try
                 {
+                    // TODO: Give this a unique file name
                     data.Report.ToFile(System.IO.Path.Combine(path, "report.rep"));
                 }
                 catch (Exception ex)

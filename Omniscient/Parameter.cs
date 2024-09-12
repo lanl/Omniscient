@@ -22,7 +22,7 @@ using System.Xml;
 
 namespace Omniscient
 {
-    public enum ParameterType { String, Int, Double, DoubleArray, Bool, Enum, TimeSpan, DateTimeFormat, SystemChannel, SystemEventGenerator, FileName, Directory, InstrumentChannel, Spectrum }
+    public enum ParameterType { String, StringArray, Int, Double, DoubleArray, Bool, Enum, TimeSpan, DateTimeFormat, SystemChannel, SystemEventGenerator, FileName, Directory, InstrumentChannel, Spectrum }
 
     /// <summary>
     /// A description of a Parameter. Used in Hookups
@@ -65,6 +65,7 @@ namespace Omniscient
             switch (str)
             {
                 case "String": return ParameterType.String;
+                case "StringArray": return ParameterType.StringArray;
                 case "Int": return ParameterType.Int;
                 case "Double": return ParameterType.Double;
                 case "DoubleArray": return ParameterType.DoubleArray;
@@ -87,6 +88,7 @@ namespace Omniscient
             switch (type)
             {
                 case ParameterType.String: return "String";
+                case ParameterType.StringArray: return "StringArray";
                 case ParameterType.Int: return "Int";
                 case ParameterType.Double: return  "Double";
                 case ParameterType.DoubleArray: return  "DoubleArray";
@@ -116,6 +118,9 @@ namespace Omniscient
                 {
                     case ParameterType.String:
                         param = new StringParameter(pTemplate.Name) { Value = node.Attributes[paramNameStr]?.InnerText };
+                        break;
+                    case ParameterType.StringArray:
+                        param = new StringArrayParameter(pTemplate.Name) { Value = node.Attributes[paramNameStr]?.InnerText };
                         break;
                     case ParameterType.Int:
                         param = new IntParameter(pTemplate.Name) { Value = node.Attributes[paramNameStr]?.InnerText };
@@ -173,6 +178,9 @@ namespace Omniscient
             {
                 case ParameterType.String:
                     param = new StringParameter(pTemplate.Name) { Value = "" };
+                    break;
+                case ParameterType.StringArray:
+                    param = new StringParameter(pTemplate.Name) { Value = "[]" };
                     break;
                 case ParameterType.Int:
                     param = new IntParameter(pTemplate.Name) { Value = "0" };
@@ -269,6 +277,40 @@ namespace Omniscient
             Value = initialValue;
         }
         public override bool Validate() { return true; }
+    }
+
+    /// <summary>
+    /// A Parameter for an array of strings
+    /// </summary>
+    public class StringArrayParameter : Parameter
+    {
+        public StringArrayParameter(string name) : base(name, ParameterType.StringArray) { }
+        public StringArrayParameter(string name, string[] val) : base(name, ParameterType.StringArray)
+        {
+            string str = "[";
+            for (int i = 0; i < val.Length - 1; i++)
+            {
+                str += val[i] + ",";
+            }
+            if (val.Length > 0)
+            {
+                str += val[val.Length - 1].ToString();
+            }
+            str += "]";
+            Value = str;
+        }
+        public override bool Validate()
+        {
+            try { string[] array = ToStringArray(); }
+            catch (Exception ex)
+            { return false; }
+            return true;
+        }
+        public string[] ToStringArray()
+        {
+            string substring = Value.Substring(1, Value.Length - 2);
+            return substring.Split(',');
+        }
     }
 
     /// <summary>

@@ -48,6 +48,10 @@ namespace Omniscient
                     template = new ParameterTemplate(name, ParameterType.String);
                     param = new StringParameter(name, value);
                     break;
+                case "StringArray":
+                    template = new ParameterTemplate(name, ParameterType.StringArray);
+                    param = new StringArrayParameter(name) { Value = value };
+                    break;
                 case "Int":
                     template = new ParameterTemplate(name, ParameterType.Int);
                     param = new IntParameter(name) { Value = value };
