@@ -42,10 +42,17 @@ namespace Omniscient
             if (save) 
             {
                 string path = ParentAnalyzer.DetectionSystem.GetDataDirectory();
+                string fileName, fullPath = "";
                 try
                 {
-                    // TODO: Give this a unique file name
-                    data.Report.ToFile(System.IO.Path.Combine(path, "report.rep"));
+                    string fileNamePartA = data.Event.StartTime.ToString("yyyy-MM-dd HH_mm_ss") + " " + ParentAnalyzer.Name + "_";
+                    for (int i=1; i<1000;++i)
+                    {
+                        fileName = fileNamePartA + i.ToString("D3") + ".rep";
+                        fullPath = System.IO.Path.Combine(path, fileName);
+                        if (!File.Exists(fullPath)) break;
+                    }
+                    data.Report.ToFile(fullPath);
                 }
                 catch (Exception ex)
                 {
