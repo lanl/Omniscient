@@ -32,11 +32,10 @@ namespace Omniscient
             new AddReportSectionAnalyzerStepStepHookup(),
             new DisplayReportAnalyzerStepHookup()
         };
-        public enum AnalyzerStepType { GET_DECLARATION, CREATE_VARIABLE, SET_EQUAL, TWO_PARAMETER, CHANNEL_RANGE_STATISTIC, SUM_SPECTRA, CONVOLUTE_SPECTRUM, EXPORT_SPECTRUM, GET_ROI_MAXIMUM, APPEND_STRING, INITIALIZE_REPORT, ADD_REPORT_SECTION, DISPLAY_REPORT }
-        public AnalyzerStepType StepType { get; private set; }
+        public string StepType { get; protected set; }
         public Analyzer ParentAnalyzer { get; }
 
-        public AnalyzerStep(Analyzer parent, string name, uint id, AnalyzerStepType stepType) : base(parent, name, id)
+        public AnalyzerStep(Analyzer parent, string name, uint id, string stepType) : base(parent, name, id)
         {
             parent.GetSteps().Add(this);
             ParentAnalyzer = parent;
@@ -70,7 +69,14 @@ namespace Omniscient
         }
         public override void ToXML(XmlWriter xmlWriter)
         {
-            throw new NotImplementedException();
+            StartToXML(xmlWriter);
+            xmlWriter.WriteAttributeString("Type", StepType);
+            List<Parameter> parameters = GetParameters();
+            foreach (Parameter param in parameters)
+            {
+                xmlWriter.WriteAttributeString(param.Name.Replace(' ', '_'), param.Value);
+            }
+            xmlWriter.WriteEndElement();
         }
 
         public override bool SetIndex(int index)
@@ -105,7 +111,7 @@ namespace Omniscient
         string variableName;
         ParameterType variableType;
 
-        public CreateVariableAnalyzerStep(Analyzer analyzer, string name, uint id) : base(analyzer, name, id, AnalyzerStepType.CREATE_VARIABLE)
+        public CreateVariableAnalyzerStep(Analyzer analyzer, string name, uint id) : base(analyzer, name, id, "Create Variable")
         {
             variableName = "";
             variableType = ParameterType.Double;
@@ -172,7 +178,7 @@ namespace Omniscient
         string inputParamName;
         string outputParamName;
 
-        public SetEqualAnalyzerStep(Analyzer analyzer, string name, uint id) : base(analyzer, name, id, AnalyzerStepType.SET_EQUAL)
+        public SetEqualAnalyzerStep(Analyzer analyzer, string name, uint id) : base(analyzer, name, id, "Set Equal")
         {
             inputParamName = "";
             outputParamName = "";
@@ -260,7 +266,7 @@ namespace Omniscient
         string param2Name;
         string outputParamName;
 
-        public TwoParameterAnalyzerStep(Analyzer analyzer, string name, uint id) : base(analyzer, name, id, AnalyzerStepType.TWO_PARAMETER)
+        public TwoParameterAnalyzerStep(Analyzer analyzer, string name, uint id) : base(analyzer, name, id, "Two Parameter")
         {
             param1Name = "";
             param2Name = "";
@@ -429,7 +435,7 @@ namespace Omniscient
         string channelParamName;
         string outputParamName;
 
-        public ChannelRangeStatisticAnalyzerStep(Analyzer analyzer, string name, uint id) : base(analyzer, name, id, AnalyzerStepType.CHANNEL_RANGE_STATISTIC)
+        public ChannelRangeStatisticAnalyzerStep(Analyzer analyzer, string name, uint id) : base(analyzer, name, id, "Channel Range Statistic")
         {
             channelParamName = "";
             outputParamName = "";
@@ -655,7 +661,7 @@ namespace Omniscient
         string channelParamName;
         string outputParamName;
 
-        public SumSpectraAnalyzerStep(Analyzer analyzer, string name, uint id) : base(analyzer, name, id, AnalyzerStepType.SUM_SPECTRA)
+        public SumSpectraAnalyzerStep(Analyzer analyzer, string name, uint id) : base(analyzer, name, id, "Sum Spectra")
         {
             channelParamName = "";
             outputParamName = "";
@@ -758,7 +764,7 @@ namespace Omniscient
         string outputType;
         string fileParamName;
 
-        public ExportSpectrumAnalyzerStep(Analyzer analyzer, string name, uint id) : base(analyzer, name, id, AnalyzerStepType.EXPORT_SPECTRUM)
+        public ExportSpectrumAnalyzerStep(Analyzer analyzer, string name, uint id) : base(analyzer, name, id, "Export Spectrum")
         {
             specParamName = "";
             outputType = "";
@@ -853,7 +859,7 @@ namespace Omniscient
         double keVStart, keVEnd;
         string outputParamName;
 
-        public GetROIMaximumAnalyzerStep(Analyzer analyzer, string name, uint id) : base(analyzer, name, id, AnalyzerStepType.GET_ROI_MAXIMUM)
+        public GetROIMaximumAnalyzerStep(Analyzer analyzer, string name, uint id) : base(analyzer, name, id, "Get ROI Maximum")
         {
             specParamName = "";
             keVStart = 0;
@@ -955,7 +961,7 @@ namespace Omniscient
         string inputParamName;
         string stringParam;
 
-        public AppendStringAnalyzerStep(Analyzer analyzer, string name, uint id) : base(analyzer, name, id, AnalyzerStepType.APPEND_STRING)
+        public AppendStringAnalyzerStep(Analyzer analyzer, string name, uint id) : base(analyzer, name, id, "Append String")
         {
             inputParamName = "";
             stringParam = "";

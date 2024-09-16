@@ -89,6 +89,10 @@ namespace Omniscient
             {
                 eg.ToXML(xmlWriter);
             }
+            foreach (Analyzer analyzer in GetAnalyzers())
+            {
+                analyzer.ToXML(xmlWriter);
+            }
             xmlWriter.WriteEndElement();
         }
 

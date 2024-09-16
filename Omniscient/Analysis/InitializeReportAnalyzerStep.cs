@@ -10,7 +10,7 @@ namespace Omniscient
     {
         bool hasEvent;
         bool hasDeclaration;
-        public InitializeReportAnalyzerStep(Analyzer analyzer, string name, uint id) : base(analyzer, name, id, AnalyzerStepType.INITIALIZE_REPORT)
+        public InitializeReportAnalyzerStep(Analyzer analyzer, string name, uint id) : base(analyzer, name, id, "Initialize Report")
         {
             hasEvent = false;
             hasDeclaration = false;

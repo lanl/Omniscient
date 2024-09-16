@@ -11,7 +11,7 @@ namespace Omniscient
     /// </summary>
     public class GetDeclarationAnalyzerStep : AnalyzerStep
     {
-        public GetDeclarationAnalyzerStep(Analyzer parent, string name, uint id) : base(parent, name, id, AnalyzerStepType.GET_DECLARATION)
+        public GetDeclarationAnalyzerStep(Analyzer parent, string name, uint id) : base(parent, name, id, "Get Declaration")
         {
         }
 

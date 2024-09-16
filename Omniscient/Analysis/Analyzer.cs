@@ -65,7 +65,16 @@ namespace Omniscient
 
         public override void ToXML(XmlWriter xmlWriter)
         {
-            throw new NotImplementedException();
+            StartToXML(xmlWriter);
+            foreach (CustomParameter param in CustomParameters.Values)
+            {
+                param.ToXML(xmlWriter);
+            }
+            foreach (AnalyzerStep step in steps) 
+            { 
+                step.ToXML(xmlWriter);
+            }
+            xmlWriter.WriteEndElement();
         }
 
         public override bool SetIndex(int index)

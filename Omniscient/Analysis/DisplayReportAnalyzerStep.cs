@@ -14,7 +14,7 @@ namespace Omniscient
     public class DisplayReportAnalyzerStep : AnalyzerStep
     {
         bool save;
-        public DisplayReportAnalyzerStep(Analyzer analyzer, string name, uint id) : base(analyzer, name, id, AnalyzerStepType.DISPLAY_REPORT)
+        public DisplayReportAnalyzerStep(Analyzer analyzer, string name, uint id) : base(analyzer, name, id, "Display Report")
         {
             save = false;
         }

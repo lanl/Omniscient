@@ -11,7 +11,7 @@ namespace Omniscient
         string title;
         string[] parameterNames;
 
-        public AddReportSectionAnalyzerStep(Analyzer analyzer, string name, uint id) : base(analyzer, name, id, AnalyzerStepType.ADD_REPORT_SECTION)
+        public AddReportSectionAnalyzerStep(Analyzer analyzer, string name, uint id) : base(analyzer, name, id, "Add Report Section")
         {
             title = "";
             parameterNames = new string[0];

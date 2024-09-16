@@ -16,7 +16,7 @@ namespace Omniscient
         double[] filter;
         string outputSpecParamName;
 
-        public ConvoluteSpectrumAnalyzerStep(Analyzer analyzer, string name, uint id) : base(analyzer, name, id, AnalyzerStepType.CONVOLUTE_SPECTRUM)
+        public ConvoluteSpectrumAnalyzerStep(Analyzer analyzer, string name, uint id) : base(analyzer, name, id, "Convolute Spectrum")
         {
             inputSpecParamName = "";
             filter = new double[1];
