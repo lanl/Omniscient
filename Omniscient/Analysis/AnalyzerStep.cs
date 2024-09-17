@@ -343,9 +343,9 @@ namespace Omniscient
                 outputParam = data.CustomParameters[outputParamName].Parameter;
             }
             catch (Exception ex) { return ReturnCode.BAD_INPUT; }
-            if (param1.Type != ParameterType.Int && param1.Type != ParameterType.Double) return ReturnCode.BAD_INPUT;
-            if (param2.Type != ParameterType.Int && param2.Type != ParameterType.Double) return ReturnCode.BAD_INPUT;
-            if (outputParam.Type != ParameterType.Int && outputParam.Type != ParameterType.Double) return ReturnCode.BAD_INPUT;
+            if (param1.Type != ParameterType.Int && param1.Type != ParameterType.Double && param1.Type != ParameterType.DoubleWithUncertainty) return ReturnCode.BAD_INPUT;
+            if (param2.Type != ParameterType.Int && param2.Type != ParameterType.Double && param2.Type != ParameterType.DoubleWithUncertainty) return ReturnCode.BAD_INPUT;
+            if (outputParam.Type != ParameterType.Int && outputParam.Type != ParameterType.Double && outputParam.Type != ParameterType.DoubleWithUncertainty) return ReturnCode.BAD_INPUT;
 
             if (outputParam.Type == ParameterType.Int && param1.Type == ParameterType.Int && param2.Type == ParameterType.Int)
             {
@@ -372,31 +372,59 @@ namespace Omniscient
             }
             else
             {
+                bool doUncertainty = false;
+                if (outputParam.Type == ParameterType.DoubleWithUncertainty) doUncertainty = true;
                 double param1D, param2D;
+                double param1U = 0;
+                double param2U = 0;
                 double resultD = 0;
+                double resultU = 0;
                 if (param1.Type == ParameterType.Int) param1D = (param1 as IntParameter).ToInt();
-                else param1D = (param1 as DoubleParameter).ToDouble();
+                else if (param1.Type == ParameterType.Double) param1D = (param1 as DoubleParameter).ToDouble();
+                else
+                {
+                    param1D = (param1 as DoubleWithUncertaintyParameter).DoubleValue();
+                    param1U = (param1 as DoubleWithUncertaintyParameter).DoubleUncertainty();
+                }
                 if (param2.Type == ParameterType.Int) param2D = (param2 as IntParameter).ToInt();
-                else param2D = (param2 as DoubleParameter).ToDouble();
+                else if (param2.Type == ParameterType.Double) param2D = (param2 as DoubleParameter).ToDouble();
+                else
+                {
+                    param2D = (param2 as DoubleWithUncertaintyParameter).DoubleValue();
+                    param2U = (param2 as DoubleWithUncertaintyParameter).DoubleUncertainty();
+                }
                 switch (Operation)
                 {
                     case OperationType.Sum:
                         resultD = param1D + param2D;
+                        if (doUncertainty) resultU = Math.Sqrt(param1U*param1U + param2U*param2U);
                         break;
                     case OperationType.Difference:
                         resultD = param1D - param2D;
+                        if (doUncertainty) resultU = Math.Sqrt(param1U * param1U + param2U * param2U);
                         break;
                     case OperationType.Product:
                         resultD = param1D * param2D;
+                        if (doUncertainty)
+                        {
+                            resultU = resultD * Math.Sqrt((param1U / param1D) * (param1U / param1D) + 
+                                                          (param2U / param2D) * (param2U / param2D));
+                        }
                         break;
                     case OperationType.Ratio:
                         resultD = param1D / param2D;
+                        if (doUncertainty)
+                        {
+                            resultU = resultD * Math.Sqrt((param1U / param1D) * (param1U / param1D) +
+                                                          (param2U / param2D) * (param2U / param2D));
+                        }
                         break;
                 }
-                if (outputParam.Type == ParameterType.Double)
+                if (outputParam.Type == ParameterType.Double || outputParam.Type == ParameterType.DoubleWithUncertainty)
                     outputParam.Value = resultD.ToString();
                 else
                     outputParam.Value = ((int)resultD).ToString();
+                if (doUncertainty) outputParam.Value += " +- " + resultU.ToString();
             }
             return ReturnCode.SUCCESS;
         }
@@ -563,7 +591,7 @@ namespace Omniscient
                 sumSq += (vals[i] - average) * (vals[i] - average);
             }
 
-            return Math.Sqrt(sumSq/count);
+            return Math.Sqrt(sumSq/(count-1));
         }
 
         public override ReturnCode Run(AnalyzerRunData data)
@@ -577,7 +605,12 @@ namespace Omniscient
                 outputParam = data.CustomParameters[outputParamName].Parameter;
             }
             catch (Exception ex) { return ReturnCode.BAD_INPUT; }
-            if (outputParam.Type != ParameterType.Int && outputParam.Type != ParameterType.Double) return ReturnCode.BAD_INPUT;
+            if (outputParam.Type != ParameterType.Int && 
+                outputParam.Type != ParameterType.Double && 
+                outputParam.Type != ParameterType.DoubleWithUncertainty) return ReturnCode.BAD_INPUT;
+
+            bool doUncertainty = false;
+            if (outputParam.Type == ParameterType.DoubleWithUncertainty) doUncertainty = true;
 
             // Load channel and get the times/vals/durations
             Channel channel = channelParam.ToChannel();
@@ -599,11 +632,13 @@ namespace Omniscient
                 case OperationType.Count:
                     count = Count(data.Event, times, startIndex);
                     outputParam.Value = count.ToString();
+                    if (doUncertainty) outputParam.Value += " +- 0.0";
                     break;
                 case OperationType.Sum:
                     sum = Sum(data.Event, times, vals, startIndex);
                     if (outputParam.Type == ParameterType.Int) outputParam.Value = ((int)sum).ToString();
                     else outputParam.Value = sum.ToString();
+                    if (doUncertainty) outputParam.Value += " +- 0.0";
                     break;
                 case OperationType.Average:
                     count = Count(data.Event, times, startIndex);
@@ -611,21 +646,31 @@ namespace Omniscient
                     double average = sum / count;
                     if (outputParam.Type == ParameterType.Int) outputParam.Value = ((int)average).ToString();
                     else outputParam.Value = average.ToString();
+                    if (doUncertainty)
+                    {
+                        stat = StandardDeviation(data.Event, times, vals, startIndex);
+                        count = Count(data.Event, times, startIndex);
+                        stat = stat / Math.Sqrt(count);
+                        outputParam.Value += " +- " + stat.ToString();
+                    }
                     break;
                 case OperationType.Max:
                     stat = Max(data.Event, times, vals, startIndex);
                     if (outputParam.Type == ParameterType.Int) outputParam.Value = ((int)stat).ToString();
                     else outputParam.Value = stat.ToString();
+                    if (doUncertainty) outputParam.Value += " +- 0.0";
                     break;
                 case OperationType.Min:
                     stat = Min(data.Event, times, vals, startIndex);
                     if (outputParam.Type == ParameterType.Int) outputParam.Value = ((int)stat).ToString();
                     else outputParam.Value = stat.ToString();
+                    if (doUncertainty) outputParam.Value += " +- 0.0";
                     break;
                 case OperationType.StandardDeviation:
                     stat = StandardDeviation(data.Event, times, vals, startIndex);
                     if (outputParam.Type == ParameterType.Int) outputParam.Value = ((int)stat).ToString();
                     else outputParam.Value = stat.ToString();
+                    if (doUncertainty) outputParam.Value += " +- 0.0";
                     break;
 
             }

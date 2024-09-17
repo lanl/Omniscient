@@ -31,6 +31,10 @@ namespace Omniscient
                     case ParameterType.Double:
                         builder.AppendFormat("\n {0,32}: {1,13:F3}", parameter.Name, (parameter as DoubleParameter).ToDouble());
                         break;
+                    case ParameterType.DoubleWithUncertainty:
+                        DoubleWithUncertaintyParameter uncertaintyParam = parameter as DoubleWithUncertaintyParameter;
+                        builder.AppendFormat("\n {0,32}: {1,13:F3} +- {2,13:F3}", uncertaintyParam.Name, uncertaintyParam.DoubleValue(), uncertaintyParam.DoubleUncertainty());
+                        break;
                     default:
                         builder.AppendFormat("\n {0,32}: {1}", parameter.Name, parameter.Value);
                         break;

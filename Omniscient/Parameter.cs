@@ -22,7 +22,7 @@ using System.Xml;
 
 namespace Omniscient
 {
-    public enum ParameterType { String, StringArray, Int, Double, DoubleArray, Bool, Enum, TimeSpan, DateTimeFormat, SystemChannel, SystemEventGenerator, FileName, Directory, InstrumentChannel, Spectrum }
+    public enum ParameterType { String, StringArray, Int, Double, DoubleArray, DoubleWithUncertainty, Bool, Enum, TimeSpan, DateTimeFormat, SystemChannel, SystemEventGenerator, FileName, Directory, InstrumentChannel, Spectrum }
 
     /// <summary>
     /// A description of a Parameter. Used in Hookups
@@ -69,6 +69,7 @@ namespace Omniscient
                 case "Int": return ParameterType.Int;
                 case "Double": return ParameterType.Double;
                 case "DoubleArray": return ParameterType.DoubleArray;
+                case "DoubleWithUncertainty": return ParameterType.DoubleWithUncertainty;
                 case "Bool": return ParameterType.Bool;
                 case "Enum": return ParameterType.Enum;
                 case "TimeSpan": return ParameterType.TimeSpan;
@@ -92,6 +93,7 @@ namespace Omniscient
                 case ParameterType.Int: return "Int";
                 case ParameterType.Double: return  "Double";
                 case ParameterType.DoubleArray: return  "DoubleArray";
+                case ParameterType.DoubleWithUncertainty: return "DoubleWithUncertainty";
                 case ParameterType.Bool: return "Bool";
                 case ParameterType.Enum: return "Enum";
                 case ParameterType.TimeSpan: return "TimeSpan";
@@ -130,6 +132,9 @@ namespace Omniscient
                         break;
                     case ParameterType.DoubleArray:
                         param = new DoubleArrayParameter(pTemplate.Name) { Value = node.Attributes[paramNameStr]?.InnerText };
+                        break;
+                    case ParameterType.DoubleWithUncertainty:
+                        param = new DoubleWithUncertaintyParameter(pTemplate.Name) { Value = node.Attributes[paramNameStr]?.InnerText };
                         break;
                     case ParameterType.Bool:
                         param = new BoolParameter(pTemplate.Name) { Value = node.Attributes[paramNameStr]?.InnerText };
@@ -190,6 +195,9 @@ namespace Omniscient
                     break;
                 case ParameterType.DoubleArray:
                     param = new DoubleParameter(pTemplate.Name) { Value = "[0.0]" };
+                    break;
+                case ParameterType.DoubleWithUncertainty:
+                    param = new DoubleWithUncertaintyParameter(pTemplate.Name) { Value = "0.0 +- 0.0" };
                     break;
                 case ParameterType.Bool:
                     param = new BoolParameter(pTemplate.Name) { Value = "False" };
@@ -368,6 +376,46 @@ namespace Omniscient
         {
             string substring = Value.Substring(1, Value.Length - 2);
             return Array.ConvertAll(substring.Split(','), Double.Parse);
+        }
+    }
+
+    /// <summary>
+    /// A simple Parameter for a double (i.e. a floating point number).
+    /// </summary>
+    public class DoubleWithUncertaintyParameter : Parameter
+    {
+        private static char[] splitChar  = new char[] { ':' };
+        public DoubleWithUncertaintyParameter(string name) : base(name, ParameterType.DoubleWithUncertainty) { }
+        public DoubleWithUncertaintyParameter(string name, double val, double err) : base(name, ParameterType.DoubleWithUncertainty)
+        {
+            Value = val.ToString() + " +- " + err.ToString();
+        }
+        public override bool Validate()
+        {
+            try
+            {
+                string splitable = Value.Replace(" +- ", ":");
+                string[] pieces = splitable.Split(splitChar, 2);
+
+                return double.TryParse(pieces[0], out double result) && double.TryParse(pieces[1], out double result2);
+            }
+            catch { return false; }
+        }
+        public double DoubleValue()
+        {
+            string splitable = Value.Replace(" +- ", ":");
+            string[] pieces = splitable.Split(splitChar, 2);
+            return double.Parse(pieces[0]); 
+        }
+        public double DoubleUncertainty()
+        {
+            string splitable = Value.Replace(" +- ", ":");
+            string[] pieces = splitable.Split(splitChar, 2);
+            return double.Parse(pieces[1]);
+        }
+        public void Set(double val, double err)
+        {
+            Value = val.ToString() + " +- " + err.ToString();
         }
     }
 

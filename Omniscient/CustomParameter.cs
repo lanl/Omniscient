@@ -64,6 +64,10 @@ namespace Omniscient
                     template = new ParameterTemplate(name, ParameterType.DoubleArray);
                     param = new DoubleArrayParameter(name) { Value = value };
                     break;
+                case "DoubleWithUncertainty":
+                    template = new ParameterTemplate(name, ParameterType.DoubleWithUncertainty);
+                    param = new DoubleWithUncertaintyParameter(name) { Value = value };
+                    break;
                 case "Bool":
                     template = new ParameterTemplate(name, ParameterType.Bool);
                     param = new BoolParameter(name) { Value = value };
