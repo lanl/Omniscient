@@ -2262,12 +2262,28 @@ namespace Omniscient
                     menuItem.Click += RemoveEventMenuItem_Click;
                     menu.MenuItems.Add(menuItem);
                 }
+                else
+                {
+                    //Option to add to a ManualEG
+                    foreach(EventGenerator eg in Core.ActiveEventGenerators)
+                    {
+                        if (eg is ManualEG)
+                        {
+                            menuItem = new MenuItem("Add event to " + eg.Name);
+                            menuItem.Tag = new Tuple<Event, EventGenerator>(eve,eg);
+                            menuItem.Click += AddEventToManualEG;
+                            menu.MenuItems.Add(menuItem);
+                        }
+                    }
+                }
 
+                // View event menu item
                 menuItem = new MenuItem("View event");
                 menuItem.Tag = eve;
                 menuItem.Click += ViewEvent_Click;
                 menu.MenuItems.Add(menuItem);
 
+                // Analyzer menu items
                 foreach (Analyzer analyzer in eve.GetEventGenerator().EventWatcher.GetAnalyzers())
                 {
                     menuItem = new MenuItem("Run " + analyzer.Name + " analyzer");
@@ -2281,6 +2297,14 @@ namespace Omniscient
                 location.Y += e.Y;
                 menu.Show(EventGridView,location);
             }
+        }
+
+        private void AddEventToManualEG(object sender, EventArgs e)
+        {
+            Tuple<Event, EventGenerator> tuple = (Tuple<Event, EventGenerator>)((MenuItem)sender).Tag;
+            Event eve = tuple.Item1;
+            ManualEG eg = tuple.Item2 as ManualEG;
+            eg.AddEvent(eve.StartTime, eve.EndTime, eve.Comment);
         }
 
         private void ViewEvent_Click(object sender, EventArgs e)
