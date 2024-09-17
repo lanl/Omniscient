@@ -61,9 +61,9 @@ namespace Omniscient
         {
             Parameters = new List<Parameter>
             {
-                new StringParameter("Event genrator", eve.GetEventGenerator().Name),
-                new StringParameter("Start time", eve.StartTime.ToString("yyyy-MM-dd HH:mm:ss.fff")),
-                new StringParameter("End time", eve.EndTime.ToString("yyyy-MM-dd HH:mm:ss.fff"))
+                new StringParameter("Event Generator", eve.GetEventGenerator().Name),
+                new StringParameter("Start Time", eve.StartTime.ToString("yyyy-MM-dd HH:mm:ss.fff")),
+                new StringParameter("End Time", eve.EndTime.ToString("yyyy-MM-dd HH:mm:ss.fff"))
             };
         }
     }

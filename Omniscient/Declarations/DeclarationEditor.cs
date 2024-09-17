@@ -20,6 +20,7 @@ namespace Omniscient
         public DeclarationEditor(DetectionSystem system, Declaration declaration=null)
         {
             InitializeComponent();
+            Icon = Properties.Resources.OmniscientIcon;
             DetSystem = system;
             system.LoadDeclarations();
             this.Declaration = declaration;

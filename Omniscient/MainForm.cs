@@ -30,6 +30,7 @@ using System.Configuration;
 using Omniscient.MainDialogs;
 using static System.Net.Mime.MediaTypeNames;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using Omniscient.Controls;
 
 namespace Omniscient
 {
@@ -2673,6 +2674,13 @@ namespace Omniscient
                 removeMenuItem.Click += RemoveSitesTreeMenuItem_Click;
                 chartMenu.MenuItems.Add(removeMenuItem);
 
+                if (persister is DetectionSystem)
+                {
+                    MenuItem reportsMenuItem = new MenuItem("View reports for " + persister.Name);
+                    reportsMenuItem.Tag = persister;
+                    reportsMenuItem.Click += ReportsMenuItem_Click;
+                    chartMenu.MenuItems.Add(reportsMenuItem);
+                }
                 if (persister is DetectionSystem && (persister as DetectionSystem).DeclarationTemplate!=null)
                 {
                     MenuItem declarationsMenuItem = new MenuItem("Edit declarations for " + persister.Name);
@@ -2682,6 +2690,19 @@ namespace Omniscient
                 }
 
                 chartMenu.Show(SitesTreeView, new Point(e.X, e.Y));
+            }
+        }
+
+        private void ReportsMenuItem_Click(object sender, EventArgs e)
+        {
+            MenuItem menuItem = (MenuItem)sender;
+            DetectionSystem system = (DetectionSystem)menuItem.Tag;
+            ReportSelector reportSelector = new ReportSelector(system);
+            if (reportSelector.ShowDialog() == DialogResult.OK)
+            {
+                string fileName = reportSelector.Report["Header"]["File Name"];
+                ReportViewer viewer = new ReportViewer(fileName);
+                viewer.Show();
             }
         }
 

@@ -30,6 +30,7 @@ namespace Omniscient
         public Facility ParentFacility { get; }
         public DeclarationTemplate DeclarationTemplate { get; set; }
         public Dictionary<string, Declaration> Declarations { get; set; }
+        public List<Dictionary<string, Dictionary<string, string>>> Reports { get; set; }
 
         public DetectionSystem(Facility parent, string name, uint id) : base(parent, name, id)
         {
@@ -49,6 +50,13 @@ namespace Omniscient
         {
             EnsureDirectoriesExist();
             Declarations = Declaration.FromDirectory(DataDirectory, this);
+            return ReturnCode.SUCCESS;
+        }
+
+        public ReturnCode LoadReports()
+        {
+            EnsureDirectoriesExist();
+            Reports = AnalyzerReport.FromDirectory(DataDirectory);
             return ReturnCode.SUCCESS;
         }
 
@@ -122,6 +130,7 @@ namespace Omniscient
                 }
             }
             system.LoadDeclarations();
+            system.LoadReports();
             return system;
         }
 

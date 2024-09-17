@@ -178,6 +178,12 @@
     <Compile Include="MainDialogs\NewInstrumentDialog.Designer.cs">
       <DependentUpon>NewInstrumentDialog.cs</DependentUpon>
     </Compile>
+    <Compile Include="MainDialogs\ReportSelector.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainDialogs\ReportSelector.Designer.cs">
+      <DependentUpon>ReportSelector.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainDialogs\ShortcutsDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -376,6 +382,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="MainDialogs\NewInstrumentDialog.resx">
       <DependentUpon>NewInstrumentDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MainDialogs\ReportSelector.resx">
+      <DependentUpon>ReportSelector.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainDialogs\ShortcutsDialog.resx">
       <DependentUpon>ShortcutsDialog.cs</DependentUpon>
