@@ -54,9 +54,11 @@
             this.FileNameColumn});
             this.ReportGrid.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ReportGrid.Location = new System.Drawing.Point(3, 3);
+            this.ReportGrid.MultiSelect = false;
             this.ReportGrid.Name = "ReportGrid";
             this.ReportGrid.RowHeadersWidth = 62;
             this.ReportGrid.RowTemplate.Height = 28;
+            this.ReportGrid.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.ReportGrid.Size = new System.Drawing.Size(846, 389);
             this.ReportGrid.TabIndex = 0;
             this.ReportGrid.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.ReportGrid_CellClick);
