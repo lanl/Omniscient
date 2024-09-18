@@ -407,7 +407,7 @@ namespace Omniscient
                         resultD = param1D * param2D;
                         if (doUncertainty)
                         {
-                            resultU = resultD * Math.Sqrt((param1U / param1D) * (param1U / param1D) + 
+                            resultU = Math.Abs(resultD) * Math.Sqrt((param1U / param1D) * (param1U / param1D) + 
                                                           (param2U / param2D) * (param2U / param2D));
                         }
                         break;
@@ -415,7 +415,7 @@ namespace Omniscient
                         resultD = param1D / param2D;
                         if (doUncertainty)
                         {
-                            resultU = resultD * Math.Sqrt((param1U / param1D) * (param1U / param1D) +
+                            resultU = Math.Abs(resultD) * Math.Sqrt((param1U / param1D) * (param1U / param1D) +
                                                           (param2U / param2D) * (param2U / param2D));
                         }
                         break;
