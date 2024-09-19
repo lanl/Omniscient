@@ -19,6 +19,7 @@ namespace Omniscient
         public static readonly AnalyzerStepHookup[] Hookups = new AnalyzerStepHookup[]
         {
             new GetDeclarationAnalyzerStepHookup(),
+            new ImportReportAnalyzerStepHookup(),
             new CreateVariableAnalyzerStepHookup(),
             new SetEqualAnalyzerStepHookup(),
             new TwoParameterAnalyzerStepHookup(),

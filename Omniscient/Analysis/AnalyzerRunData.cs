@@ -12,13 +12,14 @@ namespace Omniscient
         public Event Event { get; set; }
         public Dictionary<string, CustomParameter> CustomParameters { get; set; }
         public AnalyzerReport Report { get; set; }
-
+        public Dictionary<string, Dictionary<string, Dictionary<string, string>>> ImportedReports { get; set; }
         public AnalyzerRunData(Event eve, Dictionary<string, CustomParameter> parameters) 
         {
             Declaration = null;
             Event = eve;
             CustomParameters = parameters;
             Report = null;
+            ImportedReports = new Dictionary<string, Dictionary<string, Dictionary<string, string>>>();
         }
     }
 }

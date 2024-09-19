@@ -89,6 +89,7 @@
     <Compile Include="Analysis\Analyzer.cs" />
     <Compile Include="Analysis\AnalyzerReport.cs" />
     <Compile Include="Analysis\DisplayReportAnalyzerStep.cs" />
+    <Compile Include="Analysis\ImportReportAnalyzerStep.cs" />
     <Compile Include="Analysis\InitializeReportAnalyzerStep.cs" />
     <Compile Include="Analysis\ReportSection.cs" />
     <Compile Include="Analysis\AnalyzerRunData.cs" />
