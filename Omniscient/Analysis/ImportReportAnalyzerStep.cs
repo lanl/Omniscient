@@ -13,7 +13,7 @@ namespace Omniscient
         string reportName;
         public ImportReportAnalyzerStep(Analyzer parent, string name, uint id) : base(parent, name, id, "Import Report")
         {
-            reportType = name;
+            reportType = "";
             reportName = "";
         }
         public override List<Parameter> GetParameters()

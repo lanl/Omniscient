@@ -22,6 +22,7 @@ namespace Omniscient
             new ImportReportAnalyzerStepHookup(),
             new CreateVariableAnalyzerStepHookup(),
             new SetEqualAnalyzerStepHookup(),
+            new ReportToVariableAnalyzerStepHookup(),
             new TwoParameterAnalyzerStepHookup(),
             new ChannelRangeStatisticAnalyzerStepHookup(),
             new SumSpectraAnalyzerStepHookup(),

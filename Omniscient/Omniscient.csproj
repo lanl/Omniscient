@@ -100,6 +100,7 @@
     <Compile Include="Analysis\FRAMPlutoniumResultParser.cs" />
     <Compile Include="Analysis\FRAMUraniumResultParser.cs" />
     <Compile Include="Analysis\GetDeclarationAnalyzerStep.cs" />
+    <Compile Include="Analysis\ReportToVariableAnalyzerStep.cs" />
     <Compile Include="Analysis\ResultParser.cs" />
     <Compile Include="Analysis\SpectrumCompiler.cs" />
     <Compile Include="AutoConfigurator.cs" />
