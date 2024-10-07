@@ -39,7 +39,10 @@ namespace Omniscient
             new NGAMInstrumentHookup(),
             new SMMSInstrumentHookup(),
             new THDInstrumentHookup(),
-            new WUCSInstrumentHookup()
+            new WUCSInstrumentHookup(),
+            new JSONInstrumentHookup()
+            //todo
+            //add hookup for ORNL
         };
         public override string Name
         {

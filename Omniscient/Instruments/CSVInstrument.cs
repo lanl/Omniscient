@@ -346,7 +346,7 @@ namespace Omniscient
 
         public override Instrument FromParameters(DetectionSystem parent, string newName, List<Parameter> parameters, uint id)
         {
-            int nHeaders = 0;
+             int nHeaders = 0;
             int nChannels = 0;
             string tStampFormat = "";
             string fileExtension = "csv";
