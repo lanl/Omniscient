@@ -263,7 +263,7 @@ namespace Omniscient
     /// </summary>
     public class TwoParameterAnalyzerStep : AnalyzerStep
     {
-        public enum OperationType { Sum, Difference, Product, Ratio }
+        public enum OperationType { Sum, Difference, Product, Ratio, Percent }
         OperationType Operation { get; set; }
         string param1Name;
         string param2Name;
@@ -293,8 +293,11 @@ namespace Omniscient
                 case OperationType.Ratio:
                     operation = "Ratio";
                     break;
+                case OperationType.Percent:
+                    operation = "Percent";
+                    break;
             }
-            parameters.Add(new EnumParameter("Operation") { Value = operation, ValidValues = new List<string>() { "Sum", "Difference", "Product", "Ratio" } });
+            parameters.Add(new EnumParameter("Operation") { Value = operation, ValidValues = new List<string>() { "Sum", "Difference", "Product", "Ratio", "Percent" } });
             parameters.Add(new StringParameter("Input Parameter 1", param1Name));
             parameters.Add(new StringParameter("Input Parameter 2", param2Name));
             parameters.Add(new StringParameter("Output Parameter", outputParamName));
@@ -329,6 +332,9 @@ namespace Omniscient
                                 break;
                             case "Ratio":
                                 Operation = OperationType.Ratio;
+                                break;
+                            case "Percent":
+                                Operation = OperationType.Percent;
                                 break;
                         }
                         break;
@@ -369,6 +375,9 @@ namespace Omniscient
                         break;
                     case OperationType.Ratio:
                         resultI = param1I / param2I;
+                        break;
+                    case OperationType.Percent:
+                        resultI = 100 * param1I / param2I;
                         break;
                 }
                 outputParam.Value = resultI.ToString();
@@ -416,6 +425,14 @@ namespace Omniscient
                         break;
                     case OperationType.Ratio:
                         resultD = param1D / param2D;
+                        if (doUncertainty)
+                        {
+                            resultU = Math.Abs(resultD) * Math.Sqrt((param1U / param1D) * (param1U / param1D) +
+                                                          (param2U / param2D) * (param2U / param2D));
+                        }
+                        break;
+                    case OperationType.Percent:
+                        resultD = 100.0 * param1D / param2D;
                         if (doUncertainty)
                         {
                             resultU = Math.Abs(resultD) * Math.Sqrt((param1U / param1D) * (param1U / param1D) +
