@@ -14,157 +14,149 @@
 // THIS SOFTWARE IS PROVIDED BY TRIAD NATIONAL SECURITY, LLC AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL TRIAD NATIONAL SECURITY, LLC OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.IO;
 
 namespace Omniscient
 {
     public class JSONInstrument : Instrument
     {
-        //todo: make dynamic
         private const string FILE_EXTENSION = "json";
-        private const int NUM_CHANNELS = 12;
 
-        private const int FRONT_RIGHT_COUNTS_30B = 0;
-        private const int FRONT_LEFT_COUNTS_30B = 1;
-        private const int BACK_RIGHT_COUNTS_30B = 2;
-        private const int BACK_LEFT_COUNTS_30B = 3;
-        private const int GROSS_WEIGHT_30B = 4;
-        private const int NET_WEIGHT_30B = 5;
+        private string fileFormat;
+        public string FileFormat
+        {
+            get { return fileFormat; }
+            set { fileFormat = value; }
+        }
 
-        private const int FRONT_RIGHT_COUNTS_48Y = 6;
-        private const int FRONT_LEFT_COUNTS_48Y = 7;
-        private const int BACK_RIGHT_COUNTS_48Y = 8;
-        private const int BACK_LEFT_COUNTS_48Y = 9;
-        private const int GROSS_WEIGHT_48Y = 10;
-        private const int NET_WEIGHT_48Y = 11;
+        private string _timeStampFormat;
+        public string TimeStampFormat
+        {
+            get { return _timeStampFormat; }
+            set
+            {
+                _timeStampFormat = value;
+                if (_timeStampFormat is null) _timeStampFormat = "yyyy-MM-ddTHH:mm:ss";
+
+                bool hasChar = false;
+                foreach (char c in _timeStampFormat)
+                {
+                    if (Char.IsLetterOrDigit(c)) hasChar = true;
+                }
+                if (!hasChar)
+                {
+                    _timeStampFormat = "yyyy-MM-ddTHH:mm:ss";
+                }
+
+                if (jsonParser != null) jsonParser.TimeStampFormat = _timeStampFormat;
+            }
+        }
 
         JSONParser jsonParser;
 
-        private int _numberOfAttributes;
-        public int NumberOfAttributes
-        {
-            get { return _numberOfAttributes; }
-            set
-            {
-
-            _numberOfAttributes = value;
-                if (jsonParser != null) jsonParser.NumberOfAttributes = value; 
-            }
-        }
-        
-
-        
-
-        public JSONInstrument(DetectionSystem parent, string name, uint id) : base(parent, name, id)
+        public JSONInstrument(DetectionSystem parent, string newName, int nChannels, uint id) : base(parent, newName, id)
         {
             InstrumentType = "JSON";
+            numChannels = nChannels;
             FileExtension = FILE_EXTENSION;
-            NumberOfAttributes = 0;
             filePrefix = "";
             fileSuffix = "";
-            jsonParser = new JSONParser();
 
-            numChannels = NUM_CHANNELS;
-            channels = new Channel[numChannels];
-            channels[FRONT_RIGHT_COUNTS_30B] = new Channel(Name+"-Front-Right_Counts-30b", this, Channel.ChannelType.COUNT_RATE, 0);
-            channels[FRONT_LEFT_COUNTS_30B] = new Channel(Name + "-Front-Left-Counts-30b", this, Channel.ChannelType.COUNT_RATE, 0);
-            channels[BACK_RIGHT_COUNTS_30B] = new Channel(Name + "-Back-Right-Counts-30b", this, Channel.ChannelType.COUNT_RATE, 0);
-            channels[BACK_LEFT_COUNTS_30B] = new Channel(Name + "-Back-Left-Counts-30b", this, Channel.ChannelType.COUNT_RATE, 0);
-            channels[GROSS_WEIGHT_30B] = new Channel(Name + "-Gross-Weight-30b", this, Channel.ChannelType.COUNT_RATE, 0);
-            channels[NET_WEIGHT_30B] = new Channel(Name + "-Net-Weight-30b", this, Channel.ChannelType.COUNT_RATE, 0);
+            TimeStampFormat = "";
+            MakeNewParser();
 
-            channels[FRONT_RIGHT_COUNTS_48Y] = new Channel(Name + "-Front-Right_Counts-48y", this, Channel.ChannelType.COUNT_RATE, 0);
-            channels[FRONT_LEFT_COUNTS_48Y] = new Channel(Name + "-Front-Left-Counts-48y", this, Channel.ChannelType.COUNT_RATE, 0);
-            channels[BACK_RIGHT_COUNTS_48Y] = new Channel(Name + "-Back-Right-Counts-48y", this, Channel.ChannelType.COUNT_RATE, 0);
-            channels[BACK_LEFT_COUNTS_48Y] = new Channel(Name + "-Back-Left-Counts-48y", this, Channel.ChannelType.COUNT_RATE, 0);
-            channels[GROSS_WEIGHT_48Y] = new Channel(Name + "-Gross-Weight-48y", this, Channel.ChannelType.COUNT_RATE, 0);
-            channels[NET_WEIGHT_48Y] = new Channel(Name + "-Net-Weight-48y", this, Channel.ChannelType.COUNT_RATE, 0);
+            ReinitializeChannels();
         }
 
-        public override DateTime GetFileDate(string file)
+        private void ReinitializeChannels()
         {
-            //todo: make work for json
-            if (jsonParser.ParseHeader(file) == ReturnCode.SUCCESS)
-            {
-                return jsonParser.GetDate();
-            }
-            return DateTime.MinValue;
+            channels = new Channel[numChannels];
+
+            for (int i = 0; i < numChannels; i++)
+                channels[i] = new Channel(Name + "-" + i.ToString(), this, Channel.ChannelType.COUNT_RATE, 0);
+        }
+
+        private void MakeNewParser()
+        {
+            jsonParser = new JSONParser();
+            jsonParser.TimeStampFormat = TimeStampFormat;
+            jsonParser.FileFormat = FileFormat;
+        }
+
+        public ReturnCode SetNumberOfChannels(int nChannels)
+        {
+            return ReturnCode.SUCCESS;
         }
 
         public override ReturnCode IngestFile(ChannelCompartment compartment, string fileName)
         {
-            ReturnCode returnCode = jsonParser.ParseFile(fileName);
-            
-            DataFile dataFile = new DataFile(fileName, jsonParser.GetDate());
-            int numRecords = jsonParser.GetNumRecords();
             DateTime time = DateTime.MinValue;
-            DateTime[] times = new DateTime[numRecords];
-            double[] T1 = new double[numRecords];
-            double[] T2 = new double[numRecords];
-            double[] T3 = new double[numRecords];
-            double[] RA = new double[numRecords];
-            double[] A = new double[numRecords];
+            DataFile dataFile = new DataFile(fileName);
+            dataFile.DataStart = GetFileDate(fileName);
+
+            ReturnCode returnCode = jsonParser.ParseFile(fileName);
+
+            int numRecords = jsonParser.GetNumRecords();
             DataFile[] dataFiles = new DataFile[numRecords];
             for (int r = 0; r < numRecords; ++r) dataFiles[r] = dataFile;
-            JSONRecord record;
+            DateTime[] times = jsonParser.TimeStamps;
+            double[][] data = new double[numChannels][];
+            for (int c = 0; c < numChannels; c++) data[c] = new double[numRecords];
+
+       
             for (int r = 0; r < numRecords; ++r)
             {
-                record = jsonParser.GetRecord(r);
-                time = times[r] = jsonParser.JSONTimeToDateTime(record.time);
-                //todo
-                T1[r] = record.totals1;
-                T2[r] = record.totals2;
-                T3[r] = record.totals3;
-                RA[r] = record.realsPlusAccidentals;
-                A[r] = record.accidentals;
+                time = times[r];
+                for (int c = 0; c < numChannels; c++)
+                {
+                    data[c][r] = jsonParser.Data[r, c];
+                }
             }
-            //todo
-            //fix
-            //channels[TOTALS1].AddDataPoints(compartment, times, T1, dataFiles);
-            //channels[TOTALS2].AddDataPoints(compartment, times, T2, dataFiles);
-            //channels[TOTALS3].AddDataPoints(compartment, times, T3, dataFiles);
-            //channels[REALS_PLUS_ACC].AddDataPoints(compartment, times, RA, dataFiles);
-            //channels[ACC].AddDataPoints(compartment, times, A, dataFiles);
-
-            channels[FRONT_RIGHT_COUNTS_30B].AddDataPoints(compartment, times, T1, dataFiles);
-            channels[FRONT_LEFT_COUNTS_30B] = new Channel(Name + "-Front-Left-Counts-30b", this, Channel.ChannelType.COUNT_RATE, 0);
-            channels[BACK_RIGHT_COUNTS_30B] = new Channel(Name + "-Back-Right-Counts-30b", this, Channel.ChannelType.COUNT_RATE, 0);
-            channels[BACK_LEFT_COUNTS_30B] = new Channel(Name + "-Back-Left-Counts-30b", this, Channel.ChannelType.COUNT_RATE, 0);
-            channels[GROSS_WEIGHT_30B] = new Channel(Name + "-Gross-Weight-30b", this, Channel.ChannelType.COUNT_RATE, 0);
-            channels[NET_WEIGHT_30B] = new Channel(Name + "-Net-Weight-30b", this, Channel.ChannelType.COUNT_RATE, 0);
-
-            channels[FRONT_RIGHT_COUNTS_48Y] = new Channel(Name + "-Front-Right_Counts-48y", this, Channel.ChannelType.COUNT_RATE, 0);
-            channels[FRONT_LEFT_COUNTS_48Y] = new Channel(Name + "-Front-Left-Counts-48y", this, Channel.ChannelType.COUNT_RATE, 0);
-            channels[BACK_RIGHT_COUNTS_48Y] = new Channel(Name + "-Back-Right-Counts-48y", this, Channel.ChannelType.COUNT_RATE, 0);
-            channels[BACK_LEFT_COUNTS_48Y] = new Channel(Name + "-Back-Left-Counts-48y", this, Channel.ChannelType.COUNT_RATE, 0);
-            channels[GROSS_WEIGHT_48Y] = new Channel(Name + "-Gross-Weight-48y", this, Channel.ChannelType.COUNT_RATE, 0);
-            channels[NET_WEIGHT_48Y] = new Channel(Name + "-Net-Weight-48y", this, Channel.ChannelType.COUNT_RATE, 0);
+            for (int c = 0; c < numChannels; c++)
+            {
+                channels[c].AddDataPoints(compartment, times, data[c], dataFiles);                
+            }
 
             dataFile.DataEnd = time;
 
-            jsonParser = new JSONParser();
+            MakeNewParser();
 
             return ReturnCode.SUCCESS;
+        }
+
+        public override ReturnCode AutoIngestFile(ChannelCompartment compartment, string fileName)
+        {
+            if (jsonParser.AutoConfigureFromFile(fileName) == ReturnCode.SUCCESS)
+            { 
+                TimeStampFormat = jsonParser.TimeStampFormat;
+                MakeNewParser();
+                return IngestFile(compartment, fileName);
+            }
+            else return ReturnCode.FAIL;
+        }
+
+        public override DateTime GetFileDate(string file)
+        {
+            if (jsonParser.ParseFirstEntry(file) == ReturnCode.SUCCESS)
+            {
+                return jsonParser.TimeStamps[0];
+            }
+            return DateTime.MinValue;
         }
 
         public override List<Parameter> GetParameters()
         {
             List<Parameter> parameters = GetStandardInstrumentParameters();
-            parameters.Add(new EnumParameter("File Extension")
-            {
-                Value = FileExtension,
-                ValidValues = {"json"}
-            });
-            parameters.Add(new IntParameter("Number of Attributes")
-            {
-                Value = NumberOfAttributes.ToString()
-
-            });
+ 
+            parameters.Add(new StringParameter("Extension") { Value = FileExtension });
+            parameters.Add(new StringParameter("Time Stamp Format") { Value = TimeStampFormat });
+            parameters.Add(new IntParameter("File Format") { Value = FileFormat.ToString() });
             return parameters;
         }
+
         public override void ApplyParameters(List<Parameter> parameters)
         {
             ApplyStandardInstrumentParameters(this, parameters);
@@ -172,8 +164,17 @@ namespace Omniscient
             {
                 switch (param.Name)
                 {
-                    case "File Extension":
-                        FileExtension = param.Value;
+                    case "Extension":
+                        FileExtension = ((StringParameter)param).Value;
+                        break;
+                    case "Channels":
+                        SetNumberOfChannels(((IntParameter)param).ToInt());
+                        break;
+                    case "Time Stamp Format":
+                        TimeStampFormat = ((StringParameter)param).Value;
+                        break;
+                    case "File Format":
+                        FileFormat = ((StringParameter)param).Value;
                         break;
                 }
             }
@@ -184,41 +185,48 @@ namespace Omniscient
     {
         public JSONInstrumentHookup()
         {
-            TemplateParameters.Add(new ParameterTemplate("File Extension", ParameterType.Enum)
-            {
-                ValidValues = {"json"}
-            });
-            TemplateParameters.Add(new ParameterTemplate("Number of Attributes", ParameterType.Enum)
-            {
-                ValidValues = { "json" }
-            });
+            TemplateParameters.AddRange(new List<ParameterTemplate>() {
+
+                new ParameterTemplate("Extension", ParameterType.String),
+                new ParameterTemplate("Headers", ParameterType.Int),
+                new ParameterTemplate("Channels", ParameterType.Int),
+                new ParameterTemplate("Time Stamp Format", ParameterType.String),
+                });
         }
 
         public override string Type { get { return "JSON"; } }
 
         public override Instrument FromParameters(DetectionSystem parent, string newName, List<Parameter> parameters, uint id)
         {
+            int nHeaders = 0;
+            int nChannels = 0;
+            string tStampFormat = "yyyy’-‘MM’-‘dd’T’HH’:’mm’:’ss";
             string fileExtension = "json";
-            int nAttributes = 0;
+            string fileFormat = "ldaq";
+
             foreach (Parameter param in parameters)
             {
                 switch (param.Name)
                 {
-                    case "File Extension":
-                        fileExtension = param.Value;
+                    case "Extension":
+                        fileExtension = ((StringParameter)param).Value;
                         break;
-                    case "Number of Attributes":
-                        //todo: im not sure
-                        //nAttributes = ((IntParameter)param).ToInt();
+                    case "Headers":
+                        nHeaders = ((IntParameter)param).ToInt();
+                        break;
+                    case "Channels":
+                        nChannels = ((IntParameter)param).ToInt();
+                        break;
+                    case "Time Stamp Format":
+                        tStampFormat = ((StringParameter)param).Value;
                         break;
                 }
             }
-
-            JSONInstrument instrument = new JSONInstrument(parent, newName, id);
+            JSONInstrument instrument = new JSONInstrument(parent, newName, nChannels, id);
+            instrument.TimeStampFormat = tStampFormat;
             instrument.FileExtension = fileExtension;
-            instrument.NumberOfAttributes = nAttributes;
+            instrument.FileFormat = fileFormat;
             Instrument.ApplyStandardInstrumentParameters(instrument, parameters);
-
             return instrument;
         }
     }

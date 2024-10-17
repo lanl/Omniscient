@@ -12,113 +12,201 @@
 // 3.       Neither the name of Triad National Security, LLC, Los Alamos National Laboratory, LANL, the U.S. Government, nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission. 
 //  
 // THIS SOFTWARE IS PROVIDED BY TRIAD NATIONAL SECURITY, LLC AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL TRIAD NATIONAL SECURITY, LLC OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.IO;
-using System.Globalization;
-using Newtonsoft.Json;
+using static Omniscient.CSVParser;
 
 namespace Omniscient
 {
-    public struct JSONRecord
+    public class Canister
     {
-        //todo fix
-        public UInt32 time;
-        public UInt16 status;
-
-
-        public double totals1;
-        public double totals2;
-        public double totals3;
-        public double realsPlusAccidentals;
-        public double accidentals;
-        public double elapsedTime;
+        [JsonProperty(PropertyName = "FrontRightCounts")]
+        public int frontRightCounts;
+        [JsonProperty(PropertyName = "FrontLeftCounts")]
+        public int frontLeftCounts;
+        [JsonProperty(PropertyName = "BackRightCounts")]
+        public int backRightCounts;
+        [JsonProperty(PropertyName = "BackLeftCounts")]
+        public int backLeftCounts;
+        [JsonProperty(PropertyName = "GrossWeight")]
+        public double grossWeight;
+        [JsonProperty(PropertyName = "NetWeight")]
+        public double netWeight;
     }
+    public class Scales
+    {
+        [JsonProperty(PropertyName = "Type30B")]
+        public Canister ThirtyB;
+        [JsonProperty(PropertyName = "Type48Y")]
+        public Canister FortyEightY;
+    }
+    public class LDAQRecord
+    {
+        [JsonProperty(PropertyName = "Time")]
+        public string time;
+        [JsonProperty(PropertyName = "Scales")]
+        public Scales scales;
+    }
+
 
     public class JSONParser
     {
+        private LDAQRecord[] records;
+        public DelimiterType Delimiter { get; set; }
+
+        private const string NOT_A_TIMESTAMP = "NOT A TIMESTAMP";
+        private DateTime lowerBound = new DateTime(1900, 1, 1);
+        private DateTime upperBound = new DateTime(3000, 1, 1);
+
+
+        private System.Globalization.CultureInfo CULTURE_INFO = new CultureInfo("en-US");
+        private char[] TRIM_CHARS = new char[] { ':' };
+
         private string fileName;
-        string MICVersion;
-        string stationID;
-        private int numRecords;
-        private JSONRecord[] records;
-        private DateTime date;
-
-        private int headerSize;
-
-        private int nAttributes;
-
-        public int NumberOfAttributes
+        public string FileName
         {
-            get { return nAttributes; }
-            set { nAttributes = value; }
+            get { return fileName; }
+            set { fileName = value; }
         }
 
-        public JSONParser()
+        private string timeStampFormat = "yyyy’-‘MM’-‘dd’T’HH’:’mm’:’ss";
+        public string TimeStampFormat
         {
-            fileName = "";
-            MICVersion = "";
-            stationID = "";
-            numRecords = 0;
-            headerSize = 0;
+            get { return timeStampFormat; }
+            set { timeStampFormat = value; }
         }
 
-        public DateTime JSONTimeToDateTime(UInt32 timeIn)
+        private string fileFormat;
+        public string FileFormat
         {
-            return new DateTime(1952, 1, 1).AddSeconds((double)timeIn);
+            get { return fileFormat; }
+            set { fileFormat = value; }
         }
 
-        //private void ReadHeader(BinaryReader readBinary)
-        //{
-        //    headerSize = int.Parse(new string(readBinary.ReadChars(4)));
-        //    readBinary.ReadBytes(5);                                        // Not used
-        //    MICVersion = new string(readBinary.ReadChars(5));
-        //    stationID = new string(readBinary.ReadChars(3));
-         //   int year = 2000 + int.Parse(new string(readBinary.ReadChars(3)));
-        //    int month = int.Parse(new string(readBinary.ReadChars(3)));
-        //    int day = int.Parse(new string(readBinary.ReadChars(3)));
-        //    date = new DateTime(year, month, day);
-        //}
-
-        ///private void ReadDataRecords(BinaryReader readBinary)
-        ///{
-
-        ///}
-
-        // ParseHeader is for quickly reading some header data without reading in the whole file
-        public ReturnCode ParseHeader(string newFileName)
+        private double[,] data;
+        public double[,] Data
         {
-            return ReturnCode.COULD_NOT_OPEN_FILE;
+            get { return data; }
+        }
+
+        private DateTime[] timeStamps;
+        public DateTime[] TimeStamps
+        {
+            get { return timeStamps; }
+        }
+
+        public bool GetEndTimes { get; set; }
+
+        private DateTime[] endTimes;
+        public DateTime[] EndTimes
+        {
+            get { return endTimes; }
+        }
+
+       // public JSONParser()
+       // {
+       //     fileName = "";
+       //     TimeStampFormat = "yyyy-MM-ddTHH:mm:ss";
+       //     nRecords = 0;
+       // }
+
+        private int nRecords;
+        public int GetNumRecords()
+        {
+            return nRecords;
+        }
+
+
+        //parse first file entry to check for corrupted file
+        //set timeStamps, nRecords
+        public ReturnCode ParseFirstEntry(string newFileName)
+        {
+            fileName = newFileName;
+            string json;
+            string[] tokens;
+            LDAQRecord record = new LDAQRecord();
+            try
+            {
+                using (StreamReader r = new StreamReader(fileName))
+                {
+                    json = r.ReadToEnd();
+                }
+            }
+            catch (Exception ex)
+            {
+                return ReturnCode.COULD_NOT_OPEN_FILE;
+            }
+            try
+            {
+                // remove white space
+                json = json.Replace("\r", ""); json = json.Replace("\n", ""); json = json.Replace("\t", ""); json = json.Replace(" ", "");
+                //chop up by "},{" . aka divide entries
+                tokens = json.Split(new string[] { "},{" }, StringSplitOptions.RemoveEmptyEntries);
+                //put first record in format the JSON converter will recognize
+                string firstRecord = tokens[0].Replace("[", "");
+                firstRecord += "}";
+
+                using (StreamReader r = new StreamReader(fileName))
+                {
+                    record = JsonConvert.DeserializeObject<LDAQRecord>(firstRecord);
+                } 
+                //records.Append(record);
+                //set values for 
+                //timestamps
+                //nRecords
+                //tokens?
+                //data
+                int nDataLines = 1;
+                nRecords = nDataLines;
+                timeStamps = new DateTime[nDataLines];
+
+                string[] temp = record.time.Split('.');
+                string date = temp[0];
+                timeStamps[0] = DateTime.ParseExact(date, TimeStampFormat, CULTURE_INFO);
+                
+            }
+            catch (Exception ex)
+            {
+                return ReturnCode.CORRUPTED_FILE;
+            }
+            return ReturnCode.SUCCESS;
+        }
+
+        /// <summary>
+        /// Attempt to configure parser to parse file
+        /// </summary>
+        /// <param name="newFileName"></param>
+        /// <returns></returns>
+        public ReturnCode AutoConfigureFromFile(string newFileName)
+        {
+            //todo: obs
+            // do we need this?
+            return ReturnCode.FAIL;
         }
 
         public ReturnCode ParseFile(string newFileName)
         {
+            fileName = newFileName;
             try
             {
                 using (StreamReader r = new StreamReader("file.json"))
                 {
                     string json = r.ReadToEnd();
-                    List<JSONRecord> data = JsonConvert.DeserializeObject<List<JSONRecord>>(json);
+                    List<string> items = JsonConvert.DeserializeObject<List<string>>(json);
                 }
             }
-            catch (Exception e){
+            catch (Exception ex)
+            {
                 return ReturnCode.COULD_NOT_OPEN_FILE;
             }
+
             return ReturnCode.SUCCESS;
-        }
-
-        public string GetMICVerions() { return MICVersion; }
-        public string GetStationID() { return stationID; }
-        public DateTime GetDate() { return date; }
-        public int GetNumRecords() { return numRecords; }
-
-        public JSONRecord GetRecord(int index)
-        {
-            if (index < numRecords) return records[index];
-            else return new JSONRecord();                    // This should probably be handled better...
         }
     }
 }
