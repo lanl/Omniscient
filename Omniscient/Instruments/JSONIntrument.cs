@@ -14,24 +14,32 @@
 // THIS SOFTWARE IS PROVIDED BY TRIAD NATIONAL SECURITY, LLC AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL TRIAD NATIONAL SECURITY, LLC OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Omniscient
 {
     public class JSONInstrument : Instrument
     {
-        private const string FILE_EXTENSION = "json";
-
-        private string fileFormat;
-        public string FileFormat
+        public override string FileExtension
         {
-            get { return fileFormat; }
-            set { fileFormat = value; }
-        }
+            get { return _fileExtension; }
+            set
+            {
+                _fileExtension = value;
+                if (_fileExtension is null) _fileExtension = "json";
 
+                bool hasChar = false;
+                foreach (char c in _fileExtension)
+                {
+                    if (Char.IsLetterOrDigit(c)) hasChar = true;
+                }
+                if (!hasChar)
+                {
+                    _fileExtension = "json";
+                }
+
+            }
+
+        }
         private string _timeStampFormat;
         public string TimeStampFormat
         {
@@ -61,9 +69,9 @@ namespace Omniscient
         {
             InstrumentType = "JSON";
             numChannels = nChannels;
-            FileExtension = FILE_EXTENSION;
             filePrefix = "";
             fileSuffix = "";
+            
 
             TimeStampFormat = "";
             MakeNewParser();
@@ -83,11 +91,37 @@ namespace Omniscient
         {
             jsonParser = new JSONParser();
             jsonParser.TimeStampFormat = TimeStampFormat;
-            jsonParser.FileFormat = FileFormat;
+            jsonParser.nChannels = numChannels;
         }
 
         public ReturnCode SetNumberOfChannels(int nChannels)
         {
+            if (nChannels < 1) return ReturnCode.BAD_INPUT;
+            Channel[] newChannels = new Channel[nChannels];
+
+            // Put as many of the original channels back as can fit in the new array
+            if (numChannels < nChannels)
+            {
+                for (int i = 0; i < numChannels; ++i)
+                {
+                    newChannels[i] = channels[i];
+                }
+                
+                for (int i = numChannels; i < nChannels; ++i)
+                {
+                    newChannels[i] = new Channel(Name + "-" + i.ToString(), this, Channel.ChannelType.COUNT_RATE, 0);
+                }
+                
+            }
+            else
+            {
+                for (int i = 0; i < nChannels; ++i)
+                {
+                    newChannels[i] = channels[i];
+                }
+            }
+            numChannels = nChannels;
+            channels = newChannels;
             return ReturnCode.SUCCESS;
         }
 
@@ -99,8 +133,9 @@ namespace Omniscient
 
             ReturnCode returnCode = jsonParser.ParseFile(fileName);
 
-            int numRecords = jsonParser.GetNumRecords();
+            int numRecords = jsonParser.nRecords;
             DataFile[] dataFiles = new DataFile[numRecords];
+
             for (int r = 0; r < numRecords; ++r) dataFiles[r] = dataFile;
             DateTime[] times = jsonParser.TimeStamps;
             double[][] data = new double[numChannels][];
@@ -130,7 +165,8 @@ namespace Omniscient
         public override ReturnCode AutoIngestFile(ChannelCompartment compartment, string fileName)
         {
             if (jsonParser.AutoConfigureFromFile(fileName) == ReturnCode.SUCCESS)
-            { 
+            {
+                SetNumberOfChannels(jsonParser.nChannels);
                 TimeStampFormat = jsonParser.TimeStampFormat;
                 MakeNewParser();
                 return IngestFile(compartment, fileName);
@@ -140,7 +176,7 @@ namespace Omniscient
 
         public override DateTime GetFileDate(string file)
         {
-            if (jsonParser.ParseFirstEntry(file) == ReturnCode.SUCCESS)
+            if (jsonParser.GetFirstDate(file) == ReturnCode.SUCCESS)
             {
                 return jsonParser.TimeStamps[0];
             }
@@ -153,7 +189,7 @@ namespace Omniscient
  
             parameters.Add(new StringParameter("Extension") { Value = FileExtension });
             parameters.Add(new StringParameter("Time Stamp Format") { Value = TimeStampFormat });
-            parameters.Add(new IntParameter("File Format") { Value = FileFormat.ToString() });
+            parameters.Add(new IntParameter("Number of Channels") { Value =  numChannels.ToString() });
             return parameters;
         }
 
@@ -167,14 +203,11 @@ namespace Omniscient
                     case "Extension":
                         FileExtension = ((StringParameter)param).Value;
                         break;
-                    case "Channels":
-                        SetNumberOfChannels(((IntParameter)param).ToInt());
-                        break;
-                    case "Time Stamp Format":
+                    case "Time Stamp Format":                                                          
                         TimeStampFormat = ((StringParameter)param).Value;
                         break;
-                    case "File Format":
-                        FileFormat = ((StringParameter)param).Value;
+                    case "Number of Channels":
+                        SetNumberOfChannels(((IntParameter)param).ToInt());
                         break;
                 }
             }
@@ -188,9 +221,8 @@ namespace Omniscient
             TemplateParameters.AddRange(new List<ParameterTemplate>() {
 
                 new ParameterTemplate("Extension", ParameterType.String),
-                new ParameterTemplate("Headers", ParameterType.Int),
-                new ParameterTemplate("Channels", ParameterType.Int),
                 new ParameterTemplate("Time Stamp Format", ParameterType.String),
+                new ParameterTemplate("Number of Channels", ParameterType.Int)
                 });
         }
 
@@ -198,34 +230,29 @@ namespace Omniscient
 
         public override Instrument FromParameters(DetectionSystem parent, string newName, List<Parameter> parameters, uint id)
         {
-            int nHeaders = 0;
-            int nChannels = 0;
-            string tStampFormat = "yyyy’-‘MM’-‘dd’T’HH’:’mm’:’ss";
+            string tStampFormat = "yyyy-MM-ddTHH:mm:ss";
             string fileExtension = "json";
-            string fileFormat = "ldaq";
+            int nChannels = 0;
 
-            foreach (Parameter param in parameters)
+           foreach (Parameter param in parameters)
             {
                 switch (param.Name)
                 {
                     case "Extension":
                         fileExtension = ((StringParameter)param).Value;
                         break;
-                    case "Headers":
-                        nHeaders = ((IntParameter)param).ToInt();
-                        break;
-                    case "Channels":
-                        nChannels = ((IntParameter)param).ToInt();
-                        break;
                     case "Time Stamp Format":
                         tStampFormat = ((StringParameter)param).Value;
                         break;
+                    case "Number of Channels":
+                        nChannels = ((IntParameter)param).ToInt(); 
+                        break;
                 }
             }
+          
             JSONInstrument instrument = new JSONInstrument(parent, newName, nChannels, id);
             instrument.TimeStampFormat = tStampFormat;
             instrument.FileExtension = fileExtension;
-            instrument.FileFormat = fileFormat;
             Instrument.ApplyStandardInstrumentParameters(instrument, parameters);
             return instrument;
         }

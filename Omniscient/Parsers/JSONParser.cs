@@ -12,53 +12,19 @@
 // 3.       Neither the name of Triad National Security, LLC, Los Alamos National Laboratory, LANL, the U.S. Government, nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission. 
 //  
 // THIS SOFTWARE IS PROVIDED BY TRIAD NATIONAL SECURITY, LLC AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL TRIAD NATIONAL SECURITY, LLC OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+//using Newtonsoft.Json;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static Omniscient.CSVParser;
 
 namespace Omniscient
 {
-    public class Canister
-    {
-        [JsonProperty(PropertyName = "FrontRightCounts")]
-        public int frontRightCounts;
-        [JsonProperty(PropertyName = "FrontLeftCounts")]
-        public int frontLeftCounts;
-        [JsonProperty(PropertyName = "BackRightCounts")]
-        public int backRightCounts;
-        [JsonProperty(PropertyName = "BackLeftCounts")]
-        public int backLeftCounts;
-        [JsonProperty(PropertyName = "GrossWeight")]
-        public double grossWeight;
-        [JsonProperty(PropertyName = "NetWeight")]
-        public double netWeight;
-    }
-    public class Scales
-    {
-        [JsonProperty(PropertyName = "Type30B")]
-        public Canister ThirtyB;
-        [JsonProperty(PropertyName = "Type48Y")]
-        public Canister FortyEightY;
-    }
-    public class LDAQRecord
-    {
-        [JsonProperty(PropertyName = "Time")]
-        public string time;
-        [JsonProperty(PropertyName = "Scales")]
-        public Scales scales;
-    }
-
-
     public class JSONParser
     {
-        private LDAQRecord[] records;
-        public DelimiterType Delimiter { get; set; }
+        //private LDAQRecord[] records;
 
         private const string NOT_A_TIMESTAMP = "NOT A TIMESTAMP";
         private DateTime lowerBound = new DateTime(1900, 1, 1);
@@ -68,13 +34,6 @@ namespace Omniscient
         private System.Globalization.CultureInfo CULTURE_INFO = new CultureInfo("en-US");
         private char[] TRIM_CHARS = new char[] { ':' };
 
-        private string fileName;
-        public string FileName
-        {
-            get { return fileName; }
-            set { fileName = value; }
-        }
-
         private string timeStampFormat = "yyyy’-‘MM’-‘dd’T’HH’:’mm’:’ss";
         public string TimeStampFormat
         {
@@ -82,15 +41,8 @@ namespace Omniscient
             set { timeStampFormat = value; }
         }
 
-        private string fileFormat;
-        public string FileFormat
-        {
-            get { return fileFormat; }
-            set { fileFormat = value; }
-        }
-
-        private double[,] data;
-        public double[,] Data
+        private dynamic[,] data;
+        public dynamic[,] Data
         {
             get { return data; }
         }
@@ -101,13 +53,7 @@ namespace Omniscient
             get { return timeStamps; }
         }
 
-        public bool GetEndTimes { get; set; }
 
-        private DateTime[] endTimes;
-        public DateTime[] EndTimes
-        {
-            get { return endTimes; }
-        }
 
        // public JSONParser()
        // {
@@ -116,21 +62,77 @@ namespace Omniscient
        //     nRecords = 0;
        // }
 
-        private int nRecords;
-        public int GetNumRecords()
+        private int numRecords;
+        public int nRecords
         {
-            return nRecords;
+            get { return numRecords; }
+            set { numRecords = value; }
         }
 
+        private int numChannels;
+        public int nChannels {
+            get { return numChannels; }
+            set { numChannels = value; }
+        }
 
+        public List<dynamic> ParseJObject(JObject o)
+        {
+
+
+            List<dynamic> attributes = new List<dynamic>();
+            foreach (JProperty prop in o.Properties())
+            {
+                string name = prop.Name;
+                dynamic value = prop.Value;
+                if (value.GetType() == typeof(JObject))
+                {
+                    attributes.AddRange(ParseJObject(value));
+
+                }
+                else
+                {
+                    attributes.Add(value);
+                }
+            }
+
+            return attributes;
+        }
+        public void ParseAndReadJSON(string json)
+        {
+            dynamic parsedJSON = JArray.Parse(json);
+            List<dynamic> attributes = new List<dynamic>();
+
+            // parse each row into attributes
+            foreach (JObject o in parsedJSON.Children<JObject>())
+            {
+                attributes.Add(ParseJObject(o));
+            }
+
+            nRecords = attributes.Count;
+            timeStamps = new DateTime[nRecords];
+            nChannels = attributes[0].Count-1;
+            data = new dynamic[nRecords, nChannels];
+
+            // update timeStamps and data class members
+            for (int row = 0; row < nRecords; row++)
+            {
+                timeStamps[row] = attributes[row][0];// this assumes first column is the time stamp
+                attributes[row].RemoveAt(0);// this assumes first column is the time stamp  
+                for (int col = 0; col < nChannels; col++)
+                {
+                    data[row, col] = attributes[row][col];
+
+                }
+            }
+        }
         //parse first file entry to check for corrupted file
         //set timeStamps, nRecords
-        public ReturnCode ParseFirstEntry(string newFileName)
+        public ReturnCode GetFirstDate(string newFileName)
         {
-            fileName = newFileName;
+            string fileName = newFileName;
             string json;
             string[] tokens;
-            LDAQRecord record = new LDAQRecord();
+
             try
             {
                 using (StreamReader r = new StreamReader(fileName))
@@ -148,27 +150,15 @@ namespace Omniscient
                 json = json.Replace("\r", ""); json = json.Replace("\n", ""); json = json.Replace("\t", ""); json = json.Replace(" ", "");
                 //chop up by "},{" . aka divide entries
                 tokens = json.Split(new string[] { "},{" }, StringSplitOptions.RemoveEmptyEntries);
-                //put first record in format the JSON converter will recognize
-                string firstRecord = tokens[0].Replace("[", "");
-                firstRecord += "}";
-
-                using (StreamReader r = new StreamReader(fileName))
-                {
-                    record = JsonConvert.DeserializeObject<LDAQRecord>(firstRecord);
-                } 
-                //records.Append(record);
-                //set values for 
-                //timestamps
-                //nRecords
-                //tokens?                                                    sdfgd
-                //data
-                int nDataLines = 1;
-                nRecords = nDataLines;
-                timeStamps = new DateTime[nDataLines];
-
-                string[] temp = record.time.Split('.');
-                string date = temp[0];
-                timeStamps[0] = DateTime.ParseExact(date, TimeStampFormat, CULTURE_INFO);
+                //isolate time value
+                string[] time_token = tokens[0].Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries);
+                time_token = time_token[0].Split(new string[] {"Time\":"}, StringSplitOptions.RemoveEmptyEntries);
+                time_token = time_token[1].Split('.');
+                string time_t = time_token[0].Replace("\"", "");
+                // update class members
+                nRecords = 1;
+                timeStamps = new DateTime[nRecords];
+                timeStamps[0] = DateTime.ParseExact(time_t, TimeStampFormat, CULTURE_INFO);
                 
             }
             catch (Exception ex)
@@ -192,20 +182,30 @@ namespace Omniscient
 
         public ReturnCode ParseFile(string newFileName)
         {
-            fileName = newFileName;
+            string fileName = newFileName;
+            string json;
             try
             {
-                using (StreamReader r = new StreamReader("file.json"))
+                using (StreamReader r = new StreamReader(newFileName))
                 {
-                    string json = r.ReadToEnd();
-                    List<string> items = JsonConvert.DeserializeObject<List<string>>(json);
+                    json = r.ReadToEnd();
                 }
             }
             catch (Exception ex)
             {
                 return ReturnCode.COULD_NOT_OPEN_FILE;
             }
+            try
+            {
+                // remove white space
+                json = json.Replace("\r", ""); json = json.Replace("\n", ""); json = json.Replace("\t", ""); json = json.Replace(" ", "");
 
+                ParseAndReadJSON(json);
+            }
+            catch (Exception ex)
+            {
+                return ReturnCode.CORRUPTED_FILE;
+            }
             return ReturnCode.SUCCESS;
         }
     }
