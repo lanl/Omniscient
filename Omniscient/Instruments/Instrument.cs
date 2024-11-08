@@ -41,8 +41,6 @@ namespace Omniscient
             new THDInstrumentHookup(),
             new WUCSInstrumentHookup(),
             new JSONInstrumentHookup()
-            //todo
-            //add hookup for ORNL
         };
         public override string Name
         {
