@@ -39,7 +39,8 @@ namespace Omniscient
             new NGAMInstrumentHookup(),
             new SMMSInstrumentHookup(),
             new THDInstrumentHookup(),
-            new WUCSInstrumentHookup()
+            new WUCSInstrumentHookup(),
+            new JSONInstrumentHookup()
         };
         public override string Name
         {

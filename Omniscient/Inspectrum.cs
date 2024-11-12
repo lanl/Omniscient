@@ -383,8 +383,11 @@ namespace Omniscient
             if (drawingXZoomBox)
             {
                 SpecChart.Invalidate();
-                if (SpecChart.ChartAreas[0].AxisX.Maximum < SpecChart.ChartAreas[0].AxisX.PixelPositionToValue(mouseX) ||
-                    (SpecChart.ChartAreas[0].AxisX.Minimum > SpecChart.ChartAreas[0].AxisX.PixelPositionToValue(mouseX)))
+                double mouseXValue;
+                try { mouseXValue = SpecChart.ChartAreas[0].AxisX.PixelPositionToValue(mouseX); }
+                catch (Exception exception) { mouseXValue = SpecChart.ChartAreas[0].AxisX.Maximum; }
+                if (SpecChart.ChartAreas[0].AxisX.Maximum < mouseXValue ||
+                    (SpecChart.ChartAreas[0].AxisX.Minimum > mouseXValue))
                 {
                     SpecChart_MouseUp(SpecChart, e);
                 }

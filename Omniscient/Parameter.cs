@@ -22,7 +22,7 @@ using System.Xml;
 
 namespace Omniscient
 {
-    public enum ParameterType { String, Int, Double, Bool, Enum, TimeSpan, DateTimeFormat, SystemChannel, SystemEventGenerator, FileName, Directory, InstrumentChannel }
+    public enum ParameterType { String, Int, Double, Bool, Enum, TimeSpan, DateTimeFormat, SystemChannel, SystemEventGenerator, FileName, Directory, InstrumentChannel, Spectrum }
 
     /// <summary>
     /// A description of a Parameter. Used in Hookups
@@ -60,6 +60,27 @@ namespace Omniscient
     /// </remarks>
     public abstract class Parameter
     {
+        public static ParameterType TypeFromString(string str)
+        {
+            switch (str)
+            {
+                case "String": return ParameterType.String;
+                case "Int": return ParameterType.Int;
+                case "Double": return ParameterType.Double;
+                case "Bool": return ParameterType.Bool;
+                case "Enum": return ParameterType.Enum;
+                case "TimeSpan": return ParameterType.TimeSpan;
+                case "DateTimeFormat": return ParameterType.DateTimeFormat;
+                case "SystemChannel": return ParameterType.SystemChannel;
+                case "SystemEventGenerator": return ParameterType.SystemChannel;
+                case "FileName": return ParameterType.FileName;
+                case "Directory": return ParameterType.Directory;
+                case "InstrumentChannel": return ParameterType.InstrumentChannel;
+                case "Spectrum": return ParameterType.Spectrum;
+            }
+            throw new Exception("Invalid ParameterType string");
+        }
+
         public static List<Parameter> FromXML(XmlNode node, List<ParameterTemplate> templates, DetectionSystem system=null, Instrument instrument=null)
         {
             List<Parameter> parameters = new List<Parameter>();
@@ -118,6 +139,59 @@ namespace Omniscient
             }
             return parameters;
         }
+
+        public static Parameter Make(DetectionSystem system, ParameterTemplate pTemplate)
+        {
+            Parameter param = null;
+            switch (pTemplate.Type)
+            {
+                case ParameterType.String:
+                    param = new StringParameter(pTemplate.Name) { Value = "" };
+                    break;
+                case ParameterType.Int:
+                    param = new IntParameter(pTemplate.Name) { Value = "0" };
+                    break;
+                case ParameterType.Double:
+                    param = new DoubleParameter(pTemplate.Name) { Value = "0.0" };
+                    break;
+                case ParameterType.Bool:
+                    param = new BoolParameter(pTemplate.Name) { Value = "False" };
+                    break;
+                case ParameterType.Enum:
+                    param = new EnumParameter(pTemplate.Name)
+                    {
+                        Value = pTemplate.ValidValues.Count > 0 ? pTemplate.ValidValues[0] : "",
+                        ValidValues = pTemplate.ValidValues
+                    };
+                    break;
+                case ParameterType.SystemChannel:
+                    param = new SystemChannelParameter(pTemplate.Name, system) { Value = "" };
+                    break;
+                case ParameterType.SystemEventGenerator:
+                    param = new SystemEventGeneratorParameter(pTemplate.Name, system) { Value = "" };
+                    break;
+                case ParameterType.TimeSpan:
+                    param = new TimeSpanParameter(pTemplate.Name) { Value = "0" };
+                    break;
+                case ParameterType.DateTimeFormat:
+                    param = new DateTimeFormatParameter(pTemplate.Name) { Value = "" };
+                    break;
+                case ParameterType.FileName:
+                    param = new FileNameParameter(pTemplate.Name) { Value = "" };
+                    break;
+                case ParameterType.Directory:
+                    param = new DirectoryParameter(pTemplate.Name) { Value = "" };
+                    break;
+                case ParameterType.Spectrum:
+                    param = new SpectrumParameter(pTemplate.Name);
+                    break;
+                default:
+                    throw new Exception("Invalid paraemter type!");
+
+            }
+            return param;
+        }
+
         public ParameterType Type { get; private set; }
 
         public string Name { get; set; }
@@ -184,6 +258,10 @@ namespace Omniscient
     public class DoubleParameter : Parameter
     {
         public DoubleParameter(string name) : base(name, ParameterType.Double) { }
+        public DoubleParameter(string name, double val) : base(name, ParameterType.Double)
+        {
+            Value = val.ToString();
+        }
         public override bool Validate() { return double.TryParse(Value, out double result); }
         public double ToDouble() { return double.Parse(Value); }
     }
@@ -401,6 +479,25 @@ namespace Omniscient
                 if (Value == ch.Name) return ch;
             }
             return null;
+        }
+    }
+
+    /// <summary>
+    /// An SpectrumParameter is a way of manipulating spectra within the paramater regime.
+    /// SpectrumParameter cannot be stored though!
+    /// </summary>
+    public class SpectrumParameter : Parameter
+    {
+        public Spectrum Spectrum { get; set; }
+
+        public SpectrumParameter(string name) : base(name, ParameterType.Spectrum)
+        {
+            Spectrum  = new Spectrum();
+        }
+
+        public override bool Validate()
+        {
+            return true;
         }
     }
 }
