@@ -162,7 +162,7 @@ namespace Omniscient
                 ParamListPanel.Visible = true;
                 NameTextBox.Text = eg.Name;
 
-                ActionPanel.Visible = true;
+                //ActionPanel.Visible = true;
                 ActionsComboBox.Items.Clear();
                 ActionsComboBox.Text = "";
                 if (eg.GetActions().Count > 0)

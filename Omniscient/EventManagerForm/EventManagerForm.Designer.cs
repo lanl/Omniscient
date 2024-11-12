@@ -56,6 +56,7 @@ namespace Omniscient
             this.DataTabPage = new System.Windows.Forms.TabPage();
             this.DataSourceTabControl = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.DataCompilerPanel1 = new Omniscient.DataCompilerPanel();
             this.AnalysisTabPage = new System.Windows.Forms.TabPage();
             this.AnalysisCommandTextBox = new System.Windows.Forms.TextBox();
             this.label16 = new System.Windows.Forms.Label();
@@ -73,6 +74,7 @@ namespace Omniscient
             this.AddActionButton = new System.Windows.Forms.Button();
             this.label11 = new System.Windows.Forms.Label();
             this.ActionsComboBox = new System.Windows.Forms.ComboBox();
+            this.ParamListPanel = new Omniscient.Controls.ParameterListPanel();
             this.NamePanel = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.NameTextBox = new System.Windows.Forms.TextBox();
@@ -85,8 +87,6 @@ namespace Omniscient
             this.panel3 = new System.Windows.Forms.Panel();
             this.SaveButton = new System.Windows.Forms.Button();
             this.ExitButton = new System.Windows.Forms.Button();
-            this.DataCompilerPanel1 = new Omniscient.DataCompilerPanel();
-            this.ParamListPanel = new Omniscient.Controls.ParameterListPanel();
             this.LeftPanel.SuspendLayout();
             this.RightPanel.SuspendLayout();
             this.InnerRightPanel.SuspendLayout();
@@ -111,18 +111,20 @@ namespace Omniscient
             this.LeftPanel.Controls.Add(this.SitesTreeView);
             this.LeftPanel.Dock = System.Windows.Forms.DockStyle.Left;
             this.LeftPanel.Location = new System.Drawing.Point(0, 0);
+            this.LeftPanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.LeftPanel.Name = "LeftPanel";
-            this.LeftPanel.Padding = new System.Windows.Forms.Padding(10);
-            this.LeftPanel.Size = new System.Drawing.Size(400, 781);
+            this.LeftPanel.Padding = new System.Windows.Forms.Padding(13, 12, 13, 12);
+            this.LeftPanel.Size = new System.Drawing.Size(533, 961);
             this.LeftPanel.TabIndex = 13;
             // 
             // SitesTreeView
             // 
             this.SitesTreeView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.SitesTreeView.Location = new System.Drawing.Point(10, 10);
+            this.SitesTreeView.Location = new System.Drawing.Point(13, 12);
+            this.SitesTreeView.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.SitesTreeView.Name = "SitesTreeView";
             this.SitesTreeView.ShowNodeToolTips = true;
-            this.SitesTreeView.Size = new System.Drawing.Size(380, 761);
+            this.SitesTreeView.Size = new System.Drawing.Size(507, 937);
             this.SitesTreeView.TabIndex = 0;
             this.SitesTreeView.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.SitesTreeView_AfterSelect);
             // 
@@ -133,9 +135,10 @@ namespace Omniscient
             this.RightPanel.Controls.Add(this.panel1);
             this.RightPanel.Controls.Add(this.panel3);
             this.RightPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.RightPanel.Location = new System.Drawing.Point(400, 0);
+            this.RightPanel.Location = new System.Drawing.Point(533, 0);
+            this.RightPanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.RightPanel.Name = "RightPanel";
-            this.RightPanel.Size = new System.Drawing.Size(406, 781);
+            this.RightPanel.Size = new System.Drawing.Size(542, 961);
             this.RightPanel.TabIndex = 14;
             // 
             // InnerRightPanel
@@ -144,10 +147,11 @@ namespace Omniscient
             this.InnerRightPanel.Controls.Add(this.ParamListPanel);
             this.InnerRightPanel.Controls.Add(this.NamePanel);
             this.InnerRightPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.InnerRightPanel.Location = new System.Drawing.Point(46, 29);
+            this.InnerRightPanel.Location = new System.Drawing.Point(60, 36);
+            this.InnerRightPanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.InnerRightPanel.Name = "InnerRightPanel";
-            this.InnerRightPanel.Padding = new System.Windows.Forms.Padding(10);
-            this.InnerRightPanel.Size = new System.Drawing.Size(360, 723);
+            this.InnerRightPanel.Padding = new System.Windows.Forms.Padding(13, 12, 13, 12);
+            this.InnerRightPanel.Size = new System.Drawing.Size(482, 889);
             this.InnerRightPanel.TabIndex = 34;
             // 
             // ActionPanel
@@ -158,19 +162,23 @@ namespace Omniscient
             this.ActionPanel.Controls.Add(this.label11);
             this.ActionPanel.Controls.Add(this.ActionsComboBox);
             this.ActionPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.ActionPanel.Location = new System.Drawing.Point(10, 250);
+            this.ActionPanel.Location = new System.Drawing.Point(13, 344);
+            this.ActionPanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.ActionPanel.Name = "ActionPanel";
-            this.ActionPanel.Size = new System.Drawing.Size(340, 384);
+            this.ActionPanel.Size = new System.Drawing.Size(456, 473);
             this.ActionPanel.TabIndex = 34;
+            this.ActionPanel.Visible = false;
             // 
             // ActionGroupBox
             // 
             this.ActionGroupBox.Controls.Add(this.CommandPanel);
             this.ActionGroupBox.Controls.Add(this.AnalysisPanel);
             this.ActionGroupBox.Controls.Add(this.ActionSubPanel);
-            this.ActionGroupBox.Location = new System.Drawing.Point(5, 37);
+            this.ActionGroupBox.Location = new System.Drawing.Point(7, 46);
+            this.ActionGroupBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.ActionGroupBox.Name = "ActionGroupBox";
-            this.ActionGroupBox.Size = new System.Drawing.Size(350, 314);
+            this.ActionGroupBox.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.ActionGroupBox.Size = new System.Drawing.Size(467, 386);
             this.ActionGroupBox.TabIndex = 25;
             this.ActionGroupBox.TabStop = false;
             this.ActionGroupBox.Text = "Action";
@@ -180,24 +188,27 @@ namespace Omniscient
             this.CommandPanel.Controls.Add(this.ActionCommandTextBox);
             this.CommandPanel.Controls.Add(this.label14);
             this.CommandPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.CommandPanel.Location = new System.Drawing.Point(3, 311);
+            this.CommandPanel.Location = new System.Drawing.Point(4, 382);
+            this.CommandPanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.CommandPanel.Name = "CommandPanel";
-            this.CommandPanel.Size = new System.Drawing.Size(344, 28);
+            this.CommandPanel.Size = new System.Drawing.Size(459, 34);
             this.CommandPanel.TabIndex = 34;
             // 
             // ActionCommandTextBox
             // 
-            this.ActionCommandTextBox.Location = new System.Drawing.Point(91, 3);
+            this.ActionCommandTextBox.Location = new System.Drawing.Point(121, 4);
+            this.ActionCommandTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.ActionCommandTextBox.Name = "ActionCommandTextBox";
-            this.ActionCommandTextBox.Size = new System.Drawing.Size(227, 20);
+            this.ActionCommandTextBox.Size = new System.Drawing.Size(301, 22);
             this.ActionCommandTextBox.TabIndex = 32;
             // 
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(32, 6);
+            this.label14.Location = new System.Drawing.Point(43, 7);
+            this.label14.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(54, 13);
+            this.label14.Size = new System.Drawing.Size(69, 16);
             this.label14.TabIndex = 31;
             this.label14.Text = "Command";
             // 
@@ -205,9 +216,10 @@ namespace Omniscient
             // 
             this.AnalysisPanel.Controls.Add(this.AnalysisTabControl);
             this.AnalysisPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.AnalysisPanel.Location = new System.Drawing.Point(3, 71);
+            this.AnalysisPanel.Location = new System.Drawing.Point(4, 87);
+            this.AnalysisPanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.AnalysisPanel.Name = "AnalysisPanel";
-            this.AnalysisPanel.Size = new System.Drawing.Size(344, 240);
+            this.AnalysisPanel.Size = new System.Drawing.Size(459, 295);
             this.AnalysisPanel.TabIndex = 35;
             // 
             // AnalysisTabControl
@@ -217,18 +229,20 @@ namespace Omniscient
             this.AnalysisTabControl.Controls.Add(this.ResultsTabPage);
             this.AnalysisTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.AnalysisTabControl.Location = new System.Drawing.Point(0, 0);
+            this.AnalysisTabControl.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.AnalysisTabControl.Name = "AnalysisTabControl";
             this.AnalysisTabControl.SelectedIndex = 0;
-            this.AnalysisTabControl.Size = new System.Drawing.Size(344, 240);
+            this.AnalysisTabControl.Size = new System.Drawing.Size(459, 295);
             this.AnalysisTabControl.TabIndex = 0;
             // 
             // DataTabPage
             // 
             this.DataTabPage.Controls.Add(this.DataSourceTabControl);
-            this.DataTabPage.Location = new System.Drawing.Point(4, 22);
+            this.DataTabPage.Location = new System.Drawing.Point(4, 25);
+            this.DataTabPage.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.DataTabPage.Name = "DataTabPage";
-            this.DataTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.DataTabPage.Size = new System.Drawing.Size(336, 214);
+            this.DataTabPage.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.DataTabPage.Size = new System.Drawing.Size(451, 266);
             this.DataTabPage.TabIndex = 0;
             this.DataTabPage.Text = "Data";
             this.DataTabPage.UseVisualStyleBackColor = true;
@@ -237,50 +251,64 @@ namespace Omniscient
             // 
             this.DataSourceTabControl.Controls.Add(this.tabPage1);
             this.DataSourceTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.DataSourceTabControl.Location = new System.Drawing.Point(3, 3);
+            this.DataSourceTabControl.Location = new System.Drawing.Point(4, 4);
+            this.DataSourceTabControl.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.DataSourceTabControl.Name = "DataSourceTabControl";
             this.DataSourceTabControl.SelectedIndex = 0;
-            this.DataSourceTabControl.Size = new System.Drawing.Size(330, 208);
+            this.DataSourceTabControl.Size = new System.Drawing.Size(443, 258);
             this.DataSourceTabControl.TabIndex = 0;
             // 
             // tabPage1
             // 
             this.tabPage1.Controls.Add(this.DataCompilerPanel1);
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
+            this.tabPage1.Location = new System.Drawing.Point(4, 25);
+            this.tabPage1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(322, 182);
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.tabPage1.Size = new System.Drawing.Size(435, 229);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Data Source 1";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // DataCompilerPanel1
+            // 
+            this.DataCompilerPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.DataCompilerPanel1.Location = new System.Drawing.Point(4, 4);
+            this.DataCompilerPanel1.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.DataCompilerPanel1.Name = "DataCompilerPanel1";
+            this.DataCompilerPanel1.Size = new System.Drawing.Size(427, 221);
+            this.DataCompilerPanel1.TabIndex = 0;
             // 
             // AnalysisTabPage
             // 
             this.AnalysisTabPage.Controls.Add(this.AnalysisCommandTextBox);
             this.AnalysisTabPage.Controls.Add(this.label16);
-            this.AnalysisTabPage.Location = new System.Drawing.Point(4, 22);
+            this.AnalysisTabPage.Location = new System.Drawing.Point(4, 25);
+            this.AnalysisTabPage.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.AnalysisTabPage.Name = "AnalysisTabPage";
-            this.AnalysisTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.AnalysisTabPage.Size = new System.Drawing.Size(320, 214);
+            this.AnalysisTabPage.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.AnalysisTabPage.Size = new System.Drawing.Size(451, 266);
             this.AnalysisTabPage.TabIndex = 1;
             this.AnalysisTabPage.Text = "Analysis";
             this.AnalysisTabPage.UseVisualStyleBackColor = true;
             // 
             // AnalysisCommandTextBox
             // 
-            this.AnalysisCommandTextBox.Location = new System.Drawing.Point(68, 6);
+            this.AnalysisCommandTextBox.Location = new System.Drawing.Point(91, 7);
+            this.AnalysisCommandTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.AnalysisCommandTextBox.Multiline = true;
             this.AnalysisCommandTextBox.Name = "AnalysisCommandTextBox";
             this.AnalysisCommandTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.AnalysisCommandTextBox.Size = new System.Drawing.Size(240, 150);
+            this.AnalysisCommandTextBox.Size = new System.Drawing.Size(319, 184);
             this.AnalysisCommandTextBox.TabIndex = 34;
             // 
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(9, 9);
+            this.label16.Location = new System.Drawing.Point(12, 11);
+            this.label16.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(54, 13);
+            this.label16.Size = new System.Drawing.Size(69, 16);
             this.label16.TabIndex = 33;
             this.label16.Text = "Command";
             // 
@@ -290,9 +318,10 @@ namespace Omniscient
             this.ResultsTabPage.Controls.Add(this.label20);
             this.ResultsTabPage.Controls.Add(this.ResultFileTextBox);
             this.ResultsTabPage.Controls.Add(this.label17);
-            this.ResultsTabPage.Location = new System.Drawing.Point(4, 22);
+            this.ResultsTabPage.Location = new System.Drawing.Point(4, 25);
+            this.ResultsTabPage.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.ResultsTabPage.Name = "ResultsTabPage";
-            this.ResultsTabPage.Size = new System.Drawing.Size(320, 214);
+            this.ResultsTabPage.Size = new System.Drawing.Size(451, 266);
             this.ResultsTabPage.TabIndex = 2;
             this.ResultsTabPage.Text = "Results";
             this.ResultsTabPage.UseVisualStyleBackColor = true;
@@ -303,33 +332,37 @@ namespace Omniscient
             this.ResultParserComboBox.Items.AddRange(new object[] {
             "FRAM-Pu",
             "FRAM-U"});
-            this.ResultParserComboBox.Location = new System.Drawing.Point(86, 29);
+            this.ResultParserComboBox.Location = new System.Drawing.Point(115, 36);
+            this.ResultParserComboBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.ResultParserComboBox.Name = "ResultParserComboBox";
-            this.ResultParserComboBox.Size = new System.Drawing.Size(227, 21);
+            this.ResultParserComboBox.Size = new System.Drawing.Size(301, 24);
             this.ResultParserComboBox.TabIndex = 38;
             // 
             // label20
             // 
             this.label20.AutoSize = true;
-            this.label20.Location = new System.Drawing.Point(8, 32);
+            this.label20.Location = new System.Drawing.Point(11, 39);
+            this.label20.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(70, 13);
+            this.label20.Size = new System.Drawing.Size(88, 16);
             this.label20.TabIndex = 37;
             this.label20.Text = "Result Parser";
             // 
             // ResultFileTextBox
             // 
-            this.ResultFileTextBox.Location = new System.Drawing.Point(86, 3);
+            this.ResultFileTextBox.Location = new System.Drawing.Point(115, 4);
+            this.ResultFileTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.ResultFileTextBox.Name = "ResultFileTextBox";
-            this.ResultFileTextBox.Size = new System.Drawing.Size(227, 20);
+            this.ResultFileTextBox.Size = new System.Drawing.Size(301, 22);
             this.ResultFileTextBox.TabIndex = 36;
             // 
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(22, 6);
+            this.label17.Location = new System.Drawing.Point(29, 7);
+            this.label17.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(56, 13);
+            this.label17.Size = new System.Drawing.Size(70, 16);
             this.label17.TabIndex = 35;
             this.label17.Text = "Result File";
             // 
@@ -340,25 +373,28 @@ namespace Omniscient
             this.ActionSubPanel.Controls.Add(this.ActionTypeComboBox);
             this.ActionSubPanel.Controls.Add(this.label13);
             this.ActionSubPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.ActionSubPanel.Location = new System.Drawing.Point(3, 16);
+            this.ActionSubPanel.Location = new System.Drawing.Point(4, 19);
+            this.ActionSubPanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.ActionSubPanel.Name = "ActionSubPanel";
-            this.ActionSubPanel.Size = new System.Drawing.Size(344, 55);
+            this.ActionSubPanel.Size = new System.Drawing.Size(459, 68);
             this.ActionSubPanel.TabIndex = 33;
             // 
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(50, 8);
+            this.label12.Location = new System.Drawing.Point(67, 10);
+            this.label12.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(35, 13);
+            this.label12.Size = new System.Drawing.Size(44, 16);
             this.label12.TabIndex = 28;
             this.label12.Text = "Name";
             // 
             // ActionNameTextBox
             // 
-            this.ActionNameTextBox.Location = new System.Drawing.Point(90, 5);
+            this.ActionNameTextBox.Location = new System.Drawing.Point(120, 6);
+            this.ActionNameTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.ActionNameTextBox.Name = "ActionNameTextBox";
-            this.ActionNameTextBox.Size = new System.Drawing.Size(172, 20);
+            this.ActionNameTextBox.Size = new System.Drawing.Size(228, 22);
             this.ActionNameTextBox.TabIndex = 27;
             // 
             // ActionTypeComboBox
@@ -367,27 +403,30 @@ namespace Omniscient
             this.ActionTypeComboBox.Items.AddRange(new object[] {
             "Analysis",
             "Command"});
-            this.ActionTypeComboBox.Location = new System.Drawing.Point(90, 31);
+            this.ActionTypeComboBox.Location = new System.Drawing.Point(120, 38);
+            this.ActionTypeComboBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.ActionTypeComboBox.Name = "ActionTypeComboBox";
-            this.ActionTypeComboBox.Size = new System.Drawing.Size(172, 21);
+            this.ActionTypeComboBox.Size = new System.Drawing.Size(228, 24);
             this.ActionTypeComboBox.TabIndex = 29;
             this.ActionTypeComboBox.SelectedIndexChanged += new System.EventHandler(this.ActionTypeComboBox_SelectedIndexChanged);
             // 
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(49, 34);
+            this.label13.Location = new System.Drawing.Point(65, 42);
+            this.label13.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(31, 13);
+            this.label13.Size = new System.Drawing.Size(39, 16);
             this.label13.TabIndex = 30;
             this.label13.Text = "Type";
             // 
             // RemoveActionButton
             // 
             this.RemoveActionButton.Image = ((System.Drawing.Image)(resources.GetObject("RemoveActionButton.Image")));
-            this.RemoveActionButton.Location = new System.Drawing.Point(310, 3);
+            this.RemoveActionButton.Location = new System.Drawing.Point(413, 4);
+            this.RemoveActionButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.RemoveActionButton.Name = "RemoveActionButton";
-            this.RemoveActionButton.Size = new System.Drawing.Size(28, 28);
+            this.RemoveActionButton.Size = new System.Drawing.Size(37, 34);
             this.RemoveActionButton.TabIndex = 24;
             this.RemoveActionButton.UseVisualStyleBackColor = true;
             this.RemoveActionButton.Click += new System.EventHandler(this.RemoveActionButton_Click);
@@ -395,9 +434,10 @@ namespace Omniscient
             // AddActionButton
             // 
             this.AddActionButton.Image = ((System.Drawing.Image)(resources.GetObject("AddActionButton.Image")));
-            this.AddActionButton.Location = new System.Drawing.Point(279, 3);
+            this.AddActionButton.Location = new System.Drawing.Point(372, 4);
+            this.AddActionButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.AddActionButton.Name = "AddActionButton";
-            this.AddActionButton.Size = new System.Drawing.Size(28, 28);
+            this.AddActionButton.Size = new System.Drawing.Size(37, 34);
             this.AddActionButton.TabIndex = 23;
             this.AddActionButton.UseVisualStyleBackColor = true;
             this.AddActionButton.Click += new System.EventHandler(this.AddActionButton_Click);
@@ -405,45 +445,62 @@ namespace Omniscient
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(54, 11);
+            this.label11.Location = new System.Drawing.Point(72, 14);
+            this.label11.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(42, 13);
+            this.label11.Size = new System.Drawing.Size(51, 16);
             this.label11.TabIndex = 22;
             this.label11.Text = "Actions";
             // 
             // ActionsComboBox
             // 
             this.ActionsComboBox.FormattingEnabled = true;
-            this.ActionsComboBox.Location = new System.Drawing.Point(105, 7);
+            this.ActionsComboBox.Location = new System.Drawing.Point(140, 9);
+            this.ActionsComboBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.ActionsComboBox.Name = "ActionsComboBox";
-            this.ActionsComboBox.Size = new System.Drawing.Size(172, 21);
+            this.ActionsComboBox.Size = new System.Drawing.Size(228, 24);
             this.ActionsComboBox.TabIndex = 21;
             this.ActionsComboBox.SelectedIndexChanged += new System.EventHandler(this.ActionsComboBox_SelectedIndexChanged);
+            // 
+            // ParamListPanel
+            // 
+            this.ParamListPanel.AutoScroll = true;
+            this.ParamListPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.ParamListPanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.ParamListPanel.Location = new System.Drawing.Point(13, 61);
+            this.ParamListPanel.Margin = new System.Windows.Forms.Padding(13, 12, 13, 12);
+            this.ParamListPanel.Name = "ParamListPanel";
+            this.ParamListPanel.Padding = new System.Windows.Forms.Padding(9, 7, 9, 7);
+            this.ParamListPanel.Size = new System.Drawing.Size(456, 283);
+            this.ParamListPanel.TabIndex = 35;
             // 
             // NamePanel
             // 
             this.NamePanel.Controls.Add(this.label1);
             this.NamePanel.Controls.Add(this.NameTextBox);
             this.NamePanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.NamePanel.Location = new System.Drawing.Point(10, 10);
+            this.NamePanel.Location = new System.Drawing.Point(13, 12);
+            this.NamePanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.NamePanel.Name = "NamePanel";
-            this.NamePanel.Size = new System.Drawing.Size(340, 40);
+            this.NamePanel.Size = new System.Drawing.Size(456, 49);
             this.NamePanel.TabIndex = 33;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(65, 9);
+            this.label1.Location = new System.Drawing.Point(87, 11);
+            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(35, 13);
+            this.label1.Size = new System.Drawing.Size(44, 16);
             this.label1.TabIndex = 26;
             this.label1.Text = "Name";
             // 
             // NameTextBox
             // 
-            this.NameTextBox.Location = new System.Drawing.Point(105, 6);
+            this.NameTextBox.Location = new System.Drawing.Point(140, 7);
+            this.NameTextBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.NameTextBox.Name = "NameTextBox";
-            this.NameTextBox.Size = new System.Drawing.Size(172, 20);
+            this.NameTextBox.Size = new System.Drawing.Size(228, 22);
             this.NameTextBox.TabIndex = 25;
             // 
             // LeftRightPanel
@@ -454,26 +511,29 @@ namespace Omniscient
             this.LeftRightPanel.Controls.Add(this.DownButton);
             this.LeftRightPanel.Controls.Add(this.UpButton);
             this.LeftRightPanel.Dock = System.Windows.Forms.DockStyle.Left;
-            this.LeftRightPanel.Location = new System.Drawing.Point(0, 29);
+            this.LeftRightPanel.Location = new System.Drawing.Point(0, 36);
+            this.LeftRightPanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.LeftRightPanel.Name = "LeftRightPanel";
-            this.LeftRightPanel.Padding = new System.Windows.Forms.Padding(2);
-            this.LeftRightPanel.Size = new System.Drawing.Size(46, 723);
+            this.LeftRightPanel.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.LeftRightPanel.Size = new System.Drawing.Size(60, 889);
             this.LeftRightPanel.TabIndex = 13;
             // 
             // DeleteButton
             // 
-            this.DeleteButton.Location = new System.Drawing.Point(2, 255);
+            this.DeleteButton.Location = new System.Drawing.Point(3, 314);
+            this.DeleteButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.DeleteButton.Name = "DeleteButton";
-            this.DeleteButton.Size = new System.Drawing.Size(40, 40);
+            this.DeleteButton.Size = new System.Drawing.Size(53, 49);
             this.DeleteButton.TabIndex = 3;
             this.DeleteButton.UseVisualStyleBackColor = true;
             this.DeleteButton.Click += new System.EventHandler(this.DeleteButton_Click);
             // 
             // AddButton
             // 
-            this.AddButton.Location = new System.Drawing.Point(2, 205);
+            this.AddButton.Location = new System.Drawing.Point(3, 252);
+            this.AddButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.AddButton.Name = "AddButton";
-            this.AddButton.Size = new System.Drawing.Size(40, 40);
+            this.AddButton.Size = new System.Drawing.Size(53, 49);
             this.AddButton.TabIndex = 2;
             this.AddButton.UseVisualStyleBackColor = true;
             this.AddButton.Click += new System.EventHandler(this.AddButton_Click);
@@ -481,9 +541,10 @@ namespace Omniscient
             // DownButton
             // 
             this.DownButton.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.DownButton.Location = new System.Drawing.Point(2, 677);
+            this.DownButton.Location = new System.Drawing.Point(3, 834);
+            this.DownButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.DownButton.Name = "DownButton";
-            this.DownButton.Size = new System.Drawing.Size(38, 40);
+            this.DownButton.Size = new System.Drawing.Size(50, 49);
             this.DownButton.TabIndex = 1;
             this.DownButton.UseVisualStyleBackColor = true;
             this.DownButton.Click += new System.EventHandler(this.DownButton_Click);
@@ -491,9 +552,10 @@ namespace Omniscient
             // UpButton
             // 
             this.UpButton.Dock = System.Windows.Forms.DockStyle.Top;
-            this.UpButton.Location = new System.Drawing.Point(2, 2);
+            this.UpButton.Location = new System.Drawing.Point(3, 2);
+            this.UpButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.UpButton.Name = "UpButton";
-            this.UpButton.Size = new System.Drawing.Size(38, 40);
+            this.UpButton.Size = new System.Drawing.Size(50, 49);
             this.UpButton.TabIndex = 0;
             this.UpButton.UseVisualStyleBackColor = true;
             this.UpButton.Click += new System.EventHandler(this.UpButton_Click);
@@ -502,8 +564,9 @@ namespace Omniscient
             // 
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(406, 29);
+            this.panel1.Size = new System.Drawing.Size(542, 36);
             this.panel1.TabIndex = 23;
             // 
             // panel3
@@ -511,16 +574,18 @@ namespace Omniscient
             this.panel3.Controls.Add(this.SaveButton);
             this.panel3.Controls.Add(this.ExitButton);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel3.Location = new System.Drawing.Point(0, 752);
+            this.panel3.Location = new System.Drawing.Point(0, 925);
+            this.panel3.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(406, 29);
+            this.panel3.Size = new System.Drawing.Size(542, 36);
             this.panel3.TabIndex = 12;
             // 
             // SaveButton
             // 
-            this.SaveButton.Location = new System.Drawing.Point(237, 3);
+            this.SaveButton.Location = new System.Drawing.Point(316, 4);
+            this.SaveButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.SaveButton.Name = "SaveButton";
-            this.SaveButton.Size = new System.Drawing.Size(75, 23);
+            this.SaveButton.Size = new System.Drawing.Size(100, 28);
             this.SaveButton.TabIndex = 24;
             this.SaveButton.Text = "Save";
             this.SaveButton.UseVisualStyleBackColor = true;
@@ -528,42 +593,25 @@ namespace Omniscient
             // 
             // ExitButton
             // 
-            this.ExitButton.Location = new System.Drawing.Point(318, 3);
+            this.ExitButton.Location = new System.Drawing.Point(424, 4);
+            this.ExitButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.ExitButton.Name = "ExitButton";
-            this.ExitButton.Size = new System.Drawing.Size(66, 23);
+            this.ExitButton.Size = new System.Drawing.Size(88, 28);
             this.ExitButton.TabIndex = 1;
             this.ExitButton.Text = "Exit";
             this.ExitButton.UseVisualStyleBackColor = true;
             this.ExitButton.Click += new System.EventHandler(this.ExitButton_Click);
             // 
-            // DataCompilerPanel1
-            // 
-            this.DataCompilerPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.DataCompilerPanel1.Location = new System.Drawing.Point(3, 3);
-            this.DataCompilerPanel1.Name = "DataCompilerPanel1";
-            this.DataCompilerPanel1.Size = new System.Drawing.Size(316, 176);
-            this.DataCompilerPanel1.TabIndex = 0;
-            // 
-            // ParamListPanel
-            // 
-            this.ParamListPanel.AutoScroll = true;
-            this.ParamListPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.ParamListPanel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.ParamListPanel.Location = new System.Drawing.Point(10, 50);
-            this.ParamListPanel.Margin = new System.Windows.Forms.Padding(10);
-            this.ParamListPanel.Name = "ParamListPanel";
-            this.ParamListPanel.Size = new System.Drawing.Size(340, 200);
-            this.ParamListPanel.TabIndex = 35;
-            // 
             // EventManagerForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(806, 781);
+            this.ClientSize = new System.Drawing.Size(1075, 961);
             this.ControlBox = false;
             this.Controls.Add(this.RightPanel);
             this.Controls.Add(this.LeftPanel);
-            this.MinimumSize = new System.Drawing.Size(762, 597);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.MinimumSize = new System.Drawing.Size(1010, 724);
             this.Name = "EventManagerForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Event Manager";
