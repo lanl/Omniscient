@@ -1,6 +1,5 @@
 // This software is open source software available under the BSD-3 license.
 // 
-// Copyright (c) 2020, International Atomic Energy Agency (IAEA), IAEA.org
 // Copyright (c) 2018, Triad National Security, LLC
 // All rights reserved.
 // 
@@ -34,7 +33,7 @@ namespace Omniscient
         private System.Globalization.CultureInfo CULTURE_INFO = new CultureInfo("en-US");
         private char[] TRIM_CHARS = new char[] { ':' };
 
-        private string timeStampFormat = "yyyy’-‘MM’-‘dd’T’HH’:’mm’:’ss";
+        private string timeStampFormat = "yyyyï¿½-ï¿½MMï¿½-ï¿½ddï¿½Tï¿½HHï¿½:ï¿½mmï¿½:ï¿½ss";
         public string TimeStampFormat
         {
             get { return timeStampFormat; }
