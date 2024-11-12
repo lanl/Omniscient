@@ -23,7 +23,6 @@ namespace Omniscient
 {
     public class CSVInstrument : Instrument
     {
-        //private const string FILE_EXTENSION = "csv";
 
         public override string FileExtension
         {
@@ -112,7 +111,6 @@ namespace Omniscient
         {
             InstrumentType = "CSV";
             numChannels = nChannels;
-            //FileExtension = FILE_EXTENSION;
             filePrefix = "";
             fileSuffix = "";
 
