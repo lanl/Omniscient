@@ -105,6 +105,12 @@
     <Compile Include="Analysis\ReportToVariableAnalyzerStep.cs" />
     <Compile Include="Analysis\ResultParser.cs" />
     <Compile Include="Analysis\SpectrumCompiler.cs" />
+    <Compile Include="AnalyzerManagerForm\AnalyzerManagerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AnalyzerManagerForm\AnalyzerManagerForm.Designer.cs">
+      <DependentUpon>AnalyzerManagerForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="AutoConfigurator.cs" />
     <Compile Include="Cache\CacheLevelData.cs" />
     <Compile Include="Cache\CacheManager.cs" />
@@ -338,6 +344,9 @@
     <EmbeddedResource Include="AboutBox.resx">
       <DependentUpon>AboutBox.cs</DependentUpon>
       <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AnalyzerManagerForm\AnalyzerManagerForm.resx">
+      <DependentUpon>AnalyzerManagerForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\ParameterListPanel.resx">
       <DependentUpon>ParameterListPanel.cs</DependentUpon>

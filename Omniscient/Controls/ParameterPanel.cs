@@ -49,6 +49,9 @@ namespace Omniscient
                 case ParameterType.Double:
                     InitializeSimpleTextBox();
                     break;
+                case ParameterType.DoubleWithUncertainty:
+                    InitializeDoubleWithUncertainty();
+                    break;
                 case ParameterType.DateTimeFormat:
                 case ParameterType.Enum:
                 case ParameterType.SystemChannel:
@@ -107,6 +110,7 @@ namespace Omniscient
                     paramControls[0].TabIndex = tab;
                     return tab + 1;
                 case ParameterType.TimeSpan:
+                case ParameterType.DoubleWithUncertainty:
                     paramControls[0].TabIndex = tab;
                     paramControls[1].TabIndex = tab + 1;
                     return tab + 2;
@@ -128,6 +132,15 @@ namespace Omniscient
                 case ParameterType.Int:
                 case ParameterType.Double:
                     parameter.Value = ((TextBox)paramControls[0]).Text;
+                    break;
+                case ParameterType.DoubleWithUncertainty:
+                    double dval = 0;
+                    try { dval = double.Parse(((TextBox)paramControls[0]).Text); }
+                    catch { return false; }
+                    double uncertainty = 0;
+                    try { uncertainty = double.Parse(((TextBox)paramControls[1]).Text); }
+                    catch { return false; }
+                    parameter.Value = dval.ToString() + " +- " + uncertainty.ToString();
                     break;
                 case ParameterType.DateTimeFormat:
                 case ParameterType.Enum:
@@ -262,6 +275,35 @@ namespace Omniscient
             paramControls.Add(textBox);
             this.Controls.Add(textBox);
             textBox.BringToFront();
+        }
+
+        private void InitializeDoubleWithUncertainty()
+        {
+            TextBox valueTextBox = new TextBox();
+            valueTextBox.Dock = System.Windows.Forms.DockStyle.Left;
+            valueTextBox.Margin = new System.Windows.Forms.Padding(5);
+            valueTextBox.Width = 120;
+            valueTextBox.Text = (parameter as DoubleWithUncertaintyParameter).DoubleValue().ToString();
+            paramControls.Add(valueTextBox);
+            this.Controls.Add(valueTextBox);
+            valueTextBox.BringToFront();
+
+            Label label = new Label();
+            label.Dock = System.Windows.Forms.DockStyle.Left;
+            label.Margin = new System.Windows.Forms.Padding(5);
+            label.Width = 12;
+            label.Text = "±";
+            this.Controls.Add(label);
+            label.BringToFront();
+
+            TextBox uTextBox = new TextBox();
+            uTextBox.Dock = System.Windows.Forms.DockStyle.Left;
+            uTextBox.Margin = new System.Windows.Forms.Padding(5);
+            uTextBox.Width = 120;
+            uTextBox.Text = (parameter as DoubleWithUncertaintyParameter).DoubleUncertainty().ToString();
+            paramControls.Add(uTextBox);
+            this.Controls.Add(uTextBox);
+            uTextBox.BringToFront();
         }
 
         private void InitializeLimitedValues()

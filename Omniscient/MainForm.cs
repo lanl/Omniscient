@@ -2977,5 +2977,11 @@ namespace Omniscient
             }
             return base.ProcessCmdKey(ref msg, keyData);
         }
+
+        private void analyzerManagerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AnalyzerManagerForm analyzerForm = new AnalyzerManagerForm(this, Core.SiteManager);
+            analyzerForm.ShowDialog();
+        }
     }
 }
