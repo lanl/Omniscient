@@ -27,6 +27,7 @@ namespace Omniscient
             new TwoParameterAnalyzerStepHookup(),
             new ChannelRangeStatisticAnalyzerStepHookup(),
             new SumSpectraAnalyzerStepHookup(),
+            new GetSpectrumValueAnalyzerStepHookup(),
             new ConvoluteSpectrumAnalyzerStepHookup(),
             new ExportSpectrumAnalyzerStepHookup(),
             new GetROIMaximumAnalyzerStepHookup(),
