@@ -23,7 +23,28 @@ namespace Omniscient
 {
     public class CSVInstrument : Instrument
     {
-        private const string FILE_EXTENSION = "csv";
+
+        public override string FileExtension
+        {
+            get { return _fileExtension; }
+            set
+            {
+                _fileExtension = value;
+                if (_fileExtension is null) _fileExtension = "csv";
+
+                bool hasChar = false;
+                foreach (char c in _fileExtension)
+                {
+                    if (Char.IsLetterOrDigit(c)) hasChar = true;
+                }
+                if (!hasChar)
+                {
+                    _fileExtension = "csv";
+                }
+
+            }
+
+        }
 
         private CSVParser.DelimiterType _delimiter;
         public CSVParser.DelimiterType Delimiter
@@ -90,7 +111,6 @@ namespace Omniscient
         {
             InstrumentType = "CSV";
             numChannels = nChannels;
-            FileExtension = FILE_EXTENSION;
             filePrefix = "";
             fileSuffix = "";
 
