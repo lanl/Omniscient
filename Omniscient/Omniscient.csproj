@@ -105,6 +105,7 @@
     <Compile Include="Analysis\ReportToVariableAnalyzerStep.cs" />
     <Compile Include="Analysis\ResultParser.cs" />
     <Compile Include="Analysis\SpectrumCompiler.cs" />
+    <Compile Include="Analysis\TwoParameterAnalyzerStep.cs" />
     <Compile Include="AnalyzerManagerForm\AnalyzerManagerForm.cs">
       <SubType>Form</SubType>
     </Compile>
