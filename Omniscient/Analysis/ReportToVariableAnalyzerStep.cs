@@ -12,14 +12,16 @@ namespace Omniscient
         string reportName;
         string section;
         string paramName;
-        string outputParam;
+        string outputParamName;
+        ParameterType? outputType;
 
         public ReportToVariableAnalyzerStep(Analyzer parent, string name, uint id) : base(parent, name, id, "Report to Variable")
         {
             reportName = "";
             section = "";
             paramName = "";
-            outputParam = "";
+            outputParamName = "";
+            outputType = null;
         }
         public override List<Parameter> GetParameters()
         {
@@ -27,7 +29,8 @@ namespace Omniscient
             parameters.Add(new StringParameter("Report Name", reportName));
             parameters.Add(new StringParameter("Section", section));
             parameters.Add(new StringParameter("Parameter", paramName));
-            parameters.Add(new StringParameter("Output Parameter", outputParam));
+            parameters.Add(new StringParameter("Output Parameter", outputParamName));
+            parameters.Add(new StringParameter("Output Type", outputType?.ToString() ?? ""));
             return parameters;
         }
         public override void ApplyParameters(List<Parameter> parameters)
@@ -46,7 +49,13 @@ namespace Omniscient
                         paramName = param.Value;
                         break;
                     case "Output Parameter":
-                        outputParam = param.Value;
+                        outputParamName = param.Value;
+                        break;
+                    case "Output Type":
+                        if (String.IsNullOrWhiteSpace(param.Value))
+                            outputType = null;
+                        else
+                            outputType = Parameter.TypeFromString(param.Value);
                         break;
                 }
             }
@@ -56,9 +65,11 @@ namespace Omniscient
             if (!data.ImportedReports.ContainsKey(reportName)) return ReturnCode.BAD_INPUT;
             if (!data.ImportedReports[reportName].ContainsKey(section)) return ReturnCode.BAD_INPUT;
             if (!data.ImportedReports[reportName][section].ContainsKey(paramName)) return ReturnCode.BAD_INPUT;
-            if(!data.CustomParameters.ContainsKey(outputParam)) return ReturnCode.BAD_INPUT;
 
-            data.CustomParameters[outputParam].Parameter.Value = data.ImportedReports[reportName][section][paramName];
+            Parameter outputParam = GetOrMakeVariable(data, outputParamName, outputType);
+            if (outputParam is null) return ReturnCode.BAD_INPUT;
+
+            outputParam.Value = data.ImportedReports[reportName][section][paramName];
 
             return ReturnCode.SUCCESS;
         }
@@ -74,6 +85,7 @@ namespace Omniscient
                     new ParameterTemplate("Section", ParameterType.String),
                     new ParameterTemplate("Parameter", ParameterType.String),
                     new ParameterTemplate("Output Parameter", ParameterType.String),
+                    new ParameterTemplate("Output Type", ParameterType.String),
                 };
         }
 

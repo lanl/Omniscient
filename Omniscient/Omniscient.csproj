@@ -88,6 +88,7 @@
     <Compile Include="Analysis\AnalysisResult.cs" />
     <Compile Include="Analysis\Analyzer.cs" />
     <Compile Include="Analysis\AnalyzerReport.cs" />
+    <Compile Include="Analysis\ChannelRangeStatisticAnalyzerStep.cs" />
     <Compile Include="Analysis\DeclarationToVariableAnalyzerStep.cs" />
     <Compile Include="Analysis\DisplayReportAnalyzerStep.cs" />
     <Compile Include="Analysis\GetSpectrumValueAnalyzerStep.cs" />

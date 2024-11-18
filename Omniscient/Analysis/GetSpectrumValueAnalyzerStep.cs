@@ -14,12 +14,14 @@ namespace Omniscient
         string inputSpecParamName;
         SpectrumValueType ValueType;
         string outputParamName;
+        ParameterType? outputType;
 
         public GetSpectrumValueAnalyzerStep(Analyzer analyzer, string name, uint id) : base(analyzer, name, id, "Get Spectrum Value")
         {
             inputSpecParamName = "";
             ValueType = SpectrumValueType.LiveTime;
             outputParamName = "";
+            outputType = null;
         }
 
         public override List<Parameter> GetParameters()
@@ -39,6 +41,7 @@ namespace Omniscient
             parameters.Add(new StringParameter("Input Parameter", inputSpecParamName));
             parameters.Add(new EnumParameter("Value") { Value = valueType, ValidValues = new List<string>() { "Live Time", "Real Time" } });
             parameters.Add(new StringParameter("Output Parameter", outputParamName));
+            parameters.Add(new StringParameter("Output Type", outputType?.ToString() ?? ""));
             return parameters;
         }
 
@@ -65,6 +68,12 @@ namespace Omniscient
                                 break;
                         }
                         break;
+                    case "Output Type":
+                        if (String.IsNullOrWhiteSpace(param.Value))
+                            outputType = null;
+                        else
+                            outputType = Parameter.TypeFromString(param.Value);
+                        break;
                 }
             }
         }
@@ -73,13 +82,15 @@ namespace Omniscient
         {
             // Validate parameters
             SpectrumParameter inputSpecParam;
-            Parameter outputParam;
             try
             {
                 inputSpecParam = data.CustomParameters[inputSpecParamName].Parameter as SpectrumParameter;
-                outputParam = data.CustomParameters[outputParamName].Parameter;
             }
             catch (Exception ex) { return ReturnCode.BAD_INPUT; }
+
+            Parameter outputParam = GetOrMakeVariable(data, outputParamName, outputType);
+            if (outputParam is null) return ReturnCode.BAD_INPUT;
+
             if (!data.CustomParameters.ContainsKey(outputParamName)) return ReturnCode.BAD_INPUT;
             if (outputParam.Type != ParameterType.Double) return ReturnCode.BAD_INPUT;
 
@@ -110,6 +121,7 @@ namespace Omniscient
                     new ParameterTemplate("Input Parameter", ParameterType.String),
                     new ParameterTemplate("Value", ParameterType.Enum, new List<string>(){ "Live Time", "Real Time" }),
                     new ParameterTemplate("Output Parameter", ParameterType.String),
+                    new ParameterTemplate("Output Type", ParameterType.String),
                 };
         }
 

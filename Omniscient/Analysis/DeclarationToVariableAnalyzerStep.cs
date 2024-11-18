@@ -9,18 +9,21 @@ namespace Omniscient
     class DeclarationToVariableAnalyzerStep : AnalyzerStep
     {
         string paramName;
-        string outputParam;
+        string outputParamName;
+        ParameterType? outputType;
 
         public DeclarationToVariableAnalyzerStep(Analyzer parent, string name, uint id) : base(parent, name, id, "Declaration to Variable")
         {
             paramName = "";
-            outputParam = "";
+            outputParamName = "";
+            outputType = null;
         }
         public override List<Parameter> GetParameters()
         {
             List<Parameter> parameters = new List<Parameter>();
             parameters.Add(new StringParameter("Parameter", paramName));
-            parameters.Add(new StringParameter("Output Parameter", outputParam));
+            parameters.Add(new StringParameter("Output Parameter", outputParamName));
+            parameters.Add(new StringParameter("Output Type", outputType?.ToString() ?? ""));
             return parameters;
         }
         public override void ApplyParameters(List<Parameter> parameters)
@@ -33,7 +36,13 @@ namespace Omniscient
                         paramName = param.Value;
                         break;
                     case "Output Parameter":
-                        outputParam = param.Value;
+                        outputParamName = param.Value;
+                        break;
+                    case "Output Type":
+                        if (String.IsNullOrWhiteSpace(param.Value))
+                            outputType = null;
+                        else
+                            outputType = Parameter.TypeFromString(param.Value);
                         break;
                 }
             }
@@ -42,9 +51,11 @@ namespace Omniscient
         public override ReturnCode Run(AnalyzerRunData data)
         {
             if (!data.Declaration.Parameters.ContainsKey(paramName)) return ReturnCode.BAD_INPUT;
-            if (!data.CustomParameters.ContainsKey(outputParam)) return ReturnCode.BAD_INPUT;
 
-            data.CustomParameters[outputParam].Parameter.Value = data.Declaration.Parameters[paramName].Value;
+            Parameter outputParam = GetOrMakeVariable(data, outputParamName, outputType);
+            if (outputParam is null) return ReturnCode.BAD_INPUT;
+
+            outputParam.Value = data.Declaration.Parameters[paramName].Value;
 
             return ReturnCode.SUCCESS;
         }
@@ -58,6 +69,7 @@ namespace Omniscient
                 {
                     new ParameterTemplate("Parameter", ParameterType.String),
                     new ParameterTemplate("Output Parameter", ParameterType.String),
+                    new ParameterTemplate("Output Type", ParameterType.String),
                 };
         }
 

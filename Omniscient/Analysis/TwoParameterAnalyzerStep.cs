@@ -111,22 +111,8 @@ namespace Omniscient
             if (param1.Type != ParameterType.Int && param1.Type != ParameterType.Double && param1.Type != ParameterType.DoubleWithUncertainty) return ReturnCode.BAD_INPUT;
             if (param2.Type != ParameterType.Int && param2.Type != ParameterType.Double && param2.Type != ParameterType.DoubleWithUncertainty) return ReturnCode.BAD_INPUT;
 
-            if (data.CustomParameters.ContainsKey(outputParamName))
-            {
-                try
-                {
-                    outputParam = data.CustomParameters[outputParamName].Parameter;
-                }
-                catch (Exception ex) { return ReturnCode.BAD_INPUT; }
-            }
-            else
-            {
-                if (outputType is null) return ReturnCode.BAD_INPUT;
-                ParameterTemplate template = new ParameterTemplate(outputParamName, (ParameterType)outputType);
-                Parameter param = Parameter.Make(ParentAnalyzer.DetectionSystem, template);
-                CustomParameter newVariable = new CustomParameter(ParentAnalyzer, outputParamName, 0, template, param, true);
-                outputParam = newVariable.Parameter;
-            }
+            outputParam = GetOrMakeVariable(data, outputParamName, outputType);
+            if (outputParam is null) return ReturnCode.BAD_INPUT;
 
             if (outputParam.Type != ParameterType.Int && outputParam.Type != ParameterType.Double && outputParam.Type != ParameterType.DoubleWithUncertainty) return ReturnCode.BAD_INPUT;
 
