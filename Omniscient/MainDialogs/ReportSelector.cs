@@ -25,7 +25,11 @@ namespace Omniscient.MainDialogs
             DetSystem.LoadReports();
             PopulateAnalyzerComboBox(analyzer);
 
-            if (analyzer != "Any") AnalyzerComboBox.Enabled = false;
+            if (analyzer != "Any")
+            {
+                AnalyzerComboBox.Enabled = false;
+                this.Text = "Select Report from " + analyzer;
+            }
         }
 
         private void PopulateAnalyzerComboBox(string analyzer)

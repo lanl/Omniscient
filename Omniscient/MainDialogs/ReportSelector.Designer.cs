@@ -172,7 +172,7 @@
             this.Controls.Add(this.RightPanel);
             this.Name = "ReportSelector";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "ReportSelector";
+            this.Text = "Report Selector";
             ((System.ComponentModel.ISupportInitialize)(this.ReportGrid)).EndInit();
             this.RightPanel.ResumeLayout(false);
             this.MainPanel.ResumeLayout(false);
