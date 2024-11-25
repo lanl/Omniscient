@@ -39,10 +39,13 @@
             this.TopPanel = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
             this.AnalyzerComboBox = new System.Windows.Forms.ComboBox();
+            this.DeleteButton = new System.Windows.Forms.Button();
+            this.DeletePanel = new System.Windows.Forms.Panel();
             ((System.ComponentModel.ISupportInitialize)(this.ReportGrid)).BeginInit();
             this.RightPanel.SuspendLayout();
             this.MainPanel.SuspendLayout();
             this.TopPanel.SuspendLayout();
+            this.DeletePanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // ReportGrid
@@ -89,6 +92,7 @@
             // 
             // RightPanel
             // 
+            this.RightPanel.Controls.Add(this.DeletePanel);
             this.RightPanel.Controls.Add(this.CancelButton);
             this.RightPanel.Controls.Add(this.OkButton);
             this.RightPanel.Dock = System.Windows.Forms.DockStyle.Right;
@@ -162,6 +166,28 @@
             this.AnalyzerComboBox.TabIndex = 0;
             this.AnalyzerComboBox.SelectedIndexChanged += new System.EventHandler(this.AnalyzerComboBox_SelectedIndexChanged);
             // 
+            // DeleteButton
+            // 
+            this.DeleteButton.Dock = System.Windows.Forms.DockStyle.Top;
+            this.DeleteButton.Location = new System.Drawing.Point(5, 50);
+            this.DeleteButton.Margin = new System.Windows.Forms.Padding(10, 50, 10, 10);
+            this.DeleteButton.Name = "DeleteButton";
+            this.DeleteButton.Size = new System.Drawing.Size(130, 50);
+            this.DeleteButton.TabIndex = 2;
+            this.DeleteButton.Text = "Delete";
+            this.DeleteButton.UseVisualStyleBackColor = true;
+            this.DeleteButton.Click += new System.EventHandler(this.DeleteButton_Click);
+            // 
+            // DeletePanel
+            // 
+            this.DeletePanel.Controls.Add(this.DeleteButton);
+            this.DeletePanel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.DeletePanel.Location = new System.Drawing.Point(5, 105);
+            this.DeletePanel.Name = "DeletePanel";
+            this.DeletePanel.Padding = new System.Windows.Forms.Padding(5, 50, 5, 5);
+            this.DeletePanel.Size = new System.Drawing.Size(140, 141);
+            this.DeletePanel.TabIndex = 3;
+            // 
             // ReportSelector
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -178,6 +204,7 @@
             this.MainPanel.ResumeLayout(false);
             this.TopPanel.ResumeLayout(false);
             this.TopPanel.PerformLayout();
+            this.DeletePanel.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -195,5 +222,7 @@
         private System.Windows.Forms.Panel TopPanel;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox AnalyzerComboBox;
+        private System.Windows.Forms.Button DeleteButton;
+        private System.Windows.Forms.Panel DeletePanel;
     }
 }

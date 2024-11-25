@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +16,8 @@ namespace Omniscient.MainDialogs
     {
         public DetectionSystem DetSystem { get; private set; }
         public Dictionary<string, Dictionary<string, string>> Report {  get; private set; }
+
+        int selectedRow;
         public ReportSelector(DetectionSystem detSystem, string analyzer="Any")
         {
             InitializeComponent();
@@ -30,6 +33,7 @@ namespace Omniscient.MainDialogs
                 AnalyzerComboBox.Enabled = false;
                 this.Text = "Select Report from " + analyzer;
             }
+            selectedRow = -1;
         }
 
         private void PopulateAnalyzerComboBox(string analyzer)
@@ -82,6 +86,8 @@ namespace Omniscient.MainDialogs
             }
             Report = null;
             OkButton.Enabled = false;
+            DeleteButton.Enabled = false;
+            selectedRow = -1;
         }
 
         private void OkButton_Click(object sender, EventArgs e)
@@ -105,12 +111,33 @@ namespace Omniscient.MainDialogs
             {
                 Report = ReportGrid.Rows[e.RowIndex].Tag as Dictionary<string, Dictionary<string, string>>;
                 OkButton.Enabled = true;
+                DeleteButton.Enabled = true;
+                selectedRow = e.RowIndex;
             }
         }
 
         private void AnalyzerComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             DisplayReports(AnalyzerComboBox.Text);
+        }
+
+        private void DeleteButton_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (Report is null) return;
+                DialogResult dialogResult = MessageBox.Show("Are you sure your want to delete the report?", "Confirm Delete Report", MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    string fileName = Report["Header"]["File Name"];
+                    File.Delete(fileName);
+                    ReportGrid.Rows.RemoveAt(selectedRow);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Exception caught while attempting to delete report:\n" + ex.Message);
+            }
         }
     }
 }
