@@ -263,6 +263,13 @@ namespace Omniscient
         public virtual List<DataFile> GetFiles(ChannelCompartment compartment) { return files[(int)compartment]; }
         public Instrument GetInstrument() { return instrument; }
 
+        public int CountDataPoints(ChannelCompartment compartment, DateTime start, DateTime end)
+        {
+            int count = timeStamps[(int)compartment].Count;
+            int startIndex = FindFirstIndexAfter(compartment, start);
+            int endIndex = FindFirstIndexAfter(compartment, end);
+            return endIndex - startIndex;
+        }
         public double GetAverage(ChannelCompartment compartment, DateTime start, DateTime end)
         {
             int count = timeStamps[(int)compartment].Count;

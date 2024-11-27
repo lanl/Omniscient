@@ -2037,12 +2037,20 @@ namespace Omniscient
                 if(plotChan)
                 {
                     Channel ch = chanPan.GetChannel();
+                    int nPoints = ch.CountDataPoints(ChannelCompartment.View, start, end);
                     boxData += "--" + ch.Name + "--\n";
-                    boxData += "μ:\t" + ch.GetAverage(ChannelCompartment.View, start, end).ToString("G6") + "\n";
-                    boxData += "σ:\t" + ch.GetStandardDeviation(ChannelCompartment.View, start, end).ToString("G6") + "\n";
-                    boxData += "Max:\t" + ch.GetMax(ChannelCompartment.View, start, end).ToString("G6") + "\n";
-                    boxData += "Min:\t" + ch.GetMin(ChannelCompartment.View, start, end).ToString("G6") + "\n";
-					boxData += "\n";
+                    if (nPoints == 0)
+                    {
+                        boxData += "No data\n\n";
+                    }
+                    else
+                    {
+                        boxData += "μ:\t" + ch.GetAverage(ChannelCompartment.View, start, end).ToString("G6") + "\n";
+                        boxData += "σ:\t" + ch.GetStandardDeviation(ChannelCompartment.View, start, end).ToString("G6") + "\n";
+                        boxData += "Max:\t" + ch.GetMax(ChannelCompartment.View, start, end).ToString("G6") + "\n";
+                        boxData += "Min:\t" + ch.GetMin(ChannelCompartment.View, start, end).ToString("G6") + "\n";
+                        boxData += "\n";
+                    }
                 }
             }
         }
