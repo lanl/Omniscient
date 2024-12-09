@@ -13,6 +13,7 @@
 // THIS SOFTWARE IS PROVIDED BY TRIAD NATIONAL SECURITY, LLC AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL TRIAD NATIONAL SECURITY, LLC OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,6 +22,7 @@ namespace Omniscient
 {
     public class EventParser
     {
+        private const string DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss.fff";
         public int Version { get; private set; }
         public List<DateTime> StartTime { get; private set; }
         public List<DateTime> EndTime { get; private set; }
@@ -115,12 +117,12 @@ namespace Omniscient
             {
                 tokens = lines[l].Split(',');
                 if (tokens.Length < nColumns) return ReturnCode.CORRUPTED_FILE;
-                start = DateTime.Parse(tokens[eventStartCol]);
-                end = DateTime.Parse(tokens[eventEndCol]);
+                start = DateTime.ParseExact(tokens[eventStartCol], DATE_TIME_FORMAT, CultureInfo.InvariantCulture);
+                end = DateTime.ParseExact(tokens[eventEndCol], DATE_TIME_FORMAT, CultureInfo.InvariantCulture);
                 StartTime.Add(start);
                 EndTime.Add(end);
                 MaxValue.Add(double.Parse(tokens[maxValCol]));
-                MaxTime.Add(DateTime.Parse(tokens[maxTimeCol]));
+                MaxTime.Add(DateTime.ParseExact(tokens[maxTimeCol], DATE_TIME_FORMAT, CultureInfo.InvariantCulture));
                 Comments.Add(tokens[commentsCol]);
             }
 
