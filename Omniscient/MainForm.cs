@@ -31,6 +31,8 @@ using Omniscient.MainDialogs;
 using static System.Net.Mime.MediaTypeNames;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using Omniscient.Controls;
+using System.Globalization;
+using System.Threading;
 
 namespace Omniscient
 {
@@ -77,6 +79,7 @@ namespace Omniscient
 
         string appDataDirectory;
         UserSettings userSettings;
+        private System.Globalization.CultureInfo CULTURE_INFO = new CultureInfo("en-US");
 
         /// <summary>
         /// MainForm constructor
@@ -84,6 +87,12 @@ namespace Omniscient
         public MainForm()
         {
             // Get the App Data Directory
+            Thread.CurrentThread.CurrentCulture = CULTURE_INFO;
+            Thread.CurrentThread.CurrentUICulture = CULTURE_INFO;
+            CultureInfo.DefaultThreadCurrentCulture = CULTURE_INFO;
+            CultureInfo.DefaultThreadCurrentUICulture = CULTURE_INFO;
+            CultureInfo.CurrentCulture = CULTURE_INFO;
+            
             appDataDirectory = Properties.Settings.Default.AppDataDirectory;
             if (appDataDirectory.ToLower() == "appdata") appDataDirectory = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\Omniscient";
             try { if (appDataDirectory != "" && !Directory.Exists(appDataDirectory)) Directory.CreateDirectory(appDataDirectory); }

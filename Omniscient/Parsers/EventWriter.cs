@@ -23,7 +23,8 @@ namespace Omniscient
 {
     public class EventWriter
     {
-        private const string DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss.fff";
+        private const string DATE_TIME_FORMAT = "yyyy-MM-dd HH:mm:ss";
+
         public ReturnCode WriteEventFile(string fileName, List<Event> events)
         {
             // Open file for writing
