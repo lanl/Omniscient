@@ -585,8 +585,9 @@ namespace Omniscient
 
         public override bool Validate()
         {
-            if (File.Exists(Value)) return true;
-            return false;
+            //if (File.Exists(Value)) return true;
+            //return false;
+            return true;
         }
     }
 
